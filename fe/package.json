@@ -63,6 +63,7 @@
     "eslint-plugin-storybook": "^0.6.12",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.18",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
     "webpack": "^5.85.1"
   }
 }

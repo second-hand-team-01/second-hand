@@ -145,4 +145,15 @@ export const GlobalStyle = createGlobalStyle`
         format('woff');
       font-style: normal;
     }
+
+     @font-face {
+      font-family: 'SF Pro';
+      src: url('src/assets/fonts/SF-Pro.ttf')
+        format('ttf');
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'SF Pro'
+    }
     `;
