@@ -3,7 +3,7 @@
 
 |team|members|repository|
 |---|---|---|
-|1|||
+|1|poco, snoop, Sol, 우드, 고뭉남, 로이|https://github.com/second-hand-team-01/second-hand|
 |2|훈딩, 제이든, 하림, 에디, 코어, 감자|https://github.com/masters2023-2nd-project-02/second-hand|
 |3|||
 |4|NINO, Hyun, Den, 워터, Effie, 데미안|https://github.com/codesquad-members-2023-proj02-team04/second-hand|
