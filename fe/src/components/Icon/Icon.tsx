@@ -14,7 +14,7 @@ export const Icon = ({
   fill = colors.neutralTextStrong,
 }: IconProps) => {
   return (
-    <S.Icon style={{ fontSize: `${size}px`, color: fill }}>
+    <S.Icon size={size} fill={fill}>
       {icons[name]}
     </S.Icon>
   );
