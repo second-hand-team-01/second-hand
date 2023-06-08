@@ -1,0 +1,18 @@
+export const icons = {
+  arrowDown: '􀆈',
+  arrowRight: '􀆊',
+  hamburger: '􀌇',
+  talk: '􀌤',
+  heart: '􀊴',
+  heartFill: '􀊵',
+  plus: '􀅼',
+  home: '􀎞',
+  list: '􀤦',
+  person: '􀉩',
+  close: '􀆄',
+  search: '􀊫',
+  camera: '􀌞',
+  keyboard: '􀓖',
+  filter: '􀌆',
+  more: '􀍠',
+};
