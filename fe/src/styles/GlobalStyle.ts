@@ -156,7 +156,8 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-      font-family: 'SF Pro'
+      font-family: 'SF Pro';
+      font-smoothing: grayscale;
     }
     `;
 
