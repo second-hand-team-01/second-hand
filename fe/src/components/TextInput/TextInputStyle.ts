@@ -3,7 +3,7 @@ import { WrapStyleProps } from './TextInput';
 
 export const Wrap = styled.div<WrapStyleProps>`
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: ${({ hasLabel }) => (hasLabel ? '72px 1fr' : '1fr')};
   gap: 8px;
   padding: 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.neutralBorder};
@@ -11,6 +11,7 @@ export const Wrap = styled.div<WrapStyleProps>`
   &:focus-within {
   }
 `;
+
 export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.body.size};
   font-weight: ${({ theme }) => theme.fontWeight.light};
@@ -19,6 +20,7 @@ export const Label = styled.label`
   align-items: center;
   justify-items: start;
 `;
+
 export const TextInput = styled.input`
   border: none;
   padding: 0;

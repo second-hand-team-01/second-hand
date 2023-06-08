@@ -3,6 +3,7 @@ import * as S from './TextInputStyle';
 
 export interface WrapStyleProps {
   height: number;
+  hasLabel: boolean;
 }
 
 interface TextInputProps {
@@ -21,8 +22,8 @@ export const TextInput = ({
   onChange,
 }: TextInputProps) => {
   return (
-    <S.Wrap height={height}>
-      <S.Label>{label}</S.Label>
+    <S.Wrap height={height} hasLabel={!!label}>
+      {label && <S.Label>{label}</S.Label>}
       <S.TextInput
         placeholder={placeholder}
         value={value}
