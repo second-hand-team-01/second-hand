@@ -8,7 +8,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle></GlobalStyle>
-      <div>역삼1동 􀆈</div>
+      <div>테스트</div>
     </ThemeProvider>
   );
 }
