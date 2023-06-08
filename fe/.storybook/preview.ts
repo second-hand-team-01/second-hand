@@ -1,16 +1,15 @@
-import type { Preview } from '@storybook/react';
+import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle, theme } from '../src/styles/GlobalStyle';
 
-const preview: Preview = {
-  parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/,
-      },
+export const decorators = [
+  withThemeFromJSXProvider({
+    themes: {
+      light: theme,
+      dark: theme,
     },
-    layout: 'fullscreen',
-  },
-};
-
-export default preview;
+    defaultTheme: 'light',
+    Provider: ThemeProvider,
+    GlobalStyles: GlobalStyle,
+  }),
+];

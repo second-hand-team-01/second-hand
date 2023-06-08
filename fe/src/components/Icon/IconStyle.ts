@@ -1,11 +1,7 @@
 import styled from 'styled-components';
+import { IconStyleProps } from './Icon';
 
-interface IconProps {
-  size: number;
-  fill: string;
-}
-
-export const Icon = styled.div<IconProps>`
+export const Icon = styled.div<IconStyleProps>`
   font-family: SF Pro;
   display: flex;
   align-items: center;
@@ -13,4 +9,6 @@ export const Icon = styled.div<IconProps>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   font-size: ${({ size }) => size}px;
+  color: ${({ theme, color }) =>
+    color ? theme.colors[color] : theme.colors.neutralText};
 `;

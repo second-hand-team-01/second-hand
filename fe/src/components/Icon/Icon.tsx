@@ -1,20 +1,18 @@
 import * as S from './IconStyle';
 import { icons } from '@assets/icons';
-import { colors } from '@styles/Color';
 
-interface IconProps {
-  name: keyof typeof icons;
+export interface IconStyleProps {
   size?: number;
-  fill?: string;
+  color?: string;
 }
 
-export const Icon = ({
-  name = 'arrowDown',
-  size = 16,
-  fill = colors.neutralTextStrong,
-}: IconProps) => {
+interface IconProps extends IconStyleProps {
+  name: keyof typeof icons;
+}
+
+export const Icon = ({ name = 'arrowDown', size = 16, color }: IconProps) => {
   return (
-    <S.Icon size={size} fill={fill}>
+    <S.Icon size={size} color={color}>
       {icons[name]}
     </S.Icon>
   );

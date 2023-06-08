@@ -1,4 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
+import { colors, palette } from '@styles/Color';
+import { typography, fontWeight } from '@styles/Typography';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
@@ -157,3 +159,10 @@ export const GlobalStyle = createGlobalStyle`
       font-family: 'SF Pro'
     }
     `;
+
+export const theme = {
+  colors,
+  palette,
+  typography,
+  fontWeight,
+};
