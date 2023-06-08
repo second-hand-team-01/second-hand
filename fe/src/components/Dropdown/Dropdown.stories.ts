@@ -7,6 +7,7 @@ export default {
 export const Default = {
   args: {
     children: '역삼1동',
+    isOpen: false,
     onClick: () => alert('onClick!'),
   },
 };

@@ -4,14 +4,15 @@ import { Icon } from '@components/index';
 
 interface DropdownProps {
   children: ReactElement | string;
+  isOpen: boolean;
   onClick: () => void;
 }
 
-export const Dropdown = ({ children, onClick }: DropdownProps) => {
+export const Dropdown = ({ children, isOpen, onClick }: DropdownProps) => {
   return (
     <S.Dropdown onClick={onClick}>
       {children}
-      <Icon name="arrowDown"></Icon>
+      <Icon name={isOpen ? 'arrowUp' : 'arrowDown'}></Icon>
     </S.Dropdown>
   );
 };
