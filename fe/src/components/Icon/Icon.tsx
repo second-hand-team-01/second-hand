@@ -19,5 +19,3 @@ export const Icon = ({
     </S.Icon>
   );
 };
-
-export default Icon;
