@@ -1,4 +1,5 @@
 export const icons = {
+  arrowUp: '􀆇',
   arrowDown: '􀆈',
   arrowRight: '􀆊',
   hamburger: '􀌇',
