@@ -1,0 +1,36 @@
+aws:
+  credentials:
+    access-key:
+    secret-key:
+    region: ap-northeast-2
+  s3:
+    bucket:
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+#    url: jdbc:mysql://localhost:3306/
+#    username:
+#    password:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId:
+            clientSecret:
+            redirectUri:
+    user:
+      name:
+      password:
+#JWT:
+#  SECRET:
+
+logging:
+  level:
+    com:
+      team6:
+        issue_tracker: debug
