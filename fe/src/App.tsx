@@ -3,7 +3,7 @@ import { GlobalStyle } from '@styles/GlobalStyle';
 import { Profile } from './components';
 import { theme } from '@styles/GlobalStyle';
 import { Icon } from './components';
-import './index.css';
+import '@styles/index.css';
 
 function App() {
   return (
