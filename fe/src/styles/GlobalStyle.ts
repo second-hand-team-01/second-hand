@@ -141,12 +141,6 @@ export const GlobalStyle = createGlobalStyle`
     
     /* end of reset-css*/
 
-    @font-face {
-      font-family: 'SF Pro';
-      src: url('src/assets/fonts/SF-Pro.ttf') format('truetype');
-    }
-    `;
-
 export const theme = {
   colors,
   palette,
