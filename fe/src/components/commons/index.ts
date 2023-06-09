@@ -4,4 +4,4 @@ import { Dropdown } from './Dropdown/Dropdown';
 import { Tab } from './Tab/Tab';
 import { TextInput } from './TextInput/TextInput';
 
-export { Icon, Profile, Dropdown, TextInput, Tab};
+export { Icon, Profile, Dropdown, TextInput, Tab };

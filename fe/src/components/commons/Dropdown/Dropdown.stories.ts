@@ -1,4 +1,4 @@
-import { Dropdown } from '@components/index';
+import { Dropdown } from '@components/commons/index';
 
 export default {
   component: Dropdown,

@@ -1,8 +1,8 @@
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '@styles/GlobalStyle';
-import { Profile } from './components';
+import { Profile } from './components/commons';
 import { theme } from '@styles/GlobalStyle';
-import { Icon } from './components';
+import { Icon } from './components/commons';
 import '@styles/index.css';
 
 function App() {
