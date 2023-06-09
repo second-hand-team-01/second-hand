@@ -2,6 +2,7 @@ export const fontWeight = {
   bold: '700',
   semibold: '600',
   regular: '500',
+  light: '400',
 };
 
 export const typography = {
