@@ -1,5 +1,5 @@
 import * as S from './ButtonStyle';
-import { Icon } from '@components/Icon/Icon';
+import { Icon } from '@components/commons/Icon/Icon';
 import { icons } from '@assets/icons';
 
 export interface ButtonStyleProps {

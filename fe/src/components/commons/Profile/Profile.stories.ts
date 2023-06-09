@@ -1,4 +1,4 @@
-import { Profile } from '@components/index';
+import { Profile } from '@components/commons/index';
 
 export default {
   component: Profile,

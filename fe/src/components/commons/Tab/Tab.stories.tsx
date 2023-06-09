@@ -1,4 +1,4 @@
-import { Tab } from '@components/index';
+import { Tab } from '@components/commons/index';
 import { useState } from 'react';
 
 export default {

@@ -1,4 +1,4 @@
-import { TextInput } from '@components/index';
+import { TextInput } from '@components/commons/index';
 
 export default {
   component: TextInput,
