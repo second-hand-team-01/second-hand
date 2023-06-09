@@ -1,13 +1,16 @@
 package CodeSquad.SecondHand.config;
 
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile({"dev","real"})
 public class JasyptConfig {
 
-    @Value("${encryptor.key}")
+    @Value("${jasypt.encryptor.password}")
     private String password;
 
     @Bean("jasyptStringEncryptor")
@@ -23,7 +26,6 @@ public class JasyptConfig {
         config.setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator");
         config.setStringOutputType("base64");
         encryptor.setConfig(config);
-
         return encryptor;
     }
 }
