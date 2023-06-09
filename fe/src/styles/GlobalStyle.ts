@@ -141,26 +141,6 @@ export const GlobalStyle = createGlobalStyle`
     
     /* end of reset-css*/
 
-    @font-face {
-      font-family: 'Pretendard';
-      src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-        format('woff');
-      font-style: normal;
-    }
-
-     @font-face {
-      font-family: 'SF Pro';
-      src: url('src/assets/fonts/SF-Pro.ttf')
-        format('ttf');
-      font-style: normal;
-    }
-
-    body {
-      font-family: 'SF Pro';
-      font-smoothing: grayscale;
-    }
-    `;
-
 export const theme = {
   colors,
   palette,
