@@ -82,6 +82,7 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   align-items: center;
   border: none;
+  cursor: pointer;
 `;
 
 export const ButtonTitle = styled.span``;
