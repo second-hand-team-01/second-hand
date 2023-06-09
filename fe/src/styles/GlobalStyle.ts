@@ -146,4 +146,11 @@ export const theme = {
   palette,
   typography,
   fontWeight,
+};`;
+
+export const theme = {
+  colors,
+  palette,
+  typography,
+  fontWeight,
 };
