@@ -1,4 +1,4 @@
-package CodeSquad.SecondHand.config;
+package codesquad.secondhand.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
