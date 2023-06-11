@@ -11,13 +11,13 @@
 		632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807202A305CED0033F9D7 /* AppDelegate.swift */; };
 		632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807222A305CED0033F9D7 /* SceneDelegate.swift */; };
 		632807252A305CED0033F9D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807242A305CED0033F9D7 /* ViewController.swift */; };
-		632807282A305CED0033F9D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 632807262A305CED0033F9D7 /* Main.storyboard */; };
 		6328072A2A305CED0033F9D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632807292A305CED0033F9D7 /* Assets.xcassets */; };
 		6328072D2A305CED0033F9D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */; };
 		632807382A305CED0033F9D7 /* SecondHandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807372A305CED0033F9D7 /* SecondHandTests.swift */; };
 		632807422A305CEE0033F9D7 /* SecondHandUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807412A305CEE0033F9D7 /* SecondHandUITests.swift */; };
 		632807442A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */; };
 		632807512A316B790033F9D7 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 632807502A316B790033F9D7 /* .swiftlint.yml */; };
+		63F3EEBB2A35D91F00D81961 /* DetailViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */; };
 		7E128F9628D9493610694937 /* Pods_SecondHand_SecondHandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */; };
 		F01D5E3939D2A5A7D87154C3 /* Pods_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */; };
 /* End PBXBuildFile section */
@@ -45,7 +45,6 @@
 		632807202A305CED0033F9D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		632807222A305CED0033F9D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		632807242A305CED0033F9D7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		632807272A305CED0033F9D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		632807292A305CED0033F9D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6328072C2A305CED0033F9D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6328072E2A305CED0033F9D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,6 +55,7 @@
 		632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		632807502A316B790033F9D7 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = ../../iOS/SecondHand/.swiftlint.yml; sourceTree = "<group>"; };
 		63E33C1CE4281D557FDA8F59 /* Pods-SecondHandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.debug.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.debug.xcconfig"; sourceTree = "<group>"; };
+		63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewcontroller.swift; sourceTree = "<group>"; };
 		6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		960E326812076EDA507EB191 /* Pods-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
 		9AD1D2B4FAD06F1EDBB6CA49 /* Pods-SecondHand-SecondHandUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandUITests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,10 +132,10 @@
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
 				632807242A305CED0033F9D7 /* ViewController.swift */,
-				632807262A305CED0033F9D7 /* Main.storyboard */,
 				632807292A305CED0033F9D7 /* Assets.xcassets */,
 				6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */,
 				6328072E2A305CED0033F9D7 /* Info.plist */,
+				63F3EEB92A35D90500D81961 /* Detail */,
 			);
 			path = SecondHand;
 			sourceTree = "<group>";
@@ -155,6 +155,14 @@
 				632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */,
 			);
 			path = SecondHandUITests;
+			sourceTree = "<group>";
+		};
+		63F3EEB92A35D90500D81961 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		CD20D446CBC9E2F2FEE45321 /* Pods */ = {
@@ -282,7 +290,6 @@
 				632807512A316B790033F9D7 /* .swiftlint.yml in Resources */,
 				6328072D2A305CED0033F9D7 /* LaunchScreen.storyboard in Resources */,
 				6328072A2A305CED0033F9D7 /* Assets.xcassets in Resources */,
-				632807282A305CED0033F9D7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +422,7 @@
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */,
+				63F3EEBB2A35D91F00D81961 /* DetailViewcontroller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,14 +459,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		632807262A305CED0033F9D7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				632807272A305CED0033F9D7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
