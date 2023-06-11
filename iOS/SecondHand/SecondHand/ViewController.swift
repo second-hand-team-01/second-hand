@@ -24,12 +24,21 @@ class ViewController: UIViewController {
     }
     
     func makeDetailButton(size: CGSize) -> UIButton {
-        var button = UIButton(frame: CGRect(origin: CGPoint(),
+        let button = UIButton(frame: CGRect(origin: CGPoint(),
                                             size: size))
 
         button.setTitle("상세화면으로 이동", for: .normal)
         button.backgroundColor = .lightGray
+        
+        button.addTarget(self,
+                         action: #selector(moveToDetail),
+                         for: .touchUpInside)
         return button
+    }
+    
+    @objc func moveToDetail(_ seneder: UIButton) {
+        let viewController = DetailViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func addButtonToView(button: UIButton?) {
