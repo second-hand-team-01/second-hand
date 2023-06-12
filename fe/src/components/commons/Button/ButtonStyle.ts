@@ -1,5 +1,5 @@
-import { styled, css } from 'styled-components';
-import { icons } from '@assets/icons';
+import styled, { css } from 'styled-components';
+import { ButtonStyleProps } from './Button';
 
 export interface ButtonStyleProps {
   title?: string;
@@ -11,6 +11,7 @@ export interface ButtonStyleProps {
   iconColor?: string;
 }
 
+
 const shapes = {
   floating: {
     padding: '10px',
@@ -21,7 +22,7 @@ const shapes = {
   large: {
     padding: '16px 20px',
     gap: '4px',
-    width: '178px',
+    width: '100%',
     height: '52px',
     borderRadius: '50px',
     fontSize: ({ theme }) => theme.typography.subhead.size,
@@ -30,7 +31,7 @@ const shapes = {
   },
   small: {
     padding: '0px 16px',
-    width: '63px',
+    width: 'fit-content',
     height: '32px',
     borderRadius: '50px',
     fontSize: ({ theme }) => theme.typography.caption1.size,
@@ -92,6 +93,5 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   align-items: center;
   border: none;
+  cursor: pointer;
 `;
-
-export const ButtonTitle = styled.span``;
