@@ -76,12 +76,11 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
           const fileName = getFileNameFromUrl(url);
           return (
             <S.SlideImage
-              height={height}
-              width={width}
               src={url}
+              width={width}
+              height={height}
               key={fileName}
               alt={fileName}
-              isActive={i === currentSlide}
             ></S.SlideImage>
           );
         })}

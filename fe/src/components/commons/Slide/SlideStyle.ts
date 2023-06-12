@@ -1,12 +1,6 @@
 import { RefObject } from 'react';
 import styled from 'styled-components';
 
-export interface SlideImageStyleProps {
-  isActive: boolean;
-  width: number;
-  height: number;
-}
-
 export interface SlideStyleProps {
   imagesCounts: number;
   ref: RefObject<HTMLDivElement | null>;
@@ -37,7 +31,6 @@ export const SlideContainer = styled.div<SlideContainerStyleProps>`
   height: ${({ height }) => height}px;
 `;
 
-export const SlideImage = styled.img<SlideImageStyleProps>`
-  height: ${({ height }) => height}px;
-  min-width: ${({ width }) => width}px;
+export const SlideImage = styled.img`
+  object-fit: cover;
 `;
