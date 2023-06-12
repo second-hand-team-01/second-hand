@@ -1,4 +1,4 @@
-import { styled, css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ButtonStyleProps } from './Button';
 
 const shapes = {
@@ -84,8 +84,3 @@ export const Button = styled.button<ButtonStyleProps>`
   border: none;
   cursor: pointer;
 `;
-
-export const ButtonTitle = styled.span``;
-
-// width, height 외부에서 조절할 수 있게??
-// 협의

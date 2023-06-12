@@ -140,14 +140,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     
     /* end of reset-css*/
-`;
-export const theme = {
-  colors,
-  palette,
-  typography,
-  fontWeight,
-};`;
-
+    `;
 export const theme = {
   colors,
   palette,

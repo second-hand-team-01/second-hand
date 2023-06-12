@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 
 export const Layout = styled.div`
   max-width: 393px;
@@ -18,4 +18,3 @@ export const Footer = styled.div`
   width: 100%;
   bottom: 0;
 `;
-// 전체 width
