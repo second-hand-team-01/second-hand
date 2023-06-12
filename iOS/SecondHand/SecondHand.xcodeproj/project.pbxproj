@@ -17,7 +17,6 @@
 		632807422A305CEE0033F9D7 /* SecondHandUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807412A305CEE0033F9D7 /* SecondHandUITests.swift */; };
 		632807442A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */; };
 		632807512A316B790033F9D7 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 632807502A316B790033F9D7 /* .swiftlint.yml */; };
-		63A3FCC22A36FF3600361FAD /* SellerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCC12A36FF3600361FAD /* SellerInfo.swift */; };
 		63F3EEBB2A35D91F00D81961 /* DetailViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */; };
 		7E128F9628D9493610694937 /* Pods_SecondHand_SecondHandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */; };
 		F01D5E3939D2A5A7D87154C3 /* Pods_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */; };
@@ -37,6 +36,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6328071C2A305CED0033F9D7;
 			remoteInfo = SecondHand;
+		};
+		63A3FCD52A373F6900361FAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8E8ECF0FA8AFEC63123F330E7C8E4482;
+			remoteInfo = "Pods-SecondHand";
+		};
+		63A3FCD72A373F6900361FAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 97CF8BA750BDC55E588555411959B28F;
+			remoteInfo = "Pods-SecondHand-SecondHandUITests";
+		};
+		63A3FCD92A373F6900361FAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0DC2817D184E0B09EE90C5A1BC910FB7;
+			remoteInfo = "Pods-SecondHandTests";
+		};
+		63A3FCDB2A373F6900361FAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BD810337F4A305D60D9250A197AA1EF1;
+			remoteInfo = Toaster;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -58,7 +85,6 @@
 		632807412A305CEE0033F9D7 /* SecondHandUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITests.swift; sourceTree = "<group>"; };
 		632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		632807502A316B790033F9D7 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = ../../iOS/SecondHand/.swiftlint.yml; sourceTree = "<group>"; };
-		63A3FCC12A36FF3600361FAD /* SellerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfo.swift; sourceTree = "<group>"; };
 		63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewcontroller.swift; sourceTree = "<group>"; };
 		6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +205,10 @@
 		63A3FCC52A3709AA00361FAD /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				63A3FCD62A373F6900361FAD /* Pods-SecondHand */,
+				63A3FCD82A373F6900361FAD /* Pods-SecondHand-SecondHandUITests */,
+				63A3FCDA2A373F6900361FAD /* Pods-SecondHandTests */,
+				63A3FCDC2A373F6900361FAD /* Toaster */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,7 +231,6 @@
 			isa = PBXGroup;
 			children = (
 				63F3EEBA2A35D91F00D81961 /* DetailViewcontroller.swift */,
-				63A3FCC12A36FF3600361FAD /* SellerInfo.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -315,6 +344,41 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		63A3FCD62A373F6900361FAD /* Pods-SecondHand */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-SecondHand";
+			path = Pods_SecondHand.framework;
+			remoteRef = 63A3FCD52A373F6900361FAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63A3FCD82A373F6900361FAD /* Pods-SecondHand-SecondHandUITests */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-SecondHand-SecondHandUITests";
+			path = Pods_SecondHand_SecondHandUITests.framework;
+			remoteRef = 63A3FCD72A373F6900361FAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63A3FCDA2A373F6900361FAD /* Pods-SecondHandTests */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-SecondHandTests";
+			path = Pods_SecondHandTests.framework;
+			remoteRef = 63A3FCD92A373F6900361FAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63A3FCDC2A373F6900361FAD /* Toaster */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = Toaster;
+			path = Toaster.framework;
+			remoteRef = 63A3FCDB2A373F6900361FAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6328071B2A305CED0033F9D7 /* Resources */ = {
@@ -454,7 +518,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
-				63A3FCC22A36FF3600361FAD /* SellerInfo.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */,
 				63F3EEBB2A35D91F00D81961 /* DetailViewcontroller.swift in Sources */,
