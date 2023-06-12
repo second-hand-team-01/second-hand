@@ -17,10 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        let listViewController = UINavigationController(rootViewController: ViewController())
 
-        let rootViewController = ViewController()
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-        window.rootViewController = navigationController
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([listViewController], animated: true)
+        window.rootViewController = tabBarController
         window.makeKeyAndVisible()
         self.window = window
     }

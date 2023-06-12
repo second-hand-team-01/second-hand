@@ -24,13 +24,11 @@ class DetailViewController: UIViewController {
         layoutConstraint()
     }
     
-    
-    
     private func layoutConstraint() {
         // 1. 상품 이미지 Constraint 설정
         self.view.addSubview(productImages)
         productImages.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let safeArea = self.view.safeAreaLayoutGuide
         let heightRatio: CGFloat = 5 / 4
         NSLayoutConstraint.activate([
