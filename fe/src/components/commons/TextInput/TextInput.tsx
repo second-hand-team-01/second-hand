@@ -1,10 +1,4 @@
-import { ReactElement } from 'react';
 import * as S from './TextInputStyle';
-
-export interface WrapStyleProps {
-  height: number;
-  hasLabel: boolean;
-}
 
 interface TextInputProps {
   height: number;

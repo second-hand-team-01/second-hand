@@ -1,16 +1,6 @@
 import * as S from './ButtonStyle';
 import { Icon } from '@components/commons/Icon/Icon';
-import { icons } from '@assets/icons';
-
-export interface ButtonStyleProps {
-  title?: string;
-  shape: string;
-  state: string;
-  textAlign: string;
-  icon?: keyof typeof icons;
-  iconSize?: number;
-  iconColor?: string;
-}
+import { ButtonStyleProps } from './ButtonStyle';
 
 interface ButtonProps extends ButtonStyleProps {
   onClick?: () => void;
