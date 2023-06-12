@@ -1,5 +1,5 @@
 import * as S from './ProfileStyle';
-import { Icon } from '@components/index';
+import { Icon } from '@components/commons/index';
 
 export interface ProfileStyleProps {
   url?: string;

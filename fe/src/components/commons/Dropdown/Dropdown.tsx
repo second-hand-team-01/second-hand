@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import * as S from './DropdownStyle';
-import { Icon } from '@components/index';
+import { Icon } from '@components/commons/index';
 
 interface DropdownProps {
   children: ReactElement | string;

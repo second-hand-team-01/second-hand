@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import * as S from './TabStyle';
-import { Icon } from '@components/index';
+import { Icon } from '@components/commons/index';
 
 interface OptionType {
   name: string;
