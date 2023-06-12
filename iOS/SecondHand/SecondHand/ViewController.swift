@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         }
         self.view.addSubview(button)
     }
-    
+
     func getCenterPoint(of view: UIView?) -> CGPoint {
         let screenframe = self.view.frame
         guard let frame = view?.frame else { return CGPoint() }
