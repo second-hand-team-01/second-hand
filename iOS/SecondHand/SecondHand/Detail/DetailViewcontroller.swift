@@ -10,14 +10,21 @@ import UIKit
 class DetailViewController: UIViewController {
     var productImages = UIImageView()
     var pageControl = UIPageControl()
+    var sellerInfo = SellerInfo()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        sellerInfo.layer.cornerRadius = sellerInfo.frame.height / 2
         productImages.backgroundColor = .green
         pageControl.backgroundColor = .black
+        pageControl.backgroundColor = .yellow
+        sellerInfo.backgroundColor = .gray
+        sellerInfo.configure(name: "Woodasdfasdfsafasdfasdfasdfasdfasdfasdf")
         layoutConstraint()
     }
+    
+    
     
     private func layoutConstraint() {
         // 1. 상품 이미지 Constraint 설정
@@ -43,5 +50,16 @@ class DetailViewController: UIViewController {
             pageControl.bottomAnchor.constraint(equalTo: productImages.bottomAnchor),
             pageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
+
+        // 3. 판매자 정보 Constraint 설정
+        self.view.addSubview(sellerInfo)
+        sellerInfo.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sellerInfo.leadingAnchor.constraint(equalTo: productImages.leadingAnchor, constant: 16),
+            sellerInfo.trailingAnchor.constraint(equalTo: productImages.trailingAnchor, constant: -16),
+            sellerInfo.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 16),
+            sellerInfo.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        sellerInfo.layoutConstraint()
     }
 }
