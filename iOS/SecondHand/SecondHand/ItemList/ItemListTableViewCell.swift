@@ -20,9 +20,20 @@ class ItemListTableViewCell: UITableViewCell {
     var likeCountLabel: PlusImageLabel = PlusImageLabel()
     
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    private func configureItemListTableViewCell() {
+        self.contentView.backgroundColor = .white
+        [
+            thumbnailImage,
+            titleLabel,
+            locationLabel,
+            writeTimeLabel,
+            stateLabel,
+            priceLabel,
+            commentCountLabel,
+            likeCountLabel
+        ].forEach {
+            self.contentView.addSubview($0)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
