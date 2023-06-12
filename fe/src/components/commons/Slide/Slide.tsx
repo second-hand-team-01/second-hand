@@ -78,8 +78,9 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
             <S.SlideImage
               height={height}
               width={width}
-              url={url}
+              src={url}
               key={fileName}
+              alt={fileName}
               isActive={i === currentSlide}
             ></S.SlideImage>
           );

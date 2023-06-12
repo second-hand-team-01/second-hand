@@ -5,5 +5,5 @@ export const getFileNameFromUrl = (url: string) => {
     const cleanFileName = fileName.split('?')[0];
     return cleanFileName;
   }
-  return null;
+  return '';
 };
