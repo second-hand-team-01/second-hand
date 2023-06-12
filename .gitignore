@@ -1,3 +1,5 @@
+### backend ###
+
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,intellij,java,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,intellij,java,gradle
 
@@ -234,3 +236,41 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,intellij,java,gradle
+
+### frontend ###
+
+.env
+
+/node_modules
+/.pnp
+.pnp.js
+
+/coverage
+
+/build
+
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+### iOS ###
+
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+## scheme
+*.xcscheme
+## plist
+*.plist
+## User settings
+xcuserdata/
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
