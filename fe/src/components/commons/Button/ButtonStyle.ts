@@ -1,6 +1,17 @@
 import styled, { css } from 'styled-components';
 import { ButtonStyleProps } from './Button';
 
+export interface ButtonStyleProps {
+  title?: string;
+  shape: string;
+  state: string;
+  textAlign: string;
+  icon?: keyof typeof icons;
+  iconSize?: number;
+  iconColor?: string;
+}
+
+
 const shapes = {
   floating: {
     padding: '10px',

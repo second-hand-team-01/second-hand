@@ -138,9 +138,9 @@ export const GlobalStyle = createGlobalStyle`
     * {
       box-sizing: border-box;
     }
-    
     /* end of reset-css*/
     `;
+
 export const theme = {
   colors,
   palette,
