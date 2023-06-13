@@ -15,12 +15,14 @@ class DetailViewController: UIViewController {
     var sellerInfo = SellerInfo()
     var statusButton = UIButton()
     var titleLabel = UILabel()
+    var categoryLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         sellerInfo.configure(name: "samsamisgu")
         titleLabel.text = "빈티지 롤러 스케이트"
+        categoryLabel.text = "가구/인테리어"
     }
     
     override func viewWillLayoutSubviews() {
@@ -45,6 +47,7 @@ class DetailViewController: UIViewController {
         layoutSellerInfo()
         layoutStatusButton()
         layoutTitleLabel()
+        layoutCategoryLabel()
     }
     
     private func layoutScrollView() {
@@ -122,6 +125,15 @@ class DetailViewController: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
             titleLabel.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16)
+        ])
+    }
+    
+    private func layoutCategoryLabel() {
+        self.contentView.addSubview(categoryLabel)
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categoryLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
         ])
     }
     
