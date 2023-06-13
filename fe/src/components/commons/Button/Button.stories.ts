@@ -12,6 +12,6 @@ export const Default = {
     textAlign: 'center',
     icon: 'arrowDown',
     iconSize: '12px',
-    color: 'neutralText',
+    iconColor: 'systemDefault',
   },
 };

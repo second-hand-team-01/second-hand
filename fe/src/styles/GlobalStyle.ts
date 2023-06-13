@@ -142,7 +142,7 @@ export const GlobalStyle = createGlobalStyle`
     body {
       font-family: sans-serif;
     }
-    `;
+`;
 
 export const theme = {
   colors,

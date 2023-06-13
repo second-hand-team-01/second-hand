@@ -1,7 +1,6 @@
 import * as S from './ButtonStyle';
 import { Icon } from '@components/commons/Icon/Icon';
 import { ButtonStyleProps } from './ButtonStyle';
-import { colors } from '@styles/Color';
 
 interface ButtonProps extends ButtonStyleProps {
   onClick?: () => void;
@@ -13,9 +12,9 @@ export const Button = ({
   state = 'default',
   textAlign = 'center',
   icon,
+  color,
   iconSize,
   onClick,
-  color,
 }: ButtonProps) => {
   return (
     <S.Button
