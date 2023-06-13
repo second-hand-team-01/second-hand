@@ -67,8 +67,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          cd be
           HASH=$(git log -1 --pretty=%h)
-          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} .
+          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f Dockerfile.be .
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
