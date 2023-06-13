@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - main
-
+#    paths:
+#      - 'be/**'
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: secondhand_team1
