@@ -110,7 +110,7 @@ export const WithSearchInput = {
     rightBtn: { text: '뒤로' },
     title: '타이틀',
     hasSearchInput: true,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       e.currentTarget;
     },
   },

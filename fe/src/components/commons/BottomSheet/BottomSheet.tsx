@@ -16,8 +16,9 @@ interface BottomSheetProps {
   rightBtn?: btnInfo;
   title?: string;
   hasSearchInput?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputValue: string;
+  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBackdropClick?: () => void;
 }
 
 export const BottomSheet = ({
@@ -26,8 +27,9 @@ export const BottomSheet = ({
   title,
   hasSearchInput = false,
   children,
-  onChange,
   inputValue,
+  handleInputChange,
+  handleBackdropClick,
 }: BottomSheetProps) => {
   return (
     <>
@@ -58,13 +60,13 @@ export const BottomSheet = ({
               )}
             </S.ButtonContainer>
           </S.HeaderTop>
-          {hasSearchInput && onChange && (
+          {hasSearchInput && handleInputChange && (
             <S.HeaderBottom>
               <TextInput
                 icon="search"
                 value={inputValue}
                 placeholder="동명(읍, 면)으로 검색(ex. 서초동)"
-                onChange={onChange}
+                onChange={handleInputChange}
                 hasBackground={true}
                 shape="small"
               ></TextInput>
@@ -73,7 +75,7 @@ export const BottomSheet = ({
         </S.Header>
         <S.Contents>{children}</S.Contents>
       </S.BottomSheet>
-      <S.BackDrop></S.BackDrop>
+      <S.BackDrop onClick={handleBackdropClick}></S.BackDrop>
     </>
   );
 };
