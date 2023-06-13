@@ -8,6 +8,8 @@
 import UIKit
 
 class DetailViewController: UIViewController {
+    var scrollView = UIScrollView()
+    var contentView = UIView()
     var productImageView = UIImageView()
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()
@@ -34,28 +36,52 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutConstraint() {
+        layoutScrollView()
+        layoutContentView()
         layoutProductImageView()
         layoutPageControl()
         layoutSellerInfo()
         layoutStatusButton()
     }
     
+    private func layoutScrollView() {
+        self.view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: (self.navigationController?.toolbar.topAnchor) ?? self.view.bottomAnchor)
+        ])
+    }
+    
+    private func layoutContentView() {
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+    
     private func layoutProductImageView() {
-        self.view.addSubview(productImageView)
+        self.contentView.addSubview(productImageView)
         productImageView.translatesAutoresizingMaskIntoConstraints = false
-        let safeArea = self.view.safeAreaLayoutGuide
         let heightRatio: CGFloat = 5 / 4
         NSLayoutConstraint.activate([
-            productImageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            productImageView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            productImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            productImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            productImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            productImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor,
                                                      multiplier: heightRatio)
         ])
     }
     
     private func layoutPageControl() {
-        self.view.addSubview(pageControl)
+        self.contentView.addSubview(pageControl)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             pageControl.leadingAnchor.constraint(equalTo: self.productImageView.leadingAnchor),
@@ -66,7 +92,7 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutSellerInfo() {
-        self.view.addSubview(sellerInfo)
+        self.contentView.addSubview(sellerInfo)
         sellerInfo.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             sellerInfo.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor, constant: 16),
@@ -78,7 +104,7 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutStatusButton() {
-        self.view.addSubview(statusButton)
+        self.contentView.addSubview(statusButton)
         statusButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             statusButton.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
