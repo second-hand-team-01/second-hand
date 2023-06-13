@@ -12,6 +12,7 @@ import { Layout } from './Layout/Layout';
 import { TabBar } from './TabBar/TabBar';
 import { BottomSheet } from './BottomSheet/BottomSheet';
 import { Dialog } from './Dialog/Dialog';
+import { SnackBar } from './SnackBar/SnackBar';
 
 export {
   Icon,
@@ -28,4 +29,5 @@ export {
   TabBar,
   BottomSheet,
   Dialog,
+  SnackBar,
 };
