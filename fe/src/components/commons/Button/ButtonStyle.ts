@@ -36,10 +36,10 @@ const shapes = {
 
 const textAlignments = {
   left: css`
-    justify-content: 'space-between';
+    justify-content: space-between;
   `,
   center: css`
-    justify-content: 'center';
+    justify-content: center;
   `,
 };
 
@@ -61,6 +61,7 @@ export interface ButtonStyleProps {
   icon?: keyof typeof icons;
   iconSize?: number;
   color?: keyof typeof palette | keyof typeof colors;
+  hasBorderRadius?: boolean;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -98,5 +99,6 @@ export const Button = styled.button<ButtonStyleProps>`
   align-items: center;
   border: none;
   cursor: pointer;
-  ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')}
+  ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
+  ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
 `;
