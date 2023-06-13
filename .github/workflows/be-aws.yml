@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - main
-#    paths:
-#      - 'be/**'
 
 env:
   AWS_REGION: ap-northeast-2
@@ -33,7 +31,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          cd be
+          cd ${{ github.workspace }}/be
           chmod +x gradlew
           ./gradlew clean build
 
@@ -68,8 +66,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           HASH=$(git log -1 --pretty=%h)
-          cd ../
-          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f Dockerfile.be .
+          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f ${{ github.workspace }}/Dockerfile.be .
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
