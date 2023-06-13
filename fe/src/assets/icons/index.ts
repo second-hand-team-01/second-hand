@@ -2,6 +2,7 @@ export const icons = {
   arrowUp: '􀆇',
   arrowDown: '􀆈',
   arrowRight: '􀆊',
+  arrowLeft: '􀯶',
   hamburger: '􀌇',
   talk: '􀌤',
   heart: '􀊴',

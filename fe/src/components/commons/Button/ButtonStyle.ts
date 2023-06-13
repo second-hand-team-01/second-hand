@@ -1,16 +1,6 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyleProps } from './Button';
-
-export interface ButtonStyleProps {
-  title?: string;
-  shape: string;
-  state: string;
-  textAlign: string;
-  icon?: keyof typeof icons;
-  iconSize?: number;
-  iconColor?: string;
-}
-
+import { icons } from '@assets/icons/index';
+import { colors, palette } from '@styles/Color';
 
 const shapes = {
   floating: {
@@ -34,9 +24,9 @@ const shapes = {
     width: 'fit-content',
     height: '32px',
     borderRadius: '50px',
-    fontSize: ({ theme }) => theme.typography.caption1.size,
-    lineHeight: ({ theme }) => theme.typography.caption1.lineHeight,
-    fontWeight: ({ theme }) => theme.typography.caption1.fontWeight,
+    fontSize: ({ theme }) => theme.typography.body.size,
+    lineHeight: ({ theme }) => theme.typography.body.lineHeight,
+    fontWeight: ({ theme }) => theme.typography.body.fontWeight,
   },
 };
 
@@ -58,6 +48,16 @@ const states = {
     color: ({ theme }) => theme.colors.neutralBackground,
   },
 };
+
+export interface ButtonStyleProps {
+  title?: string;
+  shape?: keyof typeof shapes;
+  state?: keyof typeof states;
+  textAlign?: keyof typeof textAlignments;
+  icon?: keyof typeof icons;
+  iconSize?: number;
+  color?: keyof typeof palette | keyof typeof colors;
+}
 
 const shapesStyles = css<ButtonStyleProps>`
   ${({ shape }) =>
@@ -94,4 +94,5 @@ export const Button = styled.button<ButtonStyleProps>`
   align-items: center;
   border: none;
   cursor: pointer;
+  color: ${({ color }) => color};
 `;
