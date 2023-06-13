@@ -16,6 +16,7 @@ class DetailViewController: UIViewController {
     var statusButton = UIButton()
     var titleLabel = UILabel()
     var categoryLabel = UILabel()
+    var uploadTimeLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,7 @@ class DetailViewController: UIViewController {
         sellerInfo.configure(name: "samsamisgu")
         titleLabel.text = "빈티지 롤러 스케이트"
         categoryLabel.text = "가구/인테리어"
+        uploadTimeLabel.text = "1분전"
     }
     
     override func viewWillLayoutSubviews() {
@@ -48,6 +50,7 @@ class DetailViewController: UIViewController {
         layoutStatusButton()
         layoutTitleLabel()
         layoutCategoryLabel()
+        layoutUploadTimeLabel()
     }
     
     private func layoutScrollView() {
@@ -134,6 +137,16 @@ class DetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             categoryLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
             categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
+        ])
+    }
+    
+    private func layoutUploadTimeLabel() {
+        self.contentView.addSubview(uploadTimeLabel)
+        uploadTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            uploadTimeLabel.leadingAnchor.constraint(equalTo: categoryLabel.trailingAnchor, constant: 8),
+            uploadTimeLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
+            uploadTimeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
         ])
     }
     
