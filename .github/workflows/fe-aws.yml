@@ -23,21 +23,16 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: |
-          cd ${{ github.workspace }}/fe
-          npm install
+      - run: npm install --prefix ${{ github.workspace }}/fe
 
       - name: Build the project
-        run: npm run build
+        run: npm run build --prefix ${{ github.workspace }}/fe
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
