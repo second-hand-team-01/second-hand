@@ -44,8 +44,9 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         cd be
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . (작성해야함)
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG (작성해야함)
+        HASH=$(git log -1 --pretty=%h)
+        docker build -t secondhand_team1_ecr:${HASH}
+        docker push 219074052849.dkr.ecr.ap-northeast-2.amazonaws.com/secondhand_team1_ecr:latest
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
