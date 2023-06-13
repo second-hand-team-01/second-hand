@@ -11,6 +11,7 @@ class DetailViewController: UIViewController {
     var productImageView = UIImageView()
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()
+    var statusButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +30,14 @@ class DetailViewController: UIViewController {
         productImageView.backgroundColor = .green
         pageControl.backgroundColor = .yellow
         sellerInfo.backgroundColor = .gray
+        statusButton = makeStatusButton()
     }
     
     private func layoutConstraint() {
         layoutProductImageView()
         layoutPageControl()
         layoutSellerInfo()
+        layoutStatusButton()
     }
     
     private func layoutProductImageView() {
@@ -72,5 +75,27 @@ class DetailViewController: UIViewController {
             sellerInfo.heightAnchor.constraint(equalToConstant: 60)
         ])
         sellerInfo.layoutConstraint()
+    }
+    
+    private func layoutStatusButton() {
+        self.view.addSubview(statusButton)
+        statusButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            statusButton.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            statusButton.topAnchor.constraint(equalTo: sellerInfo.bottomAnchor, constant: 16)
+        ])
+    }
+    
+    func makeStatusButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("판매중", for: .normal)
+        button.tintColor = .black
+        
+        let onReservation = UIAction(title: "예약중", handler: { _ in return })
+        let onSold = UIAction(title: "판매완료", handler: { _ in return })
+        
+        button.menu = UIMenu(options: .displayInline,
+                             children: [onReservation, onSold])
+        return button
     }
 }
