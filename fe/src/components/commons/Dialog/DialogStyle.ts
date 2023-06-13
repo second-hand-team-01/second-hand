@@ -11,7 +11,7 @@ export const Backdrop = styled.div`
 `;
 
 export const Dialog = styled.div<DialogStyleProps>`
-  width: calc(100% - 40px);
+  max-width: calc(100% - 40px);
   min-width: 240px;
   top: 50%;
   left: 50%;
