@@ -11,8 +11,8 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: secondhand_team1
+  ECS_CLUSTER: secondhand-team1-cluster
   ECS_SERVICE: (작성해야함)
-  ECS_CLUSTER: (작성해야함)
   ECS_TASK_DEFINITION: (작성해야함)
   CONTAINER_NAME: (작성해야함)
 
@@ -25,6 +25,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
 
       - name: Install Docker
         run: |
@@ -50,13 +61,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Docker Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          cd be
           HASH=$(git log -1 --pretty=%h)
           docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} .
 
