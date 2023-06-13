@@ -5,6 +5,8 @@ export const Header = styled.div`
   width: 100%;
   border-radius: 14px 14px 0px 0px;
   background-color: white;
+  position: fixed;
+  top: 0;
 `;
 
 export const HeaderTop = styled.div`
