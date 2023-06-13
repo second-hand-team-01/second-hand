@@ -34,6 +34,10 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
           sudo apt-get update
           sudo apt-get install docker-ce
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
+          newgrp docker
+          docker buildx create --use
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -54,8 +58,7 @@ jobs:
         run: |
           cd be
           HASH=$(git log -1 --pretty=%h)
-          docker build -t secondhand_team1_ecr:${HASH}
-          docker push 219074052849.dkr.ecr.ap-northeast-2.amazonaws.com/secondhand_team1_ecr:latest
+          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} .
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
