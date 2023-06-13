@@ -59,7 +59,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           HASH=$(git log -1 --pretty=%h)
-          docker buildx build --push --cache-from $ECR_REGISTRY/secondhand_team1_ecr:cache --cache-to $ECR_REGISTRY/secondhand_team1_ecr:cache --tag $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f ${{ github.workspace }}/Dockerfile.be .
+          docker build -t $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f ${{ github.workspace }}/Dockerfile.be .
+          docker push $ECR_REGISTRY/secondhand_team1_ecr:${HASH}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
