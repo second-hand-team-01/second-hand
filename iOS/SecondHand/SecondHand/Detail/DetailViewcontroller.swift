@@ -14,11 +14,13 @@ class DetailViewController: UIViewController {
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()
     var statusButton = UIButton()
+    var titleLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
-        sellerInfo.configure(name: "Woodasdfasdfsafasdfasdfasdfasdfasdfasdf")
+        sellerInfo.configure(name: "samsamisgu")
+        titleLabel.text = "빈티지 롤러 스케이트"
     }
     
     override func viewWillLayoutSubviews() {
@@ -42,6 +44,7 @@ class DetailViewController: UIViewController {
         layoutPageControl()
         layoutSellerInfo()
         layoutStatusButton()
+        layoutTitleLabel()
     }
     
     private func layoutScrollView() {
@@ -112,10 +115,22 @@ class DetailViewController: UIViewController {
         ])
     }
     
+    private func layoutTitleLabel() {
+        self.contentView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16)
+        ])
+    }
+    
     func makeStatusButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("판매중", for: .normal)
         button.tintColor = .black
+        button.layer.borderColor = UIColor.gray.cgColor
+        button.layer.borderWidth = 0.2
         
         let onReservation = UIAction(title: "예약중", handler: { _ in return })
         let onSold = UIAction(title: "판매완료", handler: { _ in return })
