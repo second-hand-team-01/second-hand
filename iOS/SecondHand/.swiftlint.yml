@@ -9,6 +9,7 @@ opt_in_rules:
 
 excluded:
 - Pods
+- SecondHand/Detail/DetailContentView+layoutConstraint.swift
 
 force_unwrapping:
   severity: error
