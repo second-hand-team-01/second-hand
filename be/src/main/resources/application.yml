@@ -6,15 +6,23 @@ aws:
   s3:
     bucket:
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+  multipart:
+    max-file-size: 100MB
+    max-request-size: 100MB
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+#      data-locations: classpath:data.sql
+      mode: always
   datasource:
-      url: jdbc:mysql://localhost:3306/second-hand
-      username: root
-      password: 1234
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306
+    username: root
+    password: 1234
   security:
     oauth2:
       client:
@@ -29,11 +37,11 @@ spring:
 #JWT:
 #  SECRET:
 
-logging:
-  level:
-    com:
-      team6:
-        issue_tracker: debug
+#logging:
+#  level:
+#    com:
+#      team6:
+#        issue_tracker: debug
 
 # Swagger
 springdoc:
