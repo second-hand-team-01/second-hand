@@ -10,7 +10,7 @@ USE `second-hand` ;
 DROP TABLE IF EXISTS `location` ;
 
 CREATE TABLE IF NOT EXISTS `location` (
-  `location_idx` BIGINT(10) NOT NULL,
+  `location_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `city` VARCHAR(45) NOT NULL,
   `district` VARCHAR(45) NOT NULL,
   `town` VARCHAR(45) NOT NULL,
@@ -20,7 +20,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `member` ;
 
 CREATE TABLE IF NOT EXISTS `member` (
-  `member_idx` BIGINT(10) NOT NULL,
+  `member_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `login_id` VARCHAR(45) NOT NULL,
   `image_url` VARCHAR(45) NULL,
   `main_location_idx` BIGINT(10) NOT NULL,
@@ -44,7 +44,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `category` ;
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `category_idx` BIGINT(10) NOT NULL,
+  `category_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`category_idx`))
 ENGINE = InnoDB;
@@ -52,7 +52,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `item` ;
 
 CREATE TABLE IF NOT EXISTS `item` (
-  `item_idx` BIGINT(10) NOT NULL,
+  `item_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `seller_idx` BIGINT(10) NOT NULL,
   `category_idx` BIGINT(10) NOT NULL,
   `location_idx` BIGINT(10) NOT NULL,
@@ -85,7 +85,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `interest` ;
 
 CREATE TABLE IF NOT EXISTS `interest` (
-  `interest_idx` BIGINT(10) NOT NULL,
+  `interest_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `member_idx` BIGINT(10) NOT NULL,
   `item_idx` BIGINT(10) NOT NULL,
   INDEX `fk_member_has_item_item1_idx` (`item_idx` ASC) VISIBLE,
@@ -106,7 +106,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `item_image` ;
 
 CREATE TABLE IF NOT EXISTS `item_image` (
-  `item_image_idx` BIGINT(10) NOT NULL,
+  `item_image_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `item_idx` BIGINT(10) NOT NULL,
   `image_url` VARCHAR(100) NULL,
   PRIMARY KEY (`item_image_idx`),
