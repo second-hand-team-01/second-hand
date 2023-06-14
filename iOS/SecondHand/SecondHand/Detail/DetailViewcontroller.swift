@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
         categoryLabel.text = "가구/인테리어"
         uploadTimeLabel.text = "1분전"
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.text = "어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n 사이즈는 235 입니다."
+        descriptionLabel.text = "어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n 사이즈는 235 입니다.\n fdjkgnsdfjkngsdfjknsgfkjnadfsgjnk"
     }
     
     override func viewWillLayoutSubviews() {
@@ -64,7 +64,7 @@ class DetailViewController: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: (self.navigationController?.toolbar.topAnchor) ?? self.view.bottomAnchor)
+            scrollView.bottomAnchor.constraint(equalTo:  self.view.bottomAnchor)
         ])
     }
     
@@ -72,11 +72,13 @@ class DetailViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            contentView.leadingAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.trailingAnchor),
+            // TODO: - ScrollView의 TopAnchor에 맞추게 되면 네비게이션바 바텀에 맞춰짐?
+            contentView.topAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 1000)
         ])
     }
     
