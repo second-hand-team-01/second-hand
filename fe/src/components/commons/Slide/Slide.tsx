@@ -12,8 +12,9 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideShowContainer = useRef<HTMLDivElement | null>(null);
 
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
+  let touchStart = 0;
+  let touchEnd = 0;
+  const threshold = 150;
 
   const moveSlide = (direction: 'next' | 'previous') => {
     const totalSlides = urls.length;
@@ -26,19 +27,19 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
   };
 
   const handleTouchStart = ({ targetTouches }) => {
-    setTouchStart(targetTouches[0].clientX);
+    touchStart = targetTouches[0].clientX;
   };
 
   const handleTouchMove = ({ targetTouches }) => {
-    setTouchEnd(targetTouches[0].clientX);
+    touchEnd = targetTouches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 150) {
+    if (touchStart - touchEnd > threshold) {
       moveSlide('next');
     }
 
-    if (touchStart - touchEnd < -150) {
+    if (touchStart - touchEnd < -threshold) {
       moveSlide('previous');
     }
   };
@@ -57,7 +58,7 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
         slideContainer.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [touchStart, touchEnd]);
+  }, [currentSlide]);
 
   return (
     <S.Slide
@@ -72,7 +73,7 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
         imagesCounts={urls.length}
         currentSlide={currentSlide}
       >
-        {urls.map((url, i) => {
+        {urls.map((url) => {
           const fileName = getFileNameFromUrl(url);
           return (
             <S.SlideImage
