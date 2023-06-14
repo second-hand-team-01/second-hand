@@ -11,9 +11,9 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: secondhand_team1
   ECS_CLUSTER: secondhand-team1-cluster
-  ECS_SERVICE: (작성해야함)
-  ECS_TASK_DEFINITION: (작성해야함)
-  CONTAINER_NAME: (작성해야함)
+  ECS_SERVICE: secondhand-team1-service
+  ECS_TASK_DEFINITION: secondhand-team1:1
+  CONTAINER_NAME: WAS
 
 jobs:
   deploy:
