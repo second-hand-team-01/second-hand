@@ -17,7 +17,8 @@ class DetailViewController: UIViewController {
     var titleLabel = UILabel()
     var categoryLabel = UILabel()
     var uploadTimeLabel = UILabel()
-    
+    var descriptionLabel = UILabel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -25,6 +26,8 @@ class DetailViewController: UIViewController {
         titleLabel.text = "빈티지 롤러 스케이트"
         categoryLabel.text = "가구/인테리어"
         uploadTimeLabel.text = "1분전"
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.text = "어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n 사이즈는 235 입니다."
     }
     
     override func viewWillLayoutSubviews() {
@@ -51,6 +54,7 @@ class DetailViewController: UIViewController {
         layoutTitleLabel()
         layoutCategoryLabel()
         layoutUploadTimeLabel()
+        layoutDescriptionLabel()
     }
     
     private func layoutScrollView() {
@@ -147,6 +151,16 @@ class DetailViewController: UIViewController {
             uploadTimeLabel.leadingAnchor.constraint(equalTo: categoryLabel.trailingAnchor, constant: 8),
             uploadTimeLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
             uploadTimeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8)
+        ])
+    }
+    
+    private func layoutDescriptionLabel() {
+        self.contentView.addSubview(descriptionLabel)
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            descriptionLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: sellerInfo.trailingAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 16)
         ])
     }
     
