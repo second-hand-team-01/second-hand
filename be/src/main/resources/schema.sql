@@ -2,12 +2,14 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
+DROP SCHEMA IF EXISTS `second-hand` ;
+
 CREATE SCHEMA IF NOT EXISTS `second-hand` DEFAULT CHARACTER SET utf8 ;
 USE `second-hand` ;
 
-DROP TABLE IF EXISTS `second-hand`.`location` ;
+DROP TABLE IF EXISTS `location` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`location` (
+CREATE TABLE IF NOT EXISTS `location` (
   `location_idx` BIGINT(10) NOT NULL,
   `city` VARCHAR(45) NOT NULL,
   `district` VARCHAR(45) NOT NULL,
@@ -15,45 +17,45 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`location` (
   PRIMARY KEY (`location_idx`))
 ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `second-hand`.`member` ;
+DROP TABLE IF EXISTS `member` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`member` (
+CREATE TABLE IF NOT EXISTS `member` (
   `member_idx` BIGINT(10) NOT NULL,
   `login_id` VARCHAR(45) NOT NULL,
   `image_url` VARCHAR(45) NULL,
-  `main_location_idx` INT NOT NULL,
-  `sub_location_idx` INT NULL,
+  `main_location_idx` BIGINT(10) NOT NULL,
+  `sub_location_idx` BIGINT(10) NULL,
   PRIMARY KEY (`member_idx`),
   UNIQUE INDEX `id_UNIQUE` (`login_id` ASC) VISIBLE,
   INDEX `fk_member_location1_idx` (`main_location_idx` ASC) VISIBLE,
   INDEX `fk_member_location2_idx` (`sub_location_idx` ASC) VISIBLE,
   CONSTRAINT `fk_member_location1`
     FOREIGN KEY (`main_location_idx`)
-    REFERENCES `second-hand`.`location` (`location_idx`)
+    REFERENCES `location` (`location_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_member_location2`
     FOREIGN KEY (`sub_location_idx`)
-    REFERENCES `second-hand`.`location` (`location_idx`)
+    REFERENCES `location` (`location_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `second-hand`.`category` ;
+DROP TABLE IF EXISTS `category` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`category` (
-  `category_idx` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `category` (
+  `category_idx` BIGINT(10) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`category_idx`))
 ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `second-hand`.`item` ;
+DROP TABLE IF EXISTS `item` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`item` (
-  `item_idx` INT NOT NULL AUTO_INCREMENT,
-  `seller_idx` INT NOT NULL,
-  `category_idx` INT NOT NULL,
-  `location_idx` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `item` (
+  `item_idx` BIGINT(10) NOT NULL,
+  `seller_idx` BIGINT(10) NOT NULL,
+  `category_idx` BIGINT(10) NOT NULL,
+  `location_idx` BIGINT(10) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(500) NULL,
   `price` INT NOT NULL,
@@ -65,105 +67,53 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item` (
   INDEX `fk_item_category1_idx` (`category_idx` ASC) VISIBLE,
   CONSTRAINT `fk_item_member1`
     FOREIGN KEY (`seller_idx`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
+    REFERENCES `member` (`member_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_item_location1`
     FOREIGN KEY (`location_idx`)
-    REFERENCES `second-hand`.`location` (`location_idx`)
+    REFERENCES `location` (`location_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_item_category1`
     FOREIGN KEY (`category_idx`)
-    REFERENCES `second-hand`.`category` (`category_idx`)
+    REFERENCES `category` (`category_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `second-hand`.`interest` ;
+DROP TABLE IF EXISTS `interest` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`interest` (
-  `interest_idx` INT NOT NULL AUTO_INCREMENT,
-  `member_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
-  INDEX `fk_member_has_item_item1_idx` (`item_id` ASC) VISIBLE,
-  INDEX `fk_member_has_item_member1_idx` (`member_id` ASC) VISIBLE,
+CREATE TABLE IF NOT EXISTS `interest` (
+  `interest_idx` BIGINT(10) NOT NULL,
+  `member_idx` BIGINT(10) NOT NULL,
+  `item_idx` BIGINT(10) NOT NULL,
+  INDEX `fk_member_has_item_item1_idx` (`item_idx` ASC) VISIBLE,
+  INDEX `fk_member_has_item_member1_idx` (`member_idx` ASC) VISIBLE,
   PRIMARY KEY (`interest_idx`),
   CONSTRAINT `fk_member_has_item_member1`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
+    FOREIGN KEY (`member_idx`)
+    REFERENCES `member` (`member_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_member_has_item_item1`
-    FOREIGN KEY (`item_id`)
-    REFERENCES `second-hand`.`item` (`item_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-DROP TABLE IF EXISTS `second-hand`.`chat_room` ;
-
-CREATE TABLE IF NOT EXISTS `second-hand`.`chat_room` (
-  `chat_room_idx` INT NOT NULL AUTO_INCREMENT,
-  `item_idx` INT NOT NULL,
-  `buyer_idx` INT NOT NULL,
-  `seller_idx` INT NOT NULL,
-  PRIMARY KEY (`chat_room_idx`),
-  INDEX `fk_chat_room_item1_idx` (`item_idx` ASC) VISIBLE,
-  INDEX `fk_chat_room_member1_idx` (`buyer_idx` ASC) VISIBLE,
-  INDEX `fk_chat_room_member2_idx` (`seller_idx` ASC) VISIBLE,
-  CONSTRAINT `fk_chat_room_item1`
     FOREIGN KEY (`item_idx`)
-    REFERENCES `second-hand`.`item` (`item_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_chat_room_member1`
-    FOREIGN KEY (`buyer_idx`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_chat_room_member2`
-    FOREIGN KEY (`seller_idx`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
+    REFERENCES `item` (`item_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `second-hand`.`message` ;
+DROP TABLE IF EXISTS `item_image` ;
 
-CREATE TABLE IF NOT EXISTS `second-hand`.`message` (
-  `message_idx` INT NOT NULL AUTO_INCREMENT,
-  `chat_room_idx` INT NOT NULL,
-  `sender_idx` INT NOT NULL,
-  `text` VARCHAR(100) NOT NULL,
-  `sent_at` DATETIME NOT NULL,
-  `read` TINYINT NOT NULL,
-  PRIMARY KEY (`message_idx`),
-  INDEX `fk_message_chat_room1_idx` (`chat_room_idx` ASC) VISIBLE,
-  INDEX `fk_message_member1_idx` (`sender_idx` ASC) VISIBLE,
-  CONSTRAINT `fk_message_chat_room1`
-    FOREIGN KEY (`chat_room_idx`)
-    REFERENCES `second-hand`.`chat_room` (`chat_room_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_message_member1`
-    FOREIGN KEY (`sender_idx`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-DROP TABLE IF EXISTS `second-hand`.`item_image` ;
-
-CREATE TABLE IF NOT EXISTS `second-hand`.`item_image` (
-  `item_image_idx` INT NOT NULL AUTO_INCREMENT,
-  `item_idx` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `item_image` (
+  `item_image_idx` BIGINT(10) NOT NULL,
+  `item_idx` BIGINT(10) NOT NULL,
   `image_url` VARCHAR(100) NULL,
   PRIMARY KEY (`item_image_idx`),
   INDEX `fk_item_image_item1_idx` (`item_idx` ASC) VISIBLE,
   CONSTRAINT `fk_item_image_item1`
     FOREIGN KEY (`item_idx`)
-    REFERENCES `second-hand`.`item` (`item_idx`)
+    REFERENCES `item` (`item_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
