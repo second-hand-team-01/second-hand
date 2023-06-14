@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                        imageName: "house",
                                                        selectedImageName: "house.fill")
 
-        var tabBarController = UITabBarController()
+        let tabBarController = UITabBarController()
         tabBarController.setViewControllers([listViewController], animated: true)
         
         window.rootViewController = tabBarController
