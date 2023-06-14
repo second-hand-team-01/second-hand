@@ -12,7 +12,6 @@ env:
   ECR_REPOSITORY: secondhand_team1
   ECS_CLUSTER: secondhand-team1-cluster
   ECS_SERVICE: secondhand-team1-service
-  ECS_TASK_DEFINITION: secondhand-team1
   CONTAINER_NAME: WAS
 
 jobs:
