@@ -89,7 +89,7 @@ extension DetailConetntView {
             
             viewsCountLabel.leadingAnchor.constraint(equalTo: viewsLabel.trailingAnchor, constant: 4),
             viewsCountLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-            viewsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor)
+            viewsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
         ])
     }
 }

@@ -24,6 +24,7 @@ class DetailConetntView: UIView {
     var viewsCountLabel = UILabel()
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         addSubviews()
         layoutConstraint()
         setUI()

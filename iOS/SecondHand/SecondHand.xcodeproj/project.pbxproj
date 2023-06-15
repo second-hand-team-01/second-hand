@@ -23,10 +23,17 @@
 		63A3FCE72A396AE600361FAD /* DetailContentView+layoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE62A396AE600361FAD /* DetailContentView+layoutConstraint.swift */; };
 		63A3FCE92A3983C500361FAD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE82A3983C500361FAD /* DetailViewController.swift */; };
 		7E128F9628D9493610694937 /* Pods_SecondHand_SecondHandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */; };
-		F01D5E3939D2A5A7D87154C3 /* Pods_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */; };
+		95090E599FA61BCD7BC40DFC /* Pods_SecondHand_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		630A7C082A3AE20300B96A7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9366FA8A958106E436A67E5F95B05832;
+			remoteInfo = "Pods-SecondHand-SecondHandTests";
+		};
 		632807342A305CED0033F9D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 632807152A305CED0033F9D7 /* Project object */;
@@ -55,13 +62,6 @@
 			remoteGlobalIDString = 97CF8BA750BDC55E588555411959B28F;
 			remoteInfo = "Pods-SecondHand-SecondHandUITests";
 		};
-		63A3FCD92A373F6900361FAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0DC2817D184E0B09EE90C5A1BC910FB7;
-			remoteInfo = "Pods-SecondHandTests";
-		};
 		63A3FCDB2A373F6900361FAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */;
@@ -72,10 +72,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11DB4CAF35C01E3C5CDB3B42 /* Pods-SecondHand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand.release.xcconfig"; path = "Target Support Files/Pods-SecondHand/Pods-SecondHand.release.xcconfig"; sourceTree = "<group>"; };
 		15D03670B7FED72649C8C6CB /* Pods-SecondHand-SecondHandUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandUITests.debug.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		41D33513EE98C550E16692F4 /* Pods-SecondHand-SecondHandUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandUITests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests.release.xcconfig"; sourceTree = "<group>"; };
+		451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand_SecondHandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
 		6328071D2A305CED0033F9D7 /* SecondHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecondHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632807202A305CED0033F9D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		632807222A305CED0033F9D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		63A3FCE82A3983C500361FAD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7567B6A7854E9963539F795F /* Pods-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
+		7BBC168B359196656872910D /* Pods-SecondHand-SecondHandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandTests.debug.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9E2202594970CBBCDCA83F02 /* Pods-SecondHand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand.debug.xcconfig"; path = "Target Support Files/Pods-SecondHand/Pods-SecondHand.debug.xcconfig"; sourceTree = "<group>"; };
 		DA87BA3AA26254FED025E5D9 /* Pods-SecondHandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.debug.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand_SecondHandUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F01D5E3939D2A5A7D87154C3 /* Pods_SecondHandTests.framework in Frameworks */,
+				95090E599FA61BCD7BC40DFC /* Pods_SecondHand_SecondHandTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +137,7 @@
 			children = (
 				6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */,
 				E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */,
-				01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */,
+				451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -206,6 +208,8 @@
 				41D33513EE98C550E16692F4 /* Pods-SecondHand-SecondHandUITests.release.xcconfig */,
 				DA87BA3AA26254FED025E5D9 /* Pods-SecondHandTests.debug.xcconfig */,
 				7567B6A7854E9963539F795F /* Pods-SecondHandTests.release.xcconfig */,
+				7BBC168B359196656872910D /* Pods-SecondHand-SecondHandTests.debug.xcconfig */,
+				5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -214,8 +218,8 @@
 			isa = PBXGroup;
 			children = (
 				63A3FCD62A373F6900361FAD /* Pods-SecondHand */,
+				630A7C092A3AE20300B96A7F /* Pods-SecondHand-SecondHandTests */,
 				63A3FCD82A373F6900361FAD /* Pods-SecondHand-SecondHandUITests */,
-				63A3FCDA2A373F6900361FAD /* Pods-SecondHandTests */,
 				63A3FCDC2A373F6900361FAD /* Toaster */,
 			);
 			name = Products;
@@ -259,6 +263,7 @@
 				632807192A305CED0033F9D7 /* Sources */,
 				6328071A2A305CED0033F9D7 /* Frameworks */,
 				6328071B2A305CED0033F9D7 /* Resources */,
+				42A8605971E2AC65979D09A0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -297,6 +302,7 @@
 				632807392A305CEE0033F9D7 /* Sources */,
 				6328073A2A305CEE0033F9D7 /* Frameworks */,
 				6328073B2A305CEE0033F9D7 /* Resources */,
+				A3B7099B8FEB5F6286DF6016 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -358,6 +364,14 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		630A7C092A3AE20300B96A7F /* Pods-SecondHand-SecondHandTests */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = "Pods-SecondHand-SecondHandTests";
+			path = Pods_SecondHand_SecondHandTests.framework;
+			remoteRef = 630A7C082A3AE20300B96A7F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		63A3FCD62A373F6900361FAD /* Pods-SecondHand */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -372,14 +386,6 @@
 			name = "Pods-SecondHand-SecondHandUITests";
 			path = Pods_SecondHand_SecondHandUITests.framework;
 			remoteRef = 63A3FCD72A373F6900361FAD /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		63A3FCDA2A373F6900361FAD /* Pods-SecondHandTests */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			name = "Pods-SecondHandTests";
-			path = Pods_SecondHandTests.framework;
-			remoteRef = 63A3FCD92A373F6900361FAD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		63A3FCDC2A373F6900361FAD /* Toaster */ = {
@@ -420,6 +426,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		42A8605971E2AC65979D09A0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand/Pods-SecondHand-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand/Pods-SecondHand-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SecondHand/Pods-SecondHand-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		632807522A316BE80033F9D7 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -437,7 +460,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		72A7EB3A10D62F750627BA95 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -454,7 +477,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SecondHandTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SecondHand-SecondHandTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -481,6 +504,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3B7099B8FEB5F6286DF6016 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A9D3F7433769DD757E0651E0 /* [CP] Check Pods Manifest.lock */ = {
@@ -511,15 +551,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -758,7 +798,7 @@
 		};
 		6328074B2A305CEE0033F9D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA87BA3AA26254FED025E5D9 /* Pods-SecondHandTests.debug.xcconfig */;
+			baseConfigurationReference = 7BBC168B359196656872910D /* Pods-SecondHand-SecondHandTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -779,7 +819,7 @@
 		};
 		6328074C2A305CEE0033F9D7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7567B6A7854E9963539F795F /* Pods-SecondHandTests.release.xcconfig */;
+			baseConfigurationReference = 5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
