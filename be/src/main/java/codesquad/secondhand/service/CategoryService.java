@@ -20,7 +20,7 @@
 //    private final CategoryRepository categoryRepository;
 //
 //    public List<CategoryDto> showAllCategories() {
-//        log.info("[CategoryRepository.showAllCategories]");
+//        log.info("[CategoryService.showAllCategories]");
 //        List<Category> categories = categoryRepository.findAll();
 //        return categories.stream()
 //                .map(CategoryDto::of)
