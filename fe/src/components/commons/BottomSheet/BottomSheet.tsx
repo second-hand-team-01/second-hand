@@ -82,7 +82,7 @@ export const BottomSheet = ({
         </S.BottomSheet>
         <S.BackDrop onClick={handleBackdropClick}></S.BackDrop>
       </>,
-      document.getElementById('modal-root') as HTMLDivElement
+      document.querySelector('#modal-root') ?? document.body
     )
   );
 };

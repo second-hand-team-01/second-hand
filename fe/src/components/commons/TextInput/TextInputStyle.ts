@@ -55,7 +55,7 @@ export const TextInput = styled.input<TextInputStyleProps>`
     shape === 'large'
       ? theme.typography.body.lineHeight
       : theme.typography.subhead.lineHeight};
-  font-weight: ${({ theme, shape }) => theme.fontWeight.re};
+  font-weight: ${({ theme }) => theme.fontWeight.re};
 
   &:placeholder {
     color: ${({ theme }) => theme.colors.neutralTextWeak};

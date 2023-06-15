@@ -51,7 +51,7 @@ export const Dialog = ({
         </S.Dialog>
         <S.Backdrop onClick={handleBackDropClick}></S.Backdrop>
       </>,
-      document.body
+      document.querySelector('#modal-root') ?? document.body
     )
   );
 };
