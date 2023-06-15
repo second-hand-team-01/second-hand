@@ -1,6 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors, palette } from '@styles/Color';
-import { typography, fontWeight } from '@styles/Typography';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
@@ -140,10 +138,3 @@ export const GlobalStyle = createGlobalStyle`
     }
     /* end of reset-css*/
     `;
-
-export const theme = {
-  colors,
-  palette,
-  typography,
-  fontWeight,
-};
