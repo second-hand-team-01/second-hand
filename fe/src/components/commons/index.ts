@@ -11,6 +11,7 @@ import { NavBar } from './NavBar/NavBar';
 import { Layout } from './Layout/Layout';
 import { Slide } from './Slide/Slide';
 import { TabBar } from './TabBar/TabBar';
+import { BottomSheet } from './BottomSheet/BottomSheet';
 
 export {
   Icon,
@@ -26,4 +27,5 @@ export {
   Layout,
   Slide,
   TabBar,
+  BottomSheet,
 };

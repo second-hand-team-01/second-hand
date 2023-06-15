@@ -8,12 +8,12 @@ interface ButtonProps extends ButtonStyleProps {
 
 export const Button = ({
   title,
-  shape,
-  state,
-  textAlign,
+  shape = 'large',
+  state = 'default',
+  textAlign = 'center',
   icon,
+  color,
   iconSize,
-  iconColor,
   onClick,
 }: ButtonProps) => {
   return (
@@ -22,9 +22,10 @@ export const Button = ({
       state={state}
       textAlign={textAlign}
       onClick={onClick}
+      color={color}
     >
       {title && textAlign === 'left' && <span>{title}</span>}
-      {icon && <Icon name={icon} size={iconSize} color={iconColor} />}
+      {icon && <Icon name={icon} size={iconSize} color={color} />}
       {title && textAlign === 'center' && <span>{title}</span>}
     </S.Button>
   );
