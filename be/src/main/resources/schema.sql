@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `seller_idx` BIGINT(10) NOT NULL,
   `category_idx` BIGINT(10) NOT NULL,
   `location_idx` BIGINT(10) NOT NULL,
+  `main_image_url` VARCHAR(100) NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(500) NULL,
   `price` INT NOT NULL,
