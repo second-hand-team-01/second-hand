@@ -1,4 +1,6 @@
 
+SET foreign_key_checks =0;
+
 -- location 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`location` (`city`, `district`, `town`) VALUES
 ('서울', '강남구', '역삼1동'),
