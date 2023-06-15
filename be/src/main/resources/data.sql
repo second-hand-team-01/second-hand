@@ -1,4 +1,13 @@
 
+-- location 테이블 더미 데이터 추가
+INSERT INTO `second-hand`.`location` (`city`, `district`, `town`) VALUES
+('서울', '강남구', '역삼1동'),
+('서울', '강남구', '역삼2동'),
+('서울', '강남구', '개포1동'),
+('서울', '강남구', '개포2동'),
+('서울', '강남구', '개포3동'),
+('서울', '강남구', '개포4동');
+
 -- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`) VALUES
 (1, '디지털기기', 'www.imgurl1.com'),
