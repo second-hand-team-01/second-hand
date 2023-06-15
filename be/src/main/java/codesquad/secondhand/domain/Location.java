@@ -4,6 +4,7 @@
 //import lombok.extern.slf4j.Slf4j;
 //
 //import javax.persistence.*;
+//import java.util.List;
 //
 //@Slf4j
 //@Getter
@@ -16,12 +17,13 @@
 //    @Column(name = "location_idx")
 //    private Long locationIdx;
 //
-//    @Column(name = "city")
+//    @Column(name = "city", nullable = false)
 //    private String city;
 //
-//    @Column(name = "district")
+//    @Column(name = "district", nullable = false)
 //    private String district;
 //
-//    @Column(name = "town")
+//    @Column(name = "town", nullable = false)
 //    private String town;
+//
 //}

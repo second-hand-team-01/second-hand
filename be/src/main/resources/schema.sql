@@ -22,19 +22,20 @@ DROP TABLE IF EXISTS `second-hand`.`member` ;
 
 CREATE TABLE IF NOT EXISTS `second-hand`.`member` (
   `member_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
-  `login_id` VARCHAR(45) NOT NULL,
   `main_location_idx` BIGINT(10) NOT NULL,
   `sub_location_idx` BIGINT(10) NULL,
+  `login_id` VARCHAR(45) NOT NULL,
+  `image_url` VARCHAR(45) NULL,
   PRIMARY KEY (`member_idx`),
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) VISIBLE,
-  INDEX `fk_member_location3_idx` (`main_location_idx` ASC) VISIBLE,
-  INDEX `fk_member_location4_idx` (`sub_location_idx` ASC) VISIBLE,
-  CONSTRAINT `fk_member_location3`
+  INDEX `fk_member_location1_idx` (`main_location_idx` ASC) VISIBLE,
+  INDEX `fk_member_location2_idx` (`sub_location_idx` ASC) VISIBLE,
+  CONSTRAINT `fk_member_location1`
     FOREIGN KEY (`main_location_idx`)
     REFERENCES `second-hand`.`location` (`location_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_member_location4`
+  CONSTRAINT `fk_member_location2`
     FOREIGN KEY (`sub_location_idx`)
     REFERENCES `second-hand`.`location` (`location_idx`)
     ON DELETE NO ACTION
@@ -46,6 +47,7 @@ DROP TABLE IF EXISTS `second-hand`.`category` ;
 CREATE TABLE IF NOT EXISTS `second-hand`.`category` (
   `category_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
+  `image_url` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`category_idx`))
 ENGINE = InnoDB;
 
@@ -56,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item` (
   `seller_idx` BIGINT(10) NOT NULL,
   `category_idx` BIGINT(10) NOT NULL,
   `location_idx` BIGINT(10) NOT NULL,
-  `posted_at` DATETIME NOT NULL,
   `main_image_idx` BIGINT(10) NULL,
+  `posted_at` DATETIME NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(300) NULL,
   `price` INT NOT NULL,
@@ -101,22 +103,6 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item_image` (
   CONSTRAINT `fk_item_image_item2`
     FOREIGN KEY (`item_idx`)
     REFERENCES `second-hand`.`item` (`item_idx`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-DROP TABLE IF EXISTS `second-hand`.`member_image` ;
-
-CREATE TABLE IF NOT EXISTS `second-hand`.`member_image` (
-  `member_image_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
-  `member_idx` BIGINT(10) NOT NULL,
-  `image_url` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`member_image_idx`),
-  INDEX `fk_member_image_member1_idx` (`member_idx` ASC) VISIBLE,
-  UNIQUE INDEX `member_idx_UNIQUE` (`member_idx` ASC) VISIBLE,
-  CONSTRAINT `fk_member_image_member1`
-    FOREIGN KEY (`member_idx`)
-    REFERENCES `second-hand`.`member` (`member_idx`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
