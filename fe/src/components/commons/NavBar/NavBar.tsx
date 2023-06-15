@@ -4,8 +4,8 @@ import { icons } from '@assets/icons';
 
 interface BtnInfo {
   text?: string;
-  onClick?: () => void;
   icon: string;
+  onClick: () => void;
 }
 export interface NavBarProps {
   title?: string;

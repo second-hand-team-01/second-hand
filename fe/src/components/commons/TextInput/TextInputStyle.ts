@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { WrapStyleProps } from './TextInput';
+
+export interface WrapStyleProps {
+  height: number;
+  hasLabel: boolean;
+}
 
 export const Wrap = styled.div<WrapStyleProps>`
   display: grid;

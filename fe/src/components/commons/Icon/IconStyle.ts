@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { IconStyleProps } from './Icon';
+
+export interface IconStyleProps {
+  size?: number;
+  color?: string;
+}
 
 export const Icon = styled.div<IconStyleProps>`
   font-family: 'SF Pro', fallback, sans-serif;

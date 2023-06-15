@@ -1,16 +1,19 @@
 import styled from 'styled-components';
-import { ProfileStyleProps, WrapStyleProps } from './Profile';
+
+export interface ProfileStyleProps {
+  url?: string;
+  size: number;
+  isEditable: boolean;
+}
+
+export interface WrapStyleProps {
+  size: number;
+}
 
 export const Wrap = styled.div<WrapStyleProps>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   position: relative;
-  & .camera-icon {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-  }
 `;
 
 export const Profile = styled.div<ProfileStyleProps>`
@@ -23,4 +26,11 @@ export const Profile = styled.div<ProfileStyleProps>`
       : `url('${url}')`};
   background-size: cover;
   border-radius: 100%;
+`;
+
+export const Editable = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 `;

@@ -18,4 +18,3 @@ export const Footer = styled.div`
   width: 100%;
   bottom: 0;
 `;
-// 전체 width
