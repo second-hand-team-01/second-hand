@@ -20,3 +20,14 @@ struct Item: Codable, Hashable {
     let likeCount: Int
     let chatCount: Int
 }
+
+
+extension Item {
+    static let sampleData = [
+        Item(itemIdx: 1, imageURL: "", itemTitle: "아이템1", price: 100000, isState: "판메증", likeCount: 1, chatCount: 123),
+        Item(itemIdx: 2, imageURL: "", itemTitle: "아이템2", price: 1234000, isState: "예약중", likeCount: 10, chatCount: 0),
+        Item(itemIdx: 3, imageURL: "", itemTitle: "아이템3", price: 10234500, isState: "판매완료", likeCount: 100, chatCount: 2),
+        Item(itemIdx: 4, imageURL: "", itemTitle: "아이템4", price: 112, isState: "판메증", likeCount: 9, chatCount: 123),
+        Item(itemIdx: 5, imageURL: "", itemTitle: "아이템5", price: 15412000, isState: "예약중", likeCount: 56, chatCount: 2345)
+    ]
+}

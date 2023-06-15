@@ -10,7 +10,13 @@ import UIKit
 class ItemListTableViewCell: UITableViewCell {
     static let identifier = "ItemListCell"
     
-    var thumbnailImage: UIImageView = UIImageView()
+    var thumbnailImage: UIImageView = {
+        var image = UIImageView()
+        image.backgroundColor = .systemGray
+        image.layer.cornerRadius = 8
+        image.clipsToBounds = true
+        return image
+    }()
     var titleLabel: UILabel = {
         var label = UILabel()
         label.text = "제목을 입력하세요"
@@ -87,6 +93,12 @@ class ItemListTableViewCell: UITableViewCell {
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         commentCountLabel.translatesAutoresizingMaskIntoConstraints = false
         likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            thumbnailImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15),
+            thumbnailImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0),
+            thumbnailImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 15)
+        ])
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 19),
