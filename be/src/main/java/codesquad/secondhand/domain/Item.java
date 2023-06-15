@@ -38,23 +38,23 @@ public class Item {
     @JoinColumn(name = "main_image_idx")
     private ItemImage itemImage;
 
-    @Column(name = "name")
+    @Column(name = "posted_at", nullable = false)
+    private LocalDateTime postedAt;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
 
-    @Column(name = "view")
+    @Column(name = "view", nullable = false)
     private Integer view;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
-
-    @Column(name = "posted_at", nullable = false)
-    private LocalDateTime postedAt;
 
     // Item과 ItemImage는 OneToMany 관계
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
