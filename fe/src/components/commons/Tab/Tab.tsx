@@ -1,23 +1,20 @@
-import { ReactElement } from 'react';
 import * as S from './TabStyle';
-import { Icon } from '@components/commons/index';
 
 interface OptionType {
   name: string;
   id: string;
 }
 
-interface TabProps {
-  children: ReactElement | string;
+export interface TabProps {
   onClick: () => void;
   activeId: string;
   options: OptionType[];
 }
 
-export const Tab = ({ children, onClick, activeId, options }: TabProps) => {
+export const Tab = ({ onClick, activeId, options }: TabProps) => {
   return (
     <S.Wrap>
-      {options?.map((option) => (
+      {options.map((option) => (
         <S.Tab
           key={option.id}
           onClick={onClick}

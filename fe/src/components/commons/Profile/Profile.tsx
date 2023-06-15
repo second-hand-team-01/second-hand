@@ -1,15 +1,6 @@
 import * as S from './ProfileStyle';
 import { Icon } from '@components/commons/index';
-
-export interface ProfileStyleProps {
-  url?: string;
-  size: number;
-  isEditable: boolean;
-}
-
-export interface WrapStyleProps {
-  size: number;
-}
+import { ProfileStyleProps, WrapStyleProps } from './ProfileStyle';
 
 interface ProfileProps extends ProfileStyleProps {
   onClick: () => void;
@@ -24,13 +15,13 @@ export const Profile = ({
   return (
     <S.Wrap size={size}>
       {isEditable && (
-        <div className="camera-icon">
+        <S.Editable>
           <Icon
             name="camera"
             color={url ? 'neutralBackground' : 'textStrong'}
             size={24}
           ></Icon>
-        </div>
+        </S.Editable>
       )}
       <S.Profile
         onClick={onClick}
