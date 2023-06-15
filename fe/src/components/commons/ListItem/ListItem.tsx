@@ -1,12 +1,13 @@
-import React, { useRef, MouseEvent } from 'react';
+import { useRef, MouseEvent } from 'react';
 import * as S from './ListItemStyle';
 import { icons } from '@assets/icons';
 import { Icon } from '@components/commons';
+import { colors, palette } from '@styles/Color';
 
 export interface IconProps {
   name: keyof typeof icons;
   size: number;
-  color: string;
+  color: keyof typeof palette | keyof typeof colors;
 }
 
 export interface ListItemProps {
