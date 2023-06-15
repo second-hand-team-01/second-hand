@@ -1,4 +1,5 @@
 
+-- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`) VALUES
 (1, '디지털기기', 'www.imgurl1.com'),
 (2, '생활가전', 'www.imgurl2.com'),
