@@ -34,8 +34,9 @@ public class Item {
     @JoinColumn(name = "location_idx")
     private Location location;
 
-    @Column(name = "main_image_url")
-    private String mainImageUrl;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_image_idx")
+    private ItemImage itemImage;
 
     @Column(name = "name")
     private String name;
