@@ -26,9 +26,11 @@
 		FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */; };
 		FF61AD302A36FC3B006AE167 /* CapsuleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */; };
 		FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */; };
-		FF61AD512A3AB88B006AE167 /* leadingIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */; };
+		FF61AD512A3AB88B006AE167 /* LeadingIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */; };
 		FF61AD542A3ACBC0006AE167 /* PriceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */; };
-		FF61AD562A3ACDF6006AE167 /* timeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD552A3ACDF6006AE167 /* timeLabel.swift */; };
+		FF61AD562A3ACDF6006AE167 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */; };
+		FF61AD582A3AD19B006AE167 /* LocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD572A3AD19B006AE167 /* LocationLabel.swift */; };
+		FF61AD5A2A3AD240006AE167 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD592A3AD240006AE167 /* TitleLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,9 +80,11 @@
 		FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListTableViewCell.swift; sourceTree = "<group>"; };
 		FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabel.swift; sourceTree = "<group>"; };
 		FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListItem.swift; sourceTree = "<group>"; };
-		FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = leadingIconLabel.swift; sourceTree = "<group>"; };
+		FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingIconLabel.swift; sourceTree = "<group>"; };
 		FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceLabel.swift; sourceTree = "<group>"; };
-		FF61AD552A3ACDF6006AE167 /* timeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timeLabel.swift; sourceTree = "<group>"; };
+		FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
+		FF61AD572A3AD19B006AE167 /* LocationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationLabel.swift; sourceTree = "<group>"; };
+		FF61AD592A3AD240006AE167 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,8 +210,6 @@
 				FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */,
 				FF61AD522A3ACBA3006AE167 /* View */,
 				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
-				FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */,
-				FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */,
 			);
 			path = ItemList;
 			sourceTree = "<group>";
@@ -216,7 +218,11 @@
 			isa = PBXGroup;
 			children = (
 				FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */,
-				FF61AD552A3ACDF6006AE167 /* timeLabel.swift */,
+				FF61AD592A3AD240006AE167 /* TitleLabel.swift */,
+				FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */,
+				FF61AD572A3AD19B006AE167 /* LocationLabel.swift */,
+				FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */,
+				FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -463,12 +469,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF61AD512A3AB88B006AE167 /* leadingIconLabel.swift in Sources */,
+				FF61AD512A3AB88B006AE167 /* LeadingIconLabel.swift in Sources */,
+				FF61AD5A2A3AD240006AE167 /* TitleLabel.swift in Sources */,
+				FF61AD582A3AD19B006AE167 /* LocationLabel.swift in Sources */,
 				FF61AD542A3ACBC0006AE167 /* PriceLabel.swift in Sources */,
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
 				FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */,
 				FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */,
-				FF61AD562A3ACDF6006AE167 /* timeLabel.swift in Sources */,
+				FF61AD562A3ACDF6006AE167 /* TimeLabel.swift in Sources */,
 				FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */,

@@ -36,6 +36,10 @@ extension ItemListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: true)
+    }
 }
 
 extension ItemListViewController {
@@ -43,7 +47,8 @@ extension ItemListViewController {
         self.datasource = UITableViewDiffableDataSource<Section, Item>(tableView: self.itemListUITableView, cellProvider: {tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
             
-            cell.titleLabel.text = item.itemTitle
+            cell.titleLabel.updateText(to: item.itemTitle)
+            cell.locationLabel.updateText(to: item.location)
             cell.priceLabel.updateText(to: item.price)
             cell.writeTimeLabel.updateText(to: item.writeDate)
             cell.likeCountLabel.text = "\(item.likeCount)"

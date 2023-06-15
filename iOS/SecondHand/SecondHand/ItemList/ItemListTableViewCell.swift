@@ -17,35 +17,11 @@ class ItemListTableViewCell: UITableViewCell {
         image.clipsToBounds = true
         return image
     }()
-    var titleLabel: UILabel = {
-        var label = UILabel()
-        label.text = "제목을 입력하세요"
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        return label
-    }()
-    var locationLabel: UILabel = {
-        var label = UILabel()
-        label.text = "역삼1동"
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.textColor = .gray
-        return label
-    }()
-    var writeTimeLabel: timeLabel = {
-        var label = timeLabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.textColor = .gray
-        return label
-    }()
-    var stateLabel: CapsuleLabel = CapsuleLabel()
-    var priceLabel: PriceLabel = {
-        var label = PriceLabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
-        return label
-    }()
+    var titleLabel = TitleLabel()
+    var locationLabel = LocationLabel()
+    var writeTimeLabel = TimeLabel()
+    var stateLabel = CapsuleLabel()
+    var priceLabel = PriceLabel()
     var commentSymbolLabel: UIImageView = {
         var image = UIImageView(image: UIImage(systemName: "message"))
         return image

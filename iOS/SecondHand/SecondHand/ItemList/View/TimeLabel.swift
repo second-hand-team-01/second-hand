@@ -7,7 +7,23 @@
 
 import UIKit
 
-class timeLabel: UILabel {
+class TimeLabel: UILabel {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.configureLabel()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    private func configureLabel() {
+        self.textAlignment = .left
+        self.font = .systemFont(ofSize: 13, weight: .regular)
+        self.textColor = .gray
+    }
+    
     func updateText(to writeDate: Date) {
         let timeInterval: TimeInterval = Date().timeIntervalSince(writeDate)
         
