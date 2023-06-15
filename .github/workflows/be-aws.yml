@@ -63,6 +63,11 @@ jobs:
           TASK_DEF=$(aws ecs describe-task-definition --task-definition $TASK_DEF --region ${AWS_REGION} --output text --query taskDefinition.taskDefinitionArn)
           echo "TASK_DEF=$TASK_DEF" >> $GITHUB_ENV
 
+      - name: Create Task Definition JSON File
+        run: |
+          echo '${{ steps.task-def.outputs.task-definition }}' > task-definition.json
+          echo "::set-output name=task-definition-file::task-definition.json"
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -82,18 +87,10 @@ jobs:
           docker push $LATEST_IMAGE_ID
           echo "::set-output name=image::$IMAGE_ID"
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ env.TASK_DEF }}
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
-
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ needs.create-task-definition.outputs.task-definition-file }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
