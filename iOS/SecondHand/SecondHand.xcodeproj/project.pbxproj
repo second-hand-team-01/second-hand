@@ -25,7 +25,7 @@
 		FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */; };
 		FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */; };
 		FF61AD302A36FC3B006AE167 /* CapsuleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */; };
-		FF61AD332A36FD32006AE167 /* PlusImageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD322A36FD32006AE167 /* PlusImageLabel.swift */; };
+		FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +74,7 @@
 		FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarType.swift; sourceTree = "<group>"; };
 		FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListTableViewCell.swift; sourceTree = "<group>"; };
 		FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabel.swift; sourceTree = "<group>"; };
-		FF61AD322A36FD32006AE167 /* PlusImageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusImageLabel.swift; sourceTree = "<group>"; };
+		FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +198,8 @@
 			children = (
 				FF61AD282A36F294006AE167 /* ItemListViewController.swift */,
 				FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */,
+				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
 				FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */,
-				FF61AD322A36FD32006AE167 /* PlusImageLabel.swift */,
 			);
 			path = ItemList;
 			sourceTree = "<group>";
@@ -446,10 +446,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF61AD332A36FD32006AE167 /* PlusImageLabel.swift in Sources */,
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
 				FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */,
 				FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */,
+				FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */,
 				FF61AD272A36F24D006AE167 /* TabBarController.swift in Sources */,

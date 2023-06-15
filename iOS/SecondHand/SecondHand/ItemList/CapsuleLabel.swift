@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Ca: UILabel {
+class CapsuleLabel: UILabel {
 
     /*
     // Only override draw() if you perform custom drawing.
