@@ -1,3 +1,4 @@
+import React, { useRef, MouseEvent } from 'react';
 import * as S from './ListItemStyle';
 import { icons } from '@assets/icons';
 import { Icon } from '@components/commons';
@@ -52,23 +53,25 @@ export const ListItem = ({
     color: 'neutralText',
   },
 }: ListItemProps) => {
-  const btnClickHandler = () => {
+  const moreBtnRef = useRef<HTMLButtonElement>(null);
+
+  const listClickHandler = ({ target }: MouseEvent<HTMLLIElement>): void => {
+    if (moreBtnRef.current?.contains(target as Node)) return;
     console.log('listItem 클릭');
   };
 
-  const moreBtnClickHandler = (e) => {
-    e.stopPropagation();
+  const moreBtnClickHandler = ({ target }) => {
     console.log('더보기 버튼 클릭');
   };
   return (
-    <S.ListItem onClick={btnClickHandler}>
+    <S.ListItem onClick={listClickHandler}>
       <S.Thumbnail src={imgUrl} alt={title} />
       <S.Content>
         <S.Info>
           <S.Title>
             <span>{title}</span>
             {moreBtn && (
-              <button onClick={moreBtnClickHandler}>
+              <button ref={moreBtnRef} onClick={moreBtnClickHandler}>
                 <Icon
                   name={moreBtnIcon.name}
                   size={moreBtnIcon.size}
