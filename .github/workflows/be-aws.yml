@@ -12,7 +12,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: secondhand_team1_ecr
   ECS_CLUSTER: secondhand-cs
-  ECS_SERVICE: secondhand-service
+  ECS_SERVICE: secondhand-service-was
   CONTAINER_NAME: was
 
 jobs:
@@ -58,10 +58,11 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Get latest ECS task definition
+        id: get-latest-task-def
         run: |
           TASK_DEF=$(aws ecs describe-services --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --region ${AWS_REGION} --query "services[0].taskDefinition" --output text)
           TASK_DEF=$(aws ecs describe-task-definition --task-definition $TASK_DEF --region ${AWS_REGION} --output text --query taskDefinition.taskDefinitionArn)
-          echo "TASK_DEF=$TASK_DEF" >> $GITHUB_ENV
+          echo "TASK_DEF=${TASK_DEF}" >> $GITHUB_ENV
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -93,7 +94,7 @@ jobs:
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ steps.get-latest-task-def.outputs.TASK_DEF }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true

@@ -21,6 +21,9 @@
 //    @Column(name = "name", nullable = false)
 //    private String name;
 //
+//    @Column(name = "image_url", nullable = false)
+//    private String imageUrl;
+//
 //    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<Item> items = new ArrayList<>();
 //}
