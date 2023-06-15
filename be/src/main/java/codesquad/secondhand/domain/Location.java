@@ -1,7 +1,12 @@
 package codesquad.secondhand.domain;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.persistence.*;
 
+@Slf4j
+@Getter
 @Entity
 @Table(name = "location")
 public class Location {
