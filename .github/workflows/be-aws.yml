@@ -7,12 +7,13 @@ on:
       - main
 #    paths:
 #      - 'be/**'
+
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: secondhand_team1
-  ECS_CLUSTER: secondhand-team1-cluster
-  ECS_SERVICE: secondhand-team1-service
-  CONTAINER_NAME: WAS
+  ECR_REPOSITORY: secondhand_team1_ecr
+  ECS_CLUSTER: secondhand-cs
+  ECS_SERVICE: secondhand-service
+  CONTAINER_NAME: was
 
 jobs:
   deploy:
@@ -29,6 +30,14 @@ jobs:
         with:
           path: ~/.sdkman/candidates/java
           key: jdk-${{ runner.os }}-${{ hashFiles('**/*.java') }}
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Set up JDK 11
         uses: actions/setup-java@v1
@@ -48,6 +57,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Get latest ECS task definition
+        run: |
+          TASK_DEF=$(aws ecs describe-task-definition --task-definition ${ECS_SERVICE} --region ${AWS_REGION} --output text --query taskDefinition.taskDefinitionArn)
+          echo "TASK_DEF=$TASK_DEF" >> $GITHUB_ENV
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -59,16 +73,19 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           HASH=$(git log -1 --pretty=%h)
-          IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:${HASH}
+          IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:be-${HASH}
+          LATEST_IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:be-latest
           docker build -t $IMAGE_ID -f ${{ github.workspace }}/Dockerfile.be .
+          docker tag $IMAGE_ID $LATEST_IMAGE_ID
           docker push $IMAGE_ID
+          docker push $LATEST_IMAGE_ID
           echo "::set-output name=image::$IMAGE_ID"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition: ${{ env.TASK_DEF }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 

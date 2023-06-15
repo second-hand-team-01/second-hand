@@ -10,11 +10,10 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: secondhand_team1
-  ECS_CLUSTER: secondhand-team1-cluster
-  ECS_SERVICE: (작성해야함)
-  ECS_TASK_DEFINITION: (작성해야함)
-  CONTAINER_NAME: (작성해야함)
+  ECR_REPOSITORY: secondhand_team1_ecr
+  ECS_CLUSTER: secondhand-cs
+  ECS_SERVICE: secondhand-service
+  CONTAINER_NAME: web
 
 jobs:
   deploy:
@@ -29,6 +28,13 @@ jobs:
         with:
           node-version: 18
 
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/fe/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - run: npm install --prefix ${{ github.workspace }}/fe
 
       - name: Build the project
@@ -41,6 +47,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Get latest ECS task definition
+        run: |
+          TASK_DEF=$(aws ecs describe-task-definition --task-definition ${ECS_SERVICE} --region ${AWS_REGION} --output text --query taskDefinition.taskDefinitionArn)
+          echo "TASK_DEF=$TASK_DEF" >> $GITHUB_ENV
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -52,14 +63,19 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           HASH=$(git log -1 --pretty=%h)
-          docker build -t $ECR_REGISTRY/secondhand_team1_ecr:${HASH} -f ${{ github.workspace }}/Dockerfile.fe .
-          docker push $ECR_REGISTRY/secondhand_team1_ecr:${HASH}
+          IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-${HASH}
+          LATEST_IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-latest
+          docker build -t $IMAGE_ID -f ${{ github.workspace }}/Dockerfile.fe .
+          docker tag $IMAGE_ID $LATEST_IMAGE_ID
+          docker push $IMAGE_ID
+          docker push $LATEST_IMAGE_ID
+          echo "::set-output name=image::$IMAGE_ID"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition: ${{ env.TASK_DEF }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
