@@ -1,10 +1,12 @@
 package codesquad.secondhand.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class Item {
     @JoinColumn(name = "location_idx")
     private Location location;
 
+    @Column(name = "main_image_url")
+    private String mainImageUrl;
+
     @Column(name = "name")
     private String name;
 
@@ -47,6 +52,9 @@ public class Item {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "posted_at", nullable = false)
+    private LocalDateTime postedAt;
+
     // Item과 ItemImage는 OneToMany 관계
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ItemImage> itemImages = new ArrayList<>();
@@ -54,4 +62,9 @@ public class Item {
     // Item과 Interest는 OneToMany 관계
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Interest> interests = new ArrayList<>();
+
+    @PrePersist
+    public void prePersist() {
+        this.postedAt = LocalDateTime.now();
+    }
 }
