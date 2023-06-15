@@ -30,7 +30,7 @@ export const SnackBar = ({ isOpen, btnInfos, children }: SnackProps) => {
           ></Button>
         </S.Footer>
       </S.SnackBar>,
-      document.body
+      document.querySelector('#modal-root') ?? document.body
     )
   );
 };
