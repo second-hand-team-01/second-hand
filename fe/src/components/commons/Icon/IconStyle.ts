@@ -1,8 +1,13 @@
 import styled from 'styled-components';
-import { IconStyleProps } from './Icon';
+import { colors, palette } from '@styles/Color';
+
+export interface IconStyleProps {
+  size?: number;
+  color?: keyof typeof palette | keyof typeof colors;
+}
 
 export const Icon = styled.div<IconStyleProps>`
-  font-family: 'SF Pro', fallback, sans-serif;
+  font-family: 'SF Pro', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
