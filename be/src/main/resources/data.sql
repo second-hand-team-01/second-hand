@@ -40,6 +40,8 @@ INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`) VALUE
 (17, '식물', 'www.imgurl17.com'),
 (18, '기타 중고물품', 'www.imgurl18.com');
 
+SET foreign_key_checks =0;
+
 -- item_image 테이블에 더미 데이터 추가
 INSERT INTO `second-hand`.`item_image` (`item_image_idx`, `item_idx`, `image_url`) VALUES
 (1, 1, 'www.itemimageurl1.com'),
@@ -134,6 +136,8 @@ INSERT INTO `second-hand`.`item_image` (`item_image_idx`, `item_idx`, `image_url
 (98, 98, 'www.itemimageurl98.com'),
 (99, 99, 'www.itemimageurl99.com'),
 (100, 100, 'www.itemimageurl100.com');
+
+SET foreign_key_checks =1;
 
 -- item 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`item` (`seller_idx`, `category_idx`, `location_idx`, `main_image_idx`, `posted_at`, `name`, `description`, `price`, `view`, `status`) VALUES
