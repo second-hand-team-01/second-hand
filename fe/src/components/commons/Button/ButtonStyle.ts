@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyleProps } from './Button';
+import { icons } from '@assets/icons';
 
 export interface ButtonStyleProps {
   title?: string;
@@ -10,7 +10,6 @@ export interface ButtonStyleProps {
   iconSize?: number;
   iconColor?: string;
 }
-
 
 const shapes = {
   floating: {
