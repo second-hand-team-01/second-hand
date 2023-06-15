@@ -8,6 +8,15 @@ INSERT INTO `second-hand`.`location` (`city`, `district`, `town`) VALUES
 ('서울', '강남구', '개포3동'),
 ('서울', '강남구', '개포4동');
 
+-- member 테이블 더미 데이터 추가
+INSERT INTO `second-hand`.`member` (`main_location_idx`, `sub_location_idx`, `login_id`, `image_url`) VALUES
+(1, 2, 'snoop', 'www.profileimgurl1.com'),
+(2, 3, 'poco', NULL),
+(4, NULL, 'roy', 'www.profileimgurl2.com'),
+(1, 5, 'gomungnam', NULL),
+(3, 5, 'sol', 'www.profileimgurl3.com'),
+(5, 6, 'wood', 'www.profileimgurl4.com');
+
 -- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`) VALUES
 (1, '디지털기기', 'www.imgurl1.com'),
