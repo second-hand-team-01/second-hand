@@ -49,6 +49,9 @@ dependencies:
     version: 2.1.4
 
 devDependencies:
+  '@babel/plugin-proposal-private-property-in-object':
+    specifier: ^7.21.11
+    version: 7.21.11(@babel/core@7.22.1)
   '@craco/craco':
     specifier: ^7.1.0
     version: 7.1.0(@types/node@16.18.34)(postcss@8.4.24)(react-scripts@5.0.1)(typescript@4.9.5)
