@@ -12,7 +12,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: secondhand_team1_ecr
   ECS_CLUSTER: secondhand-cs
-  ECS_SERVICE: secondhand-service
+  ECS_SERVICE: secondhand-service-was
   CONTAINER_NAME: was
 
 jobs:
