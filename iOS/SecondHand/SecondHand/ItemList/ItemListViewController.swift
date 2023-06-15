@@ -8,19 +8,57 @@
 import UIKit
 
 class ItemListViewController: UIViewController {
-    private var datasource: UICollectionViewDiffableDataSource<Section, Item>!
+    private var datasource: UITableViewDiffableDataSource<Section, Item>!
     private var currentSnapShot: NSDiffableDataSourceSnapshot<Section, Item>!
     private var data: [Item] = Item.sampleData
-    private var itemListCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private var itemListUITableView: UITableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.itemListUITableView)
+        self.itemListUITableView.delegate = self
+        self.itemListUITableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
+        self.layoutItemListUITableView()
+    }
+
+    private func layoutItemListUITableView() {
+        itemListUITableView.frame = view.bounds
     }
     
     
     override func viewWillLayoutSubviews() {
-        <#code#>
+        self.configureDataSource()
+        self.configureSnapshot(with: data)
+    }
+}
+
+extension ItemListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+}
+
+extension ItemListViewController {
+    private func configureDataSource() {
+        self.datasource = UITableViewDiffableDataSource<Section, Item>(tableView: self.itemListUITableView, cellProvider: {tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
+            
+            cell.titleLabel.text = item.itemTitle
+            cell.priceLabel.text = "\(item.price)"
+            cell.likeCountLabel.text = "\(item.likeCount)"
+            cell.commentCountLabel.text = "\(item.chatCount)"
+
+            return cell
+        })
+        
+        self.itemListUITableView.dataSource = self.datasource
     }
     
-    
+    private func configureSnapshot(with data: [Item]) {
+        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, Item>()
+        self.currentSnapShot.appendSections([.item])
+        self.currentSnapShot.appendItems(data, toSection: .item)
+        
+        self.datasource.apply(self.currentSnapShot)
+    }
 }

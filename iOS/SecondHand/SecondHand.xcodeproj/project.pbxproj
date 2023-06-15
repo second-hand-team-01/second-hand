@@ -26,6 +26,7 @@
 		FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */; };
 		FF61AD302A36FC3B006AE167 /* CapsuleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */; };
 		FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */; };
+		FF61AD512A3AB88B006AE167 /* leadingIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListTableViewCell.swift; sourceTree = "<group>"; };
 		FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabel.swift; sourceTree = "<group>"; };
 		FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListItem.swift; sourceTree = "<group>"; };
+		FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = leadingIconLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */,
 				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
 				FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */,
+				FF61AD502A3AB88B006AE167 /* leadingIconLabel.swift */,
 			);
 			path = ItemList;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF61AD512A3AB88B006AE167 /* leadingIconLabel.swift in Sources */,
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
 				FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */,
 				FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */,
