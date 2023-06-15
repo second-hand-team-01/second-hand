@@ -32,6 +32,17 @@ const shapes = {
       font-weight: ${theme.typography.body.fontWeight};
     `}
   `,
+  ghost: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 4px 8px;
+      width: fit-content;
+      font-size: ${theme.typography.subhead.size};
+      line-height: ${theme.typography.subhead.lineHeight};
+      font-weight: ${theme.typography.subhead.fontWeight};
+      background-color: transparent;
+      color: ${theme.colors.accentText};
+    `}
+  `,
 };
 
 const textAlignments = {
@@ -92,8 +103,8 @@ const textAlignStyles = css<ButtonStyleProps>`
 `;
 
 export const Button = styled.button<ButtonStyleProps>`
-  ${shapesStyles}
   ${stateStyles}
+  ${shapesStyles}
   ${textAlignStyles}
   display: flex;
   align-items: center;
