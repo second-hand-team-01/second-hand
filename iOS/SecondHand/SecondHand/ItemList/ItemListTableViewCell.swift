@@ -32,18 +32,16 @@ class ItemListTableViewCell: UITableViewCell {
         label.textColor = .gray
         return label
     }()
-    var writeTimeLabel: UILabel = {
-        var label = UILabel()
-        label.text = "2시간 전"
+    var writeTimeLabel: timeLabel = {
+        var label = timeLabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 13, weight: .regular)
         label.textColor = .gray
         return label
     }()
     var stateLabel: CapsuleLabel = CapsuleLabel()
-    var priceLabel: UILabel = {
-        var label = UILabel()
-        label.text = "24,500"
+    var priceLabel: PriceLabel = {
+        var label = PriceLabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 17, weight: .semibold)
         return label

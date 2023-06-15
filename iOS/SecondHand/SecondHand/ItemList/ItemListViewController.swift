@@ -44,7 +44,8 @@ extension ItemListViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
             
             cell.titleLabel.text = item.itemTitle
-            cell.priceLabel.text = "\(item.price)"
+            cell.priceLabel.updateText(to: item.price)
+            cell.writeTimeLabel.updateText(to: item.writeDate)
             cell.likeCountLabel.text = "\(item.likeCount)"
             cell.commentCountLabel.text = "\(item.chatCount)"
 
