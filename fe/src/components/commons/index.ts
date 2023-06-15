@@ -9,6 +9,7 @@ import { FilterBar } from './FilterBar/FilterBar';
 import { InfoBar } from './InfoBar/InfoBar';
 import { NavBar } from './NavBar/NavBar';
 import { Layout } from './Layout/Layout';
+import { Slide } from './Slide/Slide';
 import { TabBar } from './TabBar/TabBar';
 
 export {
@@ -23,5 +24,6 @@ export {
   InfoBar,
   NavBar,
   Layout,
+  Slide,
   TabBar,
 };
