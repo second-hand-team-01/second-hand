@@ -5,7 +5,7 @@ interface OptionType {
   id: string;
 }
 
-interface TabProps {
+export interface TabProps {
   onClick: () => void;
   activeId: string;
   options: OptionType[];
