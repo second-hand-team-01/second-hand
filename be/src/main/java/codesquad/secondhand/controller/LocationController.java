@@ -1,7 +1,6 @@
 //package codesquad.secondhand.controller;
 //
-//import codesquad.secondhand.dto.ResponseDto;
-//import codesquad.secondhand.dto.StatusCode;
+//import codesquad.secondhand.dto.ResponseListDto;
 //import codesquad.secondhand.dto.location.LocationDto;
 //import codesquad.secondhand.service.LocationService;
 //import lombok.RequiredArgsConstructor;
@@ -24,10 +23,10 @@
 //    private final LocationService locationService;
 //
 //    @GetMapping
-//    public ResponseEntity<ResponseDto<List<LocationDto>>> showLocations() {
+//    public ResponseEntity<ResponseListDto<LocationDto>> showLocations() {
 //        log.info("[LocationController.showLocations]");
 //        List<LocationDto> locationDtos = locationService.showAllLocations();
-//        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, locationDtos));
+//        return ResponseEntity.ok(ResponseListDto.of(RESPONSE_SUCCESS, locationDtos));
 //    }
 //
 //}
