@@ -4,9 +4,7 @@
 //import lombok.extern.slf4j.Slf4j;
 //
 //import javax.persistence.*;
-//import java.util.List;
 //
-//@Slf4j
 //@Getter
 //@Entity
 //@Table(name = "location")
