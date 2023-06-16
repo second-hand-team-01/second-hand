@@ -249,7 +249,7 @@
 				63A3FCD62A373F6900361FAD /* Pods-SecondHand */,
 				630A7C092A3AE20300B96A7F /* Pods-SecondHand-SecondHandTests */,
 				63A3FCD82A373F6900361FAD /* Pods-SecondHand-SecondHandUITests */,
-				63A3FCDC2A373F6900361FAD /* Toaster */,
+				63A3FCDC2A373F6900361FAD /* Toaster.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -459,10 +459,9 @@
 			remoteRef = 63A3FCD72A373F6900361FAD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		63A3FCDC2A373F6900361FAD /* Toaster */ = {
+		63A3FCDC2A373F6900361FAD /* Toaster.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			name = Toaster;
 			path = Toaster.framework;
 			remoteRef = 63A3FCDB2A373F6900361FAD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -832,7 +831,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SecondHand/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -861,7 +860,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SecondHand/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

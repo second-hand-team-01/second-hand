@@ -59,4 +59,3 @@ enum ColorPalette {
     static let accent = AccentPalette.self
     static let system = SystemPalette.self
 }
-

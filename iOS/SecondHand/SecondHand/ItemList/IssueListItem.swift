@@ -23,7 +23,6 @@ struct Item: Codable, Hashable {
     let chatCount: Int
 }
 
-
 extension Item {
     static let sampleData = [
         Item(itemIdx: 1, imageURL: "", itemTitle: "아이템1", location: "역삼1동", writeDate: Date(timeIntervalSinceNow: -3600), price: 100000, isState: "판메증", likeCount: 1, chatCount: 123),
