@@ -1,9 +1,6 @@
 import * as S from './NavBarStyle';
-import { ReactNode } from 'react';
-import { Button, Icon, TextInput, Tab } from '@commons/index';
-import { colors } from '@styles/Color';
+import { Button, Tab } from '@commons/index';
 import { icons } from '@assets/icons';
-import { createPortal } from 'react-dom';
 import { TabProps } from '@commons/Tab/Tab';
 
 interface BtnInfo {
