@@ -1,6 +1,6 @@
 import * as S from './ProfileStyle';
 import { Icon } from '@components/commons/index';
-import { ProfileStyleProps, WrapStyleProps } from './ProfileStyle';
+import { ProfileStyleProps } from './ProfileStyle';
 
 interface ProfileProps extends ProfileStyleProps {
   onClick: () => void;
@@ -18,7 +18,7 @@ export const Profile = ({
         <S.Editable>
           <Icon
             name="camera"
-            color={url ? 'neutralBackground' : 'textStrong'}
+            color={url ? 'neutralBackground' : 'neutralTextStrong'}
             size={24}
           ></Icon>
         </S.Editable>
