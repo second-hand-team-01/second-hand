@@ -56,7 +56,7 @@ extension ItemListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: true)
+        self.navigationController?.pushViewController(DetailViewController(), animated: true)
     }
 }
 
