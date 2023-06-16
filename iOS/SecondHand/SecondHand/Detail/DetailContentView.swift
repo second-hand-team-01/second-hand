@@ -12,7 +12,7 @@ class DetailConetntView: UIView {
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()
     var statusButton = UIButton()
-    var titleLabel = UILabel()
+    var productNameLabel = UILabel()
     var categoryLabel = UILabel()
     var uploadTimeLabel = UILabel()
     var descriptionLabel = UILabel()
@@ -27,12 +27,14 @@ class DetailConetntView: UIView {
         super.layoutSubviews()
         addSubviews()
         layoutConstraint()
-        setUI()
         statusButton = makeStatusButton()
+        setUI()
+        setFont()
     }
     
     func configure() {
-        titleLabel.text = "빈티지 롤러 스케이트"
+        productImageView.image = UIImage(systemName: "carrot.fill")
+        productNameLabel.text = "빈티지 롤러 스케이트"
         categoryLabel.text = "가구/인테리어"
         uploadTimeLabel.text = "1분전"
         descriptionLabel.numberOfLines = 0
@@ -47,11 +49,24 @@ class DetailConetntView: UIView {
     }
     
     private func setUI() {
-        sellerInfo.layer.cornerRadius = sellerInfo.frame.height / 2
-        productImageView.backgroundColor = .green
-        pageControl.backgroundColor = .yellow
-        sellerInfo.backgroundColor = .gray
+        sellerInfo.layer.cornerRadius = 12
+        sellerInfo.backgroundColor = .lightGray
+        productImageView.tintColor = .orange
         statusButton = makeStatusButton()
+    }
+    
+    private func setFont() {
+        statusButton.titleLabel?.font = Typography.caption1
+        productNameLabel.font = Typography.headLine
+        categoryLabel.font = Typography.footNote
+        uploadTimeLabel.font = Typography.footNote
+        descriptionLabel.font = Typography.body
+        chatLabel.font = Typography.footNote
+        chatCountLabel.font = Typography.footNote
+        favoriteLabel.font = Typography.footNote
+        favoriteCountLabel.font = Typography.footNote
+        viewsLabel.font = Typography.footNote
+        viewsCountLabel.font = Typography.footNote
     }
     
     private func makeStatusButton() -> UIButton {

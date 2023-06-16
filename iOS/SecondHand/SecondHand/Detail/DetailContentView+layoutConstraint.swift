@@ -14,7 +14,7 @@ extension DetailConetntView {
             pageControl,
             sellerInfo,
             statusButton,
-            titleLabel,
+            productNameLabel,
             categoryLabel,
             uploadTimeLabel,
             descriptionLabel,
@@ -57,16 +57,16 @@ extension DetailConetntView {
             statusButton.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
             statusButton.topAnchor.constraint(equalTo: sellerInfo.bottomAnchor, constant: 16),
             
-            titleLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
+            productNameLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            productNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
+            productNameLabel.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
             
             categoryLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            categoryLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 8),
             
             uploadTimeLabel.leadingAnchor.constraint(equalTo: categoryLabel.trailingAnchor, constant: 8),
             uploadTimeLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
-            uploadTimeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            uploadTimeLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 8),
             
             descriptionLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: sellerInfo.trailingAnchor),
