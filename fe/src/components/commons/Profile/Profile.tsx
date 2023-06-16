@@ -18,7 +18,7 @@ export const Profile = ({
         <S.Editable>
           <Icon
             name="camera"
-            color={url ? 'neutralBackground' : 'textStrong'}
+            color={url ? 'neutralBackground' : 'neutralTextWeak'}
             size={24}
           ></Icon>
         </S.Editable>
