@@ -26,6 +26,17 @@
 		7E128F9628D9493610694937 /* Pods_SecondHand_SecondHandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */; };
 		95090E599FA61BCD7BC40DFC /* Pods_SecondHand_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */; };
 		F01D5E3939D2A5A7D87154C3 /* Pods_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01107D3F3FD1427E597DAE48 /* Pods_SecondHandTests.framework */; };
+		FF61AD272A36F24D006AE167 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD262A36F24D006AE167 /* TabBarController.swift */; };
+		FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD282A36F294006AE167 /* ItemListViewController.swift */; };
+		FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */; };
+		FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */; };
+		FF61AD302A36FC3B006AE167 /* CapsuleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */; };
+		FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */; };
+		FF61AD512A3AB88B006AE167 /* LeadingIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */; };
+		FF61AD542A3ACBC0006AE167 /* PriceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */; };
+		FF61AD562A3ACDF6006AE167 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */; };
+		FF61AD582A3AD19B006AE167 /* LocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD572A3AD19B006AE167 /* LocationLabel.swift */; };
+		FF61AD5A2A3AD240006AE167 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD592A3AD240006AE167 /* TitleLabel.swift */; };
 		FF61AD602A3BE4D9006AE167 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD5F2A3BE4D9006AE167 /* ColorPalette.swift */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +117,17 @@
 		9E2202594970CBBCDCA83F02 /* Pods-SecondHand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand.debug.xcconfig"; path = "Target Support Files/Pods-SecondHand/Pods-SecondHand.debug.xcconfig"; sourceTree = "<group>"; };
 		DA87BA3AA26254FED025E5D9 /* Pods-SecondHandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.debug.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand_SecondHandUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF61AD262A36F24D006AE167 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		FF61AD282A36F294006AE167 /* ItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListViewController.swift; sourceTree = "<group>"; };
+		FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarType.swift; sourceTree = "<group>"; };
+		FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListTableViewCell.swift; sourceTree = "<group>"; };
+		FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLabel.swift; sourceTree = "<group>"; };
+		FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListItem.swift; sourceTree = "<group>"; };
+		FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingIconLabel.swift; sourceTree = "<group>"; };
+		FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceLabel.swift; sourceTree = "<group>"; };
+		FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
+		FF61AD572A3AD19B006AE167 /* LocationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationLabel.swift; sourceTree = "<group>"; };
+		FF61AD592A3AD240006AE167 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
 		FF61AD5F2A3BE4D9006AE167 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +198,8 @@
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
 				632807242A305CED0033F9D7 /* ViewController.swift */,
+				FF61AD2C2A36F956006AE167 /* Tabbar */,
+				FF61AD312A36FC72006AE167 /* ItemList */,
 				FF61AD5F2A3BE4D9006AE167 /* ColorPalette.swift */,
 				632807262A305CED0033F9D7 /* Main.storyboard */,
 				632807292A305CED0033F9D7 /* Assets.xcassets */,
@@ -222,6 +246,37 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		FF61AD2C2A36F956006AE167 /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				FF61AD262A36F24D006AE167 /* TabBarController.swift */,
+				FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */,
+			);
+			path = Tabbar;
+			sourceTree = "<group>";
+		};
+		FF61AD312A36FC72006AE167 /* ItemList */ = {
+			isa = PBXGroup;
+			children = (
+				FF61AD282A36F294006AE167 /* ItemListViewController.swift */,
+				FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */,
+				FF61AD522A3ACBA3006AE167 /* View */,
+				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
+			);
+			path = ItemList;
+			sourceTree = "<group>";
+		};
+		FF61AD522A3ACBA3006AE167 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FF61AD532A3ACBC0006AE167 /* PriceLabel.swift */,
+				FF61AD592A3AD240006AE167 /* TitleLabel.swift */,
+				FF61AD552A3ACDF6006AE167 /* TimeLabel.swift */,
+				FF61AD572A3AD19B006AE167 /* LocationLabel.swift */,
+				FF61AD502A3AB88B006AE167 /* LeadingIconLabel.swift */,
+				FF61AD2F2A36FC3B006AE167 /* CapsuleLabel.swift */,
+			);
+			path = View;
 		63A3FCC52A3709AA00361FAD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -577,11 +632,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF61AD512A3AB88B006AE167 /* LeadingIconLabel.swift in Sources */,
+				FF61AD5A2A3AD240006AE167 /* TitleLabel.swift in Sources */,
+				FF61AD582A3AD19B006AE167 /* LocationLabel.swift in Sources */,
+				FF61AD542A3ACBC0006AE167 /* PriceLabel.swift in Sources */,
 				632807252A305CED0033F9D7 /* ViewController.swift in Sources */,
+				FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */,
+				FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */,
+				FF61AD562A3ACDF6006AE167 /* TimeLabel.swift in Sources */,
+				FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */,
 				63A3FCDE2A3740C800361FAD /* SellerInfo.swift in Sources */,
 				63A3FCE72A396AE600361FAD /* DetailContentView+layoutConstraint.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
+				FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */,
+				FF61AD272A36F24D006AE167 /* TabBarController.swift in Sources */,
 				632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */,
+				FF61AD302A36FC3B006AE167 /* CapsuleLabel.swift in Sources */,
 				63A3FCE52A3969F900361FAD /* DetailViewController+layoutScrollView.swift in Sources */,
 				63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */,
 				630A7C0B2A3B0AE300B96A7F /* Typography.swift in Sources */,
