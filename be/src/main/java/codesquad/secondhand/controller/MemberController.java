@@ -28,7 +28,7 @@
 //    @GetMapping("/location")
 //    public ResponseEntity<ResponseDto<Map<String, LocationTownDto>>> showMemberLocations(@PathVariable String memberLoginId) {
 //        log.info("[MemberController.showMemberLocations]");
-//        // TODO: TreeMap도 DTO로 만들어서 반환해버리자
+        // TODO: TreeMap도 DTO로 만들어서 반환해버리자
 //        Map<String, LocationTownDto> locationTownDtoMap = new TreeMap<>();
 //        locationTownDtoMap.put("main", memberService.getMainLocation(memberLoginId));
 //        locationTownDtoMap.put("sub", memberService.getSubLocation(memberLoginId));
