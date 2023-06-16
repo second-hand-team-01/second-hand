@@ -5,7 +5,6 @@
 //
 //import javax.persistence.*;
 //
-//@Slf4j
 //@Getter
 //@Entity
 //@Table(name = "member")
