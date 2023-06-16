@@ -172,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				632807502A316B790033F9D7 /* .swiftlint.yml */,
-				6328072E2A305CED0033F9D7 /* Info.plist */,
 				6328071F2A305CED0033F9D7 /* SecondHand */,
 				632807362A305CED0033F9D7 /* SecondHandTests */,
 				632807402A305CEE0033F9D7 /* SecondHandUITests */,
@@ -195,6 +194,7 @@
 		6328071F2A305CED0033F9D7 /* SecondHand */ = {
 			isa = PBXGroup;
 			children = (
+				6328072E2A305CED0033F9D7 /* Info.plist */,
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
 				632807242A305CED0033F9D7 /* ViewController.swift */,
