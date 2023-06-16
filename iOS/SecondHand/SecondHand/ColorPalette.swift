@@ -8,7 +8,6 @@
 import UIKit
 
 enum ColorValue {
-    
     static let white = UIColor(named: "white")
     static let gray50 = UIColor(named: "gray50")
     static let gray100 = UIColor(named: "gray100")
@@ -49,15 +48,15 @@ enum AccentPalette {
 }
 
 enum SystemPalette {
-    // TODO: default 어쩌지?
+    static let defaultBlue = ColorValue.blue
     static let warming = ColorValue.red
     static let background = ColorValue.white
     static let backgroundWeak = ColorValue.gray200
 }
-
 
 enum ColorPalette {
     static let neutral = NeutralPalette.self
     static let accent = AccentPalette.self
     static let system = SystemPalette.self
 }
+
