@@ -1,4 +1,3 @@
-import { icons } from '@assets/icons';
 import * as S from './SnackBarStyle';
 import { Button } from '@commons/index';
 import { createPortal } from 'react-dom';
