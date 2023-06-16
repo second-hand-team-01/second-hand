@@ -29,10 +29,10 @@ public class MemberController {
     public ResponseEntity<ResponseDto<Map<String, LocationTownDto>>> showMemberLocations(@PathVariable String memberLoginId) {
         log.info("[MemberController.showMemberLocations]");
         // TODO: TreeMap도 DTO로 만들어서 반환해버리자
-        Map<String, LocationTownDto> locationDistrictDtoMap = new TreeMap<>();
-        locationDistrictDtoMap.put("main", memberService.getMainLocation(memberLoginId));
-        locationDistrictDtoMap.put("sub", memberService.getSubLocation(memberLoginId));
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, locationDistrictDtoMap));
+        Map<String, LocationTownDto> locationTownDtoMap = new TreeMap<>();
+        locationTownDtoMap.put("main", memberService.getMainLocation(memberLoginId));
+        locationTownDtoMap.put("sub", memberService.getSubLocation(memberLoginId));
+        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, locationTownDtoMap));
     }
 
 }
