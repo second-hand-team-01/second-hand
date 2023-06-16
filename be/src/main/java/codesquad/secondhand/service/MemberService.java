@@ -17,6 +17,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public LocationTownDto getMainLocation(String memberLoginId) {
+        log.info("[MemberService.getMainLocation]");
         Member member = memberRepository.findByLoginId(memberLoginId);
         return LocationTownDto.of(member.getMainLocation());
     }
