@@ -25,7 +25,6 @@ class ItemListViewController: UIViewController {
         itemListUITableView.frame = view.bounds
     }
     
-    
     override func viewWillLayoutSubviews() {
         self.configureDataSource()
         self.configureSnapshot(with: data)
