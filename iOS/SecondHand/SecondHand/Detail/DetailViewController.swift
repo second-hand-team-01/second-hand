@@ -9,7 +9,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
     var scrollView = UIScrollView()
-    
     var detailContentView = DetailConetntView()
     var toolbar = UIToolbar()
     var favoriteButton = UIButton()
@@ -25,20 +24,8 @@ class DetailViewController: UIViewController {
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        layoutScrollView()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateContentSize()
-    }
-    
-    func updateContentSize() {
-        let contentRect: CGRect = scrollView.subviews.reduce(into: .zero) { rect, view in
-            rect = rect.union(view.frame)
-        }
-        scrollView.contentSize = contentRect.size
-        detailContentView.heightAnchor.constraint(equalToConstant: contentRect.size.height).isActive = true
+        addSubViews()
+        layoutConstraint()
     }
 
     private func makeToolbar() -> UIToolbar {
