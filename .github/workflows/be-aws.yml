@@ -57,13 +57,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Get latest ECS task definition
-        id: get-latest-task-def
-        run: |
-          TASK_DEF=$(aws ecs describe-services --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --region ${AWS_REGION} --query "services[0].taskDefinition" --output text)
-          aws ecs describe-task-definition --task-definition $TASK_DEF --region ${AWS_REGION} --query "taskDefinition" --output json > task-definition.json
-          echo "TASK_DEF_JSON=$(pwd)/task-definition.json" >> $GITHUB_ENV
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -82,6 +75,13 @@ jobs:
           docker push $IMAGE_ID
           docker push $LATEST_IMAGE_ID
           echo "::set-output name=image::$IMAGE_ID"
+
+      - name: Get latest ECS task definition
+        id: get-latest-task-def
+        run: |
+          TASK_DEF=$(aws ecs describe-services --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --region ${AWS_REGION} --query "services[0].taskDefinition" --output text)
+          aws ecs describe-task-definition --task-definition $TASK_DEF --region ${AWS_REGION} --query "taskDefinition" --output json > task-definition.json
+          echo "TASK_DEF_JSON=$(pwd)/task-definition.json" >> $GITHUB_ENV
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
