@@ -29,6 +29,24 @@ class ItemListViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         self.configureDataSource()
         self.configureSnapshot(with: data)
+        self.configureNavigationItem()
+    }
+}
+
+extension ItemListViewController {
+    private func configureNavigationItem() {
+        let locationButton = UIBarButtonItem(title: "역삼1동", style: .plain, target: self, action: #selector(locationButtonTapped))
+        self.navigationItem.leftBarButtonItem = locationButton
+        
+        let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
+        self.navigationItem.rightBarButtonItem = categoryButton
+    }
+    
+    @objc private func locationButtonTapped() {
+        
+    }
+    
+    @objc private func categoryButtonTapped() {
     }
 }
 
