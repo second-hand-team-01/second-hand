@@ -20,9 +20,6 @@
 //    private final LocationRepository locationRepository;
 //
 //    public List<LocationDto> showAllLocations() {
-//
-//        // TODO: 로그인 한 사용자의 mainLocationIdx와 subLocationIdx는 제외하고 List로 만들어줘야 함
-//
 //        log.info("[LocationService.showAllLocations]");
 //        List<Location> locations = locationRepository.findAll();
 //        return locations.stream()

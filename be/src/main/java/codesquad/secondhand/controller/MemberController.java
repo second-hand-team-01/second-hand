@@ -1,7 +1,7 @@
 //package codesquad.secondhand.controller;
 //
 //import codesquad.secondhand.dto.ResponseDto;
-//import codesquad.secondhand.dto.location.LocationTownDto;
+//import codesquad.secondhand.dto.location.MainSubTownDto;
 //import codesquad.secondhand.service.MemberService;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
@@ -11,11 +11,7 @@
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 //
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.TreeMap;
-//
-//import static codesquad.secondhand.dto.StatusCode.*;
+//import static codesquad.secondhand.dto.StatusCode.RESPONSE_SUCCESS;
 //
 //@Slf4j
 //@RestController
@@ -26,13 +22,10 @@
 //    private final MemberService memberService;
 //
 //    @GetMapping("/location")
-//    public ResponseEntity<ResponseDto<Map<String, LocationTownDto>>> showMemberLocations(@PathVariable String memberLoginId) {
+//    public ResponseEntity<ResponseDto<MainSubTownDto>> showMemberLocations(@PathVariable String memberLoginId) {
 //        log.info("[MemberController.showMemberLocations]");
-        // TODO: TreeMap도 DTO로 만들어서 반환해버리자
-//        Map<String, LocationTownDto> locationTownDtoMap = new TreeMap<>();
-//        locationTownDtoMap.put("main", memberService.getMainLocation(memberLoginId));
-//        locationTownDtoMap.put("sub", memberService.getSubLocation(memberLoginId));
-//        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, locationTownDtoMap));
+//        MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(memberLoginId);
+//        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
 //    }
 //
 //}
