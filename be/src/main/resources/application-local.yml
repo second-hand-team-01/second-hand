@@ -13,16 +13,16 @@ spring:
   multipart:
     max-file-size: 100MB
     max-request-size: 100MB
-#  sql:
-#    init:
-#      schema-locations: classpath:schema.sql
-#      data-locations: classpath:data.sql
-#      mode: always
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306
-#    username: root
-#    password: 1234
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      mode: always
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username: root
+    password: 1234
   security:
     oauth2:
       client:
