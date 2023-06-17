@@ -1,3 +1,6 @@
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 aws:
   credentials:
     access-key:
@@ -19,10 +22,10 @@ spring:
       data-locations: classpath:data.sql
       mode: always
   datasource:
+    url: ENC(I9TKx8Daa4fCYGCqGTw4pUUlN4I0QdVTJ221LUufBoCxgv6GTfgQuA==)
+    username: ENC(KhRy3S/TJEnxXRHYaWpGVA==)
+    password: ENC(LsKxRtS99poEPCyCl7bbUg==)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username: root
-    password: 1234
   security:
     oauth2:
       client:
