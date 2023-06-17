@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-//	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4' // 프로퍼티 암호화를 위한 의존성 추가
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5' // Jasypt properties 암호화
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9' // Swagger를 사용하여 API 문서화를 위한 의존성 추가
 //	implementation 'mysql:mysql-connector-java:8.0.28'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
