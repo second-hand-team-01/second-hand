@@ -2,6 +2,7 @@ package codesquad.secondhand.domain;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ public class Item {
     @JoinColumn(name = "main_image_idx")
     private ItemImage itemImage;
 
+    @CreatedDate
     @Column(name = "posted_at", nullable = false)
     private LocalDateTime postedAt;
 
