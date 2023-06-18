@@ -1,9 +1,8 @@
 package codesquad.secondhand.domain;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +13,6 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "item")
-@NoArgsConstructor
 public class Item {
 
     @Id
@@ -38,6 +36,7 @@ public class Item {
     @JoinColumn(name = "main_image_idx")
     private ItemImage itemImage;
 
+    @CreatedDate
     @Column(name = "posted_at", nullable = false)
     private LocalDateTime postedAt;
 
@@ -64,8 +63,4 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Interest> interests = new ArrayList<>();
 
-    @PrePersist
-    public void prePersist() {
-        this.postedAt = LocalDateTime.now();
-    }
 }

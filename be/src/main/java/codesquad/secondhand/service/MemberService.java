@@ -32,6 +32,6 @@ public class MemberService {
     public MainSubTownDto getMainSubLocation(String memberLoginId) { // mainLocation, subLocation 동시에 가져오는 메서드
         log.info("[MemberService.getMainSubLocation]");
         Member member = memberRepository.findByLoginId(memberLoginId);
-        return MainSubTownDto.of(LocationTownDto.of(member.getMainLocation()), LocationTownDto.of(member.getSubLocation()));
+        return MainSubTownDto.of(member);
     }
 }
