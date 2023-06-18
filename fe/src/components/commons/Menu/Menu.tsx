@@ -8,6 +8,8 @@ interface MenuProps extends MenuStyleProps {
   onClick?: () => void;
 }
 
+// TODO: props로 받은 onClick을 MenuButton에 전달해야 함
+
 export const Menu = ({ location, menuButtonPropsList }: MenuProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
