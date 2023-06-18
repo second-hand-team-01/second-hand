@@ -1,6 +1,7 @@
 package codesquad.secondhand.controller;
 
 import codesquad.secondhand.dto.ResponseDto;
+import codesquad.secondhand.dto.ResponseListDto;
 import codesquad.secondhand.dto.category.CategoryDto;
 import codesquad.secondhand.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,10 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<CategoryDto>>> showCategories() {
+    public ResponseEntity<ResponseListDto<CategoryDto>> showCategories() {
         log.info("[CategoryController.showCategories]");
         List<CategoryDto> categoryDtos = categoryService.showAllCategories();
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, categoryDtos));
+        return ResponseEntity.ok(ResponseListDto.of(RESPONSE_SUCCESS, categoryDtos));
     }
 
 }
