@@ -1,0 +1,90 @@
+# Frontend Service
+name: Deploy Frontend Service to Amazon ECS
+
+on:
+  push:
+    branches:
+      - main
+#    paths:
+#      - 'fe/**'
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: secondhand_team1_ecr
+  ECS_CLUSTER: secondhand-cs
+  ECS_SERVICE: secondhand-service-web
+  CONTAINER_NAME: web
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/fe/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm install --prefix ${{ github.workspace }}/fe
+
+      - name: Build the project
+        run: npm run build --prefix ${{ github.workspace }}/fe
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Docker Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          HASH=$(git log -1 --pretty=%h)
+          IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-${HASH}
+          LATEST_IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-latest
+          docker build -t $IMAGE_ID -f ${{ github.workspace }}/Dockerfile.fe .
+          docker tag $IMAGE_ID $LATEST_IMAGE_ID
+          docker push $IMAGE_ID
+          docker push $LATEST_IMAGE_ID
+          echo "::set-output name=image::$IMAGE_ID"
+
+      - name: Get latest ECS task definition
+        id: get-latest-task-def
+        run: |
+          TASK_DEF=$(aws ecs describe-services --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --region ${AWS_REGION} --query "services[0].taskDefinition" --output text)
+          aws ecs describe-task-definition --task-definition $TASK_DEF --region ${AWS_REGION} --query "taskDefinition" --output json > task-definition.json
+          echo "TASK_DEF_JSON=$(pwd)/task-definition.json" >> $GITHUB_ENV
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.TASK_DEF_JSON }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
