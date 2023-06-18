@@ -10,6 +10,7 @@ import { InfoBar } from './InfoBar/InfoBar';
 import { NavBar } from './NavBar/NavBar';
 import { Layout } from './Layout/Layout';
 import { TabBar } from './TabBar/TabBar';
+import { Menu } from './Menu/Menu';
 
 export {
   Icon,
@@ -24,4 +25,5 @@ export {
   NavBar,
   Layout,
   TabBar,
+  Menu,
 };
