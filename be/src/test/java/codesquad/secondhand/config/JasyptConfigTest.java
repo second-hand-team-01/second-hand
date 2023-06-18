@@ -1,9 +1,12 @@
 package codesquad.secondhand.config;
 
-import org.assertj.core.api.Assertions;
+import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
+@Slf4j
 class JasyptConfigTest {
 
     @Test
@@ -16,11 +19,13 @@ class JasyptConfigTest {
         String encryptUsername = jasyptEncrypt(username);
         String encryptPassword = jasyptEncrypt(password);
 
-        System.out.println("encryptUrl: " + encryptUrl);
-        System.out.println("encryptUsername: " + encryptUsername);
-        System.out.println("encryptPassword: " + encryptPassword);
+        log.info("Encrypted URL: {}", encryptUrl);
+        log.info("Encrypted username: {}", encryptUsername);
+        log.info("Encrypted password: {}", encryptPassword);
 
-        Assertions.assertThat(url).isEqualTo(jasyptDecryt(encryptUrl));
+        assertThat(url).isEqualTo(jasyptDecryt(encryptUrl));
+        assertThat(username).isEqualTo(jasyptDecryt(encryptUsername));
+        assertThat(password).isEqualTo(jasyptDecryt(encryptPassword));
     }
 
     private String jasyptEncrypt(String input) {
