@@ -1,6 +1,6 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.domain.Member;
+import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.dto.location.LocationTownDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.repository.MemberRepository;

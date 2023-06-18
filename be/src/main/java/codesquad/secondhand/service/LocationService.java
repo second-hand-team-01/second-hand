@@ -1,6 +1,6 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.domain.Location;
+import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.dto.location.LocationDto;
 import codesquad.secondhand.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
