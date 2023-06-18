@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "item")
-@NoArgsConstructor
 public class Item {
 
     @Id
