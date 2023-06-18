@@ -1,6 +1,6 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.domain.Category;
+import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.dto.category.CategoryDto;
 import codesquad.secondhand.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;

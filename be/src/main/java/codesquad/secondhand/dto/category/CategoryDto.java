@@ -1,6 +1,6 @@
 package codesquad.secondhand.dto.category;
 
-import codesquad.secondhand.domain.Category;
+import codesquad.secondhand.entity.Category;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

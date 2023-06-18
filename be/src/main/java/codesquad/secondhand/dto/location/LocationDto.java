@@ -1,6 +1,6 @@
 package codesquad.secondhand.dto.location;
 
-import codesquad.secondhand.domain.Location;
+import codesquad.secondhand.entity.Location;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
