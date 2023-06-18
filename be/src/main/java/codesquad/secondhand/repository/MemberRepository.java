@@ -1,10 +1,10 @@
-//package codesquad.secondhand.repository;
-//
-//import codesquad.secondhand.domain.Member;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//
-//public interface MemberRepository extends JpaRepository<Member, Long> {
-//
-//    Member findByLoginId(String loginId);
-//
-//}
+package codesquad.secondhand.repository;
+
+import codesquad.secondhand.entity.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
+
+    Member findByLoginId(String loginId);
+
+}

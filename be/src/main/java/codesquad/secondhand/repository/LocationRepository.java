@@ -1,9 +1,7 @@
-//package codesquad.secondhand.repository;
-//
-//import codesquad.secondhand.domain.Location;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.stereotype.Repository;
-//
-//@Repository
-//public interface LocationRepository extends JpaRepository<Location, Long> {
-//}
+package codesquad.secondhand.repository;
+
+import codesquad.secondhand.entity.Location;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LocationRepository extends JpaRepository<Location, Long> {
+}
