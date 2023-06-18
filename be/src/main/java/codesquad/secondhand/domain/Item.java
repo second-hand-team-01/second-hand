@@ -1,8 +1,6 @@
 package codesquad.secondhand.domain;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
@@ -63,8 +61,4 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Interest> interests = new ArrayList<>();
 
-    @PrePersist
-    public void prePersist() {
-        this.postedAt = LocalDateTime.now();
-    }
 }
