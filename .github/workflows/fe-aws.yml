@@ -60,7 +60,7 @@ jobs:
           HASH=$(git log -1 --pretty=%h)
           IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-${HASH}
           LATEST_IMAGE_ID=$ECR_REGISTRY/secondhand_team1_ecr:fe-latest
-          docker build -t $IMAGE_ID -f ${{ github.workspace }}/Dockerfile.fe ${{ github.workspace }}/fe
+          docker build -t $IMAGE_ID -f ${{ github.workspace }}/Dockerfile.fe ${{ github.workspace }}
           docker tag $IMAGE_ID $LATEST_IMAGE_ID
           docker push $IMAGE_ID
           docker push $LATEST_IMAGE_ID
