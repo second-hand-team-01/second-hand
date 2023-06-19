@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '@styles/GlobalStyle';
 import { Profile } from './components/commons';
-import { theme } from '@styles/GlobalStyle';
+import { theme } from '@styles/theme';
 import { Icon } from './components/commons';
 import '@styles/index.css';
 

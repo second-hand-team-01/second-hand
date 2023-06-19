@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { colors, palette } from '@styles/Color';
-import { typography, fontWeight } from '@styles/Typography';
+import { typography, fontWeights } from '@styles/Typography';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
@@ -143,10 +143,3 @@ export const GlobalStyle = createGlobalStyle`
       font-family: sans-serif;
     }
 `;
-
-export const theme = {
-  colors,
-  palette,
-  typography,
-  fontWeight,
-};
