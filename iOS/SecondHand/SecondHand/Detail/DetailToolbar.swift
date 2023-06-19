@@ -18,7 +18,7 @@ class DetailToolbar: UIToolbar {
         favoriteButton = makeFavoriteButton()
         chatButton = makeChatButton()
         self.priceLabel.setTitleTextAttributes([
-            NSAttributedString.Key.font: Typography.footNote
+            NSAttributedString.Key.font: UIFont.typo.footNote
         ], for: .normal)
     }
     

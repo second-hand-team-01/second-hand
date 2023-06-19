@@ -61,7 +61,7 @@ class DetailConetntView: UIView {
         
         button.setTitle("판매중", for: .normal)
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        button.titleLabel?.font = Typography.caption1
+        button.titleLabel?.font = .typo.caption1
         button.semanticContentAttribute = .forceRightToLeft
         button.tintColor = .black
         button.layer.borderColor = UIColor.gray.cgColor

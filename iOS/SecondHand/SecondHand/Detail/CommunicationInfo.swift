@@ -81,8 +81,8 @@ class CommunicationInfo: UIView {
     }
     
     private func setFont() {
-        chatCountLabel.font = Typography.footNote
-        favoriteCountLabel.font = Typography.footNote
-        viewsCountLabel.font = Typography.footNote
+        chatCountLabel.font = .typo.footNote
+        favoriteCountLabel.font = .typo.footNote
+        viewsCountLabel.font = .typo.footNote
     }
 }

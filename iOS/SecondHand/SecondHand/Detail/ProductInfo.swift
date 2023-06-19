@@ -41,9 +41,9 @@ class ProductInfo: UIView {
     }
     
     private func setFont() {
-        self.nameLabel.font = Typography.headLine
-        self.annotationLabel.font = Typography.footNote
-        self.descriptionLabel.font = Typography.body
+        self.nameLabel.font = .typo.headLine
+        self.annotationLabel.font = .typo.footNote
+        self.descriptionLabel.font = .typo.body
     }
     
     private func addSubviews() {
