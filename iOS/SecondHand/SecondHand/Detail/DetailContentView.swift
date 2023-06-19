@@ -19,7 +19,6 @@ class DetailConetntView: UIView {
         super.init(frame: frame)
         statusButton = makeStatusButton()
         setUI()
-        setFont()
     }
     
     required init?(coder: NSCoder) {
@@ -53,14 +52,8 @@ class DetailConetntView: UIView {
     }
     
     private func setUI() {
-        sellerInfo.layer.cornerRadius = 12
-        sellerInfo.backgroundColor = .lightGray
         productImageView.tintColor = .orange
         statusButton = makeStatusButton()
-    }
-    
-    private func setFont() {
-        statusButton.titleLabel?.font = Typography.caption1
     }
     
     private func makeStatusButton() -> UIButton {
@@ -68,6 +61,7 @@ class DetailConetntView: UIView {
         
         button.setTitle("판매중", for: .normal)
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+        button.titleLabel?.font = Typography.caption1
         button.semanticContentAttribute = .forceRightToLeft
         button.tintColor = .black
         button.layer.borderColor = UIColor.gray.cgColor

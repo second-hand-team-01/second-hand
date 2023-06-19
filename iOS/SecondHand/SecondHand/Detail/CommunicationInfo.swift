@@ -54,14 +54,27 @@ class CommunicationInfo: UIView {
     
     private func layoutConstraints() {
         addSubviews()
-        
+        layoutChatCountLabel()
+        layoutFavoriteCountLabel()
+        layoutViewsCountLabel()
+    }
+    
+    private func layoutChatCountLabel() {
         NSLayoutConstraint.activate([
             chatCountLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            chatCountLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            
+            chatCountLabel.topAnchor.constraint(equalTo: self.topAnchor)
+        ])
+    }
+    
+    private func layoutFavoriteCountLabel() {
+        NSLayoutConstraint.activate([
             favoriteCountLabel.leadingAnchor.constraint(equalTo: chatCountLabel.trailingAnchor, constant: 8),
             favoriteCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor),
-
+        ])
+    }
+    
+    private func layoutViewsCountLabel() {
+        NSLayoutConstraint.activate([
             viewsCountLabel.leadingAnchor.constraint(equalTo: favoriteCountLabel.trailingAnchor, constant: 8),
             viewsCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor)
         ])

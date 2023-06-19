@@ -62,20 +62,38 @@ class ProductInfo: UIView {
     
     private func layoutConstraints() {
         addSubviews()
-        
+        layoutNameLabel()
+        layoutAnnotationLabel()
+        layoutDescriptionLabel()
+        layoutCommunicationLabel()
+    }
+    
+    private func layoutNameLabel() {
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
             nameLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            
+        ])
+    }
+    
+    private func layoutAnnotationLabel() {
+        NSLayoutConstraint.activate([
             annotationLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             annotationLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
-            annotationLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            
+            annotationLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8)
+        ])
+    }
+    
+    private func layoutDescriptionLabel() {
+        NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16),
-            
+            descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16)
+        ])
+    }
+    
+    private func layoutCommunicationLabel() {
+        NSLayoutConstraint.activate([
             communicationInfo.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             communicationInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             communicationInfo.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),

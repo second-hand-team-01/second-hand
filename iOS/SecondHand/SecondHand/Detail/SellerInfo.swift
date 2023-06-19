@@ -13,6 +13,8 @@ class SellerInfo: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.layer.cornerRadius = 12
+        self.backgroundColor = ColorPalette.neutral.backgroundWeak
         self.indicatorLabel.text = "판매자 정보"
         self.nameLabel.lineBreakMode = .byCharWrapping
     }
@@ -44,13 +46,19 @@ class SellerInfo: UIView {
     
     private func layoutConstraint() {
         addSubviews()
-
+        layoutIndicatorLabel()
+        layoutNameLabel()
+    }
+    
+    private func layoutIndicatorLabel() {
         NSLayoutConstraint.activate([
             indicatorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             indicatorLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
         indicatorLabel.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
-
+    }
+    
+    private func layoutNameLabel() {
         NSLayoutConstraint.activate([
             nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
