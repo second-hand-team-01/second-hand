@@ -9,7 +9,11 @@ import { FilterBar } from './FilterBar/FilterBar';
 import { InfoBar } from './InfoBar/InfoBar';
 import { NavBar } from './NavBar/NavBar';
 import { Layout } from './Layout/Layout';
+import { Slide } from './Slide/Slide';
 import { TabBar } from './TabBar/TabBar';
+import { BottomSheet } from './BottomSheet/BottomSheet';
+import { Dialog } from './Dialog/Dialog';
+import { SnackBar } from './SnackBar/SnackBar';
 
 export {
   Icon,
@@ -23,5 +27,9 @@ export {
   InfoBar,
   NavBar,
   Layout,
+  Slide,
   TabBar,
+  BottomSheet,
+  Dialog,
+  SnackBar,
 };

@@ -89,7 +89,6 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0;
       border: 0;
       font-size: 100%;
-      font: inherit;
       vertical-align: baseline;
     }
     article,
@@ -139,7 +138,11 @@ export const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
     }
     /* end of reset-css*/
-    `;
+
+    body {
+      font-family: sans-serif;
+    }
+`;
 
 export const theme = {
   colors,

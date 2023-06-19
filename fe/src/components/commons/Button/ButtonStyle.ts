@@ -1,63 +1,79 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyleProps } from './Button';
-
-export interface ButtonStyleProps {
-  title?: string;
-  shape: string;
-  state: string;
-  textAlign: string;
-  icon?: keyof typeof icons;
-  iconSize?: number;
-  iconColor?: string;
-}
-
+import { icons } from '@assets/icons/index';
+import { colors, palette } from '@styles/Color';
 
 const shapes = {
-  floating: {
-    padding: '10px',
-    width: '56px',
-    height: '56px',
-    borderRadius: '56px',
-  },
-  large: {
-    padding: '16px 20px',
-    gap: '4px',
-    width: '100%',
-    height: '52px',
-    borderRadius: '50px',
-    fontSize: ({ theme }) => theme.typography.subhead.size,
-    lineHeight: ({ theme }) => theme.typography.subhead.lineHeight,
-    fontWeight: ({ theme }) => theme.typography.subhead.fontWeight,
-  },
-  small: {
-    padding: '0px 16px',
-    width: 'fit-content',
-    height: '32px',
-    borderRadius: '50px',
-    fontSize: ({ theme }) => theme.typography.caption1.size,
-    lineHeight: ({ theme }) => theme.typography.caption1.lineHeight,
-    fontWeight: ({ theme }) => theme.typography.caption1.fontWeight,
-  },
+  floating: css`
+    padding: 10px;
+    width: 56px;
+    height: 56px;
+    border-radius: 56px;
+  `,
+  large: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 16px 20px;
+      gap: 4px;
+      width: 100%;
+      height: 52px;
+      border-radius: 50px;
+      font-size: ${theme.typography.subhead.size};
+      line-height: ${theme.typography.subhead.lineHeight};
+      font-weight: ${theme.typography.subhead.fontWeight};
+    `}
+  `,
+  small: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 0px 16px;
+      width: fit-content;
+      height: 32px;
+      border-radius: 50px;
+      font-size: ${theme.typography.body.size};
+      line-height: ${theme.typography.body.lineHeight};
+      font-weight: ${theme.typography.body.fontWeight};
+    `}
+  `,
+  ghost: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 4px 8px;
+      width: fit-content;
+      font-size: ${theme.typography.subhead.size};
+      line-height: ${theme.typography.subhead.lineHeight};
+      font-weight: ${theme.typography.subhead.fontWeight};
+      background-color: transparent;
+      color: ${theme.colors.accentText};
+    `}
+  `,
 };
 
 const textAlignments = {
-  left: {
-    justifyContent: 'space-between',
-  },
-  center: {
-    justifyContent: 'center',
-  },
+  left: css`
+    justify-content: space-between;
+  `,
+  center: css`
+    justify-content: center;
+  `,
 };
 
 const states = {
-  default: {
-    backgroundColor: ({ theme }) => theme.colors.neutralBackground,
-  },
-  active: {
-    backgroundColor: ({ theme }) => theme.colors.accentBackgroundPrimary,
-    color: ({ theme }) => theme.colors.neutralBackground,
-  },
+  default: css`
+    background-color: ${({ theme }) => theme.colors.neutralBackground};
+  `,
+  active: css`
+    background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
+    color: ${({ theme }) => theme.colors.neutralBackground};
+  `,
 };
+
+export interface ButtonStyleProps {
+  title?: string;
+  shape?: keyof typeof shapes;
+  state?: keyof typeof states;
+  textAlign?: keyof typeof textAlignments;
+  icon?: keyof typeof icons;
+  iconSize?: number;
+  color?: keyof typeof palette | keyof typeof colors;
+  hasBorderRadius?: boolean;
+}
 
 const shapesStyles = css<ButtonStyleProps>`
   ${({ shape }) =>
@@ -87,11 +103,13 @@ const textAlignStyles = css<ButtonStyleProps>`
 `;
 
 export const Button = styled.button<ButtonStyleProps>`
-  ${shapesStyles}
   ${stateStyles}
+  ${shapesStyles}
   ${textAlignStyles}
   display: flex;
   align-items: center;
   border: none;
   cursor: pointer;
+  ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
+  ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
 `;
