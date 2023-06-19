@@ -12,38 +12,44 @@ class DetailConetntView: UIView {
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()
     var statusButton = UIButton()
-    var productNameLabel = UILabel()
-    var annotationLabel = UILabel()
-    var descriptionLabel = UILabel()
-    var communicationLabel = UILabel()
-    var chatLabel = UILabel()
-    var chatCountLabel = UILabel()
-    var favoriteLabel = UILabel()
-    var favoriteCountLabel = UILabel()
-    var viewsLabel = UILabel()
-    var viewsCountLabel = UILabel()
+    var productInfo = ProductInfo()
+    var communicationInfo = CommunicationInfo()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addSubviews()
-        layoutConstraint()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         statusButton = makeStatusButton()
         setUI()
         setFont()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layoutConstraint()
+    }
+
     func configure() {
         productImageView.image = UIImage(systemName: "carrot.fill")
-        productNameLabel.text = "빈티지 롤러 스케이트"
-        annotationLabel.text = "가구/인테리어 ・ 1분전"
-        descriptionLabel.text = "어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n 사이즈는 235 입니다.\n fdjkgnsdfjkngsdfjknsgfkjnadfsgjnk"
-        sellerInfo.configure(name: "Wood")
-        chatLabel.text = "채팅"
-        chatCountLabel.text = "0"
-        favoriteLabel.text = "관심"
-        favoriteCountLabel.text = "0"
-        viewsLabel.text = "조회"
-        viewsCountLabel.text = "1"
+        sellerInfo.configure(nameLabel: "Wood")
+        
+        let productName = "빈티지 롤러 스케이트"
+        let annotation = "가구/인테리어 ・ 1분전"
+        let description = """
+            어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n
+            촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다.
+            새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n
+            사이즈는 235 입니다.\n fdjkgnsdfjkngsdfjknsgfkjnadfsgjnk
+        """
+        productInfo.configure(name: productName,
+                              annotation: annotation,
+                              description: description)
+        
+        communicationInfo.configure(chatCount: 0,
+                                    favoriteCount: 0,
+                                    viewsCount: 1)
     }
     
     private func setUI() {
@@ -51,20 +57,10 @@ class DetailConetntView: UIView {
         sellerInfo.backgroundColor = .lightGray
         productImageView.tintColor = .orange
         statusButton = makeStatusButton()
-        descriptionLabel.numberOfLines = 0
     }
     
     private func setFont() {
         statusButton.titleLabel?.font = Typography.caption1
-        productNameLabel.font = Typography.headLine
-        annotationLabel.font = Typography.footNote
-        descriptionLabel.font = Typography.body
-        chatLabel.font = Typography.footNote
-        chatCountLabel.font = Typography.footNote
-        favoriteLabel.font = Typography.footNote
-        favoriteCountLabel.font = Typography.footNote
-        viewsLabel.font = Typography.footNote
-        viewsCountLabel.font = Typography.footNote
     }
     
     private func makeStatusButton() -> UIButton {

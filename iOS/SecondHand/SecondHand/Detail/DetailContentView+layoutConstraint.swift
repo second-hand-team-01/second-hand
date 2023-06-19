@@ -14,15 +14,7 @@ extension DetailConetntView {
             pageControl,
             sellerInfo,
             statusButton,
-            productNameLabel,
-            annotationLabel,
-            descriptionLabel,
-            chatLabel,
-            chatCountLabel,
-            favoriteLabel,
-            favoriteCountLabel,
-            viewsLabel,
-            viewsCountLabel,
+            productInfo
         ]
         
         subViews.forEach {
@@ -32,6 +24,8 @@ extension DetailConetntView {
     }
     
     func layoutConstraint() {
+        addSubviews()
+        
         let heightRatio: CGFloat = 5 / 4
         NSLayoutConstraint.activate([
             productImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -51,42 +45,14 @@ extension DetailConetntView {
             sellerInfo.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        sellerInfo.layoutConstraint()
-        
         NSLayoutConstraint.activate([
             statusButton.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
             statusButton.topAnchor.constraint(equalTo: sellerInfo.bottomAnchor, constant: 16),
             
-            productNameLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            productNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
-            productNameLabel.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
-            
-            annotationLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            annotationLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 8),
-            annotationLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
-//
-            descriptionLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: sellerInfo.trailingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16),
-            
-            chatLabel.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            chatLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-
-            chatCountLabel.leadingAnchor.constraint(equalTo: chatLabel.trailingAnchor, constant: 4),
-            chatCountLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-
-            favoriteLabel.leadingAnchor.constraint(equalTo: chatCountLabel.trailingAnchor, constant: 8),
-            favoriteLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-
-            favoriteCountLabel.leadingAnchor.constraint(equalTo: favoriteLabel.trailingAnchor, constant: 4),
-            favoriteCountLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-
-            viewsLabel.leadingAnchor.constraint(equalTo: favoriteCountLabel.trailingAnchor, constant: 8),
-            viewsLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-
-            viewsCountLabel.leadingAnchor.constraint(equalTo: viewsLabel.trailingAnchor, constant: 4),
-            viewsCountLabel.topAnchor.constraint(equalTo: chatLabel.topAnchor),
-            viewsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
+            productInfo.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
+            productInfo.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
+            productInfo.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
+            productInfo.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

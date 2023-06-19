@@ -9,7 +9,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     var scrollView = UIScrollView()
-    var detailContentView = DetailConetntView()
+    var detailContentView = DetailConetntView(frame: .zero)
     var toolbar = UIToolbar()
     var favoriteButton = UIButton()
     var priceLabel = UILabel()
