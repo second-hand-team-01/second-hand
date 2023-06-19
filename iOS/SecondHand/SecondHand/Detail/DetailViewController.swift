@@ -10,7 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
     var scrollView = UIScrollView()
     var detailContentView = DetailConetntView(frame: .zero)
-    var toolbar = UIToolbar()
+    var toolbar = DetailToolbar(frame: .zero)
     var favoriteButton = UIButton()
     var priceLabel = UILabel()
 
@@ -18,35 +18,14 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         detailContentView.configure()
+        toolbar.configure(price: "123,000")
         self.tabBarController?.tabBar.isHidden = true
-        self.toolbar = makeToolbar()
+        self.scrollView.contentInsetAdjustmentBehavior = .never
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         addSubViews()
         layoutConstraint()
-    }
-
-    private func makeToolbar() -> UIToolbar {
-        let toolbar = UIToolbar()
-        
-        let chatButton = UIButton()
-        chatButton.setTitle("채팅방으로 이동", for: .normal)
-        chatButton.setTitleColor(.orange, for: .normal)
-        
-        toolbar.items = [
-            UIBarButtonItem(title: "150,000원",
-                            image: UIImage(systemName: "house")),
-            UIBarButtonItem(customView: makeFavoriteButton())
-        ]
-        
-        return toolbar
-    }
-
-    private func makeFavoriteButton() -> UIButton {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        return button
     }
 }

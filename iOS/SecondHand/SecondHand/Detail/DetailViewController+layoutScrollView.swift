@@ -61,7 +61,7 @@ extension DetailViewController {
             toolbar.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
             toolbar.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            toolbar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
