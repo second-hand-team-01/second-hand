@@ -1,4 +1,4 @@
-import { removeEmptyKeyValues } from '@utils/common/common';
+import { removeEmptyKeyValues, getType, Type } from '@utils/common/common';
 import { HOST, ACCESS_TOKEN } from '@constants/apis';
 import { getAccessToken } from '@services/login/login';
 import { ERROR_MESSAGE } from '@constants/error';
@@ -12,7 +12,7 @@ export interface FetchProps<B> {
   options?: HeadersInit;
 }
 
-export const addQueriesToURL = <B>(url: string, queries: object) => {
+export const addQueriesToURL = (url: string, queries: object) => {
   const copiedQueries = removeEmptyKeyValues(queries);
   const queryString = copiedQueries
     ? '?' + new URLSearchParams(Object.entries(copiedQueries)).toString()
@@ -28,7 +28,7 @@ export const setHeader = <B>(
 ) => {
   let headers = {};
 
-  if (typeof body === 'object') {
+  if (getType(body) === Type.LiteralObject) {
     headers['Content-Type'] = 'application/json';
   }
 
@@ -63,7 +63,7 @@ export const customFetch = async <B>({
 
   const init = {
     method,
-    body: JSON.stringify(body),
+    body: getType(body) === Type.LiteralObject ? JSON.stringify(body) : body,
   };
 
   const headers = setHeader<B>(body, options, auth);
