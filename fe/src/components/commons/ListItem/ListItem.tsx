@@ -92,7 +92,7 @@ export const ListItem = ({
           </S.States>
         </S.Info>
         <S.ChatAndLike>
-          {chat && (
+          {!!chat && (
             <S.ChatAndLikeInfo>
               <Icon
                 name={chatIcon.name}
@@ -102,7 +102,7 @@ export const ListItem = ({
               <span>{chat}</span>
             </S.ChatAndLikeInfo>
           )}
-          {like && (
+          {!!like && (
             <S.ChatAndLikeInfo>
               <Icon
                 name={heartIcon.name}
