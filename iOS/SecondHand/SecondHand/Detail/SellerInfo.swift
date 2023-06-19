@@ -8,41 +8,35 @@
 import UIKit
 
 class SellerInfo: UIView {
-    var label = UILabel()
-    var name = UILabel()
+    private var indicatorLabel = UILabel()
+    private var nameLabel = UILabel()
 
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutConstraint()
     }
     
-    func configure(name: String) {
-        self.label.text = "판매자 정보"
-        self.name.lineBreakMode = .byCharWrapping
-        self.name.text = nameg
+    func configure(nameLabel: String) {
+        self.indicatorLabel.text = "판매자 정보"
+        self.nameLabel.lineBreakMode = .byCharWrapping
+        self.nameLabel.text = nameLabel
     }
     
     private func layoutConstraint() {
-        self.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(indicatorLabel)
+        indicatorLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            indicatorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            indicatorLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
-        label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
+        indicatorLabel.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
         
-        self.addSubview(name)
-        name.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            name.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            name.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            name.leadingAnchor.constraint(greaterThanOrEqualTo: label.trailingAnchor, constant: 16)
+            nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: indicatorLabel.trailingAnchor, constant: 16)
         ])
-    }
-
-    func configure(name: String) {
-        self.label.text = "판매자 정보"
-        self.name.lineBreakMode = .byCharWrapping
-        self.name.text = name
     }
 }
