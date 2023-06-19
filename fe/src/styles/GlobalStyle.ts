@@ -1,6 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors, palette } from '@styles/Color';
-import { typography, fontWeights } from '@styles/Typography';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
