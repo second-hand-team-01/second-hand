@@ -47,7 +47,7 @@ export const HeaderBottom = styled.div`
 export const Title = styled.p`
   font-size: ${({ theme }) => theme.typography.body.size};
   line-height: ${({ theme }) => theme.typography.body.lineHeight};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
 export const Contents = styled.div`

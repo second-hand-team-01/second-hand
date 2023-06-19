@@ -30,7 +30,7 @@ export const Wrap = styled.div<WrapStyleProps>`
 
 export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.body.size};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeights.light};
   line-height: ${({ theme }) => theme.typography.body.lineHeight};
   display: grid;
   align-items: center;
@@ -55,8 +55,7 @@ export const TextInput = styled.input<TextInputStyleProps>`
     shape === 'large'
       ? theme.typography.body.lineHeight
       : theme.typography.subhead.lineHeight};
-  font-weight: ${({ theme, shape }) => theme.fontWeight.re};
-
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
   &:placeholder {
     color: ${({ theme }) => theme.colors.neutralTextWeak};
   }
