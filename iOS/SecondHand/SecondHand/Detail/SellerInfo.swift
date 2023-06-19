@@ -11,7 +11,18 @@ class SellerInfo: UIView {
     var label = UILabel()
     var name = UILabel()
 
-    func layoutConstraint() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layoutConstraint()
+    }
+    
+    func configure(name: String) {
+        self.label.text = "판매자 정보"
+        self.name.lineBreakMode = .byCharWrapping
+        self.name.text = nameg
+    }
+    
+    private func layoutConstraint() {
         self.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
