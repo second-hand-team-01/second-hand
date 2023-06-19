@@ -151,22 +151,22 @@ class ItemListTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             likeCountLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -21),
-            likeCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            likeCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
         ])
 
         NSLayoutConstraint.activate([
             likeSymbolLabel.topAnchor.constraint(equalTo: likeCountLabel.topAnchor),
-            likeSymbolLabel.trailingAnchor.constraint(equalTo: self.likeCountLabel.leadingAnchor),
+            likeSymbolLabel.trailingAnchor.constraint(equalTo: self.likeCountLabel.leadingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             commentCountLabel.topAnchor.constraint(equalTo: self.likeCountLabel.topAnchor),
-            commentCountLabel.trailingAnchor.constraint(equalTo: self.likeSymbolLabel.leadingAnchor, constant: -4),
+            commentCountLabel.trailingAnchor.constraint(equalTo: self.likeSymbolLabel.leadingAnchor, constant: -4)
         ])
         
         NSLayoutConstraint.activate([
             commentSymbolLabel.topAnchor.constraint(equalTo: self.likeCountLabel.topAnchor),
-            commentSymbolLabel.trailingAnchor.constraint(equalTo: self.commentCountLabel.leadingAnchor),
+            commentSymbolLabel.trailingAnchor.constraint(equalTo: self.commentCountLabel.leadingAnchor)
         ])
     }
 }

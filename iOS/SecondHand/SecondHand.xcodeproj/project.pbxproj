@@ -295,12 +295,12 @@
 				FF61AD282A36F294006AE167 /* ItemListViewController.swift */,
 				FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */,
 				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
-				FFD62C0E2A3C1B770014D2D4 /* New Group */,
+				FFD62C0E2A3C1B770014D2D4 /* View */,
 			);
 			path = ItemList;
 			sourceTree = "<group>";
 		};
-		FFD62C0E2A3C1B770014D2D4 /* New Group */ = {
+		FFD62C0E2A3C1B770014D2D4 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				FFD62C1B2A3C1BBF0014D2D4 /* CapsuleLabel.swift */,
@@ -310,7 +310,7 @@
 				FFD62C1C2A3C1BBF0014D2D4 /* TimeLabel.swift */,
 				FFD62C1D2A3C1BBF0014D2D4 /* TitleLabel.swift */,
 			);
-			path = "New Group";
+			path = View;
 			sourceTree = "<group>";
 		};
 		FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */ = {
