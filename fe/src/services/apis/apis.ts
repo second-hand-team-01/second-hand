@@ -61,7 +61,7 @@ export const customFetch = async <B>({
     url = addQueriesToURL(url, queries);
   }
 
-  const init = {
+  const init: any = {
     method,
     body: getType(body) === Type.LiteralObject ? JSON.stringify(body) : body,
   };

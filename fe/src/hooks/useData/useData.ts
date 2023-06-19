@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { customFetch, FetchProps } from '@services/apis/apis';
 
-const useData = <B>(fetchProps: FetchProps<B>) => {
+export const useData = <R, B>(fetchProps: FetchProps<B>): R | null => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ const useData = <B>(fetchProps: FetchProps<B>) => {
         const fetchedData = await customFetch(fetchProps);
         if (fetchedData && fetchedData.error) {
           console.error(`Error: ${fetchedData.error}`);
-          return;
+          return null;
         }
         setData(fetchedData);
       } catch (error) {

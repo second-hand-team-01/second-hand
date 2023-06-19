@@ -2,7 +2,7 @@ import * as S from './SlideStyle';
 import { SlideStyleProps } from './SlideStyle';
 import { useState, useRef, useEffect } from 'react';
 import { SlidePageIndicator } from './SlidePageIndicator/SlidePageIndicator';
-import { getFileNameFromUrl } from '@services/slide';
+import { getFileNameFromUrl } from '@services/slide/slide';
 
 interface SlideProps extends SlideStyleProps {
   urls: string[];

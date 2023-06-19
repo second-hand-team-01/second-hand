@@ -25,10 +25,11 @@
       "@styles/*": ["src/styles/*"],
       "@services/*": ["src/services/*"],
       "@assets/*": ["src/assets/*"],
-      "@types/*": ["src/types/*"],
+      "@type-store/*": ["src/type-store/*"],
       "@constants/*": ["src/constants/*"],
       "@stores/*": ["src/stores/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@mocks/*": ["src/mocks/*"]
     }
   },
   "include": ["src"]

@@ -3,6 +3,7 @@ import * as S from './ListItemStyle';
 import { icons } from '@assets/icons';
 import { Icon } from '@components/commons';
 import { colors, palette } from '@styles/Color';
+import { convertDateToTimeStamp } from '@utils/common/common';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -14,17 +15,30 @@ export interface ListItemProps {
   title: string;
   imgUrl: string;
   location: string;
-  timeStamp: string;
+  timeStamp: Date;
   price: number | null;
   state: string | null;
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
-  moreBtnIcon: IconProps;
-  chatIcon: IconProps;
-  heartIcon: IconProps;
   onClick?: () => void;
 }
+
+const moreBtnIcon: IconProps = {
+  name: 'more',
+  size: 15,
+  color: 'neutralTextWeak',
+};
+const chatIcon: IconProps = {
+  name: 'talk',
+  size: 13,
+  color: 'neutralText',
+};
+const heartIcon: IconProps = {
+  name: 'heart',
+  size: 13,
+  color: 'neutralText',
+};
 
 /* TODO: API로 받아온 price, chat, like 데이터는 convert를 통해서 숫자 혹은 null로 전달하기 */
 
@@ -38,21 +52,6 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
-  moreBtnIcon = {
-    name: 'more',
-    size: 15,
-    color: 'neutralTextWeak',
-  },
-  chatIcon = {
-    name: 'talk',
-    size: 13,
-    color: 'neutralText',
-  },
-  heartIcon = {
-    name: 'heart',
-    size: 13,
-    color: 'neutralText',
-  },
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -64,6 +63,7 @@ export const ListItem = ({
   const moreBtnClickHandler = ({ target }) => {
     console.log('더보기 버튼 클릭');
   };
+
   return (
     <S.ListItem onClick={listClickHandler}>
       <S.Thumbnail src={imgUrl} alt={title} />
@@ -84,7 +84,7 @@ export const ListItem = ({
           <S.SubInfo>
             <span>{location}</span>
             <span> ・ </span>
-            <span>{timeStamp}</span>
+            <span>{convertDateToTimeStamp(timeStamp)}</span>
           </S.SubInfo>
           <S.States>
             {state && <S.StateBadge>{state}</S.StateBadge>}
