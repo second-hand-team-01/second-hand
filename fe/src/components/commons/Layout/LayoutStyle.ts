@@ -15,6 +15,7 @@ export const Wrap = styled.div`
 
 export const Footer = styled.div`
   position: fixed;
-  width: 100%;
   bottom: 0;
+  max-width: 393px;
+  width: 100%;
 `;
