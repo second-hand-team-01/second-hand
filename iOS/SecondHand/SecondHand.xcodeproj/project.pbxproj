@@ -230,6 +230,19 @@
 			path = SecondHandUITests;
 			sourceTree = "<group>";
 		};
+		63608CCD2A40DD83006CD876 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				63A3FCE22A3968AC00361FAD /* DetailContentView.swift */,
+				63A3FCE62A396AE600361FAD /* DetailContentView+layoutConstraint.swift */,
+				63A3FCDD2A3740C800361FAD /* SellerInfo.swift */,
+				63608CBE2A4061E0006CD876 /* ProductInfo.swift */,
+				63608CC52A407FB8006CD876 /* CommunicationInfo.swift */,
+				63608CC72A40D273006CD876 /* DetailToolbar.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		63A3FCC32A3709AA00361FAD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,12 +291,7 @@
 			children = (
 				63A3FCE82A3983C500361FAD /* DetailViewController.swift */,
 				63A3FCE42A3969F900361FAD /* DetailViewController+layoutScrollView.swift */,
-				63A3FCE22A3968AC00361FAD /* DetailContentView.swift */,
-				63A3FCE62A396AE600361FAD /* DetailContentView+layoutConstraint.swift */,
-				63A3FCDD2A3740C800361FAD /* SellerInfo.swift */,
-				63608CBE2A4061E0006CD876 /* ProductInfo.swift */,
-				63608CC52A407FB8006CD876 /* CommunicationInfo.swift */,
-				63608CC72A40D273006CD876 /* DetailToolbar.swift */,
+				63608CCD2A40DD83006CD876 /* UI */,
 			);
 			path = Detail;
 			sourceTree = "<group>";

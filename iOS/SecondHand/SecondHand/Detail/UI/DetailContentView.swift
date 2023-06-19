@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailConetntView: UIView {
+class DetailContentView: UIView {
     var productImageView = UIImageView()
     var pageControl = UIPageControl()
     var sellerInfo = SellerInfo()

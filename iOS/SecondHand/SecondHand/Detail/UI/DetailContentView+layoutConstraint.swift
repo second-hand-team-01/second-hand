@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension DetailConetntView {
+extension DetailContentView {
     private func addSubviews() {
         let subViews = [
             productImageView,
