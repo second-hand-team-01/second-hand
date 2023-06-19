@@ -20,9 +20,9 @@ public class ItemDto {
     private int chat;
     private int interest;
 
-    public static ItemDto of(Item item, String imageUrl, int chatRooms, int interests) {
+    public static ItemDto of(Item item, int chatRooms, int interests) {
         return new ItemDto(item.getItemIdx(),
-                imageUrl,
+                item.getItemImage().getImageUrl(),
                 item.getName(),
                 item.getLocation().getTown(),
                 item.getPostedAt(),
