@@ -17,7 +17,7 @@ import static codesquad.secondhand.dto.StatusCode.RESPONSE_SUCCESS;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/locations")
+@RequestMapping("/api/locations")
 public class LocationController {
 
     private final LocationService locationService;
