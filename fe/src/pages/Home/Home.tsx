@@ -1,4 +1,4 @@
-import { ListItem } from '@commons/index';
+import { ListItem, Spinner } from '@commons/index';
 import * as S from './HomeStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
@@ -42,16 +42,25 @@ export const Home = () => {
   return (
     <S.Home>
       {error ? (
-        <S.InitialLoading>{error.message}</S.InitialLoading>
+        <S.InitialLoading>
+          <Spinner />
+          {/* {error.message} */}
+        </S.InitialLoading>
       ) : isInitialLoading ? (
-        <S.InitialLoading>로딩중</S.InitialLoading>
+        <S.InitialLoading>
+          <Spinner />
+        </S.InitialLoading>
       ) : (
         <>
           {items?.map((item: ListItemPropsWithId) => (
             <ListItem key={item.id} {...item}></ListItem>
           ))}
           <div ref={setTarget}></div>
-          {isNextPageLoading && <S.NextPageLoading>로딩중2</S.NextPageLoading>}
+          {isNextPageLoading && (
+            <S.NextPageLoading>
+              <Spinner />
+            </S.NextPageLoading>
+          )}
         </>
       )}
     </S.Home>

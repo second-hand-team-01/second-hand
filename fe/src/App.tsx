@@ -1,6 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '@styles/GlobalStyle';
-import { Profile } from './components/commons';
+import { Layout, Profile } from './components/commons';
 import { theme } from '@styles/GlobalStyle';
 import { Icon } from './components/commons';
 import { Home } from '@pages/index';
@@ -15,7 +15,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Home></Home>
+      <Layout hasTabBar={true}>
+        <Home></Home>
+      </Layout>
     </ThemeProvider>
   );
 }

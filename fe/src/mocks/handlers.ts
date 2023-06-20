@@ -8,7 +8,7 @@ export const handlers = [
     const query = req.url.searchParams;
     const page = query.get('page');
     if (page === '0') {
-      return res(ctx.status(200), ctx.json(items));
+      return res(ctx.status(400), ctx.json(items));
     }
     return res(ctx.status(200), ctx.json(items2));
   }),

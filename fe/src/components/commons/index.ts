@@ -15,6 +15,7 @@ import { BottomSheet } from './BottomSheet/BottomSheet';
 import { Dialog } from './Dialog/Dialog';
 import { SnackBar } from './SnackBar/SnackBar';
 import { ListItem } from './ListItem/ListItem';
+import { Spinner } from './Spinner/Spinner';
 
 export {
   Icon,
@@ -34,4 +35,5 @@ export {
   Dialog,
   SnackBar,
   ListItem,
+  Spinner,
 };
