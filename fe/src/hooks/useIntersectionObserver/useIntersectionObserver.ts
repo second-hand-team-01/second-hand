@@ -7,7 +7,6 @@ const options = {
 
 export const useIntersectionObserver = (handleIntersection) => {
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
-  const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersection, options);
@@ -15,7 +14,7 @@ export const useIntersectionObserver = (handleIntersection) => {
     return () => {
       target && observer.unobserve(target);
     };
-  }, [target]);
+  }, [handleIntersection]);
 
   return setTarget;
 };

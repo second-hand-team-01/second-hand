@@ -1,12 +1,13 @@
 import { Layout } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
+import { Home } from '@pages/index';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout hasTabBar={true} />,
     children: [
-      { path: '/', element: <div>Home</div> },
+      { path: '/', element: <Home /> },
       { path: 'sales-history', element: <div>Sales-history</div> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },

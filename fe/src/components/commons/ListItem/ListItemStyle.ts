@@ -8,8 +8,12 @@ export const ListItem = styled.li`
   height: 150px;
   padding: 15px 0px;
   gap: 15px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
   cursor: pointer;
+
+  &:first-child {
+    border: none;
+  }
 `;
 
 export const Thumbnail = styled.img`

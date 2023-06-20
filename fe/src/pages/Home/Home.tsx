@@ -15,13 +15,11 @@ export const Home = () => {
 
   const { loading, data, error } = state;
   const [items, setItems] = useState<any>([]);
-  const hasNext = data ? data.hasNext : false;
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
-        if (!hasNext) return;
-        setPage(page + 1);
+        if (data?.hasNext) setPage((prevPage) => prevPage + 1);
       }
     });
   };
@@ -33,7 +31,9 @@ export const Home = () => {
   }, [page]);
 
   useEffect(() => {
-    data && setItems([...items, ...data.items]);
+    if (data) {
+      setItems((prevItems) => [...prevItems, ...data.items]);
+    }
   }, [data]);
 
   const isInitialLoading = loading && page === 0;
@@ -42,10 +42,7 @@ export const Home = () => {
   return (
     <S.Home>
       {error ? (
-        <S.InitialLoading>
-          <Spinner />
-          {/* {error.message} */}
-        </S.InitialLoading>
+        <S.Error>{error.message}</S.Error>
       ) : isInitialLoading ? (
         <S.InitialLoading>
           <Spinner />

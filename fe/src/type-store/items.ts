@@ -4,7 +4,7 @@ export interface Item {
   name: string;
   location: string;
   postedAt: Date;
-  status: string;
+  status: '예약중' | '판매중' | null;
   price: number;
   chat: number;
   interest: number;

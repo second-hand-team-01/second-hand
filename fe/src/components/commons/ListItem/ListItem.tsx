@@ -20,7 +20,7 @@ export interface ListItemProps {
   location: string;
   timeStamp: Date;
   price: number | null;
-  state: string | null;
+  state: '예약중' | '판매중' | null;
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
@@ -87,7 +87,7 @@ export const ListItem = ({
             <span>{convertDateToTimeStamp(timeStamp)}</span>
           </S.SubInfo>
           <S.States>
-            {state && <S.StateBadge>{state}</S.StateBadge>}
+            {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
             {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
           </S.States>
         </S.Info>

@@ -7,9 +7,20 @@
     "hasNext": false,
     "items": [
       {
-        "itemIdx": 11,
+        "itemIdx": 21,
+        "imageUrl": "www.itemimageurl50.com",
+        "name": "21",
+        "location": "역삼1동",
+        "postedAt": "2023-02-28T01:00:30",
+        "status": "예약중",
+        "price": 505242,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 22,
         "imageUrl": "www.itemimageurl17.com",
-        "name": "11",
+        "name": "22",
         "location": "역삼1동",
         "postedAt": "2023-05-16T17:16:05",
         "status": "판매중",
@@ -18,9 +29,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 12,
+        "itemIdx": 23,
         "imageUrl": "www.itemimageurl18.com",
-        "name": "12",
+        "name": "23",
         "location": "역삼1동",
         "postedAt": "2023-04-25T17:27:02",
         "status": "판매중",
@@ -29,9 +40,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 13,
+        "itemIdx": 24,
         "imageUrl": "www.itemimageurl19.com",
-        "name": "13",
+        "name": "24",
         "location": "역삼1동",
         "postedAt": "2023-05-18T09:47:11",
         "status": "예약중",
@@ -40,9 +51,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 14,
+        "itemIdx": 25,
         "imageUrl": "www.itemimageurl28.com",
-        "name": "14",
+        "name": "25",
         "location": "역삼1동",
         "postedAt": "2022-06-22T21:27:33",
         "status": "판매중",
@@ -51,9 +62,9 @@
         "interest": 3
       },
       {
-        "itemIdx": 15,
+        "itemIdx": 26,
         "imageUrl": "www.itemimageurl31.com",
-        "name": "15",
+        "name": "26",
         "location": "역삼1동",
         "postedAt": "2023-02-06T14:51:37",
         "status": "판매중",
@@ -62,9 +73,9 @@
         "interest": 1
       },
       {
-        "itemIdx": 16,
+        "itemIdx": 27,
         "imageUrl": "www.itemimageurl36.com",
-        "name": "16",
+        "name": "27",
         "location": "역삼1동",
         "postedAt": "2022-09-13T20:04:02",
         "status": "예약중",
@@ -73,9 +84,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 17,
+        "itemIdx": 28,
         "imageUrl": "www.itemimageurl40.com",
-        "name": "17",
+        "name": "28",
         "location": "역삼1동",
         "postedAt": "2023-01-13T03:59:51",
         "status": "판매중",
@@ -84,9 +95,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 18,
+        "itemIdx": 29,
         "imageUrl": "www.itemimageurl42.com",
-        "name": "18",
+        "name": "29",
         "location": "역삼1동",
         "postedAt": "2023-03-01T19:36:15",
         "status": "판매중",
@@ -95,24 +106,13 @@
         "interest": 1
       },
       {
-        "itemIdx": 19,
+        "itemIdx": 30,
         "imageUrl": "www.itemimageurl45.com",
-        "name": "19",
+        "name": "30",
         "location": "역삼1동",
         "postedAt": "2023-04-08T10:37:31",
         "status": "예약중",
         "price": 543583,
-        "chat": 0,
-        "interest": 0
-      },
-      {
-        "itemIdx": 20,
-        "imageUrl": "www.itemimageurl50.com",
-        "name": "20",
-        "location": "역삼1동",
-        "postedAt": "2023-02-28T01:00:30",
-        "status": "예약중",
-        "price": 505242,
         "chat": 0,
         "interest": 0
       }

@@ -8,8 +8,10 @@ export interface SpinnerStyleProps {
 }
 
 export const Spinner = styled.div<SpinnerStyleProps>`
-  display: inline-block;
+  display: flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
 

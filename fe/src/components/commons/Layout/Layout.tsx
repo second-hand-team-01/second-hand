@@ -12,7 +12,9 @@ export const Layout = ({ hasTabBar }: LayoutProps) => {
   return (
     <S.Wrap>
       <S.Layout>
-        <Outlet />
+        <S.Contents>
+          <Outlet />
+        </S.Contents>
         {hasTabBar && (
           <S.Footer>
             <TabBar />
