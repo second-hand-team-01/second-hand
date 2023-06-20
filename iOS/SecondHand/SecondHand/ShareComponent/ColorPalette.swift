@@ -33,7 +33,6 @@ enum NeutralPalette {
     static let background = ColorValue.white
     static let backgroundWeak = ColorValue.gray50
     static let backgroundBold = ColorValue.gray400
-    // TODO: Blur 어쩌지?
     static let backgroundBulr = ColorValue.gray100
     static let border = ColorValue.gray500
     static let borderStrong = ColorValue.gray700
