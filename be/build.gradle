@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 	implementation 'mysql:mysql-connector-java:8.0.32'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
