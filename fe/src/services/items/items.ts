@@ -82,9 +82,7 @@ export const getItemsAPI = async (
 
 export const runPagination = () => {
   let page = -1;
-  console.log('good');
   return async () => {
-    console.log(page);
     page++;
     return await getItemsAPI(page);
   };

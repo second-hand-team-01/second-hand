@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FOOTER_HEIGHT, MAX_WIDTH } from '@constants/style';
 
 export const Home = styled.div`
   padding: 0 16px;
@@ -31,4 +32,13 @@ export const NextPageLoading = styled.div`
   display: grid;
   align-items: center;
   justify-content: center;
+`;
+
+export const FloatingBtn = styled.div`
+  position: fixed;
+  max-width: ${MAX_WIDTH - 32}px;
+  width: 100%;
+  bottom: ${FOOTER_HEIGHT + 24}px;
+  display: grid;
+  justify-content: end;
 `;

@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { ListItemPropsWithId } from '@services/items/items';
 import { getItemsAPI, ConvertedGetItemsRes } from '@services/items/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
+import { Button } from '@commons/index';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [state, refetch] = useFetch<ConvertedGetItemsRes, null>(
     getItemsAPI.bind(null, page),
@@ -60,6 +63,14 @@ export const Home = () => {
           )}
         </>
       )}
+      <S.FloatingBtn>
+        <Button
+          shape={'floating'}
+          icon="plus"
+          color={'accentText'}
+          onClick={() => navigate('/write')}
+        ></Button>
+      </S.FloatingBtn>
     </S.Home>
   );
 };

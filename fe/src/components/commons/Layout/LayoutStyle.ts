@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { NavBarProps } from '@commons/NavBar/NavBar';
-import { NAVBAR_HEIGHT } from '@constants/style';
+import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 
 export interface HeaderProps {
   type: 'filter' | 'nav';
@@ -29,7 +29,7 @@ const getTemplateRows = (
       ? NAVBAR_HEIGHT.top + NAVBAR_HEIGHT.bottom
       : NAVBAR_HEIGHT.top
     : 0;
-  const footerHeight = hasFooter ? 83 : 0;
+  const footerHeight = hasFooter ? FOOTER_HEIGHT : 0;
   const result = `${headerHeight}px 1fr ${footerHeight}px`;
   return result;
 };
@@ -60,6 +60,7 @@ export const Header = styled.div`
 export const Contents = styled.div`
   overflow-y: scroll;
   width: 100%;
+  position: relative;
 `;
 
 export const Footer = styled.div`

@@ -3,11 +3,14 @@ import { icons } from '@assets/icons/index';
 import { colors, palette } from '@styles/Color';
 
 const shapes = {
-  floating: css`
-    padding: 10px;
-    width: 56px;
-    height: 56px;
-    border-radius: 56px;
+  floating: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 10px;
+      width: 56px;
+      height: 56px;
+      border-radius: 56px;
+      background-color: ${theme.colors.accentBackgroundPrimary};
+    `}
   `,
   large: css<ButtonStyleProps>`
     ${({ theme }) => `
