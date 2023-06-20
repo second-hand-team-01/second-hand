@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20CDE5D6BAC315408A7274A6 /* Pods_SecondHand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */; };
+		63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63129C992A4145B00049EC0C /* LoginViewController.swift */; };
 		632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807202A305CED0033F9D7 /* AppDelegate.swift */; };
 		632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807222A305CED0033F9D7 /* SceneDelegate.swift */; };
 		6328072A2A305CED0033F9D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632807292A305CED0033F9D7 /* Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		41D33513EE98C550E16692F4 /* Pods-SecondHand-SecondHandUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandUITests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandUITests/Pods-SecondHand-SecondHandUITests.release.xcconfig"; sourceTree = "<group>"; };
 		451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand_SecondHandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
+		63129C992A4145B00049EC0C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6328071D2A305CED0033F9D7 /* SecondHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecondHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632807202A305CED0033F9D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		632807222A305CED0033F9D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -172,6 +174,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		63129C9B2A4145B70049EC0C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				63129C992A4145B00049EC0C /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		632807142A305CED0033F9D7 = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +215,7 @@
 				FF61AD2C2A36F956006AE167 /* Tabbar */,
 				FF61AD312A36FC72006AE167 /* ItemList */,
 				63F3EEB92A35D90500D81961 /* Detail */,
+				63129C9B2A4145B70049EC0C /* Login */,
 				632807292A305CED0033F9D7 /* Assets.xcassets */,
 				6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */,
 			);
@@ -656,6 +667,7 @@
 			files = (
 				FFD62C222A3C1BBF0014D2D4 /* TimeLabel.swift in Sources */,
 				FFD62C252A3C1BBF0014D2D4 /* PriceLabel.swift in Sources */,
+				63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */,
 				FFD62C262A3C1BBF0014D2D4 /* LeadingIconLabel.swift in Sources */,
 				FFD62C242A3C1BBF0014D2D4 /* LocationLabel.swift in Sources */,
 				FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */,
