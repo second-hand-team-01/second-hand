@@ -9,8 +9,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
     var scrollView = UIScrollView()
-    var detailContentView = DetailConetntView()
-    var toolbar = UIToolbar()
+    var detailContentView = DetailContentView(frame: .zero)
+    var toolbar = DetailToolbar(frame: .zero)
     var favoriteButton = UIButton()
     var priceLabel = UILabel()
 
@@ -18,8 +18,9 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         detailContentView.configure()
+        toolbar.configure(price: "123,000")
         self.tabBarController?.tabBar.isHidden = true
-        self.toolbar = makeToolbar()
+        self.scrollView.contentInsetAdjustmentBehavior = .never
     }
 
     override func viewWillLayoutSubviews() {
@@ -27,26 +28,64 @@ class DetailViewController: UIViewController {
         addSubViews()
         layoutConstraint()
     }
+}
 
-    private func makeToolbar() -> UIToolbar {
-        let toolbar = UIToolbar()
-        
-        let chatButton = UIButton()
-        chatButton.setTitle("채팅방으로 이동", for: .normal)
-        chatButton.setTitleColor(.orange, for: .normal)
-        
-        toolbar.items = [
-            UIBarButtonItem(title: "150,000원",
-                            image: UIImage(systemName: "house")),
-            UIBarButtonItem(customView: makeFavoriteButton())
+// MARK: - Constraint 설정
+extension DetailViewController {
+    private func addSubViews() {
+        let subViews = [
+            scrollView,
+            toolbar
         ]
         
-        return toolbar
+        subViews.forEach {
+            self.view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        self.scrollView.addSubview(detailContentView)
+        detailContentView.translatesAutoresizingMaskIntoConstraints = false
     }
-
-    private func makeFavoriteButton() -> UIButton {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        return button
+    
+    private func layoutConstraint() {
+        addSubViews()
+        layoutScrollView()
+        layoutDetailContentView()
+        layoutToolbar()
+    }
+    
+    private func layoutScrollView() {
+        let toolbarHeight: CGFloat = -83
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: toolbarHeight)
+        ])
+        
+        let heightConstraint = self.detailContentView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
+        heightConstraint.priority = UILayoutPriority(250)
+        heightConstraint.isActive = true
+    }
+    
+    private func layoutDetailContentView() {
+        NSLayoutConstraint.activate([
+            detailContentView.leadingAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.leadingAnchor),
+            detailContentView.trailingAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.trailingAnchor),
+            detailContentView.topAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.topAnchor),
+            detailContentView.bottomAnchor.constraint(equalTo: self.scrollView.contentLayoutGuide.bottomAnchor,
+                                                      constant: -40),
+            detailContentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, multiplier: 1)
+        ])
+    }
+    
+    private func layoutToolbar() {
+        NSLayoutConstraint.activate([
+            toolbar.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
+            toolbar.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 }

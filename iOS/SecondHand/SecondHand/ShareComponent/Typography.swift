@@ -7,18 +7,18 @@
 
 import UIKit
 
-enum Typography {
-    static let largeTitle = UIFont.systemFont(ofSize: FontSize.largeTitle, weight: .regular)
-    static let title1 = UIFont.systemFont(ofSize: FontSize.title1, weight: .regular)
-    static let title2 = UIFont.systemFont(ofSize: FontSize.title2, weight: .regular)
-    static let title3 = UIFont.systemFont(ofSize: FontSize.title3, weight: .regular)
-    static let headLine = UIFont.systemFont(ofSize: FontSize.headLine, weight: .semibold)
-    static let body = UIFont.systemFont(ofSize: FontSize.body, weight: .regular)
-    static let callOut = UIFont.systemFont(ofSize: FontSize.callOut, weight: .regular)
-    static let subHead = UIFont.systemFont(ofSize: FontSize.subHead, weight: .regular)
-    static let footNote = UIFont.systemFont(ofSize: FontSize.footNote, weight: .regular)
-    static let caption1 = UIFont.systemFont(ofSize: FontSize.caption1, weight: .regular)
-    static let caption2 = UIFont.systemFont(ofSize: FontSize.caption2, weight: .regular)
+struct Typography {
+    let largeTitle = UIFont.systemFont(ofSize: FontSize.largeTitle, weight: .regular)
+    let title1 = UIFont.systemFont(ofSize: FontSize.title1, weight: .regular)
+    let title2 = UIFont.systemFont(ofSize: FontSize.title2, weight: .regular)
+    let title3 = UIFont.systemFont(ofSize: FontSize.title3, weight: .regular)
+    let headLine = UIFont.systemFont(ofSize: FontSize.headLine, weight: .semibold)
+    let body = UIFont.systemFont(ofSize: FontSize.body, weight: .regular)
+    let callOut = UIFont.systemFont(ofSize: FontSize.callOut, weight: .regular)
+    let subHead = UIFont.systemFont(ofSize: FontSize.subHead, weight: .regular)
+    let footNote = UIFont.systemFont(ofSize: FontSize.footNote, weight: .regular)
+    let caption1 = UIFont.systemFont(ofSize: FontSize.caption1, weight: .regular)
+    let caption2 = UIFont.systemFont(ofSize: FontSize.caption2, weight: .regular)
 
     enum FontSize {
         static let largeTitle: CGFloat = 34
