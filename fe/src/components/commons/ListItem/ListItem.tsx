@@ -3,7 +3,10 @@ import * as S from './ListItemStyle';
 import { icons } from '@assets/icons';
 import { Icon } from '@components/commons';
 import { colors, palette } from '@styles/Color';
-import { convertDateToTimeStamp } from '@utils/common/common';
+import {
+  convertDateToTimeStamp,
+  convertNumToPrice,
+} from '@utils/common/common';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -85,7 +88,7 @@ export const ListItem = ({
           </S.SubInfo>
           <S.States>
             {state && <S.StateBadge>{state}</S.StateBadge>}
-            {price ? `${price}원` : '가격 없음'}
+            {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
           </S.States>
         </S.Info>
         <S.ChatAndLike>

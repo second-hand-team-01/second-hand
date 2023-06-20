@@ -100,3 +100,7 @@ export const convertDateToTimeStamp = (date: Date) => {
   const unit = 'year';
   return getDiffText(unit, Math.trunc(yearsDiff));
 };
+
+export const convertNumToPrice = (num: number) => {
+  return num.toLocaleString();
+};

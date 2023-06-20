@@ -47,14 +47,19 @@ export const setHeader = <B>(
   return headers;
 };
 
-export const customFetch = async <B>({
+export type Response<D> = {
+  data?: D;
+  error?: Error;
+};
+
+export const customFetch = async <B, D>({
   path,
   queries,
   method,
   body,
   auth = false,
   options,
-}: FetchProps<B>) => {
+}: FetchProps<B>): Promise<Response<D>> => {
   let url = HOST + path;
 
   if (queries) {
@@ -83,9 +88,12 @@ export const customFetch = async <B>({
         };
       }
       const data = resJSON.data;
-      return data;
+      return { data };
     }
+    return {};
   } catch (error) {
-    return { error: new Error(`Error: ${error}`) };
+    if (error instanceof Error)
+      return { error: new Error(`Error: ${error.message}`) };
+    return {};
   }
 };

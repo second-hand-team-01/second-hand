@@ -1,6 +1,8 @@
 import { Item } from '@type-store/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
+import { Response } from '@hooks/useFetch/useFetch';
+import { useState } from 'react';
 
 export interface ListItemPropsWithId extends ListItemProps {
   id: number;
@@ -41,22 +43,49 @@ export const convertItemsToListItems = (
   });
 };
 
-export const getItemsAPI = async (page: number) => {
+interface GetItemsRes {
+  hasNext: boolean;
+  items: Item[];
+}
+
+interface ConvertedGetItemsRes {
+  hasNext: boolean;
+  items: ListItemPropsWithId[];
+}
+
+export const getItemsAPI = async (
+  page: number
+): Promise<Response<ConvertedGetItemsRes>> => {
   try {
-    const fetchedData = await customFetch({
+    const res = (await customFetch<null, GetItemsRes>({
       path: '/items',
       method: 'GET',
       queries: { page },
-    });
-    if (fetchedData && fetchedData.error) {
-      console.error(`Error: ${fetchedData.error}`);
-      return null;
+    })) as Response<GetItemsRes>;
+
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
     }
-    return fetchedData;
+    const { hasNext, items } = res.data;
+    return {
+      ...res,
+      data: {
+        hasNext,
+        items: convertItemsToListItems(items) as ListItemPropsWithId[],
+      },
+    };
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      return null;
-    }
+    if (error instanceof Error) return { error };
+    return {};
   }
+};
+
+export const runPagination = () => {
+  let page = -1;
+  console.log('good');
+  return async () => {
+    console.log(page);
+    page++;
+    return await getItemsAPI(page);
+  };
 };

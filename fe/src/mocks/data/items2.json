@@ -7,9 +7,9 @@
     "hasNext": false,
     "items": [
       {
-        "itemIdx": 17,
+        "itemIdx": 11,
         "imageUrl": "www.itemimageurl17.com",
-        "name": "Eius unde.",
+        "name": "11",
         "location": "역삼1동",
         "postedAt": "2023-05-16T17:16:05",
         "status": "판매중",
@@ -18,9 +18,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 18,
+        "itemIdx": 12,
         "imageUrl": "www.itemimageurl18.com",
-        "name": "Illo.",
+        "name": "12",
         "location": "역삼1동",
         "postedAt": "2023-04-25T17:27:02",
         "status": "판매중",
@@ -29,9 +29,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 19,
+        "itemIdx": 13,
         "imageUrl": "www.itemimageurl19.com",
-        "name": "Suscipit.",
+        "name": "13",
         "location": "역삼1동",
         "postedAt": "2023-05-18T09:47:11",
         "status": "예약중",
@@ -40,9 +40,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 28,
+        "itemIdx": 14,
         "imageUrl": "www.itemimageurl28.com",
-        "name": "Beatae.",
+        "name": "14",
         "location": "역삼1동",
         "postedAt": "2022-06-22T21:27:33",
         "status": "판매중",
@@ -51,9 +51,9 @@
         "interest": 3
       },
       {
-        "itemIdx": 31,
+        "itemIdx": 15,
         "imageUrl": "www.itemimageurl31.com",
-        "name": "Error.",
+        "name": "15",
         "location": "역삼1동",
         "postedAt": "2023-02-06T14:51:37",
         "status": "판매중",
@@ -62,9 +62,9 @@
         "interest": 1
       },
       {
-        "itemIdx": 36,
+        "itemIdx": 16,
         "imageUrl": "www.itemimageurl36.com",
-        "name": "Fuga.",
+        "name": "16",
         "location": "역삼1동",
         "postedAt": "2022-09-13T20:04:02",
         "status": "예약중",
@@ -73,9 +73,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 40,
+        "itemIdx": 17,
         "imageUrl": "www.itemimageurl40.com",
-        "name": "Soluta.",
+        "name": "17",
         "location": "역삼1동",
         "postedAt": "2023-01-13T03:59:51",
         "status": "판매중",
@@ -84,9 +84,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 42,
+        "itemIdx": 18,
         "imageUrl": "www.itemimageurl42.com",
-        "name": "Quasi.",
+        "name": "18",
         "location": "역삼1동",
         "postedAt": "2023-03-01T19:36:15",
         "status": "판매중",
@@ -95,9 +95,9 @@
         "interest": 1
       },
       {
-        "itemIdx": 45,
+        "itemIdx": 19,
         "imageUrl": "www.itemimageurl45.com",
-        "name": "Non.",
+        "name": "19",
         "location": "역삼1동",
         "postedAt": "2023-04-08T10:37:31",
         "status": "예약중",
@@ -106,9 +106,9 @@
         "interest": 0
       },
       {
-        "itemIdx": 50,
+        "itemIdx": 20,
         "imageUrl": "www.itemimageurl50.com",
-        "name": "Non nobis.",
+        "name": "20",
         "location": "역삼1동",
         "postedAt": "2023-02-28T01:00:30",
         "status": "예약중",

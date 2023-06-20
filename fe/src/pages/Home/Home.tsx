@@ -1,64 +1,52 @@
-import { useData } from '@hooks/useData/useData';
 import { ListItem } from '@commons/index';
 import { convertItemsToListItems } from '@services/items/items';
 import { Item } from '@type-store/items';
 import * as S from './HomeStyle';
-import useInfinityScroll from '@hooks/useInfinityScroll/useInfinityScroll';
+import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
 import { ListItemPropsWithId } from '@services/items/items';
-import { customFetch } from '@services/apis/apis';
 import { getItemsAPI } from '@services/items/items';
-
-interface getItemsAPIResponse {
-  hasNext: boolean;
-  items: Item[];
-}
+import { useFetch } from '@hooks/useFetch/useFetch';
 
 export const Home = () => {
   const [page, setPage] = useState(0);
-  const [items, setItems] = useState<ListItemPropsWithId[] | null>(null);
-  const [hasNext, setHasNext] = useState(false);
+  const [state, refetch] = useFetch<any, any, any>(
+    getItemsAPI.bind(null, page),
+    []
+  );
 
-  const data = useData<getItemsAPIResponse, null>({
-    path: '/items',
-    method: 'GET',
-    queries: { page: page },
-  });
-
-  useEffect(() => {
-    if (data) {
-      setItems(convertItemsToListItems(data.items));
-      setHasNext(data.hasNext);
-    }
-  }, [data]);
+  const { loading, data, error } = state;
+  const [items, setItems] = useState(data ? data.items : []);
+  const hasNext = data ? data.hasNext : false;
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
         if (!hasNext) return;
         setPage(page + 1);
-        const data = await getItemsAPI(page + 1);
-
-        if (data) {
-          setItems([
-            ...(items as ListItemPropsWithId[]),
-            ...convertItemsToListItems(data.items),
-          ]);
-          setHasNext(data.hasNext);
-        }
       }
     });
   };
-  const targetRef = useInfinityScroll(handleIntersection);
 
-  return items ? (
+  const setTarget = useIntersectionObserver(handleIntersection);
+
+  useEffect(() => {
+    page !== 0 && refetch();
+  }, [page]);
+
+  useEffect(() => {
+    data && setItems([...items, ...data.items]);
+  }, [data]);
+
+  return loading && page === 0 ? (
+    <S.InitialLoading>로딩중</S.InitialLoading>
+  ) : (
     <S.Home>
-      {items.map((item) => (
+      {items?.map((item: ListItemPropsWithId) => (
         <ListItem key={item.id} {...item}></ListItem>
       ))}
-      <div ref={targetRef}></div>
+      <div ref={setTarget}></div>
+      {loading && page !== 0 && <S.NextPageLoading>로딩중2</S.NextPageLoading>}
     </S.Home>
-  ) : (
-    <></>
   );
 };

@@ -12,7 +12,7 @@ export const useData = <R, B>(fetchProps: FetchProps<B>): R | null => {
           console.error(`Error: ${fetchedData.error}`);
           return null;
         }
-        setData(fetchedData);
+        setData(fetchedData as any);
       } catch (error) {
         if (error instanceof Error) {
           console.error(`Error: ${error.message}`);
