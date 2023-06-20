@@ -1,6 +1,4 @@
 import { ListItem } from '@commons/index';
-import { convertItemsToListItems } from '@services/items/items';
-import { Item } from '@type-store/items';
 import * as S from './HomeStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
@@ -16,7 +14,7 @@ export const Home = () => {
   );
 
   const { loading, data, error } = state;
-  const [items, setItems] = useState(data ? data.items : []);
+  const [items, setItems] = useState<any>([]);
   const hasNext = data ? data.hasNext : false;
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -31,22 +29,31 @@ export const Home = () => {
   const setTarget = useIntersectionObserver(handleIntersection);
 
   useEffect(() => {
-    page !== 0 && refetch();
+    refetch();
   }, [page]);
 
   useEffect(() => {
     data && setItems([...items, ...data.items]);
   }, [data]);
 
-  return loading && page === 0 ? (
-    <S.InitialLoading>로딩중</S.InitialLoading>
-  ) : (
+  const isInitialLoading = loading && page === 0;
+  const isNextPageLoading = loading && page !== 0;
+
+  return (
     <S.Home>
-      {items?.map((item: ListItemPropsWithId) => (
-        <ListItem key={item.id} {...item}></ListItem>
-      ))}
-      <div ref={setTarget}></div>
-      {loading && page !== 0 && <S.NextPageLoading>로딩중2</S.NextPageLoading>}
+      {error ? (
+        <S.InitialLoading>{error.message}</S.InitialLoading>
+      ) : isInitialLoading ? (
+        <S.InitialLoading>로딩중</S.InitialLoading>
+      ) : (
+        <>
+          {items?.map((item: ListItemPropsWithId) => (
+            <ListItem key={item.id} {...item}></ListItem>
+          ))}
+          <div ref={setTarget}></div>
+          {isNextPageLoading && <S.NextPageLoading>로딩중2</S.NextPageLoading>}
+        </>
+      )}
     </S.Home>
   );
 };

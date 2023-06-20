@@ -46,7 +46,11 @@ export type Response<D> = { data?: D; error?: Error };
 
 type Callback<P, D> = () => Promise<Response<D>>;
 
-export const useFetch = <P, D, E>(callback: Callback<P, D>, deps: E[]) => {
+export const useFetch = <P, D, E>(
+  callback: Callback<P, D>,
+  deps: E[],
+  initialFetch = false
+) => {
   const initialState: State<D> = {
     loading: false,
     data: null,
@@ -57,7 +61,6 @@ export const useFetch = <P, D, E>(callback: Callback<P, D>, deps: E[]) => {
   const fetchData = async () => {
     dispatch({ type: ActionType.LOADING });
     try {
-      console.log('callback');
       const res = await callback();
       if (!res.data)
         return dispatch({
@@ -78,7 +81,7 @@ export const useFetch = <P, D, E>(callback: Callback<P, D>, deps: E[]) => {
   };
 
   useEffect(() => {
-    fetchData();
+    initialFetch && fetchData();
   }, deps);
 
   return [state, fetchData] as [State<D>, () => any];

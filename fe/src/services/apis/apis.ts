@@ -79,21 +79,25 @@ export const customFetch = async <B, D>({
 
   try {
     const res = await fetch(url, init);
-
     if (res.ok) {
       const resJSON = await res.json();
       if (resJSON.data === undefined) {
         return {
-          error: new Error(`Error: ${ERROR_MESSAGE['NO_DATA']}`),
+          error: new Error(`${ERROR_MESSAGE['NO_DATA']}`),
         };
       }
       const data = resJSON.data;
       return { data };
     }
-    return {};
+    return {
+      error: new Error(
+        `${ERROR_MESSAGE[res.status] ?? ERROR_MESSAGE['UNDEFINED']}`
+      ),
+    };
   } catch (error) {
-    if (error instanceof Error)
-      return { error: new Error(`Error: ${error.message}`) };
-    return {};
+    if (error instanceof Error) {
+      return { error: new Error(`${error.message}`) }; // 이 부분은 어떤 에러가 발생하는걸까?
+    }
+    return { error: new Error(ERROR_MESSAGE['UNDEFINED']) };
   }
 };
