@@ -44,10 +44,10 @@ const reducer = <D>(state: State<D>, action: Action<D>): State<D> => {
 
 export type Response<D> = { data?: D; error?: Error };
 
-type Callback<P, D> = () => Promise<Response<D>>;
+type Callback<D> = () => Promise<Response<D>>;
 
-export const useFetch = <P, D, E>(
-  callback: Callback<P, D>,
+export const useFetch = <D, E>(
+  callback: Callback<D>,
   deps: E[],
   initialFetch = false
 ) => {
@@ -84,5 +84,5 @@ export const useFetch = <P, D, E>(
     initialFetch && fetchData();
   }, deps);
 
-  return [state, fetchData] as [State<D>, () => any];
+  return [state, fetchData] as [State<D>, () => Promise<void>];
 };

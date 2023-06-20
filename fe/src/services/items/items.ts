@@ -48,7 +48,7 @@ interface GetItemsRes {
   items: Item[];
 }
 
-interface ConvertedGetItemsRes {
+export interface ConvertedGetItemsRes {
   hasNext: boolean;
   items: ListItemPropsWithId[];
 }

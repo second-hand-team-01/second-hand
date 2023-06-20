@@ -3,18 +3,18 @@ import * as S from './HomeStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
 import { ListItemPropsWithId } from '@services/items/items';
-import { getItemsAPI } from '@services/items/items';
+import { getItemsAPI, ConvertedGetItemsRes } from '@services/items/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
 
 export const Home = () => {
   const [page, setPage] = useState(0);
-  const [state, refetch] = useFetch<any, any, any>(
+  const [state, refetch] = useFetch<ConvertedGetItemsRes, null>(
     getItemsAPI.bind(null, page),
     []
   );
 
   const { loading, data, error } = state;
-  const [items, setItems] = useState<any>([]);
+  const [items, setItems] = useState<ListItemPropsWithId[]>([]);
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {

@@ -66,9 +66,12 @@ export const customFetch = async <B, D>({
     url = addQueriesToURL(url, queries);
   }
 
-  const init: any = {
+  const init: RequestInit = {
     method,
-    body: getType(body) === Type.LiteralObject ? JSON.stringify(body) : body,
+    body:
+      getType(body) === Type.LiteralObject
+        ? JSON.stringify(body)
+        : (body as BodyInit),
   };
 
   const headers = setHeader<B>(body, options, auth);
