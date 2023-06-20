@@ -37,3 +37,8 @@ spring:
     user:
       name:
       password:
+security:
+  jwt:
+    token:
+      secret-key: ENC(splgClZ0/GF97Phs3Y+wyoKe0+/02DauHDVHznqHY6L7TGcHylZGXj6ljNvaBJqEMekM68X47uOZeYTZT90tUQ==)
+      expire-length: ENC(S3cUIoNjjoBYhjMbWum1oA==)
