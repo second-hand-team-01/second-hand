@@ -40,8 +40,6 @@ const heartIcon: IconProps = {
   color: 'neutralText',
 };
 
-/* TODO: API로 받아온 price, chat, like 데이터는 convert를 통해서 숫자 혹은 null로 전달하기 */
-
 export const ListItem = ({
   title,
   imgUrl,
@@ -57,7 +55,6 @@ export const ListItem = ({
 
   const listClickHandler = ({ target }: MouseEvent<HTMLLIElement>): void => {
     if (moreBtnRef.current?.contains(target as Node)) return;
-    console.log('listItem 클릭');
   };
 
   const moreBtnClickHandler = ({ target }) => {

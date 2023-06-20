@@ -1,7 +1,8 @@
 import { Item } from '@type-store/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
+import { customFetch } from '@services/apis/apis';
 
-interface ListItemPropsWithId extends ListItemProps {
+export interface ListItemPropsWithId extends ListItemProps {
   id: number;
 }
 
@@ -38,4 +39,24 @@ export const convertItemsToListItems = (
     };
     return newItem;
   });
+};
+
+export const getItemsAPI = async (page: number) => {
+  try {
+    const fetchedData = await customFetch({
+      path: '/items',
+      method: 'GET',
+      queries: { page },
+    });
+    if (fetchedData && fetchedData.error) {
+      console.error(`Error: ${fetchedData.error}`);
+      return null;
+    }
+    return fetchedData;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+      return null;
+    }
+  }
 };
