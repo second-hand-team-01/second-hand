@@ -8,7 +8,6 @@ export const TabBar = styled.div`
   padding: 10px;
   gap: 10px;
   background-color: ${({ theme }) => theme.colors.neutralBackgroundWeak};
-  border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
 `;
 
 export const Tab = styled.div`

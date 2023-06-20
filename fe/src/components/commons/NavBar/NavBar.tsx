@@ -13,7 +13,7 @@ export interface NavBarProps {
   title?: string;
   leftBtn?: BtnInfo;
   rightBtn?: BtnInfo;
-  tabInfo: TabProps;
+  tabInfo?: TabProps;
 }
 
 export const NavBar = ({ title, leftBtn, rightBtn, tabInfo }: NavBarProps) => {

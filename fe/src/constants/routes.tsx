@@ -5,9 +5,23 @@ import { Home } from '@pages/index';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout hasTabBar={true} />,
+    element: (
+      <Layout
+        headerOption={{ type: 'filter' }}
+        footerOption={{ type: 'tab' }}
+      />
+    ),
     children: [
-      { path: '/', element: <Home /> },
+      {
+        path: '/',
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: <Layout footerOption={{ type: 'tab' }} />,
+    children: [
       { path: 'sales-history', element: <div>Sales-history</div> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
@@ -16,7 +30,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/profile/signIn',
-    element: <Layout hasTabBar={false} />,
+    element: <Layout />,
     children: [{ path: '', element: <div>Sign</div> }],
   },
 ]);
