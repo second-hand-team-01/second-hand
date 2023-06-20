@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`member` (
   `main_location_idx` BIGINT(10) NOT NULL,
   `sub_location_idx` BIGINT(10) NULL,
   `login_id` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
   `image_url` VARCHAR(45) NULL,
   PRIMARY KEY (`member_idx`),
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) VISIBLE,
