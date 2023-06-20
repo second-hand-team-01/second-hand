@@ -43,6 +43,7 @@ class ProductInfo: UIView {
     private func setFont() {
         self.nameLabel.font = .typo.headLine
         self.annotationLabel.font = .typo.footNote
+        self.annotationLabel.textColor = ColorPalette.neutral.textWeak
         self.descriptionLabel.font = .typo.body
     }
 }
@@ -75,7 +76,7 @@ extension ProductInfo {
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            nameLabel.topAnchor.constraint(equalTo: self.topAnchor)
         ])
     }
     
