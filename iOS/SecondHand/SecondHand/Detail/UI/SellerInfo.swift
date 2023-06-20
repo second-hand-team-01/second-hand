@@ -31,7 +31,10 @@ class SellerInfo: UIView {
     func configure(nameLabel: String) {
         self.nameLabel.text = nameLabel
     }
-    
+}
+
+// MARK: - Constraint 설정
+extension SellerInfo {
     private func addSubviews() {
         let subViews = [
             indicatorLabel,

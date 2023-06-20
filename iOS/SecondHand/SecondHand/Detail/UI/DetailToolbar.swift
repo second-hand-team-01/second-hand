@@ -36,10 +36,11 @@ class DetailToolbar: UIToolbar {
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
-        let item = UIBarButtonItem(image: UIImage(systemName: "heart"),
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector(addFavorite)
+        let item = UIBarButtonItem(
+            image: UIImage(systemName: "heart"),
+            style: .plain,
+            target: self,
+            action: #selector(addFavorite)
         )
         item.tintColor = UIColor.red
         item.customView?.frame.size = CGSize(width: 28, height: 28)
@@ -59,10 +60,12 @@ class DetailToolbar: UIToolbar {
     
     private func makeChatButton() -> UIBarButtonItem {
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 8,
-                                                              leading: 16,
-                                                              bottom: 8,
-                                                              trailing: 16)
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 16,
+            bottom: 8,
+            trailing: 16
+        )
         
         let button = UIButton(configuration: configuration)
         button.layer.cornerRadius = 8
@@ -92,10 +95,10 @@ class DetailToolbar: UIToolbar {
     }
     
     private func addFlexibleSpace() -> UIBarButtonItem {
-        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                    target: self,
-                                    action: nil)
+        let space = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: self,
+            action: nil)
         return space
     }
-
 }

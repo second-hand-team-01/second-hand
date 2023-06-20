@@ -45,7 +45,10 @@ class ProductInfo: UIView {
         self.annotationLabel.font = .typo.footNote
         self.descriptionLabel.font = .typo.body
     }
-    
+}
+
+// MARK: - Constraint 설정
+extension ProductInfo {
     private func addSubviews() {
         let subViews = [
             nameLabel,
@@ -92,7 +95,7 @@ class ProductInfo: UIView {
         ])
     }
     
-    private func layoutCommunicationLabel() {
+    func layoutCommunicationLabel() {
         NSLayoutConstraint.activate([
             communicationInfo.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             communicationInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor),

@@ -52,6 +52,15 @@ class CommunicationInfo: UIView {
         }
     }
     
+    private func setFont() {
+        chatCountLabel.font = .typo.footNote
+        favoriteCountLabel.font = .typo.footNote
+        viewsCountLabel.font = .typo.footNote
+    }
+}
+
+// MARK: - Constraint 설정
+extension CommunicationInfo {
     private func layoutConstraints() {
         addSubviews()
         layoutChatCountLabel()
@@ -78,11 +87,5 @@ class CommunicationInfo: UIView {
             viewsCountLabel.leadingAnchor.constraint(equalTo: favoriteCountLabel.trailingAnchor, constant: 8),
             viewsCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor)
         ])
-    }
-    
-    private func setFont() {
-        chatCountLabel.font = .typo.footNote
-        favoriteCountLabel.font = .typo.footNote
-        viewsCountLabel.font = .typo.footNote
     }
 }
