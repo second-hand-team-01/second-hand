@@ -17,6 +17,9 @@ public class Member {
     @Column(name = "login_id", nullable = false)
     private String loginId;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "image_url")
     private String imageUrl;
 
