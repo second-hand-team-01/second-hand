@@ -16,6 +16,8 @@ import { Dialog } from './Dialog/Dialog';
 import { SnackBar } from './SnackBar/SnackBar';
 import { ListItem } from './ListItem/ListItem';
 import { Spinner } from './Spinner/Spinner';
+import { Portal } from './Portal/Portal';
+import { Menu } from './Menu/Menu';
 
 export {
   Icon,
@@ -36,4 +38,6 @@ export {
   SnackBar,
   ListItem,
   Spinner,
+  Portal,
+  Menu,
 };
