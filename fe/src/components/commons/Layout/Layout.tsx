@@ -1,17 +1,18 @@
-import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import * as S from './LayoutStyle';
 import { TabBar } from '@commons/index';
+import { ReactNode } from 'react';
 
 interface LayoutProps {
-  children: ReactNode;
   hasTabBar: boolean;
+  children?: React.ReactNode;
 }
 
-export const Layout = ({ children, hasTabBar }: LayoutProps) => {
+export const Layout = ({ hasTabBar }: LayoutProps) => {
   return (
     <S.Wrap>
       <S.Layout>
-        {children}
+        <Outlet />
         {hasTabBar && (
           <S.Footer>
             <TabBar />

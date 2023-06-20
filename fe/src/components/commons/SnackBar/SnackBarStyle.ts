@@ -27,7 +27,7 @@ export const SnackBar = styled.div`
 export const Contents = styled.div`
   width: 100%;
   font-size: ${({ theme }) => theme.typography.subhead.size};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeights.light};
   line-height: ${({ theme }) => theme.typography.subhead.lineHeight};
 `;
 

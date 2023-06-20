@@ -1,10 +1,9 @@
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from '@styles/GlobalStyle';
-import { Layout, Profile } from './components/commons';
-import { theme } from '@styles/GlobalStyle';
-import { Icon } from './components/commons';
-import { Home } from '@pages/index';
+import { theme } from '@styles/theme';
 import '@styles/index.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './constants/routes';
 
 function App() {
   if (process.env.NODE_ENV === 'development') {
@@ -15,9 +14,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Layout hasTabBar={true}>
-        <Home></Home>
-      </Layout>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
