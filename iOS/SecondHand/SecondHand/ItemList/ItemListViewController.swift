@@ -7,22 +7,23 @@
 
 import UIKit
 
-class ItemListViewController: UIViewController {
+final class ItemListViewController: UIViewController {
     private var datasource: UITableViewDiffableDataSource<Section, Item>!
     private var currentSnapShot: NSDiffableDataSourceSnapshot<Section, Item>!
     private var data: [Item] = Item.sampleData
-    private var itemListUITableView: UITableView = UITableView()
-
+    private var itemListTableView: UITableView = UITableView()
+    private let network: Network = Network()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.itemListUITableView)
-        self.itemListUITableView.delegate = self
-        self.itemListUITableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
+        self.view.addSubview(self.itemListTableView)
+        self.itemListTableView.delegate = self
+        self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.layoutItemListUITableView()
     }
 
     private func layoutItemListUITableView() {
-        itemListUITableView.frame = view.bounds
+        itemListTableView.frame = view.bounds
     }
     
     override func viewWillLayoutSubviews() {
@@ -61,7 +62,7 @@ extension ItemListViewController: UITableViewDelegate {
 
 extension ItemListViewController {
     private func configureDataSource() {
-        self.datasource = UITableViewDiffableDataSource<Section, Item>(tableView: self.itemListUITableView, cellProvider: {tableView, indexPath, item in
+        self.datasource = UITableViewDiffableDataSource<Section, Item>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
             
             cell.titleLabel.updateText(to: item.itemTitle)
@@ -74,7 +75,7 @@ extension ItemListViewController {
             return cell
         })
         
-        self.itemListUITableView.dataSource = self.datasource
+        self.itemListTableView.dataSource = self.datasource
     }
     
     private func configureSnapshot(with data: [Item]) {
@@ -83,5 +84,28 @@ extension ItemListViewController {
         self.currentSnapShot.appendItems(data, toSection: .item)
         
         self.datasource.apply(self.currentSnapShot)
+    }
+}
+
+extension ItemListViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+
+        if position > itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
+            guard !self.network.ispagination else { return }
+            
+            self.network.fetchData(index: self.data.count, pagination: false, complete: { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.data += data
+                    DispatchQueue.main.async {
+                        guard let currentData = self?.data else { return }
+                        self?.configureSnapshot(with: currentData)
+                    }
+                case .failure(_):
+                    break
+                }
+            })
+        }
     }
 }
