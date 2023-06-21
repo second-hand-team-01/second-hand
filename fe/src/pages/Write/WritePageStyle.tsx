@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WritePage = styled.div`
-  padding: 16px;
+  padding: 0 16px;
 `;
 
 export const TitleSection = styled.div`

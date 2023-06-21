@@ -153,4 +153,11 @@ export const GlobalStyle = createGlobalStyle`
       font-family: sans-serif;
       overflow: hidden;
     }
+
+    .modal-root {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
 `;

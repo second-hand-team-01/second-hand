@@ -18,6 +18,7 @@ export const Portal = ({ id, children }: PortalProps): React.ReactPortal => {
     if (dynamicDiv) {
       modalDiv.current.id = id;
       document.body.appendChild(modalDiv.current);
+      modalDiv.current.classList.add('modal-root');
     }
 
     return () => {

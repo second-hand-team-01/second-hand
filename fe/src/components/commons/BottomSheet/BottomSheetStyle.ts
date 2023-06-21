@@ -20,8 +20,9 @@ export const BottomSheet = styled.div<BottomSheetStyleProps>`
     calc(${({ hasSearchInput }) => (hasSearchInput ? '56px + 48px' : '56px')})
     1fr;
   height: calc(100vh - 58px);
+  max-width: calc(393px - 2px);
+  margin-left: 1px;
   width: 100%;
-  max-width: 393px;
 `;
 
 export const Header = styled.div`

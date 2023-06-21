@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ImgPreview = styled.div`
   display: flex;
-  padding: 0;
+  padding: 16px 0;
   gap: 16px;
   overflow-x: scroll;
 `;
@@ -11,6 +11,7 @@ export const ImgContainer = styled.div`
   width: max-content;
   display: flex;
   gap: 16px;
+  height: 80px;
 `;
 
 export const Img = styled.img`

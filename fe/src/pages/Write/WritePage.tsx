@@ -1,4 +1,10 @@
-import { TextInput, ImgPreview, Button, TextArea } from '@components/commons';
+import {
+  TextInput,
+  ImgPreview,
+  Button,
+  TextArea,
+  BottomSheet,
+} from '@components/commons';
 import { useNavigate } from 'react-router-dom';
 import * as S from './WritePageStyle';
 import { useEffect, useState } from 'react';
@@ -12,7 +18,7 @@ import {
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
-import { c } from 'msw/lib/glossary-de6278a9';
+import { Image } from '@type-store/services/images';
 
 interface WritePageProps {
   status: 'write' | 'edit';
@@ -22,7 +28,7 @@ export const WritePage = ({ status }: WritePageProps) => {
   const [state, refetch] = useFetch<any, null>(getCategoryAPI, [], true);
   const { data } = state;
 
-  const [files, setFiles] = useState<string[]>([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [title, setTitle] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
@@ -30,6 +36,7 @@ export const WritePage = ({ status }: WritePageProps) => {
   );
   const [price, setPrice] = useState<number>(0);
   const [contents, setContents] = useState<string>('');
+  const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(true);
 
   const getRandomCategories = (categories: Category[]) => {
     if (categories) return getRandomElements(categories, 3);
@@ -43,7 +50,7 @@ export const WritePage = ({ status }: WritePageProps) => {
 
   return (
     <S.WritePage>
-      <ImgPreview fileState={[files, setFiles]}></ImgPreview>
+      <ImgPreview imageState={[images, setImages]}></ImgPreview>
       <S.TitleSection>
         <TextInput
           placeholder="글제목"
@@ -101,6 +108,7 @@ export const WritePage = ({ status }: WritePageProps) => {
         hasPadding={false}
         maxLength={1000}
       ></TextArea>
+      <BottomSheet isOpen={isCategoryDialogOpen}>바텀시트</BottomSheet>
     </S.WritePage>
   );
 };
