@@ -65,6 +65,12 @@ const states = {
     background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
     color: ${({ theme }) => theme.colors.neutralBackground};
   `,
+  disabled: css`
+    background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
+    color: ${({ theme }) => theme.colors.neutralBackground};
+    opacity: 0.5;
+    pointer-events: none;
+  `,
 };
 
 export interface ButtonStyleProps {
@@ -76,6 +82,7 @@ export interface ButtonStyleProps {
   iconSize?: number;
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;
+  backgroundColor?: string;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -115,4 +122,8 @@ export const Button = styled.button<ButtonStyleProps>`
   cursor: pointer;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
   ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
+  ${({ backgroundColor, theme }) =>
+    backgroundColor
+      ? `background-color: ${theme.colors[backgroundColor]}`
+      : ''};
 `;
