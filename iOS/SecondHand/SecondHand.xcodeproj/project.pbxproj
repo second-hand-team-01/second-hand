@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20CDE5D6BAC315408A7274A6 /* Pods_SecondHand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */; };
 		63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63129C992A4145B00049EC0C /* LoginViewController.swift */; };
+		632047602A42F28F0035880A /* AccountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320475F2A42F28F0035880A /* AccountInputView.swift */; };
 		632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807202A305CED0033F9D7 /* AppDelegate.swift */; };
 		632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807222A305CED0033F9D7 /* SceneDelegate.swift */; };
 		6328072A2A305CED0033F9D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632807292A305CED0033F9D7 /* Assets.xcassets */; };
@@ -94,6 +95,7 @@
 		451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand_SecondHandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
 		63129C992A4145B00049EC0C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6320475F2A42F28F0035880A /* AccountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInputView.swift; sourceTree = "<group>"; };
 		6328071D2A305CED0033F9D7 /* SecondHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecondHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632807202A305CED0033F9D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		632807222A305CED0033F9D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				63129C992A4145B00049EC0C /* LoginViewController.swift */,
+				6320475F2A42F28F0035880A /* AccountInputView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -680,8 +683,8 @@
 				FF61AD272A36F24D006AE167 /* TabBarController.swift in Sources */,
 				632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */,
 				FFD62C212A3C1BBF0014D2D4 /* CapsuleLabel.swift in Sources */,
+				632047602A42F28F0035880A /* AccountInputView.swift in Sources */,
 				FF54649B2A407512008519A9 /* Network.swift in Sources */,
-				63A3FCE52A3969F900361FAD /* DetailViewController+layoutScrollView.swift in Sources */,
 				63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */,
 				FFD62C232A3C1BBF0014D2D4 /* TitleLabel.swift in Sources */,
 				63608CCA2A40DA46006CD876 /* UIFont+Typography.swift in Sources */,
