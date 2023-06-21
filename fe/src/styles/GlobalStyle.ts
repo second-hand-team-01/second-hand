@@ -139,5 +139,6 @@ export const GlobalStyle = createGlobalStyle`
 
     body {
       font-family: sans-serif;
+      overflow: hidden;
     }
 `;

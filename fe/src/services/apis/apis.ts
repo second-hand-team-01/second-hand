@@ -47,23 +47,31 @@ export const setHeader = <B>(
   return headers;
 };
 
-export const customFetch = async <B>({
+export type Response<D> = {
+  data?: D;
+  error?: Error;
+};
+
+export const customFetch = async <B, D>({
   path,
   queries,
   method,
   body,
   auth = false,
   options,
-}: FetchProps<B>) => {
+}: FetchProps<B>): Promise<Response<D>> => {
   let url = HOST + path;
 
   if (queries) {
     url = addQueriesToURL(url, queries);
   }
 
-  const init: any = {
+  const init: RequestInit = {
     method,
-    body: getType(body) === Type.LiteralObject ? JSON.stringify(body) : body,
+    body:
+      getType(body) === Type.LiteralObject
+        ? JSON.stringify(body)
+        : (body as BodyInit),
   };
 
   const headers = setHeader<B>(body, options, auth);
@@ -74,18 +82,25 @@ export const customFetch = async <B>({
 
   try {
     const res = await fetch(url, init);
-
     if (res.ok) {
       const resJSON = await res.json();
       if (resJSON.data === undefined) {
         return {
-          error: new Error(`Error: ${ERROR_MESSAGE['NO_DATA']}`),
+          error: new Error(`${ERROR_MESSAGE['NO_DATA']}`),
         };
       }
       const data = resJSON.data;
-      return data;
+      return { data };
     }
+    return {
+      error: new Error(
+        `${ERROR_MESSAGE[res.status] ?? ERROR_MESSAGE['UNDEFINED']}`
+      ),
+    };
   } catch (error) {
-    return { error: new Error(`Error: ${error}`) };
+    if (error instanceof Error) {
+      return { error: new Error(`${error.message}`) }; // 이 부분은 어떤 에러가 발생하는걸까?
+    }
+    return { error: new Error(ERROR_MESSAGE['UNDEFINED']) };
   }
 };

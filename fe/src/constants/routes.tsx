@@ -1,12 +1,27 @@
 import { Layout } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
+import { Home } from '@pages/index';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout hasTabBar={true} />,
+    element: (
+      <Layout
+        headerOption={{ type: 'filter' }}
+        footerOption={{ type: 'tab' }}
+      />
+    ),
     children: [
-      { path: '/', element: <div>Home</div> },
+      {
+        path: '/',
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: <Layout footerOption={{ type: 'tab' }} />,
+    children: [
       { path: 'sales-history', element: <div>Sales-history</div> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
@@ -14,8 +29,13 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: '/',
+    element: <Layout />,
+    children: [{ path: 'write', element: <div>Write</div> }],
+  },
+  {
     path: '/profile/signIn',
-    element: <Layout hasTabBar={false} />,
+    element: <Layout />,
     children: [{ path: '', element: <div>Sign</div> }],
   },
 ]);

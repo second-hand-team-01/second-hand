@@ -1,8 +1,12 @@
-import React, { useRef, MouseEvent } from 'react';
+import { useRef, MouseEvent } from 'react';
 import * as S from './ListItemStyle';
 import { icons } from '@assets/icons';
 import { Icon } from '@components/commons';
 import { colors, palette } from '@styles/Color';
+import {
+  convertDateToTimeStamp,
+  convertNumToPrice,
+} from '@utils/common/common';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -14,19 +18,30 @@ export interface ListItemProps {
   title: string;
   imgUrl: string;
   location: string;
-  timeStamp: string;
+  timeStamp: Date;
   price: number | null;
-  state: string | null;
+  state: '예약중' | '판매중' | null;
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
-  moreBtnIcon: IconProps;
-  chatIcon: IconProps;
-  heartIcon: IconProps;
   onClick?: () => void;
 }
 
-/* TODO: API로 받아온 price, chat, like 데이터는 convert를 통해서 숫자 혹은 null로 전달하기 */
+const moreBtnIcon: IconProps = {
+  name: 'more',
+  size: 15,
+  color: 'neutralTextWeak',
+};
+const chatIcon: IconProps = {
+  name: 'talk',
+  size: 13,
+  color: 'neutralText',
+};
+const heartIcon: IconProps = {
+  name: 'heart',
+  size: 13,
+  color: 'neutralText',
+};
 
 export const ListItem = ({
   title,
@@ -38,32 +53,17 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
-  moreBtnIcon = {
-    name: 'more',
-    size: 15,
-    color: 'neutralTextWeak',
-  },
-  chatIcon = {
-    name: 'talk',
-    size: 13,
-    color: 'neutralText',
-  },
-  heartIcon = {
-    name: 'heart',
-    size: 13,
-    color: 'neutralText',
-  },
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
   const listClickHandler = ({ target }: MouseEvent<HTMLLIElement>): void => {
     if (moreBtnRef.current?.contains(target as Node)) return;
-    console.log('listItem 클릭');
   };
 
   const moreBtnClickHandler = ({ target }) => {
     console.log('더보기 버튼 클릭');
   };
+
   return (
     <S.ListItem onClick={listClickHandler}>
       <S.Thumbnail src={imgUrl} alt={title} />
@@ -84,15 +84,15 @@ export const ListItem = ({
           <S.SubInfo>
             <span>{location}</span>
             <span> ・ </span>
-            <span>{timeStamp}</span>
+            <span>{convertDateToTimeStamp(timeStamp)}</span>
           </S.SubInfo>
           <S.States>
-            {state && <S.StateBadge>{state}</S.StateBadge>}
-            {price ? `${price}원` : '가격 없음'}
+            {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
+            {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
           </S.States>
         </S.Info>
         <S.ChatAndLike>
-          {chat && (
+          {!!chat && (
             <S.ChatAndLikeInfo>
               <Icon
                 name={chatIcon.name}
@@ -102,7 +102,7 @@ export const ListItem = ({
               <span>{chat}</span>
             </S.ChatAndLikeInfo>
           )}
-          {like && (
+          {!!like && (
             <S.ChatAndLikeInfo>
               <Icon
                 name={heartIcon.name}

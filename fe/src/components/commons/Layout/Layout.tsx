@@ -1,21 +1,50 @@
 import { Outlet } from 'react-router-dom';
-import { TabBar } from '@commons/TabBar/TabBar';
 import * as S from './LayoutStyle';
+import { TabBar } from '@commons/index';
+import { ReactNode } from 'react';
+import { ChatBar, FilterBar, InfoBar, NavBar } from '@commons/index';
+import { HeaderProps, FooterProps, LayoutStyleProps } from './LayoutStyle';
 
-interface LayoutProps {
-  hasTabBar: boolean;
-  children?: React.ReactNode;
+interface LayoutProps extends LayoutStyleProps {
+  children?: ReactNode;
 }
 
-export const Layout = ({ hasTabBar }: LayoutProps) => {
+const renderHeader = (type: HeaderProps['type']) => {
+  switch (type) {
+    case 'filter':
+      return <FilterBar></FilterBar>;
+    case 'nav':
+      return <NavBar></NavBar>;
+    default:
+      return <></>;
+  }
+};
+
+const renderFooter = (type: FooterProps['type']): ReactNode => {
+  switch (type) {
+    case 'info':
+      return <InfoBar></InfoBar>;
+    case 'chat':
+      return <ChatBar></ChatBar>;
+    case 'tab':
+      return <TabBar></TabBar>;
+    default:
+      return <></>;
+  }
+};
+
+export const Layout = ({ headerOption, footerOption }: LayoutProps) => {
   return (
     <S.Wrap>
-      <S.Layout>
-        <Outlet />
-        {hasTabBar && (
-          <S.Footer>
-            <TabBar />
-          </S.Footer>
+      <S.Layout headerOption={headerOption} footerOption={footerOption}>
+        <S.Header>
+          {headerOption !== undefined && renderHeader(headerOption.type)}
+        </S.Header>
+        <S.Contents>
+          <Outlet />
+        </S.Contents>
+        {footerOption !== undefined && (
+          <S.Footer>{renderFooter(footerOption.type)}</S.Footer>
         )}
       </S.Layout>
     </S.Wrap>

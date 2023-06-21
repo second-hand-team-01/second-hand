@@ -1,0 +1,121 @@
+{
+  "success": true,
+  "status": 200,
+  "code": 20000,
+  "message": "요청이 완료되었습니다.",
+  "data": {
+    "hasNext": false,
+    "items": [
+      {
+        "itemIdx": 21,
+        "imageUrl": "www.itemimageurl50.com",
+        "name": "21",
+        "location": "역삼1동",
+        "postedAt": "2023-02-28T01:00:30",
+        "status": "예약중",
+        "price": 505242,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 22,
+        "imageUrl": "www.itemimageurl17.com",
+        "name": "22",
+        "location": "역삼1동",
+        "postedAt": "2023-05-16T17:16:05",
+        "status": "판매중",
+        "price": 814857,
+        "chat": 1,
+        "interest": 0
+      },
+      {
+        "itemIdx": 23,
+        "imageUrl": "www.itemimageurl18.com",
+        "name": "23",
+        "location": "역삼1동",
+        "postedAt": "2023-04-25T17:27:02",
+        "status": "판매중",
+        "price": 884301,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 24,
+        "imageUrl": "www.itemimageurl19.com",
+        "name": "24",
+        "location": "역삼1동",
+        "postedAt": "2023-05-18T09:47:11",
+        "status": "예약중",
+        "price": 782889,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 25,
+        "imageUrl": "www.itemimageurl28.com",
+        "name": "25",
+        "location": "역삼1동",
+        "postedAt": "2022-06-22T21:27:33",
+        "status": "판매중",
+        "price": 712027,
+        "chat": 0,
+        "interest": 3
+      },
+      {
+        "itemIdx": 26,
+        "imageUrl": "www.itemimageurl31.com",
+        "name": "26",
+        "location": "역삼1동",
+        "postedAt": "2023-02-06T14:51:37",
+        "status": "판매중",
+        "price": 547253,
+        "chat": 0,
+        "interest": 1
+      },
+      {
+        "itemIdx": 27,
+        "imageUrl": "www.itemimageurl36.com",
+        "name": "27",
+        "location": "역삼1동",
+        "postedAt": "2022-09-13T20:04:02",
+        "status": "예약중",
+        "price": 348646,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 28,
+        "imageUrl": "www.itemimageurl40.com",
+        "name": "28",
+        "location": "역삼1동",
+        "postedAt": "2023-01-13T03:59:51",
+        "status": "판매중",
+        "price": 385207,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 29,
+        "imageUrl": "www.itemimageurl42.com",
+        "name": "29",
+        "location": "역삼1동",
+        "postedAt": "2023-03-01T19:36:15",
+        "status": "판매중",
+        "price": 211310,
+        "chat": 0,
+        "interest": 1
+      },
+      {
+        "itemIdx": 30,
+        "imageUrl": "www.itemimageurl45.com",
+        "name": "30",
+        "location": "역삼1동",
+        "postedAt": "2023-04-08T10:37:31",
+        "status": "예약중",
+        "price": 543583,
+        "chat": 0,
+        "interest": 0
+      }
+    ]
+  }
+}

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import * as S from './BottomSheetStyle';
-import { Button, Icon, TextInput } from '@commons/index';
-import { colors } from '@styles/Color';
+import { Button, TextInput } from '@commons/index';
 import { icons } from '@assets/icons';
 import { createPortal } from 'react-dom';
 
@@ -82,7 +81,7 @@ export const BottomSheet = ({
         </S.BottomSheet>
         <S.BackDrop onClick={handleBackdropClick}></S.BackDrop>
       </>,
-      document.getElementById('modal-root') as HTMLDivElement
+      document.querySelector('#modal-root') ?? document.body
     )
   );
 };

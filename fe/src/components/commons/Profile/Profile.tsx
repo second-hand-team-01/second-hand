@@ -1,6 +1,6 @@
 import * as S from './ProfileStyle';
 import { Icon } from '@components/commons/index';
-import { ProfileStyleProps, WrapStyleProps } from './ProfileStyle';
+import { ProfileStyleProps } from './ProfileStyle';
 
 interface ProfileProps extends ProfileStyleProps {
   onClick: () => void;
