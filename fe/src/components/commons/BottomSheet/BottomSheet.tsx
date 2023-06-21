@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import * as S from './BottomSheetStyle';
 import { Button, TextInput, Portal } from '@commons/index';
-import { colors } from '@styles/Color';
 import { icons } from '@assets/icons';
 
 interface btnInfo {
