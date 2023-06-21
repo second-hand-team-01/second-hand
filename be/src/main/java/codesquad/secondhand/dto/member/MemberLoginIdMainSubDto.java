@@ -12,7 +12,7 @@ public class MemberLoginIdMainSubDto {
     private Long mainLocationIdx;
     private Long subLocationIdx;
 
-    public static MemberLoginIdMainSubDto of(Member member) {
-        return new MemberLoginIdMainSubDto(member.getLoginId(), member.getMainLocation().getLocationIdx(), member.getSubLocation().getLocationIdx());
+    public static MemberLoginIdMainSubDto of(String memberLoginId, Long mainLocationIdx, Long subLocationIdx) {
+        return new MemberLoginIdMainSubDto(memberLoginId, mainLocationIdx, subLocationIdx);
     }
 }
