@@ -2,6 +2,7 @@ package codesquad.secondhand.dto.token;
 
 import codesquad.secondhand.dto.location.LocationTownDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
+import codesquad.secondhand.dto.member.MemberLoginIdMainSubDto;
 import codesquad.secondhand.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,9 @@ import lombok.RequiredArgsConstructor;
 public class TokenResponse {
 
     private final String accessToken;
-    private final Long mainLocationIdx;
-    private final Long subLocationIdx;
+    private final MemberLoginIdMainSubDto memberInfo;
 
-    public static TokenResponse of(String token, Long mainLocationIdx, Long subLocationIdx) {
-        return new TokenResponse(token, mainLocationIdx, subLocationIdx);
+    public static TokenResponse of(String token, MemberLoginIdMainSubDto memberLoginIdMainSubDto) {
+        return new TokenResponse(token, memberLoginIdMainSubDto);
     }
 }
