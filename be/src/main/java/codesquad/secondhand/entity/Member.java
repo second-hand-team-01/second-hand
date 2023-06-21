@@ -30,4 +30,9 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_location_idx")
     private Location subLocation;
+
+    public void updateLocations(Location newMainLocation, Location newSubLocation) {
+        this.mainLocation = newMainLocation;
+        this.subLocation = newSubLocation;
+    }
 }
