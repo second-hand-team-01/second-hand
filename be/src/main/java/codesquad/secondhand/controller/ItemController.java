@@ -18,7 +18,7 @@ import static codesquad.secondhand.dto.StatusCode.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/items")
+@RequestMapping("/api/items")
 public class ItemController {
 
     private final ItemService itemService;
