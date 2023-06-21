@@ -9,6 +9,8 @@ interface TextInputProps {
   label?: string;
   icon?: keyof typeof icons;
   hasBackground?: boolean;
+  type?: string;
+  onBlur?: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -20,6 +22,8 @@ export const TextInput = ({
   icon,
   hasBackground = false,
   onChange,
+  onBlur,
+  type,
 }: TextInputProps) => {
   return (
     <S.Wrap hasLabel={!!label} hasBackground={hasBackground} shape={shape}>
@@ -30,6 +34,8 @@ export const TextInput = ({
         value={value}
         onChange={onChange}
         shape={shape}
+        onBlur={onBlur}
+        type={type}
       ></S.TextInput>
     </S.Wrap>
   );
