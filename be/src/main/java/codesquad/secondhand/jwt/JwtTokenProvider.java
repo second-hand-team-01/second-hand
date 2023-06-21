@@ -1,6 +1,6 @@
 package codesquad.secondhand.jwt;
 
-import codesquad.secondhand.dto.member.MemberLoginIdMainSubDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,18 +23,15 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(MemberLoginIdMainSubDto subject) {
-//        Claims claims = Jwts.claims().setSubject(subject);
-//        log.info("[JwtTokenProvider.createToken().claims = {}]", claims);
+    public String createToken(MemberIdxLoginIdDto subject) {
 
         Date now = new Date();
         Date validity = new Date(now.getTime()
                 + validityInMilliseconds);
 
         return Jwts.builder()
+                .claim("memberIdx", subject.getMemberIdx())
                 .claim("loginId", subject.getLoginId())
-                .claim("mainLocationIdx",subject.getMainLocationIdx())
-                .claim("subLocationIdx", subject.getSubLocationIdx())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
