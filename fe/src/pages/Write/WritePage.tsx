@@ -1,24 +1,45 @@
 import { TextInput, ImgPreview, Button, TextArea } from '@components/commons';
 import { useNavigate } from 'react-router-dom';
 import * as S from './WritePageStyle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   convertNumToPrice,
   convertPriceToNum,
   Type,
   getType,
+  getRandomElements,
 } from '@utils/common/common';
+import { Category } from '@type-store/services/category';
+import { useFetch } from '@hooks/useFetch/useFetch';
+import { getCategoryAPI } from '@services/categories/categories';
+import { c } from 'msw/lib/glossary-de6278a9';
 
 interface WritePageProps {
   status: 'write' | 'edit';
 }
 
 export const WritePage = ({ status }: WritePageProps) => {
+  const [state, refetch] = useFetch<any, null>(getCategoryAPI, [], true);
+  const { data } = state;
+
   const [files, setFiles] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
+    null
+  );
   const [price, setPrice] = useState<number>(0);
   const [contents, setContents] = useState<string>('');
+
+  const getRandomCategories = (categories: Category[]) => {
+    if (categories) return getRandomElements(categories, 3);
+    else return [];
+  };
+
+  useEffect(() => {
+    const randomCategories = getRandomCategories(data);
+    data && setCategories(randomCategories);
+  }, [data]);
 
   return (
     <S.WritePage>
@@ -30,11 +51,28 @@ export const WritePage = ({ status }: WritePageProps) => {
           shape="large"
           onChange={({ target }) => setTitle(target.value)}
           hasPadding={false}
+          maxLength={40}
         ></TextInput>
         <S.CategorySection>
           <S.CategoryContainer>
-            <Button shape="small" title="타이틀" hasBorder={true}></Button>
-            <Button shape="small" title="타이틀" state="active"></Button>
+            {categories.map((category) => (
+              <Button
+                key={category.idx}
+                state={
+                  selectedCategoryIdx === category.idx ? 'active' : 'default'
+                }
+                title={category.name}
+                hasBorder={true}
+                shape="small"
+                onClick={({ target }) => {
+                  const btn = target as HTMLButtonElement;
+                  const idx = categories.find(
+                    (category) => category.name === btn.innerText
+                  )?.idx;
+                  idx && setSelectedCategoryIdx(idx);
+                }}
+              ></Button>
+            ))}
           </S.CategoryContainer>
           <Button shape="small" icon="arrowRight"></Button>
         </S.CategorySection>
@@ -52,6 +90,7 @@ export const WritePage = ({ status }: WritePageProps) => {
             }
           }}
           hasPadding={false}
+          maxLength={15}
         ></TextInput>
       </S.PriceSection>
       <TextArea
@@ -60,7 +99,7 @@ export const WritePage = ({ status }: WritePageProps) => {
         placeholder="역삼1동에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)" //TODO: 내 동네로 수정
         onChange={({ target }) => setContents(target.value)}
         hasPadding={false}
-        rows={30}
+        maxLength={1000}
       ></TextArea>
     </S.WritePage>
   );

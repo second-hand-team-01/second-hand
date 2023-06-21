@@ -108,3 +108,8 @@ export const convertNumToPrice = (num: number) => {
 export const convertPriceToNum = (price: string) => {
   return Number(price.split(',').join(''));
 };
+
+export const getRandomElements = <T>(array: T[], count: number) => {
+  const shuffled = [...array].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};

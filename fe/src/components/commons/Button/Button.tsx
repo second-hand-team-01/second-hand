@@ -3,7 +3,7 @@ import { Icon } from '@components/commons/Icon/Icon';
 import { ButtonStyleProps } from './ButtonStyle';
 
 interface ButtonProps extends ButtonStyleProps {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const Button = ({

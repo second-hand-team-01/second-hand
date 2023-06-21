@@ -13,6 +13,7 @@ interface TextInputProps {
   hasPadding?: boolean;
   shape: 'large' | 'small';
   type?: string;
+  maxLength?: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -26,6 +27,7 @@ export const TextInput = ({
   hasBorder = true,
   hasPadding = true,
   type = 'text',
+  maxLength,
   onChange,
 }: TextInputProps) => {
   return (
@@ -44,6 +46,7 @@ export const TextInput = ({
         onChange={onChange}
         shape={shape}
         type={type}
+        maxLength={maxLength}
       ></S.TextInput>
     </S.Wrap>
   );

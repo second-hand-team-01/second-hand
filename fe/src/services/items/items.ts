@@ -1,4 +1,4 @@
-import { Item } from '@type-store/items';
+import { Item } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
@@ -53,9 +53,7 @@ export interface ConvertedGetItemsRes {
   items: ListItemPropsWithId[];
 }
 
-export const getItemsAPI = async (
-  page: number
-): Promise<Response<ConvertedGetItemsRes>> => {
+export const getItemsAPI = async (page: number) => {
   try {
     const res = (await customFetch<null, GetItemsRes>({
       path: '/items',

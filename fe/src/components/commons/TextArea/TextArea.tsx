@@ -14,6 +14,7 @@ interface TextAreaProps {
   hasPadding?: boolean;
   shape: 'large' | 'small';
   rows?: number;
+  maxLength?: number;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -26,6 +27,7 @@ export const TextArea = ({
   hasBackground = false,
   hasBorder = true,
   hasPadding = true,
+  maxLength,
   onChange,
 }: TextAreaProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -61,6 +63,7 @@ export const TextArea = ({
         value={value}
         placeholder={placeholder}
         ref={textareaRef}
+        maxLength={maxLength}
       ></S.TextArea>
     </S.Wrap>
   );
