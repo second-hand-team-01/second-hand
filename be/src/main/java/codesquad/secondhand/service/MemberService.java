@@ -1,9 +1,10 @@
 package codesquad.secondhand.service;
 
 import codesquad.secondhand.dto.member.LoginRequestDto;
+import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.MemberLoginIdMainSubDto;
+import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
-import codesquad.secondhand.dto.location.LocationTownDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.jwt.JwtTokenProvider;
 import codesquad.secondhand.repository.MemberRepository;
@@ -28,20 +29,23 @@ public class MemberService {
             //TODO: 비밀번호 해시 함수를 사용해 암호화 해보기
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         } //TODO: 사용자 정의 예외 공부해보기
-        MemberLoginIdMainSubDto memberLoginIdMainSubDto = MemberLoginIdMainSubDto.of(member);
+        MemberLoginIdMainSubDto memberLoginIdMainSubDto = getMemberLoginIdMainSub(member.getLoginId());
         return jwtTokenProvider.createToken(memberLoginIdMainSubDto);
     }
 
-    public LocationTownDto getMainLocation(String memberLoginId) { // mainLocation 가져오는 메서드
-        log.info("[MemberService.getMainLocation]");
+    public MemberLoginIdMainSubDto getMemberLoginIdMainSub(String memberLoginId) {
         Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
-        return LocationTownDto.of(member.getMainLocation());
+        Long mainLocationIdx = member.getMainLocation().getLocationIdx();
+        Location subLocation = member.getSubLocation();
+        if (subLocation == null) {
+            return MemberLoginIdMainSubDto.of(memberLoginId, mainLocationIdx, null);
+        }
+        return MemberLoginIdMainSubDto.of(memberLoginId, mainLocationIdx, member.getSubLocation().getLocationIdx());
     }
 
-    public LocationTownDto getSubLocation(String memberLoginId) { // subLocation 가져오는 메서드
-        log.info("[MemberService.getSubLocation]");
+    public MemberInfoDto getMemberInfo(String memberLoginId) {
         Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
-        return LocationTownDto.of(member.getSubLocation());
+        return MemberInfoDto.of(member);
     }
 
     public MainSubTownDto getMainSubLocation(String memberLoginId) { // mainLocation, subLocation 동시에 가져오는 메서드
