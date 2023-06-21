@@ -1,6 +1,6 @@
 import { Layout } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '@pages/index';
+import { Home, LoginPage } from '@pages/index';
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       { path: 'sales-history', element: <div>Sales-history</div> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
-      { path: 'profile', element: <div>Profile</div> },
+      { path: 'profile', element: <LoginPage /> },
     ],
   },
   {
