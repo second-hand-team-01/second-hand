@@ -41,13 +41,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // 토큰에서 값 추출
-    public String getSubject(String token) {
-        return Jwts.parser()
+    // 토큰에서 loginId 추출
+    public String getLoginId(String token) {
+        return (String) Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("loginId");
     }
 
     // 유효한 토큰인지 확인
