@@ -104,3 +104,7 @@ export const convertDateToTimeStamp = (date: Date) => {
 export const convertNumToPrice = (num: number) => {
   return num.toLocaleString();
 };
+
+export const convertPriceToNum = (price: string) => {
+  return Number(price.split(',').join(''));
+};

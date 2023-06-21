@@ -16,6 +16,7 @@ export const Button = ({
   iconSize,
   onClick,
   hasBorderRadius = true,
+  hasBorder = false,
 }: ButtonProps) => {
   return (
     <S.Button
@@ -25,6 +26,7 @@ export const Button = ({
       onClick={onClick}
       color={color}
       hasBorderRadius={hasBorderRadius}
+      hasBorder={hasBorder}
     >
       {title && textAlign === 'left' && <span>{title}</span>}
       {icon && <Icon name={icon} size={iconSize} color={color} />}

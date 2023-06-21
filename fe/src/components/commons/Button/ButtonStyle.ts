@@ -24,7 +24,7 @@ const shapes = {
       font-weight: ${theme.typography.subhead.fontWeight};
     `}
   `,
-  small: css<ButtonStyleProps>`
+  medium: css<ButtonStyleProps>`
     ${({ theme }) => `
       padding: 0px 16px;
       width: fit-content;
@@ -33,6 +33,17 @@ const shapes = {
       font-size: ${theme.typography.body.size};
       line-height: ${theme.typography.body.lineHeight};
       font-weight: ${theme.typography.body.fontWeight};
+    `}
+  `,
+  small: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 0px 16px;
+      width: fit-content;
+      height: 32px;
+      border-radius: 50px;
+      font-size: ${theme.typography.caption1.size};
+      line-height: ${theme.typography.caption1.lineHeight};
+      font-weight: ${theme.typography.caption1.fontWeight};
     `}
   `,
   ghost: css<ButtonStyleProps>`
@@ -76,6 +87,7 @@ export interface ButtonStyleProps {
   iconSize?: number;
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;
+  hasBorder?: boolean;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -111,8 +123,10 @@ export const Button = styled.button<ButtonStyleProps>`
   ${textAlignStyles}
   display: flex;
   align-items: center;
-  border: none;
   cursor: pointer;
+  border: none;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
   ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
+  ${({ hasBorder, theme }) =>
+    hasBorder ? `border: 1px solid  ${theme.colors.neutralBorder}` : ''}
 `;

@@ -135,6 +135,18 @@ export const GlobalStyle = createGlobalStyle`
     * {
       box-sizing: border-box;
     }
+
+    input[type="number"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
     /* end of reset-css*/
 
     body {

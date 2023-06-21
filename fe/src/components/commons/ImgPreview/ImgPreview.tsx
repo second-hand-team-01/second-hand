@@ -1,13 +1,13 @@
 import * as S from './ImgPreviewStyle';
-import { useState, useRef } from 'react';
+import { useState, useRef, SetStateAction, Dispatch } from 'react';
 import { Icon } from '@commons/index';
 
 interface ImgPreviewProps {
-  files: FileReader[];
+  fileState: [string[], Dispatch<SetStateAction<string[]>>];
 }
 
-export const ImgPreview = () => {
-  const [files, setFiles] = useState<string[]>([]);
+export const ImgPreview = ({ fileState }: ImgPreviewProps) => {
+  const [files, setFiles] = fileState;
   const FileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileOnChange = () => {

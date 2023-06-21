@@ -20,7 +20,7 @@ export const NavbarBtn = ({ text, icon, path, onClick }: NavigateBtnProps) => {
       onClick={handleOnClick}
       title={text}
       icon={icon}
-      shape="small"
+      shape="medium"
       color="neutralText"
     ></Button>
   );

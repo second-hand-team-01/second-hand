@@ -8,7 +8,7 @@ export interface WrapStyleProps {
   hasPadding: boolean;
 }
 
-export interface TextInputStyleProps {
+export interface TextAreaStyleProps {
   shape: 'large' | 'small';
 }
 
@@ -20,15 +20,13 @@ export const Wrap = styled.div<WrapStyleProps>`
   border-bottom: ${({ hasBackground }) => (hasBackground ? '0' : '1px')} solid
     ${({ theme }) => theme.colors.neutralBorder};
   ${({ hasBorder }) => (hasBorder ? 'border: none' : '')};
-  height: ${({ shape }) => (shape === 'large' ? '44' : '36')}px;
   background-color: ${({ theme, hasBackground }) =>
     hasBackground
       ? theme.colors.systemBackgroundWeak
       : theme.colors.neutralBackground};
   align-items: center;
   border-radius: ${({ hasBackground }) => (hasBackground ? '10px' : '0')};
-  &:focus-within {
-  }
+
   ${({ hasPadding }) => (!hasPadding ? 'padding: 0' : '')};
 `;
 
@@ -42,7 +40,7 @@ export const Label = styled.label`
   min-width: max-content;
 `;
 
-export const TextInput = styled.input<TextInputStyleProps>`
+export const TextArea = styled.textarea<TextAreaStyleProps>`
   border: none;
   padding: 0;
   background-color: transparent;
@@ -60,8 +58,15 @@ export const TextInput = styled.input<TextInputStyleProps>`
       ? theme.typography.body.lineHeight
       : theme.typography.subhead.lineHeight};
   font-weight: ${({ theme }) => theme.fontWeights.regular};
+  max-width: 100%;
+  word-break: break-all;
+  font-family: sans-serif;
+  resize: none;
 
   &:placeholder {
     color: ${({ theme }) => theme.colors.neutralTextWeak};
+  }
+  &:focus-visible {
+    outline: none;
   }
 `;

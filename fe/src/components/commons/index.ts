@@ -19,6 +19,7 @@ import { Spinner } from './Spinner/Spinner';
 import { ToolBar } from './ToolBar/ToolBar';
 import { NavbarBtn } from './NavBar/NavbarBtn/NavbarBtn';
 import { ImgPreview } from './ImgPreview/ImgPreview';
+import { TextArea } from './TextArea/TextArea';
 
 export {
   Icon,
@@ -42,4 +43,5 @@ export {
   ToolBar,
   NavbarBtn,
   ImgPreview,
+  TextArea,
 };

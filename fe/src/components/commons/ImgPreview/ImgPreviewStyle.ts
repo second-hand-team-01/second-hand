@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ImgPreview = styled.div`
   display: flex;
-  padding: 16px;
+  padding: 0;
   gap: 16px;
   overflow-x: scroll;
 `;
@@ -15,6 +15,8 @@ export const ImgContainer = styled.div`
 
 export const Img = styled.img`
   object-fit: cover;
+  border: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  border-radius: 12px;
 `;
 
 export const FileInput = styled.input`
@@ -25,7 +27,6 @@ export const FileInput = styled.input`
 `;
 
 export const FileUploadBtn = styled.label`
-  border: 1px solid black;
   cursor: pointer;
   width: 80px;
   height: 80px;
