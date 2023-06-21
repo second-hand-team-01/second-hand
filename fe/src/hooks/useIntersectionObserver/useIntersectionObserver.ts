@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const options = {
   root: null,
-  threshold: 1,
+  threshold: 0,
 };
 
 export const useIntersectionObserver = (handleIntersection) => {

@@ -1,3 +1,4 @@
-import { Home } from './Home/Home';
+import { HomePage } from './HomePage/HomePage';
+import { WritePage } from './Write/WritePage';
 
-export { Home };
+export { HomePage, WritePage };

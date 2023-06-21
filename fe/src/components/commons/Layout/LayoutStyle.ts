@@ -8,7 +8,7 @@ export interface HeaderProps {
 }
 
 export interface FooterProps {
-  type: 'info' | 'chat' | 'tab' | undefined;
+  type: 'info' | 'chat' | 'tab' | 'tool' | undefined;
 }
 
 export interface LayoutStyleProps {
@@ -30,7 +30,7 @@ const getTemplateRows = (
       : NAVBAR_HEIGHT.top
     : 0;
   const footerHeight = hasFooter ? FOOTER_HEIGHT : 0;
-  const result = `${headerHeight}px 1fr ${footerHeight}px`;
+  const result = `${headerHeight + 1}px 1fr ${footerHeight}px`;
   return result;
 };
 
@@ -43,6 +43,7 @@ export const Layout = styled.div<LayoutStyleProps>`
   display: grid;
   grid-template-rows: ${({ headerOption, footerOption }) =>
     getTemplateRows(headerOption, footerOption)};
+  height: 100vh;
   height: 100dvh;
 `;
 
@@ -58,6 +59,7 @@ export const Header = styled.div`
 
 export const Contents = styled.div`
   overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
   position: relative;
 `;

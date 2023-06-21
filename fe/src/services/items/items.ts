@@ -79,11 +79,3 @@ export const getItemsAPI = async (
     return {};
   }
 };
-
-export const runPagination = () => {
-  let page = -1;
-  return async () => {
-    page++;
-    return await getItemsAPI(page);
-  };
-};

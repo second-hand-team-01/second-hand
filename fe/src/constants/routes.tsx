@@ -1,6 +1,7 @@
-import { Layout } from '@components/commons';
+import { Layout, NavbarBtn } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '@pages/index';
+import { HomePage, WritePage } from '@pages/index';
+import { useNavigate } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: <HomePage />,
       },
     ],
   },
@@ -30,8 +31,28 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Layout />,
-    children: [{ path: 'write', element: <div>Write</div> }],
+    element: (
+      <Layout
+        headerOption={{
+          type: 'nav',
+          navbarOptions: {
+            title: '글 작성',
+            leftBtn: <NavbarBtn text="뒤로" path="/"></NavbarBtn>,
+            rightBtn: (
+              <NavbarBtn
+                text="완료"
+                onClick={() => console.log('완료')}
+              ></NavbarBtn>
+            ),
+          },
+        }}
+        footerOption={{ type: 'tool' }}
+      />
+    ),
+    children: [
+      { path: 'write', element: <WritePage status="write" /> },
+      { path: 'edit', element: <WritePage status="edit" /> },
+    ],
   },
   {
     path: '/profile/signIn',

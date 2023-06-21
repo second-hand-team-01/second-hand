@@ -16,6 +16,9 @@ import { Dialog } from './Dialog/Dialog';
 import { SnackBar } from './SnackBar/SnackBar';
 import { ListItem } from './ListItem/ListItem';
 import { Spinner } from './Spinner/Spinner';
+import { ToolBar } from './ToolBar/ToolBar';
+import { NavbarBtn } from './NavBar/NavbarBtn/NavbarBtn';
+import { ImgPreview } from './ImgPreview/ImgPreview';
 
 export {
   Icon,
@@ -36,4 +39,7 @@ export {
   SnackBar,
   ListItem,
   Spinner,
+  ToolBar,
+  NavbarBtn,
+  ImgPreview,
 };

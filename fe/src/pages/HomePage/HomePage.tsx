@@ -1,5 +1,5 @@
 import { ListItem, Spinner } from '@commons/index';
-import * as S from './HomeStyle';
+import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
 import { ListItemPropsWithId } from '@services/items/items';
@@ -8,7 +8,7 @@ import { useFetch } from '@hooks/useFetch/useFetch';
 import { Button } from '@commons/index';
 import { useNavigate } from 'react-router-dom';
 
-export const Home = () => {
+export const HomePage = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [state, refetch] = useFetch<ConvertedGetItemsRes, null>(
@@ -55,8 +55,8 @@ export const Home = () => {
           {items?.map((item: ListItemPropsWithId) => (
             <ListItem key={item.id} {...item}></ListItem>
           ))}
-          <div ref={setTarget}></div>
-          {isNextPageLoading && (
+          <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
+          {loading && (
             <S.NextPageLoading>
               <Spinner />
             </S.NextPageLoading>

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import * as S from './LayoutStyle';
-import { TabBar } from '@commons/index';
+import { TabBar, ToolBar } from '@commons/index';
 import { ReactNode } from 'react';
 import { ChatBar, FilterBar, InfoBar, NavBar } from '@commons/index';
 import { HeaderProps, FooterProps, LayoutStyleProps } from './LayoutStyle';
@@ -9,12 +9,15 @@ interface LayoutProps extends LayoutStyleProps {
   children?: ReactNode;
 }
 
-const renderHeader = (type: HeaderProps['type']) => {
+const renderHeader = (
+  type: HeaderProps['type'],
+  props: HeaderProps['navbarOptions']
+) => {
   switch (type) {
     case 'filter':
       return <FilterBar></FilterBar>;
     case 'nav':
-      return <NavBar></NavBar>;
+      return <NavBar {...props}></NavBar>;
     default:
       return <></>;
   }
@@ -28,6 +31,8 @@ const renderFooter = (type: FooterProps['type']): ReactNode => {
       return <ChatBar></ChatBar>;
     case 'tab':
       return <TabBar></TabBar>;
+    case 'tool':
+      return <ToolBar></ToolBar>;
     default:
       return <></>;
   }
@@ -38,7 +43,8 @@ export const Layout = ({ headerOption, footerOption }: LayoutProps) => {
     <S.Wrap>
       <S.Layout headerOption={headerOption} footerOption={footerOption}>
         <S.Header>
-          {headerOption !== undefined && renderHeader(headerOption.type)}
+          {headerOption !== undefined &&
+            renderHeader(headerOption.type, headerOption.navbarOptions)}
         </S.Header>
         <S.Contents>
           <Outlet />
