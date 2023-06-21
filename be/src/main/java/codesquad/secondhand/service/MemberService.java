@@ -9,6 +9,7 @@ import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.jwt.JwtTokenProvider;
+import codesquad.secondhand.repository.LocationRepository;
 import codesquad.secondhand.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final LocationRepository locationRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
 //    public Member signUp(SignUpRequestDto signUpRequestDto) {
@@ -45,11 +47,13 @@ public class MemberService {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        if (mainSubDto.getMain() == null && mainSubDto.getSub() != null) {
-            member.updateLocations(convertToLocation(mainSubDto.getSub()), null);
-            return MainSubTownDto.of(member);
+        Location newSubLocation = null;
+
+        Location newMainLocation = locationRepository.findById(mainSubDto.getMain().getLocationIdx()).orElseThrow(IllegalArgumentException::new);
+        if (mainSubDto.getSub() != null) {
+            newSubLocation = locationRepository.findById(mainSubDto.getSub().getLocationIdx()).orElseThrow(IllegalArgumentException::new);
         }
-        member.updateLocations(convertToLocation(mainSubDto.getMain()), convertToLocation(mainSubDto.getSub()));
+        member.updateLocations(newMainLocation, newSubLocation);
         return MainSubTownDto.of(member);
     }
 
