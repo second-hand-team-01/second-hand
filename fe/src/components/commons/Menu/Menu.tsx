@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as S from './MenuStyle';
 import { MenuStyleProps, MenuButtonProps } from './MenuStyle';
-import { createPortal } from 'react-dom';
+import { Portal } from '@components/commons';
 
 interface MenuProps extends MenuStyleProps {
   menuButtonPropsList: MenuButtonProps[];
@@ -30,9 +30,9 @@ export const Menu = ({
     return null;
   }
 
-  return createPortal(
-    <>
-      <S.BackDrop onClick={backDropHandler} />
+  return (
+    <Portal id="modal-root">
+      {location === 'bottom' && <S.BackDrop onClick={backDropHandler} />}
       <S.Menu location={location} parentHeight={parentHeight}>
         <S.ButtonContainer>
           {menuButtonPropsList.map((props) => (
@@ -49,7 +49,6 @@ export const Menu = ({
           </S.ButtonContainer>
         )}
       </S.Menu>
-    </>,
-    document.querySelector('#modal-root') ?? document.body
+    </Portal>
   );
 };

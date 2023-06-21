@@ -21,10 +21,13 @@ const locations = {
   top: css<MenuStyleProps>`
     position: absolute;
     width: 240px;
+    border: 1px solid ${({ theme }) => theme.colors.neutralBorderStrong};
+    border-radius: 12px;
   `,
   bottom: css<MenuStyleProps>`
     position: fixed;
     bottom: 0;
+    max-width: 393px;
     width: 100%;
   `,
 };
@@ -103,6 +106,8 @@ const stateStyles = css<MenuButtonProps>`
 
 export const BackDrop = styled.div`
   position: fixed;
+  bottom: 0;
+  max-width: 393px;
   width: 100%;
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.neutralOverlay};
@@ -115,7 +120,7 @@ export const Menu = styled.div<MenuStyleProps>`
   gap: 8px;
   ${locationStyles}
   ${({ parentHeight }) =>
-    parentHeight ? `top: calc(${parentHeight}px + 4px)` : '4px'};
+    parentHeight ? `top: calc(${parentHeight}px + 4px)` : 'top:4px'};
 `;
 
 export const ButtonContainer = styled.div`
