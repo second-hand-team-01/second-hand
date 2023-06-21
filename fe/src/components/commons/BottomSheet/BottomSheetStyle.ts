@@ -21,6 +21,7 @@ export const BottomSheet = styled.div<BottomSheetStyleProps>`
     1fr;
   height: calc(100vh - 58px);
   width: 100%;
+  max-width: 393px;
 `;
 
 export const Header = styled.div`

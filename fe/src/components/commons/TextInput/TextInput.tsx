@@ -14,6 +14,7 @@ interface TextInputProps {
   shape: 'large' | 'small';
   type?: string;
   maxLength?: number;
+  onBlur?: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -29,6 +30,7 @@ export const TextInput = ({
   type = 'text',
   maxLength,
   onChange,
+  onBlur,
 }: TextInputProps) => {
   return (
     <S.Wrap
@@ -47,6 +49,7 @@ export const TextInput = ({
         shape={shape}
         type={type}
         maxLength={maxLength}
+        onBlur={onBlur}
       ></S.TextInput>
     </S.Wrap>
   );

@@ -1,6 +1,6 @@
 import { Layout, NavbarBtn } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
-import { HomePage, WritePage } from '@pages/index';
+import { HomePage, WritePage, LoginPage } from '@pages/index';
 import { useNavigate } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
       { path: 'sales-history', element: <div>Sales-history</div> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
-      { path: 'profile', element: <div>Profile</div> },
+      { path: 'profile', element: <LoginPage /> },
     ],
   },
   {

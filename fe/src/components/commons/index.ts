@@ -20,6 +20,8 @@ import { ToolBar } from './ToolBar/ToolBar';
 import { NavbarBtn } from './NavBar/NavbarBtn/NavbarBtn';
 import { ImgPreview } from './ImgPreview/ImgPreview';
 import { TextArea } from './TextArea/TextArea';
+import { Portal } from './Portal/Portal';
+import { Menu } from './Menu/Menu';
 
 export {
   Icon,
@@ -44,4 +46,6 @@ export {
   NavbarBtn,
   ImgPreview,
   TextArea,
+  Portal,
+  Menu,
 };
