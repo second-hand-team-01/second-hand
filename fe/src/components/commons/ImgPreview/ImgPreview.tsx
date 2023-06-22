@@ -25,19 +25,26 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         );
       });
 
-      if (isDuplicate) return setErrorDialogOpen(true);
-      file && reader.readAsDataURL(file);
+      if (isDuplicate) {
+        setErrorDialogOpen(true);
+      } else {
+        reader.onload = ({ target }) => {
+          const targetFile = target?.result as string;
 
-      reader.onload = ({ target }) => {
-        const targetFile = target?.result as string;
+          const newImage = {
+            file: targetFile,
+            name: file.name,
+            size: file.size,
+          };
 
-        const newImage = {
-          file: targetFile,
-          name: file.name,
-          size: file.size,
+          if (targetFile) setImages((prevImages) => [...prevImages, newImage]);
         };
-        if (targetFile) images && setImages([...images, newImage]);
-      };
+
+        reader.readAsDataURL(file);
+      }
+
+      // Reset the file input value
+      FileInputRef.current.value = '';
     }
   };
 
