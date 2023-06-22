@@ -53,6 +53,7 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
+  onClick,
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 

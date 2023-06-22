@@ -16,7 +16,12 @@ export const ImgElement = ({
     <S.ImgWrap>
       <S.Img src={`${file}`} key={`${file}`} width="80px" height="80px"></S.Img>
       {isFirst ? (
-        <S.Thumbnail>대표사진</S.Thumbnail>
+        <>
+          <S.CloseBtn onClick={handleDelete}>
+            <Icon name="close" color="accentText" size={12}></Icon>
+          </S.CloseBtn>
+          <S.Thumbnail>대표사진</S.Thumbnail>
+        </>
       ) : (
         <S.CloseBtn onClick={handleDelete}>
           <Icon name="close" color="accentText" size={12}></Icon>

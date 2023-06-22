@@ -138,6 +138,10 @@ export const Button = styled.button<ButtonStyleProps>`
     hasBorder ? `border: 1px solid  ${theme.colors.neutralBorder}` : ''}
   ${({ backgroundColor, theme }) =>
     backgroundColor
-      ? `background-color: ${theme.colors[backgroundColor]}`
+      ? `background-color: ${
+          theme.colors[backgroundColor] ??
+          theme.palette[backgroundColor] ??
+          backgroundColor
+        }`
       : ''};
 `;

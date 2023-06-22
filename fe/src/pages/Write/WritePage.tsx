@@ -15,12 +15,19 @@ import {
   convertNumToPrice,
   convertPriceToNum,
   getRandomElements,
+  getType,
+  Type,
+  checkAllFilled,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
 import { Image } from '@type-store/services/items';
-import { postItemsAPI } from '@services/items/items';
+import {
+  postItemsAPI,
+  convertDataToBody,
+  getRandomCategories,
+} from '@services/items/items';
 import { ERROR_MESSAGE } from '@constants/error';
 
 interface WritePageProps {
@@ -29,46 +36,45 @@ interface WritePageProps {
 
 export const WritePage = ({ status }: WritePageProps) => {
   const navigate = useNavigate();
+
+  const [title, setTitle] = useState<string>('');
   const [categoryState, categoryFetch] = useFetch<any, null>(
     getCategoryAPI,
     [],
     true
   );
-  const { data } = categoryState;
-
-  const [images, setImages] = useState<Image[]>([]);
-  const [title, setTitle] = useState<string>('');
   const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
     []
   );
-  const [categoryIdx, setCategoryIdx] = useState<number | null>(null);
-  const [price, setPrice] = useState<number>(0);
+  const [categoryIdx, setCategoryIdx] = useState<number | null>(-1);
+  const [price, setPrice] = useState<number>(-1);
   const [contents, setContents] = useState<string>('');
+  const [images, setImages] = useState<Image[]>([]);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
-  const convertDataToBody = () => {
-    const body = {
+  const [isAllFilled, setAllFilled] = useState(false);
+  const locationIdx = -1; // TODO
+
+  useEffect(() => {
+    checkAllFilled([title, contents, images, price, categoryIdx])
+      ? setAllFilled(true)
+      : setAllFilled(false);
+  }, [title, contents, images, price, categoryIdx]);
+
+  const uploadPostItems = useCallback(async () => {
+    const body = convertDataToBody(
       title,
       contents,
       images,
       price,
-      categoryIdx: categoryIdx as number,
-      locationIdx: 0, //TODO
-    };
-    return body;
-  };
-  const uploadPostItems = useCallback(async () => {
-    const body = convertDataToBody();
+      categoryIdx as number,
+      locationIdx
+    );
     const result = await postItemsAPI(body);
-    return result;
-  }, [title, contents, images, price, categoryIdx]) as any; // 상태 값들을 의존성 배열에 추가합니다.
+    return result as any;
+  }, [title, contents, images, price, categoryIdx]);
 
   const [uploadState, uploadFetch] = useFetch<any, any>(uploadPostItems, []);
   const [isDialogOpen, setDialogOpen] = useState(false);
-
-  const getRandomCategories = (categories: Category[]) => {
-    if (categories) return getRandomElements(categories, 3);
-    else return [];
-  };
 
   const handleCategoryBtnClick = ({ target }) => {
     const btn = target as HTMLButtonElement;
@@ -81,7 +87,7 @@ export const WritePage = ({ status }: WritePageProps) => {
   const handleCategoryListClick = ({ target }) => {
     const li = target as HTMLLIElement;
     const categoryName = li.innerText;
-    const selectedCategory = data.find(
+    const selectedCategory = categoryState.data.find(
       (category: Category) => category.name === categoryName
     );
     const selectedIdx = selectedCategory?.idx;
@@ -101,14 +107,14 @@ export const WritePage = ({ status }: WritePageProps) => {
   };
 
   useEffect(() => {
-    const randomCategories = getRandomCategories(data);
-    data && setDisplayedCategories(randomCategories);
-  }, [data]);
+    const randomCategories = getRandomCategories(categoryState.data);
+    categoryState.data && setDisplayedCategories(randomCategories);
+  }, [categoryState]);
 
   const handlePostBtnClick = async () => {
     await uploadFetch();
-    if (data.error) return setDialogOpen(true);
-    const itemIdx = data?.itemIdx;
+    if (uploadState.error) return setDialogOpen(true);
+    const itemIdx = uploadState.data?.itemIdx;
     if (!itemIdx) return setDialogOpen(true);
     setDialogOpen(true);
   };
@@ -126,6 +132,8 @@ export const WritePage = ({ status }: WritePageProps) => {
               shape="medium"
               color="neutralText"
               onClick={handlePostBtnClick}
+              state={isAllFilled ? 'default' : 'disabled'}
+              backgroundColor="transparent"
             ></Button>
           ),
         },
@@ -167,7 +175,7 @@ export const WritePage = ({ status }: WritePageProps) => {
         <S.PriceSection>
           ₩
           <TextInput
-            value={price !== 0 ? convertNumToPrice(price) : ''}
+            value={price !== -1 ? convertNumToPrice(price) : ''}
             shape="large"
             placeholder="가격(선택사항)"
             onChange={({ target }) => {
@@ -207,7 +215,6 @@ export const WritePage = ({ status }: WritePageProps) => {
             </S.CategoryList>
           ))}
         </BottomSheet>
-
         <Dialog
           isOpen={isDialogOpen}
           btnInfos={{

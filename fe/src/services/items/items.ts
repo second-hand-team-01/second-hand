@@ -9,6 +9,9 @@ import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { useState } from 'react';
 import { ERROR_MESSAGE } from '@constants/error';
+import { Image } from '@type-store/services/items';
+import { Category } from '@type-store/services/category';
+import { getRandomElements } from '@utils/common/common';
 
 export interface ListItemPropsWithId extends ListItemProps {
   id: number;
@@ -133,4 +136,28 @@ export const postItemsAPI = async (body: ItemReqBody) => {
     if (error instanceof Error) return { error };
     return {};
   }
+};
+
+export const convertDataToBody = (
+  title: string,
+  contents: string,
+  images: Image[],
+  price: number,
+  categoryIdx: number,
+  locationIdx: number
+) => {
+  const body = {
+    title,
+    contents,
+    images,
+    price,
+    categoryIdx: categoryIdx as number,
+    locationIdx: 0, //TODO
+  };
+  return body;
+};
+
+export const getRandomCategories = (categories: Category[]) => {
+  if (categories) return getRandomElements(categories, 3);
+  else return [];
 };

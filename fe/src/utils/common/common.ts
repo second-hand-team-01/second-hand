@@ -14,10 +14,12 @@ export enum Type {
   String = 'String',
   Number = 'Number',
   Unknown = 'Unknown',
+  Boolean = 'Boolean',
 }
 
 export const getType = (obj: unknown): Type => {
   const toString = Object.prototype.toString.call(obj);
+
   switch (toString) {
     case '[object Object]':
       return Type.LiteralObject;
@@ -29,6 +31,8 @@ export const getType = (obj: unknown): Type => {
       return Type.Array;
     case '[object FormData]':
       return Type.FormData;
+    case '[object Boolean]':
+      return Type.Boolean;
     default:
       return Type.Unknown;
   }
@@ -112,4 +116,24 @@ export const convertPriceToNum = (price: string) => {
 export const getRandomElements = <T>(array: T[], count: number) => {
   const shuffled = [...array].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
+};
+
+export const checkAllFilled = (values: any[]) => {
+  return values.every((value) => {
+    const type = getType(value);
+    if (type === Type.String) {
+      return Boolean(value) === false ? false : true;
+    }
+    if (type === Type.Number) {
+      return value === -1 ? false : true;
+    }
+    if (type === Type.LiteralObject) {
+      return Object.keys(value as object) ? false : true;
+    }
+    if (type === Type.Array) {
+      const arr = value as unknown[];
+      return arr.length === 0 ? false : true;
+    }
+    return false;
+  }, false);
 };

@@ -12,7 +12,6 @@ interface ImgPreviewProps {
 export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
   const [images, setImages] = imageState;
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
-
   const FileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileOnChange = () => {

@@ -25,9 +25,9 @@ export const Button = ({
       state={state}
       textAlign={textAlign}
       onClick={onClick}
-      color={color}
       hasBorderRadius={hasBorderRadius}
       hasBorder={hasBorder}
+      color={color}
       backgroundColor={backgroundColor}
     >
       {title && textAlign === 'left' && <span>{title}</span>}
