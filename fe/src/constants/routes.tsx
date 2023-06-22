@@ -1,7 +1,6 @@
 import { Layout, NavbarBtn } from '@components/commons';
 import { createBrowserRouter } from 'react-router-dom';
-import { HomePage, WritePage, LoginPage } from '@pages/index';
-import { useNavigate } from 'react-router-dom';
+import { HomePage, WritePage, LoginPage, WriteBtn } from '@pages/index';
 
 export const router = createBrowserRouter([
   {
@@ -38,12 +37,7 @@ export const router = createBrowserRouter([
           navbarOptions: {
             title: '글 작성',
             leftBtn: <NavbarBtn text="닫기" path="/"></NavbarBtn>,
-            rightBtn: (
-              <NavbarBtn
-                text="완료"
-                onClick={() => console.log('완료')}
-              ></NavbarBtn>
-            ),
+            rightBtn: <WriteBtn></WriteBtn>,
           },
         }}
         footerOption={{ type: 'tool' }}

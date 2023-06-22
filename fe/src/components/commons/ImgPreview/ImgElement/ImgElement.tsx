@@ -2,7 +2,7 @@ import { Icon } from '@commons/index';
 import * as S from './ImgElementStyle';
 
 interface ImgElementProps {
-  file: File;
+  file: string;
   isFirst: boolean;
   handleDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }

@@ -9,3 +9,25 @@ export interface Item {
   chat: number;
   interest: number;
 }
+
+export interface ItemReqBody {
+  title: string;
+  price: number;
+  contents: string;
+  locationIdx: number;
+  categoryIdx: number;
+  images: string[];
+}
+
+export interface APIItemReqBody {
+  title: string;
+  price: string;
+  description: string;
+  locationIdx: string;
+  categoryIdx: string;
+  images: string[];
+}
+
+export interface PostItemRes {
+  itemIdx: number;
+}

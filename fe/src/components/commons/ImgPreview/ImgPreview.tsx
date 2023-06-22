@@ -30,7 +30,8 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
       file && reader.readAsDataURL(file);
 
       reader.onload = ({ target }) => {
-        const targetFile = target?.result as unknown as File;
+        const targetFile = target?.result as string;
+
         const newImage = {
           file: targetFile,
           name: file.name,

@@ -17,4 +17,17 @@ export const handlers = [
   rest.get(`${HOST}/category`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(category));
   }),
+
+  rest.post(`${HOST}/items`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        message: '요청이 정상 처리되었습니다.',
+        data: {
+          itemIdx: 1,
+        },
+      })
+    );
+  }),
 ];

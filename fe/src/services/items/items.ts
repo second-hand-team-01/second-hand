@@ -1,8 +1,14 @@
-import { Item } from '@type-store/services/items';
+import {
+  APIItemReqBody,
+  Item,
+  ItemReqBody,
+  PostItemRes,
+} from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { useState } from 'react';
+import { ERROR_MESSAGE } from '@constants/error';
 
 export interface ListItemPropsWithId extends ListItemProps {
   id: number;
@@ -71,6 +77,54 @@ export const getItemsAPI = async (page: number) => {
         hasNext,
         items: convertItemsToListItems(items) as ListItemPropsWithId[],
       },
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
+  const { title, price, contents, locationIdx, categoryIdx, images } = body;
+
+  const newItem: APIItemReqBody = {
+    title,
+    price: price.toString(),
+    description: contents,
+    locationIdx: locationIdx.toString(),
+    categoryIdx: categoryIdx.toString(),
+    images,
+  };
+  return newItem;
+};
+
+export const postItemsAPI = async (body: ItemReqBody) => {
+  const convertedBody = convertItemReqBodyToAPIReqBody(body);
+  if (!convertedBody)
+    return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
+
+  const formData = new FormData();
+  formData.append('title', convertedBody.title);
+  formData.append('description', convertedBody.description);
+  formData.append('price', convertedBody.price);
+  formData.append('locationIdx', convertedBody.locationIdx);
+  formData.append('categoryIdx', convertedBody.categoryIdx);
+  convertedBody.images.forEach((image, i) => {
+    formData.append(`image${i}`, image);
+  });
+
+  try {
+    const res = (await customFetch<FormData, PostItemRes>({
+      path: '/items',
+      method: 'POST',
+      body: formData,
+    })) as Response<PostItemRes>;
+
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      res,
     };
   } catch (error) {
     if (error instanceof Error) return { error };

@@ -12,8 +12,6 @@ import { useEffect, useState } from 'react';
 import {
   convertNumToPrice,
   convertPriceToNum,
-  Type,
-  getType,
   getRandomElements,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
@@ -31,7 +29,6 @@ export const WritePage = ({ status }: WritePageProps) => {
 
   const [images, setImages] = useState<Image[]>([]);
   const [title, setTitle] = useState<string>('');
-
   const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
     []
   );
