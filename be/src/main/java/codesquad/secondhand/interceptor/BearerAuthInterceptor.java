@@ -38,8 +38,8 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
             throw new RestApiException(TokenErrorCode.TOKEN_INVALID);
         }
 
-        String loginId = jwtTokenProvider.getLoginId(token);
-        request.setAttribute("loginId", loginId);
+        Long memberIdx = jwtTokenProvider.getMemberIdx(token);
+        request.setAttribute("memberIdx", memberIdx);
         return true;
     }
 }
