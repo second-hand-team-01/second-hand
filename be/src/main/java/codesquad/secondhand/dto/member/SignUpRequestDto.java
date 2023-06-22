@@ -1,12 +1,12 @@
 package codesquad.secondhand.dto.member;
 
-import codesquad.secondhand.dto.location.LocationDto;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class SignUpRequestDto {
     @Size(min = 6, max = 12, message = "패스워드는 6자 이상 15자 이하로 입력해주세요.")
     private String password;
 
-    private MultipartFile image;
+    private List<MultipartFile> image;
     private Long mainLocationIdx;
     private Long subLocationIdx;
 
