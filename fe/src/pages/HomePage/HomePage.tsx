@@ -15,33 +15,35 @@ export const HomePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [page, setPage] = useState(0);
-  const [state, refetch] = useFetch<ConvertedGetItemsRes, null>(
-    getItemsAPI.bind(null, page),
-    []
-  );
+  const [hasNext, setHasNext] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const { loading, data, error } = state;
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      errorMsg && setErrorMsg(null);
+      const { data, error } = await getItemsAPI(page);
+      if (error) return setErrorMsg(error.message);
+      if (data) {
+        setHasNext(data.hasNext);
+        setItems((prevItems) => [...prevItems, ...data.items]);
+      }
+      setLoading(false);
+    })();
+  }, [page]);
+
   const [items, setItems] = useState<ListItemPropsWithId[]>([]);
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
-        if (data?.hasNext) setPage((prevPage) => prevPage + 1);
+        if (hasNext) setPage((prevPage) => prevPage + 1);
       }
     });
   };
 
   const setTarget = useIntersectionObserver(handleIntersection);
-
-  useEffect(() => {
-    refetch();
-  }, [page]);
-
-  useEffect(() => {
-    if (data) {
-      setItems((prevItems) => [...prevItems, ...data.items]);
-    }
-  }, [data]);
 
   const isInitialLoading = loading && page === 0;
   const isNextPageLoading = loading && page !== 0;
@@ -49,8 +51,8 @@ export const HomePage = () => {
   return (
     <Layout headerOption={{ type: 'filter' }} footerOption={{ type: 'tab' }}>
       <S.Home>
-        {error ? (
-          <S.Error>{error.message}</S.Error>
+        {errorMsg ? (
+          <S.Error>{errorMsg}</S.Error>
         ) : isInitialLoading ? (
           <S.InitialLoading>
             <Spinner />
