@@ -135,7 +135,6 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
-
   border: none;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
   ${({ hasBorder, theme }) =>

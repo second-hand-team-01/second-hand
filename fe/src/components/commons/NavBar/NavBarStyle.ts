@@ -8,14 +8,13 @@ interface HeaderStyleProps {
 
 export const Header = styled.div<HeaderStyleProps>`
   width: 100%;
-  border-radius: 14px 14px 0px 0px;
-  background-color: ${({ theme }) => theme.colors.neutralBackground}
-    ${({ isTransparent }) =>
-      isTransparent
-        ? `
+  ${({ isTransparent }) =>
+    isTransparent
+      ? `
       border-bottom: 0;
-      background-color: transparent;`
-        : ''};
+      background-color: transparent;
+      background: linear-gradient(180deg, rgba(60, 60, 67, 0.20) 0%, rgba(60, 60, 67, 0.00) 100%);`
+      : ''};
 `;
 
 export const HeaderTop = styled.div`

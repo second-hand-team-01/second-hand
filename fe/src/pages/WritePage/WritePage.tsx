@@ -18,6 +18,7 @@ import {
   getType,
   Type,
   checkAllFilled,
+  isMobileDevice,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
