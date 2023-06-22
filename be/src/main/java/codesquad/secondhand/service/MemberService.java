@@ -44,19 +44,20 @@ public class MemberService {
         memberRepository.save(Member.of(saveMemberDto));
     }
 
-    public String createToken(LoginRequestDto loginRequestDto) {
+    public MemberIdxTokenDto login(LoginRequestDto loginRequestDto) {
         Member member = memberRepository.findByLoginId(loginRequestDto.getLoginId())
                 .orElseThrow(() -> new RestApiException(REQUIRED_SIGNUP));
         if (!loginRequestDto.getPassword().equals(member.getPassword())) { // 비밀번호 불일치 시
             //TODO: 비밀번호 해시 함수를 사용해 암호화 해보기
             throw new RestApiException(WRONG_PASSWORD);
-        } //TODO: 사용자 정의 예외 공부해보기
-        return jwtTokenProvider.createToken(getMemberIdxLoginId(member.getLoginId()));
+        }
+        String token = jwtTokenProvider.createToken(getMemberIdxLoginId(member.getMemberIdx()));
+        return MemberIdxTokenDto.of(member.getMemberIdx(), token);
     }
 
-    public MainSubTownDto updateMainSubLocation(String loginId, MainSubDto mainSubDto) {
-        Member member = memberRepository.findByLoginId(loginId)
-                .orElseThrow(IllegalArgumentException::new);
+    public MainSubTownDto updateMainSubLocation(Long memberIdx, MainSubDto mainSubDto) {
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 
         Location newSubLocation = null;
 
@@ -68,23 +69,19 @@ public class MemberService {
         return MainSubTownDto.of(member);
     }
 
-    public MemberIdxLoginIdDto getMemberIdxLoginId(String memberLoginId) {
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MemberIdxLoginIdDto getMemberIdxLoginId(Long memberIdx) {
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MemberIdxLoginIdDto.of(member);
     }
 
-    public MemberInfoDto getMemberInfo(String memberLoginId) {
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MemberInfoDto getMemberInfo(Long memberIdx) {
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MemberInfoDto.of(member);
     }
 
-    public MainSubTownDto getMainSubLocation(String memberLoginId) { // mainLocation, subLocation 동시에 가져오는 메서드
-        log.info("[MemberService.getMainSubLocation]");
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MainSubTownDto getMainSubLocation(Long memberIdx) { // mainLocation, subLocation 동시에 가져오는 메서드
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MainSubTownDto.of(member);
     }
 
-    private Location convertToLocation(LocationDto locationDto) {
-        return new Location(locationDto.getLocationIdx(), locationDto.getCity(), locationDto.getDistrict(), locationDto.getTown());
-    }
 }
