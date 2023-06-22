@@ -178,7 +178,7 @@ export const WritePage = ({ status }: WritePageProps) => {
           ₩
           <TextInput
             value={price !== -1 ? convertNumToPrice(price) : ''}
-            shape="large"
+            shape="small"
             placeholder="가격(선택사항)"
             onChange={({ target }) => {
               const number = convertPriceToNum(target.value);
