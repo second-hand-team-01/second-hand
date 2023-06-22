@@ -10,13 +10,19 @@ export interface Item {
   interest: number;
 }
 
+export interface Image {
+  file: string;
+  name: string;
+  size: number;
+}
+
 export interface ItemReqBody {
   title: string;
   price: number;
   contents: string;
   locationIdx: number;
   categoryIdx: number;
-  images: string[];
+  images: Image[];
 }
 
 export interface APIItemReqBody {

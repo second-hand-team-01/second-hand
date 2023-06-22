@@ -87,13 +87,15 @@ export const getItemsAPI = async (page: number) => {
 const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
   const { title, price, contents, locationIdx, categoryIdx, images } = body;
 
+  const imageFiles = images.map((image) => image.file);
+
   const newItem: APIItemReqBody = {
     title,
     price: price.toString(),
     description: contents,
     locationIdx: locationIdx.toString(),
     categoryIdx: categoryIdx.toString(),
-    images,
+    images: imageFiles,
   };
   return newItem;
 };
@@ -119,12 +121,13 @@ export const postItemsAPI = async (body: ItemReqBody) => {
       method: 'POST',
       body: formData,
     })) as Response<PostItemRes>;
-
     if (!res || !res.data || res.error) {
       return { error: res.error, data: undefined };
     }
     return {
-      res,
+      data: {
+        itemIdx: res.data.itemIdx,
+      },
     };
   } catch (error) {
     if (error instanceof Error) return { error };

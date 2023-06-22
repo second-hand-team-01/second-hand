@@ -2,7 +2,7 @@ import * as S from './ImgPreviewStyle';
 import { useRef, SetStateAction, Dispatch, useState } from 'react';
 import { Icon, Dialog } from '@commons/index';
 import { ImgElement } from './ImgElement/ImgElement';
-import { Image } from '@type-store/services/images';
+import { Image } from '@type-store/services/items';
 import { ERROR_MESSAGE } from '@constants/error';
 
 interface ImgPreviewProps {

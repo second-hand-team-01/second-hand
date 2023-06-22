@@ -38,7 +38,11 @@ const renderFooter = (type: FooterProps['type']): ReactNode => {
   }
 };
 
-export const Layout = ({ headerOption, footerOption }: LayoutProps) => {
+export const Layout = ({
+  headerOption,
+  footerOption,
+  children,
+}: LayoutProps) => {
   return (
     <S.Wrap>
       <S.Layout headerOption={headerOption} footerOption={footerOption}>
@@ -47,7 +51,8 @@ export const Layout = ({ headerOption, footerOption }: LayoutProps) => {
             renderHeader(headerOption.type, headerOption.navbarOptions)}
         </S.Header>
         <S.Contents>
-          <Outlet />
+          <Outlet></Outlet>
+          {children}
         </S.Contents>
         {footerOption !== undefined && (
           <S.Footer>{renderFooter(footerOption.type)}</S.Footer>

@@ -1,7 +1,13 @@
 import { useState, useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './LoginPageStyle';
-import { NavBar, Button, TextInput, Profile } from '@components/commons';
+import {
+  NavBar,
+  Button,
+  TextInput,
+  Profile,
+  Layout,
+} from '@components/commons';
 
 const navBarInfo = {
   title: '내 계정',
@@ -118,7 +124,15 @@ export const LoginPage = () => {
 
   const loginState = true;
   return (
-    <>
+    <Layout
+      headerOption={{
+        type: 'nav',
+        navbarOptions: {
+          title: '내 계정',
+        },
+      }}
+      footerOption={{ type: 'tab' }}
+    >
       <NavBar title={navBarInfo.title} />
       <S.LoginPage>
         {loginState && (
@@ -188,6 +202,6 @@ export const LoginPage = () => {
           </S.LoginButtonSection>
         )}
       </S.LoginPage>
-    </>
+    </Layout>
   );
 };

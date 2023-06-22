@@ -1,4 +1,4 @@
-import { ListItem, Spinner } from '@commons/index';
+import { Layout, ListItem, Spinner } from '@commons/index';
 import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
@@ -43,34 +43,36 @@ export const HomePage = () => {
   const isNextPageLoading = loading && page !== 0;
 
   return (
-    <S.Home>
-      {error ? (
-        <S.Error>{error.message}</S.Error>
-      ) : isInitialLoading ? (
-        <S.InitialLoading>
-          <Spinner />
-        </S.InitialLoading>
-      ) : (
-        <>
-          {items?.map((item: ListItemPropsWithId) => (
-            <ListItem key={item.id} {...item}></ListItem>
-          ))}
-          <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
-          {loading && (
-            <S.NextPageLoading>
-              <Spinner />
-            </S.NextPageLoading>
-          )}
-        </>
-      )}
-      <S.FloatingBtn>
-        <Button
-          shape={'floating'}
-          icon="plus"
-          color={'accentText'}
-          onClick={() => navigate('/write')}
-        ></Button>
-      </S.FloatingBtn>
-    </S.Home>
+    <Layout headerOption={{ type: 'filter' }} footerOption={{ type: 'tab' }}>
+      <S.Home>
+        {error ? (
+          <S.Error>{error.message}</S.Error>
+        ) : isInitialLoading ? (
+          <S.InitialLoading>
+            <Spinner />
+          </S.InitialLoading>
+        ) : (
+          <>
+            {items?.map((item: ListItemPropsWithId) => (
+              <ListItem key={item.id} {...item}></ListItem>
+            ))}
+            <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
+            {loading && (
+              <S.NextPageLoading>
+                <Spinner />
+              </S.NextPageLoading>
+            )}
+          </>
+        )}
+        <S.FloatingBtn>
+          <Button
+            shape={'floating'}
+            icon="plus"
+            color={'accentText'}
+            onClick={() => navigate('/write')}
+          ></Button>
+        </S.FloatingBtn>
+      </S.Home>
+    </Layout>
   );
 };
