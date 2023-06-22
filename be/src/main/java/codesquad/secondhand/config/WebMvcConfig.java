@@ -17,7 +17,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     public void addInterceptors(InterceptorRegistry registry) {
-        log.info("[인터셉터 등록]");
         registry.addInterceptor(bearerAuthInterceptor)
                 .addPathPatterns("/info", "/location");
     }
