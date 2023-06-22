@@ -10,4 +10,8 @@ public class RestApiException extends RuntimeException {
 
     private final Code errorCode;
 
+    @Override
+    public String getMessage() {
+        return errorCode.getMessage();
+    }
 }
