@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TokenCode implements Code{
+public enum TokenErrorCode implements Code{
 
     TOKEN_INVALID(false, 401, -40100, "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED(false, 401, -40101, "만료된 토큰입니다."),
