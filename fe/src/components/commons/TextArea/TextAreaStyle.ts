@@ -24,10 +24,11 @@ export const Wrap = styled.div<WrapStyleProps>`
     hasBackground
       ? theme.colors.systemBackgroundWeak
       : theme.colors.neutralBackground};
-  align-items: center;
+  align-items: flex-start;
   border-radius: ${({ hasBackground }) => (hasBackground ? '10px' : '0')};
 
   ${({ hasPadding }) => (!hasPadding ? 'padding: 0' : '')};
+  height: 100%;
 `;
 
 export const Label = styled.label`
@@ -44,6 +45,8 @@ export const TextArea = styled.textarea<TextAreaStyleProps>`
   border: none;
   padding: 0;
   background-color: transparent;
+  min-height: 100%;
+
   caret-color: ${({ theme }) => theme.colors.systemDefault};
   display: grid;
   align-items: center;

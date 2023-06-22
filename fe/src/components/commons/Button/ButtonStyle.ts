@@ -144,4 +144,6 @@ export const Button = styled.button<ButtonStyleProps>`
           backgroundColor
         }`
       : ''};
+  display: flex;
+  gap: 4px;
 `;

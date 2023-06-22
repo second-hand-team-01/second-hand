@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 export const WritePage = styled.div`
   padding: 0 16px;
+  display: grid;
+  grid-template-rows: max-content max-content max-content 1fr;
+  height: 100%;
+  align-items: start;
 `;
 
 export const TitleSection = styled.div`
@@ -18,6 +22,7 @@ export const CategorySection = styled.div`
 
 export const CategoryContainer = styled.div`
   display: flex;
+  gap: 4px;
 `;
 
 export const PriceSection = styled.div`
@@ -27,6 +32,10 @@ export const PriceSection = styled.div`
   align-items: center;
   grid-template-columns: max-content 1fr;
   gap: 4px;
+`;
+
+export const Contents = styled.div`
+  margin: 16px 0;
 `;
 
 export const CategoryList = styled.li`

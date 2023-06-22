@@ -146,7 +146,7 @@ export const WritePage = ({ status }: WritePageProps) => {
           <TextInput
             placeholder="글제목"
             value={title}
-            shape="large"
+            shape="small"
             onChange={({ target }) => setTitle(target.value)}
             hasPadding={false}
             maxLength={40}
@@ -176,7 +176,7 @@ export const WritePage = ({ status }: WritePageProps) => {
           ₩
           <TextInput
             value={price !== -1 ? convertNumToPrice(price) : ''}
-            shape="large"
+            shape="small"
             placeholder="가격(선택사항)"
             onChange={({ target }) => {
               const number = convertPriceToNum(target.value);
@@ -189,14 +189,17 @@ export const WritePage = ({ status }: WritePageProps) => {
             hasBorder={false}
           ></TextInput>
         </S.PriceSection>
-        <TextArea
-          value={contents}
-          shape="large"
-          placeholder="역삼1동에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)" //TODO: 내 동네로 수정
-          onChange={({ target }) => setContents(target.value)}
-          hasPadding={false}
-          maxLength={1000}
-        ></TextArea>
+        <S.Contents>
+          <TextArea
+            value={contents}
+            shape="small"
+            placeholder="역삼1동에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)" //TODO: 내 동네로 수정
+            onChange={({ target }) => setContents(target.value)}
+            hasPadding={false}
+            maxLength={1000}
+            rows={20}
+          ></TextArea>
+        </S.Contents>
         <BottomSheet
           isOpen={isCategoryDialogOpen}
           handleBackdropClick={() => setCategoryDialogOpen(false)}

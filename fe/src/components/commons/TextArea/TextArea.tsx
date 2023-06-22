@@ -34,7 +34,7 @@ export const TextArea = ({
 
   const resizeTextarea = () => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      textareaRef.current.style.minHeight = `${textareaRef.current.scrollHeight}px`;
     }
   };
 
