@@ -1,6 +1,6 @@
 import { useRef, MouseEvent } from 'react';
 import * as S from './ListItemStyle';
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import { Icon } from '@components/commons';
 import { colors, palette } from '@styles/Color';
 import {

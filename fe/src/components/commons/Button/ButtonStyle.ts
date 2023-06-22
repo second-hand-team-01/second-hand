@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { icons } from '@assets/icons/index';
+import icons from '@assets/icons/index';
 import { colors, palette } from '@styles/Color';
 
 const shapes = {

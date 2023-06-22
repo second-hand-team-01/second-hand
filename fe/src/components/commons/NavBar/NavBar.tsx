@@ -1,6 +1,6 @@
 import * as S from './NavBarStyle';
 import { Button, Tab } from '@commons/index';
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import { TabProps } from '@commons/Tab/Tab';
 import { ReactNode } from 'react';
 

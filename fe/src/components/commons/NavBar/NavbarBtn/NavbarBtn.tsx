@@ -1,4 +1,4 @@
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import { Button } from '@commons/index';
 import { colors } from '@styles/Color';
 import { useNavigate } from 'react-router-dom';
