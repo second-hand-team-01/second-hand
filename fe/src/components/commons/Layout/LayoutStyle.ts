@@ -36,7 +36,7 @@ const getTemplateRows = (
       : NAVBAR_HEIGHT.top
     : 0;
   const footerHeight = hasFooter ? FOOTER_HEIGHT : 0;
-  const result = `${headerHeight + 1}px 1fr ${footerHeight}px`;
+  const result = `${headerHeight}px 1fr ${footerHeight}px`;
   return result;
 };
 
@@ -44,13 +44,12 @@ export const Layout = styled.div<LayoutStyleProps>`
   max-width: 393px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.neutralBackground};
-  border-left: 1px solid ${({ theme }) => theme.colors.neutralBorder};
-  border-right: 1px solid ${({ theme }) => theme.colors.neutralBorder};
   display: grid;
   grid-template-rows: ${({ headerOption, footerOption }) =>
     getTemplateRows(headerOption, footerOption)};
   height: 100dvh;
   height: 100dvh;
+  outline: 1px solid ${({ theme }) => theme.colors.neutralBorder};
 `;
 
 export const Wrap = styled.div`

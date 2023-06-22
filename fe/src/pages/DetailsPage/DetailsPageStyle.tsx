@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { NAVBAR_HEIGHT } from '@constants/style';
+import { MAX_WIDTH, SLIDER_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 
 export const DetailsPages = styled.div``;
 
-export const Contents = styled.div`
-  padding: 16px;
-`;
+export const ImageContainer = styled.div``;
+
+export const Contents = styled.div``;
 
 export const WriterSection = styled.div`
   background-color: ${({ theme }) => theme.colors.neutralBackgroundWeak};

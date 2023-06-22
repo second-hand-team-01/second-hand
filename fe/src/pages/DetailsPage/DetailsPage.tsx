@@ -69,7 +69,9 @@ export const DetailsPage = () => {
           <>로딩중</>
         ) : (
           <>
-            <Slide urls={data?.images ?? []}></Slide>
+            <S.ImageContainer>
+              <Slide urls={data?.images ?? []}></Slide>
+            </S.ImageContainer>
             <S.Contents>
               <S.WriterSection>
                 <p>판매자 정보</p>
