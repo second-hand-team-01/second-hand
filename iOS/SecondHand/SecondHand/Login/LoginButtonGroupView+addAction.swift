@@ -8,30 +8,8 @@
 import UIKit
 
 extension LoginButtonGroupView {
-    func makeGithubLoginButton() -> UIButton {
-        let button = AccountButtonUIFactory.make(type: .github)
-        button.addTarget(
-            self,
-            action: #selector(self.didTapButton),
-            for: .touchUpInside
-        )
-        
-        return button
-    }
-    
-    func makeLoginButton() -> UIButton {
-        let button = AccountButtonUIFactory.make(type: .login)
-        button.addTarget(
-            self,
-            action: #selector(self.didTapButton),
-            for: .touchUpInside
-        )
-        
-        return button
-    }
-    
-    func makeRegisterButton() -> UIButton {
-        let button = AccountButtonUIFactory.make(type: .register)
+    func addAction(to button: UIButton) -> UIButton {
+        let button = button
         button.addTarget(
             self,
             action: #selector(self.didTapButton),

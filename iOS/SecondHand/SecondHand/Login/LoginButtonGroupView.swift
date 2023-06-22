@@ -11,6 +11,7 @@ class LoginButtonGroupView: UIView {
     private var githubLoginButton = UIButton()
     private var loginButton = UIButton()
     private var registerButton = UIButton()
+    private let spacingBetweenButton: CGFloat = 10
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,14 +29,24 @@ class LoginButtonGroupView: UIView {
     }
     
     private func setButtons() {
-        self.githubLoginButton = makeGithubLoginButton()
-        self.loginButton = makeLoginButton()
-        self.registerButton = makeRegisterButton()
+        typealias Factory = AccountButtonUIFactory
+        
+        self.githubLoginButton = addAction(
+            to: Factory.make(type: .github)
+        )
+        self.loginButton = addAction(
+            to: Factory.make(type: .login)
+        )
+        self.registerButton = addAction(
+            to: Factory.make(type: .register)
+        )
     }
     
     private func layoutConstraints() {
         self.addSubviews()
         self.layoutGithubButton()
+        self.layoutLoginButton()
+        self.layoutRegisterButton()
     }
 }
 
@@ -43,7 +54,9 @@ class LoginButtonGroupView: UIView {
 extension LoginButtonGroupView {
     private func addSubviews() {
         let subViews = [
-            self.githubLoginButton
+            self.githubLoginButton,
+            self.loginButton,
+            self.registerButton
         ]
         
         subViews.forEach {
@@ -56,8 +69,30 @@ extension LoginButtonGroupView {
         NSLayoutConstraint.activate([
             self.githubLoginButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.githubLoginButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.githubLoginButton.topAnchor.constraint(equalTo: self.topAnchor),
-            self.githubLoginButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            self.githubLoginButton.topAnchor.constraint(equalTo: self.topAnchor)
+        ])
+    }
+    
+    private func layoutLoginButton() {
+        NSLayoutConstraint.activate([
+            self.loginButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.loginButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.loginButton.topAnchor.constraint(
+                equalTo: self.githubLoginButton.bottomAnchor,
+                constant: spacingBetweenButton
+            )
+        ])
+    }
+    
+    private func layoutRegisterButton() {
+        NSLayoutConstraint.activate([
+            self.registerButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.registerButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.registerButton.topAnchor.constraint(
+                equalTo: self.loginButton.bottomAnchor,
+                constant: spacingBetweenButton
+            ),
+            self.registerButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

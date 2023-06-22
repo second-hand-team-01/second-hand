@@ -13,7 +13,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setTitle(title: "내 계정")
+        self.setViewControllerTitle(title: "내 계정")
     }
     
     override func viewWillLayoutSubviews() {
@@ -21,8 +21,8 @@ class LoginViewController: UIViewController {
         self.layoutCosntraints()
     }
     
-    private func setTitle(title: String) {
-        self.navigationController?.title = "\(title)"
+    private func setViewControllerTitle(title: String) {
+        self.title = "\(title)"
     }
 }
 
