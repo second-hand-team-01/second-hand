@@ -31,7 +31,7 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS,null));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ResponseDto<TokenResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = memberService.createToken(loginRequestDto);
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(token, memberService.getMemberIdxLoginId(loginRequestDto.getLoginId()))));
