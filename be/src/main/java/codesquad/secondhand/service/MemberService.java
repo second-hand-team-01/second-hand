@@ -83,7 +83,4 @@ public class MemberService {
         return MainSubTownDto.of(member);
     }
 
-    private Location convertToLocation(LocationDto locationDto) {
-        return new Location(locationDto.getLocationIdx(), locationDto.getCity(), locationDto.getDistrict(), locationDto.getTown());
-    }
 }
