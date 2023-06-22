@@ -3,9 +3,13 @@ package codesquad.secondhand.exception;
 import codesquad.secondhand.exception.code.Code;
 import codesquad.secondhand.exception.code.CommonErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
@@ -24,6 +28,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn("handleIllegalArgument", e);
         Code errorCode = CommonErrorCode.INVALID_PARAMETER;
         return handleExceptionInternal(errorCode, e.getMessage());
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException e,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+
+
+
+        return super.handleMethodArgumentNotValid(e, headers, status, request);
     }
 
     private ResponseEntity<Object> handleExceptionInternal(Code errorCode) {
