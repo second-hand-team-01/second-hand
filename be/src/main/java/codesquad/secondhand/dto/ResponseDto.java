@@ -1,5 +1,6 @@
 package codesquad.secondhand.dto;
 
+import codesquad.secondhand.exception.code.Code;
 import lombok.Getter;
 
 @Getter
@@ -11,15 +12,15 @@ public class ResponseDto<T> {
     private final String message;
     private T data;
 
-    public ResponseDto(StatusCode statusCode, T data) {
-        this.success = statusCode.isSuccess();
-        this.status = statusCode.getStatus();
-        this.code = statusCode.getCode();
-        this.message = statusCode.getMessage();
+    public ResponseDto(Code code, T data) {
+        this.success = code.isSuccess();
+        this.status = code.getStatus();
+        this.code = code.getCode();
+        this.message = code.getMessage();
         this.data = data;
     }
 
-    public static <T> ResponseDto<T> of(StatusCode statusCode, T data) {
-        return new ResponseDto<>(statusCode, data);
+    public static <T> ResponseDto<T> of(Code code, T data) {
+        return new ResponseDto<>(code, data);
     }
 }

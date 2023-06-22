@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static codesquad.secondhand.dto.StatusCode.*;
-
+import static codesquad.secondhand.exception.code.CommonResponseCode.RESPONSE_SUCCESS;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
