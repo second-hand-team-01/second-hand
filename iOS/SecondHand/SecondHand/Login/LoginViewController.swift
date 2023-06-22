@@ -8,10 +8,8 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    private var accountInputView = AccountInputView()
-    private var githubLoginButton = UIButton()
-    private var loginButton = UIButton()
-    private var joinButton = UIButton()
+    private var accountInputView = AccountInputView(frame: CGRect.zero)
+    private var loginButtonGroupView = LoginButtonGroupView(frame: CGRect.zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +30,13 @@ extension LoginViewController {
     private func layoutCosntraints() {
         self.addSubviews()
         self.layoutAccountInputView()
+        self.layoutLoginButtonGroupView()
     }
     
     private func addSubviews() {
         let subViews = [
-            self.accountInputView
+            self.accountInputView,
+            self.loginButtonGroupView
         ]
         
         subViews.forEach {
@@ -46,6 +46,10 @@ extension LoginViewController {
     }
     
     private func layoutAccountInputView() {
+        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor else {
+            return
+        }
+        
         NSLayoutConstraint.activate([
             self.accountInputView.leadingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
@@ -56,10 +60,30 @@ extension LoginViewController {
                 constant: -16
             ),
             self.accountInputView.topAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.topAnchor,
+                equalTo: navigationBarBottomAnchor,
                 constant: 80
+            )
+        ])
+    }
+    
+    private func layoutLoginButtonGroupView() {
+        guard let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else {
+            return
+        }
+        
+        NSLayoutConstraint.activate([
+            self.loginButtonGroupView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 16
             ),
-            self.accountInputView.heightAnchor.constraint(equalToConstant: 140)
+            self.loginButtonGroupView.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -16
+            ),
+            self.loginButtonGroupView.topAnchor.constraint(
+                equalTo: self.accountInputView.bottomAnchor,
+                constant: 200
+            ),
+            self.loginButtonGroupView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
         ])
     }
 }

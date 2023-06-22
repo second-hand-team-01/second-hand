@@ -127,7 +127,7 @@ extension DetailContentView {
             pageControl.leadingAnchor.constraint(equalTo: self.productImageView.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: self.productImageView.trailingAnchor),
             pageControl.bottomAnchor.constraint(equalTo: productImageView.bottomAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: 20),
+            pageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     

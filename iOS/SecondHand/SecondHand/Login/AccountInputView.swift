@@ -67,22 +67,24 @@ extension AccountInputView {
 
             self.idInputTextField.leadingAnchor.constraint(equalTo: self.idLabel.trailingAnchor, constant: 52.74),
             self.idInputTextField.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
-            self.idInputTextField.topAnchor.constraint(equalTo: self.idLabel.topAnchor)
+            self.idInputTextField.centerYAnchor.constraint(equalTo: self.idLabel.centerYAnchor)
         ])
     }
     
     private func layoutPasswordViews() {
         NSLayoutConstraint.activate([
             self.passwordLabel.leadingAnchor.constraint(equalTo: self.idLabel.leadingAnchor),
-            self.passwordLabel.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: 40),
+            self.passwordLabel.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: 30),
+            self.passwordLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
 
             self.passwordInputTextField.leadingAnchor.constraint(equalTo: self.idInputTextField.leadingAnchor),
             self.passwordInputTextField.trailingAnchor.constraint(equalTo: self.idInputTextField.trailingAnchor),
-            self.passwordInputTextField.topAnchor.constraint(equalTo: self.passwordLabel.topAnchor)
+            self.passwordInputTextField.centerYAnchor.constraint(equalTo: self.passwordLabel.centerYAnchor)
         ])
     }
 }
 
+// MARK: - Label에 필요한 text 문자열 Raw Value
 extension AccountInputView {
     enum DefaultText {
         static let id = "아이디"
