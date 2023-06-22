@@ -5,6 +5,8 @@ import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
+import codesquad.secondhand.dto.member.SignUpRequestDto;
+import codesquad.secondhand.dto.member.SignUpResponseDto;
 import codesquad.secondhand.dto.token.TokenResponse;
 import codesquad.secondhand.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static codesquad.secondhand.dto.StatusCode.RESPONSE_SUCCESS;
+import static codesquad.secondhand.exception.code.CommonResponseCode.RESPONSE_SUCCESS;
 
 @Slf4j
 @RestController
@@ -23,12 +25,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
-//
-//    }
+    @PostMapping("/signup")
+    public ResponseEntity<ResponseDto> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
+        memberService.signUp(signUpRequestDto);
+        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS,null));
+    }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<ResponseDto<TokenResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = memberService.createToken(loginRequestDto);
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(token, memberService.getMemberIdxLoginId(loginRequestDto.getLoginId()))));
