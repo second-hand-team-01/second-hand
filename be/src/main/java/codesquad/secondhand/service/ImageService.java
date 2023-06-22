@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageService {
     private final AmazonS3 amazonS3;
-    private final ItemImageRepository itemImageRepository;
     @Value("${aws.s3.bucket}")
     private String bucketName;
     private static final int MAX_FILE_NUMBER = 10;

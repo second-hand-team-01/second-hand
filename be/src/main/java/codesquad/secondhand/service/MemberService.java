@@ -2,12 +2,11 @@ package codesquad.secondhand.service;
 
 import codesquad.secondhand.dto.location.LocationDto;
 import codesquad.secondhand.dto.location.MainSubDto;
+import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.*;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
-import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.exception.RestApiException;
-import codesquad.secondhand.exception.code.MemberErrorCode;
 import codesquad.secondhand.jwt.JwtTokenProvider;
 import codesquad.secondhand.repository.LocationRepository;
 import codesquad.secondhand.repository.MemberRepository;
