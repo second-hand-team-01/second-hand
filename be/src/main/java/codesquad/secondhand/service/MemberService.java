@@ -43,14 +43,15 @@ public class MemberService {
         memberRepository.save(Member.of(saveMemberDto));
     }
 
-    public String createToken(LoginRequestDto loginRequestDto) {
+    public MemberIdxTokenDto login(LoginRequestDto loginRequestDto) {
         Member member = memberRepository.findByLoginId(loginRequestDto.getLoginId())
                 .orElseThrow(() -> new RestApiException(REQUIRED_SIGNUP));
         if (!loginRequestDto.getPassword().equals(member.getPassword())) { // 비밀번호 불일치 시
             //TODO: 비밀번호 해시 함수를 사용해 암호화 해보기
             throw new RestApiException(WRONG_PASSWORD);
-        } //TODO: 사용자 정의 예외 공부해보기
-        return jwtTokenProvider.createToken(getMemberIdxLoginId(member.getLoginId()));
+        }
+        String token = jwtTokenProvider.createToken(getMemberIdxLoginId(member.getMemberIdx()));
+        return MemberIdxTokenDto.of(member.getMemberIdx(), token);
     }
 
     public MainSubTownDto updateMainSubLocation(Long memberIdx, MainSubDto mainSubDto) {
