@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
           type: 'nav',
           navbarOptions: {
             title: '글 작성',
-            leftBtn: <NavbarBtn text="뒤로" path="/"></NavbarBtn>,
+            leftBtn: <NavbarBtn text="닫기" path="/"></NavbarBtn>,
             rightBtn: (
               <NavbarBtn
                 text="완료"

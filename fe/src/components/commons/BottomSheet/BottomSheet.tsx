@@ -41,7 +41,7 @@ export const BottomSheet = ({
             <S.ButtonContainer>
               {leftBtn && (
                 <Button
-                  shape="small"
+                  shape="medium"
                   title={leftBtn.text}
                   icon={leftBtn.icon ?? undefined}
                   onClick={leftBtn.onClick}
@@ -53,7 +53,7 @@ export const BottomSheet = ({
             <S.ButtonContainer>
               {rightBtn && (
                 <Button
-                  shape="small"
+                  shape="medium"
                   title={rightBtn.text}
                   icon={rightBtn.icon ?? undefined}
                   onClick={rightBtn.onClick}

@@ -4,6 +4,7 @@ import {
   Button,
   TextArea,
   BottomSheet,
+  Dialog,
 } from '@components/commons';
 import { useNavigate } from 'react-router-dom';
 import * as S from './WritePageStyle';
@@ -25,27 +26,58 @@ interface WritePageProps {
 }
 
 export const WritePage = ({ status }: WritePageProps) => {
-  const [state, refetch] = useFetch<any, null>(getCategoryAPI, [], true);
+  const [state, fetch] = useFetch<any, null>(getCategoryAPI, [], true);
   const { data } = state;
 
   const [images, setImages] = useState<Image[]>([]);
   const [title, setTitle] = useState<string>('');
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
-    null
+
+  const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
+    []
   );
+  const [categoryIdx, setCategoryIdx] = useState<number | null>(null);
   const [price, setPrice] = useState<number>(0);
   const [contents, setContents] = useState<string>('');
-  const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(true);
+  const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
 
   const getRandomCategories = (categories: Category[]) => {
     if (categories) return getRandomElements(categories, 3);
     else return [];
   };
 
+  const handleCategoryBtnClick = ({ target }) => {
+    const btn = target as HTMLButtonElement;
+    const idx = displayedCategories.find(
+      (category) => category.name === btn.innerText
+    )?.idx;
+    idx && setCategoryIdx(idx);
+  };
+
+  const handleCategoryListClick = ({ target }) => {
+    const li = target as HTMLLIElement;
+    const categoryName = li.innerText;
+    const selectedCategory = data.find(
+      (category: Category) => category.name === categoryName
+    );
+    const selectedIdx = selectedCategory?.idx;
+    if (selectedIdx) {
+      setCategoryIdx(selectedIdx);
+      const isNotContainedToDisplayed = displayedCategories.every(
+        (category) => category.idx !== selectedIdx
+      );
+      if (!isNotContainedToDisplayed) return setCategoryDialogOpen(false);
+      const newDisplayedCategories = [
+        selectedCategory,
+        ...displayedCategories.slice(1, 3),
+      ];
+      setDisplayedCategories(newDisplayedCategories);
+    }
+    setCategoryDialogOpen(false);
+  };
+
   useEffect(() => {
     const randomCategories = getRandomCategories(data);
-    data && setCategories(randomCategories);
+    data && setDisplayedCategories(randomCategories);
   }, [data]);
 
   return (
@@ -59,29 +91,26 @@ export const WritePage = ({ status }: WritePageProps) => {
           onChange={({ target }) => setTitle(target.value)}
           hasPadding={false}
           maxLength={40}
+          hasBorder={false}
         ></TextInput>
         <S.CategorySection>
           <S.CategoryContainer>
-            {categories.map((category) => (
+            {displayedCategories.map((category) => (
               <Button
                 key={category.idx}
-                state={
-                  selectedCategoryIdx === category.idx ? 'active' : 'default'
-                }
+                state={categoryIdx === category.idx ? 'active' : 'default'}
                 title={category.name}
                 hasBorder={true}
                 shape="small"
-                onClick={({ target }) => {
-                  const btn = target as HTMLButtonElement;
-                  const idx = categories.find(
-                    (category) => category.name === btn.innerText
-                  )?.idx;
-                  idx && setSelectedCategoryIdx(idx);
-                }}
+                onClick={handleCategoryBtnClick}
               ></Button>
             ))}
           </S.CategoryContainer>
-          <Button shape="small" icon="arrowRight"></Button>
+          <Button
+            shape="small"
+            icon="arrowRight"
+            onClick={() => setCategoryDialogOpen(true)}
+          ></Button>
         </S.CategorySection>
       </S.TitleSection>
       <S.PriceSection>
@@ -98,6 +127,7 @@ export const WritePage = ({ status }: WritePageProps) => {
           }}
           hasPadding={false}
           maxLength={15}
+          hasBorder={false}
         ></TextInput>
       </S.PriceSection>
       <TextArea
@@ -108,7 +138,21 @@ export const WritePage = ({ status }: WritePageProps) => {
         hasPadding={false}
         maxLength={1000}
       ></TextArea>
-      <BottomSheet isOpen={isCategoryDialogOpen}>바텀시트</BottomSheet>
+      <BottomSheet
+        isOpen={isCategoryDialogOpen}
+        handleBackdropClick={() => setCategoryDialogOpen(false)}
+        leftBtn={{
+          text: '닫기',
+          icon: 'arrowLeft',
+          onClick: () => setCategoryDialogOpen(false),
+        }}
+      >
+        {state.data?.map((category: Category) => (
+          <S.CategoryList key={category.idx} onClick={handleCategoryListClick}>
+            <S.CategoryListInner>{category.name}</S.CategoryListInner>
+          </S.CategoryList>
+        ))}
+      </BottomSheet>
     </S.WritePage>
   );
 };

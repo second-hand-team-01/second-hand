@@ -1,8 +1,9 @@
 import * as S from './ImgPreviewStyle';
-import { useRef, SetStateAction, Dispatch } from 'react';
-import { Icon } from '@commons/index';
+import { useRef, SetStateAction, Dispatch, useState } from 'react';
+import { Icon, Dialog } from '@commons/index';
 import { ImgElement } from './ImgElement/ImgElement';
 import { Image } from '@type-store/services/images';
+import { ERROR_MESSAGE } from '@constants/error';
 
 interface ImgPreviewProps {
   imageState: [Image[], Dispatch<SetStateAction<Image[]>>];
@@ -10,6 +11,8 @@ interface ImgPreviewProps {
 
 export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
   const [images, setImages] = imageState;
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+
   const FileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileOnChange = () => {
@@ -17,18 +20,13 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
     const file = FileInputRef.current?.files?.[0];
 
     if (file) {
-      const isDuplicate = images.some(
-        (
-          existingImage: any // 수정된 부분
-        ) => {
-          console.log(existingImage, file.name);
-          return (
-            existingImage.name === file.name && existingImage.size === file.size
-          );
-        }
-      );
+      const isDuplicate = images.some((existingImage: Image) => {
+        return (
+          existingImage.name === file.name && existingImage.size === file.size
+        );
+      });
 
-      if (isDuplicate) return alert('이미 업로드한 파일입니다.');
+      if (isDuplicate) return setErrorDialogOpen(true);
       file && reader.readAsDataURL(file);
 
       reader.onload = ({ target }) => {
@@ -73,6 +71,20 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
           ></ImgElement>
         ))}
       </S.ImgContainer>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: () => {
+              setErrorDialogOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => setErrorDialogOpen(false)}
+      >
+        {ERROR_MESSAGE.DUPLICATED_FILE}
+      </Dialog>
     </S.ImgPreview>
   );
 };

@@ -53,7 +53,7 @@ export const Title = styled.p`
 `;
 
 export const Contents = styled.div`
-  padding: 16px 16px 12px;
+  padding: 0 16px;
   overflow-y: scroll;
   word-break: break-word;
 `;

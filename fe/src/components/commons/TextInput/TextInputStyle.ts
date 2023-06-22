@@ -19,7 +19,7 @@ export const Wrap = styled.div<WrapStyleProps>`
   padding: ${({ hasBackground }) => (hasBackground ? '7px 10px' : '12px')};
   border-bottom: ${({ hasBackground }) => (hasBackground ? '0' : '1px')} solid
     ${({ theme }) => theme.colors.neutralBorder};
-  ${({ hasBorder }) => (hasBorder ? 'border: none' : '')};
+  ${({ hasBorder }) => (!hasBorder ? 'border: none' : '')};
   height: ${({ shape }) => (shape === 'large' ? '44' : '36')}px;
   background-color: ${({ theme, hasBackground }) =>
     hasBackground
