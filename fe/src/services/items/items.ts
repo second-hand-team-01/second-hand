@@ -3,8 +3,11 @@ import {
   Item,
   ItemReqBody,
   PostItemRes,
+  ListItemPropsWithId,
+  GetItemsRes,
+  ItemDetail,
+  APIItemDetail,
 } from '@type-store/services/items';
-import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { useState } from 'react';
@@ -12,10 +15,6 @@ import { ERROR_MESSAGE } from '@constants/error';
 import { Image } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
 import { getRandomElements } from '@utils/common/common';
-
-export interface ListItemPropsWithId extends ListItemProps {
-  id: number;
-}
 
 export const convertItemsToListItems = (
   items: Item[]
@@ -52,16 +51,6 @@ export const convertItemsToListItems = (
   });
 };
 
-interface GetItemsRes {
-  hasNext: boolean;
-  items: Item[];
-}
-
-export interface ConvertedGetItemsRes {
-  hasNext: boolean;
-  items: ListItemPropsWithId[];
-}
-
 export const getItemsAPI = async (page: number) => {
   try {
     const res = (await customFetch<null, GetItemsRes>({
@@ -80,6 +69,66 @@ export const getItemsAPI = async (page: number) => {
         hasNext,
         items: convertItemsToListItems(items) as ListItemPropsWithId[],
       },
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+const convertAPIItemDetailsToItemDetails = (
+  details: APIItemDetail
+): ItemDetail => {
+  const {
+    itemIdx,
+    title,
+    sellerId,
+    status,
+    category,
+    description,
+    price,
+    chat,
+    interest,
+    view,
+    interestChecked,
+    postedAt,
+    images,
+  } = details;
+
+  const newDetails = {
+    itemIdx,
+    title,
+    sellerId,
+    status,
+    category,
+    description,
+    price,
+    chat,
+    interest,
+    view,
+    interestChecked,
+    postedAt: new Date(postedAt),
+    images,
+  };
+  return newDetails;
+};
+
+export const getItemDetailAPI = async (itemIdx: number) => {
+  if (isNaN(itemIdx)) return { error: new Error(ERROR_MESSAGE[400]) };
+  try {
+    const res = (await customFetch<null, APIItemDetail>({
+      path: `/items/${itemIdx}`,
+      method: 'GET',
+    })) as Response<APIItemDetail>;
+
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    const details = res.data;
+
+    return {
+      ...res,
+      data: convertAPIItemDetailsToItemDetails(details),
     };
   } catch (error) {
     if (error instanceof Error) return { error };

@@ -1,0 +1,23 @@
+{
+  "code": 200,
+  "message": "요청이 정상 처리되었습니다.",
+  "data": {
+    "itemIdx": 1,
+    "title": "빈티지 롤러 스케이트",
+    "sellerId": "lvalentine6",
+    "status": "판매중",
+    "category": "가구/인테리어",
+    "description": "어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다.  촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다. 사이즈는 235 입니다.",
+    "price": 169000,
+    "chat": 0,
+    "interest": 0,
+    "view": 1,
+    "interestChecked": true,
+    "postedAt": "2023-02-06T09:10:35",
+    "images": [
+      "https://storage.enuri.info/pic_upload/knowbox2/202303/020901708202303114f94e227-5124-4558-a383-88f78bfad342.jpg",
+      "https://mblogthumb-phinf.pstatic.net/MjAxOTA0MTFfMTU0/MDAxNTU0OTE2MTgxMjU1.wiIdy5YQWIRRI3uYwIjOQq0s7r0OMqKAZW6vjf3xCd8g.Ejy7adIC84d3A4Rh14_w8yhyzsOYmtXkEU4YVkNJQMYg.JPEG.jubbigi/강아지짤1.jpg?type=w800",
+      "https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202105/25/holapet/20210525051115632cebl.jpg"
+    ]
+  }
+}

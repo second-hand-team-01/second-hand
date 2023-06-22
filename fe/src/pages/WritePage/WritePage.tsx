@@ -8,7 +8,7 @@ import {
   Layout,
   NavbarBtn,
 } from '@components/commons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as S from './WritePageStyle';
 import { useEffect, useState, useCallback } from 'react';
 import {
@@ -36,6 +36,7 @@ interface WritePageProps {
 
 export const WritePage = ({ status }: WritePageProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [title, setTitle] = useState<string>('');
   const [categoryState, categoryFetch] = useFetch<any, null>(
@@ -226,7 +227,9 @@ export const WritePage = ({ status }: WritePageProps) => {
               onClick: () => {
                 !uploadState.data && uploadState.error
                   ? setDialogOpen(false)
-                  : navigate(`/item/${uploadState.data.itemIdx}`);
+                  : navigate(`/item/${uploadState.data.itemIdx}`, {
+                      state: pathname,
+                    });
               },
             },
           }}

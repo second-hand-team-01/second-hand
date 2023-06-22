@@ -94,7 +94,8 @@ export interface ButtonStyleProps {
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;
   hasBorder?: boolean;
-  backgroundColor?: string;
+  backgroundColor?: keyof typeof palette | keyof typeof colors | string;
+  isWidthFitContent?: boolean;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -131,6 +132,7 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
+
   border: none;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
   ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
@@ -146,4 +148,6 @@ export const Button = styled.button<ButtonStyleProps>`
       : ''};
   display: flex;
   gap: 4px;
+  ${({ isWidthFitContent }) =>
+    isWidthFitContent ? `width: max-content;` : ''};
 `;

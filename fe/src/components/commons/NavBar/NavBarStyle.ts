@@ -1,11 +1,21 @@
 import styled from 'styled-components';
 import { NAVBAR_HEIGHT } from '@constants/style';
+import { theme } from '@styles/theme';
 
-export const Header = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+interface HeaderStyleProps {
+  isTransparent?: boolean;
+}
+
+export const Header = styled.div<HeaderStyleProps>`
   width: 100%;
   border-radius: 14px 14px 0px 0px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.neutralBackground}
+    ${({ isTransparent }) =>
+      isTransparent
+        ? `
+      border-bottom: 0;
+      background-color: transparent;`
+        : ''};
 `;
 
 export const HeaderTop = styled.div`

@@ -58,7 +58,7 @@ export const ListItem = ({
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
   const listClickHandler = ({ target }: MouseEvent<HTMLLIElement>): void => {
-    if (moreBtnRef.current?.contains(target as Node)) return;
+    // if (moreBtnRef.current?.contains(target as Node)) return;
   };
 
   const moreBtnClickHandler = ({ target }) => {
@@ -66,7 +66,7 @@ export const ListItem = ({
   };
 
   return (
-    <S.ListItem onClick={listClickHandler}>
+    <S.ListItem onClick={onClick}>
       <S.Thumbnail src={imgUrl} alt={title} />
       <S.Content>
         <S.Info>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
+import { InfoBarProps } from '../InfoBar/InfoBar';
 
 export interface HeaderProps {
   type: 'filter' | 'nav';
@@ -9,11 +10,16 @@ export interface HeaderProps {
 
 export interface FooterProps {
   type: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  infoBarOptions?: InfoBarProps;
 }
 
 export interface LayoutStyleProps {
   headerOption?: HeaderProps;
   footerOption?: FooterProps;
+}
+
+export interface isHeaderOverlappedType {
+  isHeaderOverlapped?: boolean;
 }
 
 const getTemplateRows = (
@@ -52,19 +58,24 @@ export const Wrap = styled.div`
   justify-items: center;
 `;
 
-export const Header = styled.div`
+export const Header = styled.div<isHeaderOverlappedType>`
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  z-index: 1;
+  ${({ isHeaderOverlapped }) => (isHeaderOverlapped ? `border-bottom: 0;` : '')}
 `;
 
-export const Contents = styled.div`
+export const Contents = styled.div<isHeaderOverlappedType>`
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
   position: relative;
+  ${({ isHeaderOverlapped }) =>
+    isHeaderOverlapped ? `margin-top: -${NAVBAR_HEIGHT.top}px` : ''}
 `;
 
 export const Footer = styled.div`
   width: 100%;
   border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  z-index: 1;
 `;

@@ -9,11 +9,18 @@ export interface NavBarProps {
   leftBtn?: ReactNode;
   rightBtn?: ReactNode;
   tabInfo?: TabProps;
+  isTransparent?: boolean;
 }
 
-export const NavBar = ({ title, leftBtn, rightBtn, tabInfo }: NavBarProps) => {
+export const NavBar = ({
+  title,
+  leftBtn,
+  rightBtn,
+  tabInfo,
+  isTransparent = false,
+}: NavBarProps) => {
   return (
-    <S.Header>
+    <S.Header isTransparent={isTransparent}>
       <S.HeaderTop>
         <S.ButtonContainer>{leftBtn}</S.ButtonContainer>
         <S.Title>{title}</S.Title>
