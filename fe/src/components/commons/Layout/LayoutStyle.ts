@@ -48,8 +48,8 @@ export const Layout = styled.div<LayoutStyleProps>`
   grid-template-rows: ${({ headerOption, footerOption }) =>
     getTemplateRows(headerOption, footerOption)};
   height: 100dvh;
+  height: 100dvh;
   outline: 1px solid ${({ theme }) => theme.colors.neutralBorder};
-  overflow: hidden;
 `;
 
 export const Wrap = styled.div`
