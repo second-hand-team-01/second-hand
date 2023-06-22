@@ -19,7 +19,7 @@ export const Slide = ({
 
   let touchStart = 0;
   let touchEnd = 0;
-  const threshold = 100;
+  const threshold = 150;
 
   const moveSlide = (direction: 'next' | 'previous') => {
     const totalSlides = urls.length;
