@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
 @Slf4j
@@ -27,19 +29,19 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ImageService imageService;
 
     public void signUp(SignUpRequestDto signUpRequestDto) {
         memberRepository.findByLoginId(signUpRequestDto.getLoginId()) // ID 중복 검사
                 .ifPresent(member -> { // 중복 시 SAME_ID_ALREADY_EXISTS 예외
                     throw new RestApiException(SAME_ID_ALREADY_EXISTS);
                 });
-        /**
-         * MultipartFile로 들어온 이미지가 URL로 변환되는 로직
-         */
-        String imageUrl = "example";
+
+        List<String> urlList = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId());
+
         Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
         Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
-        SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, imageUrl, main, sub);
+        SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, urlList.get(0), main, sub);
         memberRepository.save(Member.of(saveMemberDto));
     }
 
