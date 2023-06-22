@@ -53,9 +53,9 @@ public class MemberService {
         return jwtTokenProvider.createToken(getMemberIdxLoginId(member.getLoginId()));
     }
 
-    public MainSubTownDto updateMainSubLocation(String loginId, MainSubDto mainSubDto) {
-        Member member = memberRepository.findByLoginId(loginId)
-                .orElseThrow(IllegalArgumentException::new);
+    public MainSubTownDto updateMainSubLocation(Long memberIdx, MainSubDto mainSubDto) {
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 
         Location newSubLocation = null;
 
@@ -67,19 +67,18 @@ public class MemberService {
         return MainSubTownDto.of(member);
     }
 
-    public MemberIdxLoginIdDto getMemberIdxLoginId(String memberLoginId) {
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MemberIdxLoginIdDto getMemberIdxLoginId(Long memberIdx) {
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MemberIdxLoginIdDto.of(member);
     }
 
-    public MemberInfoDto getMemberInfo(String memberLoginId) {
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MemberInfoDto getMemberInfo(Long memberIdx) {
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MemberInfoDto.of(member);
     }
 
-    public MainSubTownDto getMainSubLocation(String memberLoginId) { // mainLocation, subLocation 동시에 가져오는 메서드
-        log.info("[MemberService.getMainSubLocation]");
-        Member member = memberRepository.findByLoginId(memberLoginId).orElseThrow(IllegalArgumentException::new);
+    public MainSubTownDto getMainSubLocation(Long memberIdx) { // mainLocation, subLocation 동시에 가져오는 메서드
+        Member member = memberRepository.findById(memberIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
         return MainSubTownDto.of(member);
     }
 
