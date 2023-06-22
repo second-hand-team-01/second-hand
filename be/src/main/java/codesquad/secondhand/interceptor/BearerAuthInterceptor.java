@@ -1,5 +1,7 @@
 package codesquad.secondhand.interceptor;
 
+import codesquad.secondhand.exception.RestApiException;
+import codesquad.secondhand.exception.code.TokenErrorCode;
 import codesquad.secondhand.jwt.AuthorizationExtractor;
 import codesquad.secondhand.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,7 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
         }
 
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰");
+            throw new RestApiException(TokenErrorCode.TOKEN_INVALID);
         }
 
         String loginId = jwtTokenProvider.getLoginId(token);
