@@ -72,4 +72,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(message)
                 .build();
     }
+
+    // BindException 처리하는 부분
+    private ResponseEntity<Object> handleExceptionInternal(BindException e, Code errorCode) {
+        return ResponseEntity.status(errorCode.getStatus())
+                .body(makeErrorResponse(e, errorCode));
+    }
+
+    private ErrorResponse makeErrorResponse(BindException e, Code errorCode) {
+        List<ErrorResponse.ValidationError> validationErrorList = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(ErrorResponse.ValidationError::of)
+                .collect(Collectors.toList());
+
+        return ErrorResponse.builder()
+                .success(errorCode.isSuccess())
+                .status(errorCode.getStatus())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .errors(validationErrorList)
+                .build();
+    }
 }
