@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +28,6 @@ public class ImageService {
     private final ItemImageRepository itemImageRepository;
     @Value("${aws.s3.bucket}")
     private String bucketName;
-    private static final int MAX_FILE_SIZE = 1048576;
     private static final int MAX_FILE_NUMBER = 10;
     private static final String FILE_EXTENSION_DOT = "\\.";
 
@@ -40,13 +42,14 @@ public class ImageService {
         for(MultipartFile multipartFile : multipartFileList) {
             validateFile(multipartFile);
 
-            String originFileName = "";
-            if(multipartFile.getOriginalFilename() == null) {
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            String originFileName = multipartFile.getOriginalFilename();
+
+            if(originFileName == null) {
                 originFileName = UUID.randomUUID().toString();
             }
-            String fileName = fileNameConvert(originFileName, memberId);
 
-            ObjectMetadata objectMetadata = new ObjectMetadata();
+            String fileName = fileNameConvert(originFileName, memberId);
             objectMetadata.setContentType(multipartFile.getContentType());
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -66,20 +69,18 @@ public class ImageService {
             //TODO EmptyFileException 변경
             throw new IllegalArgumentException();
         }
-        if(MAX_FILE_SIZE < multipartFile.getSize()) {
-            //TODO MaxFileSizeException 변경
-            throw new IllegalArgumentException();
-        }
     }
 
     private String fileNameConvert(String originalFileName, String memberId) {
         StringBuilder sb = new StringBuilder();
         String[] originalFileNameSplit = originalFileName.split(FILE_EXTENSION_DOT);
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
         sb.append(memberId)
                 .append("_")
                 .append(originalFileNameSplit[0])
                 .append("_")
-                .append(System.currentTimeMillis())
+                .append(simpleDateFormat.format(date))
                 .append(".")
                 .append(originalFileNameSplit[1]);
         return sb.toString();
