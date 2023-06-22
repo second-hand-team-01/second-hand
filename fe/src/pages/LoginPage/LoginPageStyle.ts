@@ -5,7 +5,7 @@ export const LoginPage = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
   padding: 56px 0 83px 0;
   padding-top: 56px;
   padding-bottom: 83px;

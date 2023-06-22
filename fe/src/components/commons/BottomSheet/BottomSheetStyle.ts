@@ -7,7 +7,8 @@ interface BottomSheetStyleProps {
 export const BackDrop = styled.div`
   background-color: ${({ theme }) => theme.colors.neutralOverlay};
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
+  cursor: pointer;
 `;
 
 export const BottomSheet = styled.div<BottomSheetStyleProps>`
@@ -19,7 +20,7 @@ export const BottomSheet = styled.div<BottomSheetStyleProps>`
   grid-template-rows:
     calc(${({ hasSearchInput }) => (hasSearchInput ? '56px + 48px' : '56px')})
     1fr;
-  height: calc(100vh - 58px);
+  height: calc(100dvh - 58px);
   max-width: calc(393px - 2px);
   margin-left: 1px;
   width: 100%;

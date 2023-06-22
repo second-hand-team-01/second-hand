@@ -43,7 +43,7 @@ export const Layout = styled.div<LayoutStyleProps>`
   display: grid;
   grid-template-rows: ${({ headerOption, footerOption }) =>
     getTemplateRows(headerOption, footerOption)};
-  height: 100vh;
+  height: 100dvh;
   height: 100dvh;
 `;
 

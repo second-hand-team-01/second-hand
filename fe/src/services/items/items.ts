@@ -94,7 +94,7 @@ const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
 
   const newItem: APIItemReqBody = {
     title,
-    price: price.toString(),
+    price: price === null ? '0' : price.toString(),
     description: contents,
     locationIdx: locationIdx.toString(),
     categoryIdx: categoryIdx.toString(),

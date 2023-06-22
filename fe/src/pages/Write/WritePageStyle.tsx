@@ -32,6 +32,10 @@ export const PriceSection = styled.div`
   align-items: center;
   grid-template-columns: max-content 1fr;
   gap: 4px;
+  font-size: ${({ theme }) => theme.typography.subhead.size};
+  font-weight: ${({ theme }) => theme.fontWeights.light};
+  line-height: ${({ theme }) => theme.typography.subhead.lineHeight};
+  color: ${({ theme }) => theme.colors.neutralText};
 `;
 
 export const Contents = styled.div`

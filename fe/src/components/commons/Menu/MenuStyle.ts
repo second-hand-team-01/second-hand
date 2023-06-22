@@ -109,7 +109,7 @@ export const BackDrop = styled.div`
   bottom: 0;
   max-width: 393px;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background-color: ${({ theme }) => theme.colors.neutralOverlay};
 `;
 

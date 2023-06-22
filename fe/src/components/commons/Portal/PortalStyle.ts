@@ -9,5 +9,5 @@ export const Portal = styled.div`
   position: fixed;
   max-width: 393px;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
 `;

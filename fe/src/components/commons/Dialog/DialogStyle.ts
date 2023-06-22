@@ -6,7 +6,7 @@ export interface DialogStyleProps {
 
 export const Backdrop = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background-color: ${({ theme }) => theme.colors.neutralOverlay};
   cursor: pointer;
 `;
