@@ -45,10 +45,10 @@ public class MemberService {
 
     public String createToken(LoginRequestDto loginRequestDto) {
         Member member = memberRepository.findByLoginId(loginRequestDto.getLoginId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new RestApiException(REQUIRED_SIGNUP));
         if (!loginRequestDto.getPassword().equals(member.getPassword())) { // 비밀번호 불일치 시
             //TODO: 비밀번호 해시 함수를 사용해 암호화 해보기
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new RestApiException(WRONG_PASSWORD);
         } //TODO: 사용자 정의 예외 공부해보기
         return jwtTokenProvider.createToken(getMemberIdxLoginId(member.getLoginId()));
     }
