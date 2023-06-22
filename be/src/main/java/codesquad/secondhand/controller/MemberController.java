@@ -3,10 +3,7 @@ package codesquad.secondhand.controller;
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
-import codesquad.secondhand.dto.member.LoginRequestDto;
-import codesquad.secondhand.dto.member.MemberInfoDto;
-import codesquad.secondhand.dto.member.SignUpRequestDto;
-import codesquad.secondhand.dto.member.SignUpResponseDto;
+import codesquad.secondhand.dto.member.*;
 import codesquad.secondhand.dto.token.TokenResponse;
 import codesquad.secondhand.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -33,28 +30,29 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<TokenResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
-        String token = memberService.createToken(loginRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(token, memberService.getMemberIdxLoginId(loginRequestDto.getLoginId()))));
+        MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
+        MemberIdxLoginIdDto memberIdxLoginId = memberService.getMemberIdxLoginId(memberIdxTokenDto.getMemberIdx());
+        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(memberIdxTokenDto.getToken(), memberIdxLoginId)));
     }
 
     @GetMapping("/info")
     public ResponseEntity<ResponseDto<MemberInfoDto>> showMemberInfo(HttpServletRequest request) {
-        String loginId = (String) request.getAttribute("loginId");
-        MemberInfoDto memberInfo = memberService.getMemberInfo(loginId);
+        Long memberIdx = (Long) request.getAttribute("memberIdx");
+        MemberInfoDto memberInfo = memberService.getMemberInfo(memberIdx);
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, memberInfo));
     }
 
     @GetMapping("/location")
     public ResponseEntity<ResponseDto<MainSubTownDto>> showMemberLocations(HttpServletRequest request) {
-        String loginId = (String) request.getAttribute("loginId");
-        MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(loginId);
+        Long memberIdx = (Long) request.getAttribute("memberIdx");
+        MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(memberIdx);
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
     }
 
     @PutMapping("/location")
     public ResponseEntity<ResponseDto<MainSubTownDto>> updateMemberLocations(@RequestBody MainSubDto mainSubDto, HttpServletRequest request) {
-        String loginId = (String) request.getAttribute("loginId");
-        MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(loginId, mainSubDto);
+        Long memberIdx = (Long) request.getAttribute("memberIdx");
+        MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(memberIdx, mainSubDto);
         return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
     }
 }
