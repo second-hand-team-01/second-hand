@@ -186,12 +186,20 @@
 			isa = PBXGroup;
 			children = (
 				63129C992A4145B00049EC0C /* LoginViewController.swift */,
+				632047782A4474880035880A /* UI */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		632047782A4474880035880A /* UI */ = {
+			isa = PBXGroup;
+			children = (
 				6320475F2A42F28F0035880A /* AccountInputView.swift */,
 				6320476B2A440B290035880A /* LoginButtonGroupView.swift */,
 				632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */,
 				632047722A4411AC0035880A /* AccountButtonUIFactory.swift */,
 			);
-			path = Login;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		632807142A305CED0033F9D7 = {
