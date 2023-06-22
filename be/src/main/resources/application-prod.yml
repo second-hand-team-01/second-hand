@@ -3,11 +3,11 @@ jasypt:
     bean: jasyptStringEncryptor
 aws:
   credentials:
-    access-key:
-    secret-key:
+    access-key: ENC(AXGXcyGl8zSV0o1f2tjKJmyaMN75vjtNm+PGZU74exk=)
+    secret-key: ENC(D/7U1Y5JXDAYhq1PZfSzDFPooxrVEIfsz6B6HE7g1FNpqubJyKuqUhyEOULGbBNFxNm4NZkd6kk=)
     region: ap-northeast-2
   s3:
-    bucket:
+    bucket: ENC(DkFZypoaguNPKzi+G7VWxVUZb7uYM/xPo/SBS+h9xL64oEIj/MN7Hw==)
 spring:
   jpa:
     hibernate:

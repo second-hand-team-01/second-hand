@@ -17,7 +17,7 @@ import static codesquad.secondhand.exception.code.CommonResponseCode.RESPONSE_SU
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/items")
+@RequestMapping("/api/items")
 public class ItemController {
 
     private final ItemService itemService;
