@@ -15,12 +15,12 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTitle(title: "내 계정")
+        self.setTitle(title: "내 계정")
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        layoutCosntraints()
+        self.layoutCosntraints()
     }
     
     private func setTitle(title: String) {
@@ -30,13 +30,13 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController {
     private func layoutCosntraints() {
-        addSubviews()
-        layoutAccountInputView()
+        self.addSubviews()
+        self.layoutAccountInputView()
     }
     
     private func addSubviews() {
         let subViews = [
-            accountInputView
+            self.accountInputView
         ]
         
         subViews.forEach {
@@ -47,20 +47,19 @@ extension LoginViewController {
     
     private func layoutAccountInputView() {
         NSLayoutConstraint.activate([
-            accountInputView.leadingAnchor.constraint(
+            self.accountInputView.leadingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
                 constant: 16
             ),
-            accountInputView.trailingAnchor.constraint(
+            self.accountInputView.trailingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -16
             ),
-            accountInputView.topAnchor.constraint(
+            self.accountInputView.topAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.topAnchor,
                 constant: 80
             ),
-            accountInputView.heightAnchor.constraint(equalToConstant: 140)
+            self.accountInputView.heightAnchor.constraint(equalToConstant: 140)
         ])
     }
 }
-

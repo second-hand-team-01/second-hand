@@ -15,16 +15,17 @@ class AccountInputView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setDeafultText()
+        self.setDeafultText()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        self.setDeafultText()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layoutConstraints()
+        self.layoutConstraints()
     }
     
     private func setDeafultText() {
@@ -41,10 +42,10 @@ class AccountInputView: UIView {
 extension AccountInputView {
     private func addSubviews() {
         let subViews = [
-            idLabel,
-            idInputTextField,
-            passwordLabel,
-            passwordInputTextField
+            self.idLabel,
+            self.idInputTextField,
+            self.passwordLabel,
+            self.passwordInputTextField
         ]
         
         subViews.forEach {
@@ -54,30 +55,30 @@ extension AccountInputView {
     }
     
     private func layoutConstraints() {
-        addSubviews()
-        layoutIdViews()
-        layoutPasswordViews()
+        self.addSubviews()
+        self.layoutIdViews()
+        self.layoutPasswordViews()
     }
 
     private func layoutIdViews() {
         NSLayoutConstraint.activate([
-            idLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            idLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            
-            idInputTextField.leadingAnchor.constraint(equalTo: idLabel.trailingAnchor, constant: 52.74),
-            idInputTextField.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
-            idInputTextField.topAnchor.constraint(equalTo: idLabel.topAnchor)
+            self.idLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.idLabel.topAnchor.constraint(equalTo: self.topAnchor),
+
+            self.idInputTextField.leadingAnchor.constraint(equalTo: self.idLabel.trailingAnchor, constant: 52.74),
+            self.idInputTextField.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
+            self.idInputTextField.topAnchor.constraint(equalTo: self.idLabel.topAnchor)
         ])
     }
     
     private func layoutPasswordViews() {
         NSLayoutConstraint.activate([
-            passwordLabel.leadingAnchor.constraint(equalTo: idLabel.leadingAnchor),
-            passwordLabel.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 40),
-            
-            passwordInputTextField.leadingAnchor.constraint(equalTo: idInputTextField.leadingAnchor),
-            passwordInputTextField.trailingAnchor.constraint(equalTo: idInputTextField.trailingAnchor),
-            passwordInputTextField.topAnchor.constraint(equalTo: passwordLabel.topAnchor)
+            self.passwordLabel.leadingAnchor.constraint(equalTo: self.idLabel.leadingAnchor),
+            self.passwordLabel.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: 40),
+
+            self.passwordInputTextField.leadingAnchor.constraint(equalTo: self.idInputTextField.leadingAnchor),
+            self.passwordInputTextField.trailingAnchor.constraint(equalTo: self.idInputTextField.trailingAnchor),
+            self.passwordInputTextField.topAnchor.constraint(equalTo: self.passwordLabel.topAnchor)
         ])
     }
 }

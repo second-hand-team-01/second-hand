@@ -118,7 +118,7 @@ extension DetailContentView {
             productImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             productImageView.topAnchor.constraint(equalTo: self.topAnchor),
             productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor,
-                                                     multiplier: heightRatio),
+                                                     multiplier: heightRatio)
         ])
     }
     
