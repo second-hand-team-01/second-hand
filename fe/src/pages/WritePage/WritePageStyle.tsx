@@ -42,10 +42,6 @@ export const Contents = styled.div`
   margin: 16px 0;
 `;
 
-export const Contents = styled.div`
-  margin: 16px 0;
-`;
-
 export const CategoryList = styled.li`
   height: 52px;
   font-size: ${({ theme }) => theme.typography.subhead.size};
