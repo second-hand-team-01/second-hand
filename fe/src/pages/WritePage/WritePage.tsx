@@ -18,7 +18,6 @@ import {
   getType,
   Type,
   checkAllFilled,
-  isMobileDevice,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
@@ -49,7 +48,7 @@ export const WritePage = ({ status }: WritePageProps) => {
     []
   );
   const [categoryIdx, setCategoryIdx] = useState<number | null>(-1);
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<number>(-1);
   const [contents, setContents] = useState<string>('');
   const [images, setImages] = useState<Image[]>([]);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
@@ -57,7 +56,7 @@ export const WritePage = ({ status }: WritePageProps) => {
   const locationIdx = -1; // TODO
 
   useEffect(() => {
-    checkAllFilled([title, contents, images, categoryIdx])
+    checkAllFilled([title, contents, images, price, categoryIdx])
       ? setAllFilled(true)
       : setAllFilled(false);
   }, [title, contents, images, price, categoryIdx]);
@@ -178,8 +177,8 @@ export const WritePage = ({ status }: WritePageProps) => {
         <S.PriceSection>
           ₩
           <TextInput
-            value={price !== 0 ? convertNumToPrice(price) : ''}
-            shape="small"
+            value={price !== -1 ? convertNumToPrice(price) : ''}
+            shape="large"
             placeholder="가격(선택사항)"
             onChange={({ target }) => {
               const number = convertPriceToNum(target.value);
