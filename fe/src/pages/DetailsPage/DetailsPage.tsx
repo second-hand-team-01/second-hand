@@ -11,6 +11,8 @@ import {
   NavbarBtn,
   Slide,
   Dropdown,
+  Loading,
+  Error,
 } from '@commons/index';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getItemDetailAPI } from '@services/items/items';
@@ -27,15 +29,23 @@ export const DetailsPage = () => {
   const param = useParams();
   const itemIdx = param.itemIdx;
 
-  const [detailsState, fetch] = useFetch<ItemDetail, any>(
-    getItemDetailAPI.bind(null, Number(itemIdx)),
-    [],
-    true
-  );
+  const [details, setDetails] = useState<ItemDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const { data, loading } = detailsState;
+  useEffect(() => {
+    (async () => {
+      !loading && setLoading(true);
+      const { data, error } = await getItemDetailAPI(Number(itemIdx));
+      if (error) return setErrorMsg(error.message);
+      if (data) {
+        setDetails(data);
+      }
+      setLoading(false);
+    })();
+  }, []);
 
-  const isWriter = userId === data?.sellerId;
+  const isWriter = userId === details?.sellerId;
 
   return (
     <Layout
@@ -56,48 +66,48 @@ export const DetailsPage = () => {
       footerOption={{
         type: 'info',
         infoBarOptions: {
-          isInterestedChecked: data?.interestChecked,
-          price: data?.price,
+          isInterestedChecked: details?.interestChecked,
+          price: details?.price,
           handleInterestClicked: () => console.log('d'),
           handleChatClicked: () => console.log('d'),
         },
       }}
       isHeaderOverlapped={true}
     >
-      <S.DetailsPages className="detail">
-        {loading ? (
-          <>로딩중</>
-        ) : (
-          <>
-            <S.ImageContainer>
-              <Slide urls={data?.images ?? []}></Slide>
-            </S.ImageContainer>
-            <S.Contents>
-              <S.WriterSection>
-                <p>판매자 정보</p>
-                <p>{data?.sellerId}</p>
-              </S.WriterSection>
-              {isWriter && (
-                <Dropdown isOpen={false} onClick={() => console.log('d')}>
-                  {data?.status ?? ''}
-                </Dropdown>
-              )}
-              <S.Title>{data?.title}</S.Title>
-              <S.Info>
-                <span>{data?.category}</span>
-                <span>・</span>
-                <span>
-                  {data?.postedAt && convertDateToTimeStamp(data?.postedAt)}
-                </span>
-              </S.Info>
-              <S.Description>{data?.description}</S.Description>
-              <S.Info>채팅 {data?.chat}</S.Info>
-              <S.Info>관심 {data?.interest}</S.Info>
-              <S.Info>조회 {data?.view}</S.Info>
-            </S.Contents>
-          </>
-        )}
-      </S.DetailsPages>
+      {errorMsg ? (
+        <Error>{errorMsg}</Error>
+      ) : loading ? (
+        <Loading />
+      ) : (
+        <S.DetailsPages className="detail">
+          <S.ImageContainer>
+            <Slide urls={details?.images ?? []}></Slide>
+          </S.ImageContainer>
+          <S.Contents>
+            <S.WriterSection>
+              <p>판매자 정보</p>
+              <p>{details?.sellerId}</p>
+            </S.WriterSection>
+            {isWriter && (
+              <Dropdown isOpen={false} onClick={() => console.log('d')}>
+                {details?.status ?? ''}
+              </Dropdown>
+            )}
+            <S.Title>{details?.title}</S.Title>
+            <S.Info>
+              <span>{details?.category}</span>
+              <span>・</span>
+              <span>
+                {details?.postedAt && convertDateToTimeStamp(details?.postedAt)}
+              </span>
+            </S.Info>
+            <S.Description>{details?.description}</S.Description>
+            <S.Info>채팅 {details?.chat}</S.Info>
+            <S.Info>관심 {details?.interest}</S.Info>
+            <S.Info>조회 {details?.view}</S.Info>
+          </S.Contents>
+        </S.DetailsPages>
+      )}
     </Layout>
   );
 };

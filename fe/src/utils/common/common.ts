@@ -137,3 +137,7 @@ export const checkAllFilled = (values: any[]) => {
     return false;
   }, false);
 };
+
+export const isMobileDevice = () => {
+  return navigator.userAgent.indexOf('IEMobile') !== -1;
+};

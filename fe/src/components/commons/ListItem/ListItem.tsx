@@ -67,54 +67,56 @@ export const ListItem = ({
 
   return (
     <S.ListItem onClick={onClick}>
-      <S.Thumbnail src={imgUrl} alt={title} />
-      <S.Content>
-        <S.Info>
-          <S.Title>
-            <span>{title}</span>
-            {moreBtn && (
-              <button ref={moreBtnRef} onClick={moreBtnClickHandler}>
+      <S.Wrap>
+        <S.Thumbnail src={imgUrl} alt={title} />
+        <S.Content>
+          <S.Info>
+            <S.Title>
+              <span>{title}</span>
+              {moreBtn && (
+                <button ref={moreBtnRef} onClick={moreBtnClickHandler}>
+                  <Icon
+                    name={moreBtnIcon.name}
+                    size={moreBtnIcon.size}
+                    color={moreBtnIcon.color}
+                  />
+                </button>
+              )}
+            </S.Title>
+            <S.SubInfo>
+              <span>{location}</span>
+              <span> ・ </span>
+              <span>{convertDateToTimeStamp(timeStamp)}</span>
+            </S.SubInfo>
+            <S.States>
+              {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
+              {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
+            </S.States>
+          </S.Info>
+          <S.ChatAndLike>
+            {!!chat && (
+              <S.ChatAndLikeInfo>
                 <Icon
-                  name={moreBtnIcon.name}
-                  size={moreBtnIcon.size}
-                  color={moreBtnIcon.color}
+                  name={chatIcon.name}
+                  size={chatIcon.size}
+                  color={chatIcon.color}
                 />
-              </button>
+                <span>{chat}</span>
+              </S.ChatAndLikeInfo>
             )}
-          </S.Title>
-          <S.SubInfo>
-            <span>{location}</span>
-            <span> ・ </span>
-            <span>{convertDateToTimeStamp(timeStamp)}</span>
-          </S.SubInfo>
-          <S.States>
-            {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
-            {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
-          </S.States>
-        </S.Info>
-        <S.ChatAndLike>
-          {!!chat && (
-            <S.ChatAndLikeInfo>
-              <Icon
-                name={chatIcon.name}
-                size={chatIcon.size}
-                color={chatIcon.color}
-              />
-              <span>{chat}</span>
-            </S.ChatAndLikeInfo>
-          )}
-          {!!like && (
-            <S.ChatAndLikeInfo>
-              <Icon
-                name={heartIcon.name}
-                size={heartIcon.size}
-                color={heartIcon.color}
-              />
-              <span>{like}</span>
-            </S.ChatAndLikeInfo>
-          )}
-        </S.ChatAndLike>
-      </S.Content>
+            {!!like && (
+              <S.ChatAndLikeInfo>
+                <Icon
+                  name={heartIcon.name}
+                  size={heartIcon.size}
+                  color={heartIcon.color}
+                />
+                <span>{like}</span>
+              </S.ChatAndLikeInfo>
+            )}
+          </S.ChatAndLike>
+        </S.Content>
+      </S.Wrap>
     </S.ListItem>
   );
 };

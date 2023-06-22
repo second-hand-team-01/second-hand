@@ -18,6 +18,7 @@ import {
   getType,
   Type,
   checkAllFilled,
+  isMobileDevice,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
@@ -85,8 +86,9 @@ export const WritePage = ({ status }: WritePageProps) => {
     idx && setCategoryIdx(idx);
   };
 
-  const handleCategoryListClick = ({ target }) => {
-    const li = target as HTMLLIElement;
+  const handleCategoryListClick = (e) => {
+    e.preventDefault();
+    const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
     const selectedCategory = categoryState.data.find(
       (category: Category) => category.name === categoryName

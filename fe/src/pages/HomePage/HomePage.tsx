@@ -1,4 +1,11 @@
-import { Layout, ListItem, Spinner } from '@commons/index';
+import {
+  Layout,
+  ListItem,
+  Spinner,
+  Error,
+  Button,
+  Loading,
+} from '@commons/index';
 import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
@@ -8,7 +15,6 @@ import {
 } from '@type-store/services/items';
 import { getItemsAPI } from '@services/items/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
-import { Button } from '@commons/index';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export const HomePage = () => {
@@ -16,12 +22,12 @@ export const HomePage = () => {
   const { pathname } = useLocation();
   const [page, setPage] = useState(0);
   const [hasNext, setHasNext] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
+      !loading && setLoading(true);
       errorMsg && setErrorMsg(null);
       const { data, error } = await getItemsAPI(page);
       if (error) return setErrorMsg(error.message);
@@ -38,25 +44,20 @@ export const HomePage = () => {
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
-        if (hasNext) setPage((prevPage) => prevPage + 1);
+        if (!loading && hasNext) setPage((prevPage) => prevPage + 1);
       }
     });
   };
 
   const setTarget = useIntersectionObserver(handleIntersection);
 
-  const isInitialLoading = loading && page === 0;
-  const isNextPageLoading = loading && page !== 0;
-
   return (
     <Layout headerOption={{ type: 'filter' }} footerOption={{ type: 'tab' }}>
       <S.Home>
         {errorMsg ? (
-          <S.Error>{errorMsg}</S.Error>
-        ) : isInitialLoading ? (
-          <S.InitialLoading>
-            <Spinner />
-          </S.InitialLoading>
+          <Error>{errorMsg}</Error>
+        ) : loading && page === 0 ? (
+          <Loading />
         ) : (
           <>
             {items?.map((item: ListItemPropsWithId) => (
@@ -69,11 +70,7 @@ export const HomePage = () => {
               ></ListItem>
             ))}
             <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
-            {isNextPageLoading && (
-              <S.NextPageLoading>
-                <Spinner />
-              </S.NextPageLoading>
-            )}
+            {loading && page !== 0 && <Loading height="40px" />}
           </>
         )}
         <S.FloatingBtn>

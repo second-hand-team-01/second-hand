@@ -55,6 +55,7 @@ const shapes = {
       font-weight: ${theme.typography.subhead.fontWeight};
       background-color: transparent;
       color: ${theme.colors.accentText};
+      border-radius: 100%;
     `}
   `,
 };
@@ -71,10 +72,11 @@ const textAlignments = {
 const states = {
   default: css`
     background-color: ${({ theme }) => theme.colors.neutralBackground};
+    color: ${({ theme }) => theme.colors.neutralText};
   `,
   active: css`
     background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
-    color: ${({ theme }) => theme.colors.neutralBackground};
+    color: ${({ theme }) => theme.colors.accentText};
   `,
   disabled: css`
     background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
@@ -96,6 +98,7 @@ export interface ButtonStyleProps {
   hasBorder?: boolean;
   backgroundColor?: keyof typeof palette | keyof typeof colors | string;
   isWidthFitContent?: boolean;
+  isIconBtn?: boolean;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -132,10 +135,8 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   align-items: center;
   cursor: pointer;
-
   border: none;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
-  ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
   ${({ hasBorder, theme }) =>
     hasBorder ? `border: 1px solid  ${theme.colors.neutralBorder}` : ''}
   ${({ backgroundColor, theme }) =>
@@ -150,4 +151,5 @@ export const Button = styled.button<ButtonStyleProps>`
   gap: 4px;
   ${({ isWidthFitContent }) =>
     isWidthFitContent ? `width: max-content;` : ''};
+  ${({ isIconBtn }) => (isIconBtn ? 'padding: 4px;' : '')};
 `;

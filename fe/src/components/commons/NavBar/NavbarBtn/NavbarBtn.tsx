@@ -16,7 +16,7 @@ export const NavbarBtn = ({
   icon,
   path,
   onClick,
-  color,
+  color = 'neutralText',
 }: NavigateBtnProps) => {
   const navigate = useNavigate();
   const handleOnClick = () => {
@@ -28,9 +28,8 @@ export const NavbarBtn = ({
       onClick={handleOnClick}
       title={text}
       icon={icon}
-      shape="medium"
+      shape="ghost"
       color={color}
-      isWidthFitContent={true}
       backgroundColor="transparent"
     ></Button>
   );

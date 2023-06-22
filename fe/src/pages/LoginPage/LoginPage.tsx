@@ -134,7 +134,6 @@ export const LoginPage = () => {
       }}
       footerOption={{ type: 'tab' }}
     >
-      <NavBar title={navBarInfo.title} />
       <S.LoginPage>
         {loginState && (
           <S.InputSection>

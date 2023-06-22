@@ -9,7 +9,7 @@ interface IconProps {
   color?: keyof typeof palette | keyof typeof colors;
 }
 
-export const Icon = ({ name, size = 16, color = 'neutralText' }: IconProps) => {
+export const Icon = ({ name, size = 20, color = 'neutralText' }: IconProps) => {
   const IconComponent = IconComponents[name];
   return (
     <S.Icon size={size} fill={color}>
