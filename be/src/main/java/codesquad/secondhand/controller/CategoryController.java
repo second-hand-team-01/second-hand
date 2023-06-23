@@ -1,6 +1,5 @@
 package codesquad.secondhand.controller;
 
-import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.ResponseListDto;
 import codesquad.secondhand.dto.category.CategoryDto;
 import codesquad.secondhand.service.CategoryService;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static codesquad.secondhand.dto.StatusCode.RESPONSE_SUCCESS;
+import static codesquad.secondhand.exception.code.CommonResponseCode.RESPONSE_SUCCESS;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
