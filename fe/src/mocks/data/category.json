@@ -1,0 +1,94 @@
+{
+  "data": [
+    {
+      "idx": 1,
+      "name": "디지털기기",
+      "imgUrl": "www.imgurl1.com"
+    },
+    {
+      "idx": 2,
+      "name": "생활가전",
+      "imgUrl": "www.imgurl2.com"
+    },
+    {
+      "idx": 3,
+      "name": "가구/인테리어",
+      "imgUrl": "www.imgurl3.com"
+    },
+    {
+      "idx": 4,
+      "name": "생활/주방",
+      "imgUrl": "www.imgurl4.com"
+    },
+    {
+      "idx": 5,
+      "name": "유아동",
+      "imgUrl": "www.imgurl5.com"
+    },
+    {
+      "idx": 6,
+      "name": "유아도서",
+      "imgUrl": "www.imgurl6.com"
+    },
+    {
+      "idx": 7,
+      "name": "여성의류",
+      "imgUrl": "www.imgurl7.com"
+    },
+    {
+      "idx": 8,
+      "name": "여성잡화",
+      "imgUrl": "www.imgurl8.com"
+    },
+    {
+      "idx": 9,
+      "name": "남성패션/잡화",
+      "imgUrl": "www.imgurl9.com"
+    },
+    {
+      "idx": 10,
+      "name": "뷰티/미용",
+      "imgUrl": "www.imgurl10.com"
+    },
+    {
+      "idx": 11,
+      "name": "스포츠/레저",
+      "imgUrl": "www.imgurl11.com"
+    },
+    {
+      "idx": 12,
+      "name": "취미/게임/음반",
+      "imgUrl": "www.imgurl12.com"
+    },
+    {
+      "idx": 13,
+      "name": "중고차",
+      "imgUrl": "www.imgurl13.com"
+    },
+    {
+      "idx": 14,
+      "name": "티켓/교환권",
+      "imgUrl": "www.imgurl14.com"
+    },
+    {
+      "idx": 15,
+      "name": "가공식품",
+      "imgUrl": "www.imgurl15.com"
+    },
+    {
+      "idx": 16,
+      "name": "반려동물용품",
+      "imgUrl": "www.imgurl16.com"
+    },
+    {
+      "idx": 17,
+      "name": "식물",
+      "imgUrl": "www.imgurl17.com"
+    },
+    {
+      "idx": 18,
+      "name": "기타 중고물품",
+      "imgUrl": "www.imgurl18.com"
+    }
+  ]
+}

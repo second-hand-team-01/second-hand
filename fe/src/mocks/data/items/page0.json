@@ -1,0 +1,121 @@
+{
+  "success": true,
+  "status": 200,
+  "code": 20000,
+  "message": "요청이 완료되었습니다.",
+  "data": {
+    "hasNext": true,
+    "items": [
+      {
+        "itemIdx": 1,
+        "imageUrl": "https://img-cf.kurly.com/shop/data/goods/1656498787170l0.jpg",
+        "name": "1",
+        "location": "역삼1동",
+        "postedAt": "2023-05-16T17:16:05",
+        "status": "판매중",
+        "price": 814857,
+        "chat": 1,
+        "interest": 3
+      },
+      {
+        "itemIdx": 2,
+        "imageUrl": "https://product-image.kurly.com/product/image/b9c01781-4b26-4d10-8ed5-082f7ba8da3f.jpg",
+        "name": "2",
+        "location": "역삼1동",
+        "postedAt": "2023-04-25T17:27:02",
+        "status": "판매중",
+        "price": 884301,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 3,
+        "imageUrl": "https://product-image.kurly.com/product/image/b3059f63-a164-426d-bd54-49a295e73791.jpg",
+        "name": "3",
+        "location": "역삼1동",
+        "postedAt": "2023-05-18T09:47:11",
+        "status": "예약중",
+        "price": 782889,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 4,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1640171295859l0.jpg",
+        "name": "4",
+        "location": "역삼1동",
+        "postedAt": "2022-06-22T21:27:33",
+        "status": "판매중",
+        "price": 712027,
+        "chat": 0,
+        "interest": 3
+      },
+      {
+        "itemIdx": 5,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1648220274130l0.jpg",
+        "name": "5",
+        "location": "역삼1동",
+        "postedAt": "2023-02-06T14:51:37",
+        "status": "판매중",
+        "price": 547253,
+        "chat": 0,
+        "interest": 1
+      },
+      {
+        "itemIdx": 6,
+        "imageUrl": "https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/a45b5faf-7b87-472c-b579-83f5a9959e42/da5733b7-0d49-4411-b1f8-2157dbeacdc8.jpg",
+        "name": "6",
+        "location": "역삼1동",
+        "postedAt": "2022-09-13T20:04:02",
+        "status": "예약중",
+        "price": 348646,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 7,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1648216660940l0.jpg",
+        "name": "7",
+        "location": "역삼1동",
+        "postedAt": "2023-01-13T03:59:51",
+        "status": "판매중",
+        "price": 385207,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 8,
+        "imageUrl": "https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/a45b5faf-7b87-472c-b579-83f5a9959e42/a5c2b72c-4111-4f5b-b058-2dee8adaebb5.jpg",
+        "name": "8",
+        "location": "역삼1동",
+        "postedAt": "2023-03-01T19:36:15",
+        "status": "판매중",
+        "price": 211310,
+        "chat": 0,
+        "interest": 1
+      },
+      {
+        "itemIdx": 9,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1637925107826l0.jpeg",
+        "name": "9",
+        "location": "역삼1동",
+        "postedAt": "2023-04-08T10:37:31",
+        "status": "예약중",
+        "price": 543583,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 10,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/155900721742l0.jpg",
+        "name": "10",
+        "location": "역삼1동",
+        "postedAt": "2023-02-28T01:00:30",
+        "status": "예약중",
+        "price": 505242,
+        "chat": 0,
+        "interest": 0
+      }
+    ]
+  }
+}

@@ -3,7 +3,9 @@ import styled from 'styled-components';
 export interface WrapStyleProps {
   hasLabel: boolean;
   hasBackground: boolean;
+  hasBorder: boolean;
   shape: 'large' | 'small';
+  hasPadding: boolean;
 }
 
 export interface TextInputStyleProps {
@@ -17,6 +19,7 @@ export const Wrap = styled.div<WrapStyleProps>`
   padding: ${({ hasBackground }) => (hasBackground ? '7px 10px' : '12px')};
   border-bottom: ${({ hasBackground }) => (hasBackground ? '0' : '1px')} solid
     ${({ theme }) => theme.colors.neutralBorder};
+  ${({ hasBorder }) => (!hasBorder ? 'border: none' : '')};
   height: ${({ shape }) => (shape === 'large' ? '44' : '36')}px;
   background-color: ${({ theme, hasBackground }) =>
     hasBackground
@@ -26,11 +29,12 @@ export const Wrap = styled.div<WrapStyleProps>`
   border-radius: ${({ hasBackground }) => (hasBackground ? '10px' : '0')};
   &:focus-within {
   }
+  ${({ hasPadding }) => (!hasPadding ? 'padding: 0' : '')};
 `;
 
 export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.body.size};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeights.light};
   line-height: ${({ theme }) => theme.typography.body.lineHeight};
   display: grid;
   align-items: center;
@@ -55,7 +59,7 @@ export const TextInput = styled.input<TextInputStyleProps>`
     shape === 'large'
       ? theme.typography.body.lineHeight
       : theme.typography.subhead.lineHeight};
-  font-weight: ${({ theme, shape }) => theme.fontWeight.re};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
 
   &:placeholder {
     color: ${({ theme }) => theme.colors.neutralTextWeak};

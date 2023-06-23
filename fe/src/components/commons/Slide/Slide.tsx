@@ -2,19 +2,24 @@ import * as S from './SlideStyle';
 import { SlideStyleProps } from './SlideStyle';
 import { useState, useRef, useEffect } from 'react';
 import { SlidePageIndicator } from './SlidePageIndicator/SlidePageIndicator';
-import { getFileNameFromUrl } from '@services/slide';
+import { getFileNameFromUrl } from '@services/slide/slide';
+import { SLIDER_HEIGHT } from '@constants/style';
 
 interface SlideProps extends SlideStyleProps {
   urls: string[];
 }
 
-export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
+export const Slide = ({
+  urls,
+  height = SLIDER_HEIGHT,
+  width = 393,
+}: SlideProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slideShowContainer = useRef<HTMLDivElement | null>(null);
 
   let touchStart = 0;
   let touchEnd = 0;
-  const threshold = 150;
+  const threshold = 80;
 
   const moveSlide = (direction: 'next' | 'previous') => {
     const totalSlides = urls.length;
@@ -26,20 +31,26 @@ export const Slide = ({ urls, height = 491, width = 393 }: SlideProps) => {
     });
   };
 
-  const handleTouchStart = ({ targetTouches }) => {
-    touchStart = targetTouches[0].clientX;
+  const handleTouchStart = (e: TouchEvent) => {
+    e.preventDefault();
+    touchStart = e.targetTouches[0].clientX;
   };
 
-  const handleTouchMove = ({ targetTouches }) => {
-    touchEnd = targetTouches[0].clientX;
+  const handleTouchMove = (e: TouchEvent) => {
+    touchEnd = e.targetTouches[0].clientX;
+    if (Math.abs(touchStart - touchEnd) > threshold) {
+      e.preventDefault();
+    }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: TouchEvent) => {
     if (touchStart - touchEnd > threshold) {
+      e.preventDefault();
       moveSlide('next');
     }
 
     if (touchStart - touchEnd < -threshold) {
+      e.preventDefault();
       moveSlide('previous');
     }
   };
