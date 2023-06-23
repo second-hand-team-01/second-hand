@@ -3,7 +3,7 @@ import { colors, palette } from '@styles/Color';
 
 export interface IconStyleProps {
   size?: number;
-  color?: keyof typeof palette | keyof typeof colors;
+  fill?: keyof typeof palette | keyof typeof colors;
 }
 
 export const Icon = styled.div<IconStyleProps>`
@@ -14,6 +14,4 @@ export const Icon = styled.div<IconStyleProps>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   font-size: ${({ size }) => size}px;
-  color: ${({ theme, color }) =>
-    color ? theme.colors[color] : theme.colors.neutralText};
 `;
