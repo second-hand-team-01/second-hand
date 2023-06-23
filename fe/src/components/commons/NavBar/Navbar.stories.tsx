@@ -10,6 +10,14 @@ export const Default = {
     title: '타이틀',
     leftBtn: { text: '뒤로', icon: 'arrowLeft' },
     rightBtn: { text: '뒤로' },
+  },
+};
+
+export const WithTab = {
+  args: {
+    title: '타이틀',
+    leftBtn: { text: '뒤로', icon: 'arrowLeft' },
+    rightBtn: { text: '뒤로' },
     tabInfo: {
       onClick: ({ target }) => {
         console.log(target.id);

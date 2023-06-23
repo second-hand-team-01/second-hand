@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export interface DialogStyleProps {
-  width: number;
+  width?: number;
 }
 
 export const Backdrop = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background-color: ${({ theme }) => theme.colors.neutralOverlay};
+  cursor: pointer;
 `;
 
 export const Dialog = styled.div<DialogStyleProps>`

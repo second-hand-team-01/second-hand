@@ -2,10 +2,10 @@ import { RefObject } from 'react';
 import styled from 'styled-components';
 
 export interface SlideStyleProps {
-  imagesCounts: number;
-  ref: RefObject<HTMLDivElement | null>;
-  width: number;
-  height: number;
+  imagesCounts?: number;
+  ref?: RefObject<HTMLDivElement | null>;
+  width?: number;
+  height?: number;
 }
 
 export interface SlideContainerStyleProps {

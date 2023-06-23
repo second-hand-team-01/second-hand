@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "status": 200,
+  "code": 20000,
+  "message": "요청이 완료되었습니다.",
+  "data": {
+    "hasNext": false,
+    "items": [
+      {
+        "itemIdx": 21,
+        "imageUrl": "https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/da44c42c-9e28-445e-acfb-0ef79f438f7e/704b6dc2-b8ba-439f-adbf-f204e90f19db.jpg",
+        "name": "21",
+        "location": "역삼1동",
+        "postedAt": "2023-02-28T01:00:30",
+        "status": "예약중",
+        "price": 505242,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 22,
+        "imageUrl": "https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/da44c42c-9e28-445e-acfb-0ef79f438f7e/9e22b437-6d62-46cf-b827-0fdb8837ac8b.jpg",
+        "name": "22",
+        "location": "역삼1동",
+        "postedAt": "2023-05-16T17:16:05",
+        "status": "판매중",
+        "price": 814857,
+        "chat": 1,
+        "interest": 0
+      },
+      {
+        "itemIdx": 23,
+        "imageUrl": "https://product-image.kurly.com/cdn-cgi/image/quality=85,width=676/product/image/4cfc86fe-2ddf-466c-a12c-801e03691ee8.jpg",
+        "name": "23",
+        "location": "역삼1동",
+        "postedAt": "2023-04-25T17:27:02",
+        "status": "판매중",
+        "price": 884301,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 24,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1648217339386l0.jpg",
+        "name": "24",
+        "location": "역삼1동",
+        "postedAt": "2023-05-18T09:47:11",
+        "status": "예약중",
+        "price": 782889,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 25,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1645443370882l0.jpg",
+        "name": "25",
+        "location": "역삼1동",
+        "postedAt": "2022-06-22T21:27:33",
+        "status": "판매중",
+        "price": 712027,
+        "chat": 0,
+        "interest": 3
+      }
+    ]
+  }
+}
