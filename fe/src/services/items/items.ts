@@ -10,7 +10,6 @@ import {
 } from '@type-store/services/items';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
-import { useState } from 'react';
 import { ERROR_MESSAGE } from '@constants/error';
 import { Image } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
