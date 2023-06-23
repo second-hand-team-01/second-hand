@@ -3,7 +3,7 @@ import { Icon } from '@components/commons/Icon/Icon';
 import { ButtonStyleProps } from './ButtonStyle';
 
 interface ButtonProps extends ButtonStyleProps {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const Button = ({
@@ -16,6 +16,8 @@ export const Button = ({
   iconSize,
   onClick,
   hasBorderRadius = true,
+  hasBorder = false,
+  backgroundColor,
 }: ButtonProps) => {
   return (
     <S.Button
@@ -23,8 +25,10 @@ export const Button = ({
       state={state}
       textAlign={textAlign}
       onClick={onClick}
-      color={color}
       hasBorderRadius={hasBorderRadius}
+      hasBorder={hasBorder}
+      color={color}
+      backgroundColor={backgroundColor}
     >
       {title && textAlign === 'left' && <span>{title}</span>}
       {icon && <Icon name={icon} size={iconSize} color={color} />}

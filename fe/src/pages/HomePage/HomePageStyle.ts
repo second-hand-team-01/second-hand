@@ -42,3 +42,8 @@ export const FloatingBtn = styled.div`
   display: grid;
   justify-content: end;
 `;
+
+export const ObserverTarget = styled.div`
+  width: 100%;
+  height: 1px;
+`;

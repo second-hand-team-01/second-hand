@@ -1,3 +1,5 @@
-import { Home } from './Home/Home';
+import { HomePage } from './HomePage/HomePage';
+import { WritePage } from './WritePage/WritePage';
+import { LoginPage } from './LoginPage/LoginPage';
 
-export { Home };
+export { HomePage, WritePage, LoginPage };

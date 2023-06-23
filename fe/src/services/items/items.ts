@@ -1,8 +1,17 @@
-import { Item } from '@type-store/items';
+import {
+  APIItemReqBody,
+  Item,
+  ItemReqBody,
+  PostItemRes,
+} from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { useState } from 'react';
+import { ERROR_MESSAGE } from '@constants/error';
+import { Image } from '@type-store/services/items';
+import { Category } from '@type-store/services/category';
+import { getRandomElements } from '@utils/common/common';
 
 export interface ListItemPropsWithId extends ListItemProps {
   id: number;
@@ -53,9 +62,7 @@ export interface ConvertedGetItemsRes {
   items: ListItemPropsWithId[];
 }
 
-export const getItemsAPI = async (
-  page: number
-): Promise<Response<ConvertedGetItemsRes>> => {
+export const getItemsAPI = async (page: number) => {
   try {
     const res = (await customFetch<null, GetItemsRes>({
       path: '/items',
@@ -80,10 +87,77 @@ export const getItemsAPI = async (
   }
 };
 
-export const runPagination = () => {
-  let page = -1;
-  return async () => {
-    page++;
-    return await getItemsAPI(page);
+const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
+  const { title, price, contents, locationIdx, categoryIdx, images } = body;
+
+  const imageFiles = images.map((image) => image.file);
+
+  const newItem: APIItemReqBody = {
+    title,
+    price: price === null ? '0' : price.toString(),
+    description: contents,
+    locationIdx: locationIdx.toString(),
+    categoryIdx: categoryIdx.toString(),
+    images: imageFiles,
   };
+  return newItem;
+};
+
+export const postItemsAPI = async (body: ItemReqBody) => {
+  const convertedBody = convertItemReqBodyToAPIReqBody(body);
+  if (!convertedBody)
+    return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
+
+  const formData = new FormData();
+  formData.append('title', convertedBody.title);
+  formData.append('description', convertedBody.description);
+  formData.append('price', convertedBody.price);
+  formData.append('locationIdx', convertedBody.locationIdx);
+  formData.append('categoryIdx', convertedBody.categoryIdx);
+  convertedBody.images.forEach((image, i) => {
+    formData.append(`image${i}`, image);
+  });
+
+  try {
+    const res = (await customFetch<FormData, PostItemRes>({
+      path: '/items',
+      method: 'POST',
+      body: formData,
+    })) as Response<PostItemRes>;
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      data: {
+        itemIdx: res.data.itemIdx,
+      },
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+export const convertDataToBody = (
+  title: string,
+  contents: string,
+  images: Image[],
+  price: number,
+  categoryIdx: number,
+  locationIdx: number
+) => {
+  const body = {
+    title,
+    contents,
+    images,
+    price,
+    categoryIdx: categoryIdx as number,
+    locationIdx: 0, //TODO
+  };
+  return body;
+};
+
+export const getRandomCategories = (categories: Category[]) => {
+  if (categories) return getRandomElements(categories, 3);
+  else return [];
 };
