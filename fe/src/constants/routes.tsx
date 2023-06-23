@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { HomePage, WritePage, LoginPage } from '@pages/index';
+import { HomePage, WritePage, LoginPage, SignUpPage } from '@pages/index';
 
 export const router = createBrowserRouter([
   {
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
       { path: 'profile', element: <LoginPage /> },
       { path: 'write', element: <WritePage status="write" /> },
       { path: 'edit', element: <WritePage status="edit" /> },
-      { path: '', element: <div>Sign</div> },
+      { path: 'signup', element: <SignUpPage /> },
       { path: 'item/:itemIdx', element: <div>내용</div> },
     ],
   },
