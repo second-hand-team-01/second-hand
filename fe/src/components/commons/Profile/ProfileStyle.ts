@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export interface ProfileStyleProps {
-  url?: string;
+  url?: string | null;
   size: number;
   isEditable: boolean;
 }
@@ -14,6 +14,7 @@ export const Wrap = styled.div<WrapStyleProps>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   position: relative;
+  cursor: pointer;
 `;
 
 export const Profile = styled.div<ProfileStyleProps>`
@@ -33,4 +34,11 @@ export const Editable = styled.div`
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
+`;
+
+export const FileInput = styled.input`
+  width: 0;
+  height: 0;
+  opacity: 0;
+  position: absolute;
 `;
