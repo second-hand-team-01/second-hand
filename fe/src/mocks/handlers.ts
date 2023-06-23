@@ -30,8 +30,6 @@ export const handlers = [
   }),
 
   rest.post(`${HOST}/items`, (req, res, ctx) => {
-    const query = req.url.searchParams;
-    const page = query.get('page');
     return res(
       ctx.status(200),
       ctx.json({

@@ -118,7 +118,7 @@ export const getRandomElements = <T>(array: T[], count: number) => {
   return shuffled.slice(0, count);
 };
 
-export const checkAllFilled = (values: any[]) => {
+export const checkAllFilled = (values: unknown[]) => {
   return values.every((value) => {
     const type = getType(value);
     if (type === Type.String) {
