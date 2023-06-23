@@ -1,7 +1,6 @@
 import icons from '@assets/icons';
 import * as S from './DialogStyle';
 import { Button, Portal } from '@commons/index';
-import { createPortal } from 'react-dom';
 import { ReactNode } from 'react';
 import { DialogStyleProps } from './DialogStyle';
 

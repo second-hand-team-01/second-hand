@@ -1,5 +1,4 @@
 import * as S from './IconStyle';
-import { IconStyleProps } from './IconStyle';
 import IconComponents from '@assets/icons';
 import { colors, palette } from '@styles/Color';
 

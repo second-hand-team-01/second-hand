@@ -1,20 +1,9 @@
-import {
-  Layout,
-  ListItem,
-  Spinner,
-  Error,
-  Button,
-  Loading,
-} from '@commons/index';
+import { Layout, ListItem, Error, Button, Loading } from '@commons/index';
 import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState } from 'react';
-import {
-  ConvertedGetItemsRes,
-  ListItemPropsWithId,
-} from '@type-store/services/items';
+import { ListItemPropsWithId } from '@type-store/services/items';
 import { getItemsAPI } from '@services/items/items';
-import { useFetch } from '@hooks/useFetch/useFetch';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export const HomePage = () => {

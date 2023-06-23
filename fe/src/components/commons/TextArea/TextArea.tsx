@@ -1,8 +1,7 @@
 import icons from '@assets/icons';
 import { Icon } from '@commons/index';
 import * as S from './TextAreaStyle';
-import { TextAreaStyleProps } from './TextAreaStyle';
-import { useRef, useState, useEffect, ChangeEvent } from 'react';
+import { useRef, useEffect, ChangeEvent } from 'react';
 
 interface TextAreaProps {
   value: string;

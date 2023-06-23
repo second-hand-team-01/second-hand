@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MAX_WIDTH, SLIDER_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 
 export const DetailsPages = styled.div``;
 

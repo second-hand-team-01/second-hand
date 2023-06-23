@@ -1,4 +1,4 @@
-import { Button, Icon } from '@commons/index';
+import { Button } from '@commons/index';
 
 import * as S from './InfoBarStyle';
 
