@@ -1,7 +1,6 @@
 import icons from '@assets/icons';
 import { Icon } from '@commons/index';
 import * as S from './TextInputStyle';
-import { TextInputStyleProps } from './TextInputStyle';
 
 interface TextInputProps {
   value: string;
