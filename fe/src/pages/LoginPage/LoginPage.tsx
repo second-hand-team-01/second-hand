@@ -1,26 +1,15 @@
 import { useState, useReducer, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as S from './LoginPageStyle';
-import {
-  NavBar,
-  Button,
-  TextInput,
-  Profile,
-  Layout,
-} from '@components/commons';
-
-const navBarInfo = {
-  title: '내 계정',
-};
+import { Button, TextInput, Profile, Layout } from '@components/commons';
 
 const checkIdValidity = (id: string): boolean => {
   const regex = /^[a-zA-Z0-9]{3,10}$/;
-
   return regex.test(id);
 };
 
 const checkPasswordValidity = (password: string): boolean => {
-  const regex = /^[a-zA-Z0-9]{6,10}$/;
+  const regex = /^[a-zA-Z0-9]{5,10}$/;
   return regex.test(password);
 };
 
@@ -37,9 +26,15 @@ const idReducer = (state: State, action: Action) => {
   const { type, val } = action;
   switch (type) {
     case 'USER_INPUT':
-      return { value: val, isValid: checkIdValidity(val) };
+      return {
+        value: val,
+        isValid: checkIdValidity(val),
+      };
     case `INPUT_BLUR`:
-      return { value: state.value, isValid: checkIdValidity(state.value) };
+      return {
+        value: state.value,
+        isValid: checkIdValidity(val),
+      };
     default:
       return state;
   }
@@ -49,11 +44,14 @@ const passwordReducer = (state: State, action: Action): State => {
   const { type, val } = action;
   switch (type) {
     case 'USER_INPUT':
-      return { value: val, isValid: checkPasswordValidity(val) };
+      return {
+        value: val,
+        isValid: checkPasswordValidity(val),
+      };
     case `INPUT_BLUR`:
       return {
         value: state.value,
-        isValid: checkPasswordValidity(state.value),
+        isValid: checkPasswordValidity(val),
       };
     default:
       return state;
@@ -63,8 +61,6 @@ const passwordReducer = (state: State, action: Action): State => {
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [idFocus, setIdFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -92,24 +88,20 @@ export const LoginPage = () => {
   const idChangeHandler = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    setIdFocus(true);
     dispatchId({ type: 'USER_INPUT', val: value });
   };
 
   const validateId = () => {
-    setIdFocus(false);
     dispatchId({ type: 'INPUT_BLUR', val: idState.value });
   };
 
   const passwordChangeHandler = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordFocus(true);
     dispatchPassword({ type: 'USER_INPUT', val: value });
   };
 
   const validatePassword = () => {
-    setPasswordFocus(false);
     dispatchPassword({ type: 'INPUT_BLUR', val: passwordState.value });
   };
 
@@ -123,7 +115,13 @@ export const LoginPage = () => {
     navigate('/profile', { state: pathname });
   };
 
-  const loginState = true;
+  const signUpBtnHandler = () => {
+    navigate('/signup');
+  };
+
+  const loginState = false;
+  // TODO : 현재 로그인 상태 확인 필요
+
   return (
     <Layout
       headerOption={{
@@ -135,7 +133,7 @@ export const LoginPage = () => {
       footerOption={{ type: 'tab' }}
     >
       <S.LoginPage>
-        {loginState && (
+        {!loginState && (
           <S.InputSection>
             <TextInput
               shape="large"
@@ -145,11 +143,6 @@ export const LoginPage = () => {
               onChange={idChangeHandler}
               onBlur={validateId}
             />
-            {!idIsValid && idFocus && (
-              <S.AlertText>
-                아이디는 3~10자의 영문, 숫자만 사용 가능합니다
-              </S.AlertText>
-            )}
             <TextInput
               type="password"
               shape="large"
@@ -159,25 +152,19 @@ export const LoginPage = () => {
               onChange={passwordChangeHandler}
               onBlur={validatePassword}
             />
-            {!passwordIsValid && passwordFocus && (
-              <S.AlertText>
-                비밀번호는 6~10자의 영문, 숫자만 사용 가능합니다
-              </S.AlertText>
-            )}
           </S.InputSection>
         )}
-        {!loginState && (
+        {loginState && (
           <S.ProfileSection>
             <Profile
               url="https://avatars.githubusercontent.com/u/96381221?v=4"
               size={130}
               isEditable={true}
-              onClick={() => console.log(1)}
             />
             <S.UserId>snoop</S.UserId>
           </S.ProfileSection>
         )}
-        {loginState && (
+        {!loginState && (
           <S.LoginButtonSection>
             <Button
               title="Github 계정으로 로그인"
@@ -189,10 +176,15 @@ export const LoginPage = () => {
               state={formIsValid ? 'active' : 'disabled'}
               onClick={loginBtnHandler}
             />
-            <Button title="회원가입" shape="small" state="default" />
+            <Button
+              title="회원가입"
+              shape="small"
+              state="default"
+              onClick={signUpBtnHandler}
+            />
           </S.LoginButtonSection>
         )}
-        {!loginState && (
+        {loginState && (
           <S.LoginButtonSection>
             <Button
               title="로그아웃"
@@ -205,3 +197,5 @@ export const LoginPage = () => {
     </Layout>
   );
 };
+
+// TODO : 아이디, 비밀번호가 틀린 경우 alert text 띄우기
