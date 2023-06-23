@@ -1,19 +1,33 @@
 import styled from 'styled-components';
 
 export const ListItem = styled.li`
-  display: flex;
-  justify-content: space-between;
+  width: calc(100% + 32px);
 
-  width: 100%;
-  height: 150px;
-  padding: 15px 0px;
-  gap: 15px;
-  border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  list-style: none;
+  display: grid;
+
   cursor: pointer;
+  justify-items: center;
+  align-items: center;
+  margin: 0 -16px;
 
   &:first-child {
     border: none;
   }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.neutralBackgroundWeak};
+  }
+`;
+
+export const Wrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0px;
+  gap: 15px;
+  padding: 16px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+  width: calc(100% - 32px);
+  height: 100%;
 `;
 
 export const Thumbnail = styled.img`

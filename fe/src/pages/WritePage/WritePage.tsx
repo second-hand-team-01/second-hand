@@ -8,7 +8,7 @@ import {
   Layout,
   NavbarBtn,
 } from '@components/commons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as S from './WritePageStyle';
 import { useEffect, useState, useCallback } from 'react';
 import {
@@ -18,6 +18,7 @@ import {
   getType,
   Type,
   checkAllFilled,
+  isMobileDevice,
 } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
@@ -36,6 +37,7 @@ interface WritePageProps {
 
 export const WritePage = ({ status }: WritePageProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [title, setTitle] = useState<string>('');
   const [categoryState, categoryFetch] = useFetch<any, null>(
@@ -84,8 +86,9 @@ export const WritePage = ({ status }: WritePageProps) => {
     idx && setCategoryIdx(idx);
   };
 
-  const handleCategoryListClick = ({ target }) => {
-    const li = target as HTMLLIElement;
+  const handleCategoryListClick = (e) => {
+    e.preventDefault();
+    const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
     const selectedCategory = categoryState.data.find(
       (category: Category) => category.name === categoryName
@@ -226,7 +229,9 @@ export const WritePage = ({ status }: WritePageProps) => {
               onClick: () => {
                 !uploadState.data && uploadState.error
                   ? setDialogOpen(false)
-                  : navigate(`/item/${uploadState.data.itemIdx}`);
+                  : navigate(`/item/${uploadState.data.itemIdx}`, {
+                      state: pathname,
+                    });
               },
             },
           }}

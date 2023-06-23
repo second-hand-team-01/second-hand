@@ -1,3 +1,5 @@
+import { ListItemProps } from '@commons/ListItem/ListItem';
+
 export interface Item {
   itemIdx: number;
   imageUrl: string;
@@ -36,4 +38,50 @@ export interface APIItemReqBody {
 
 export interface PostItemRes {
   itemIdx: number;
+}
+
+export interface ListItemPropsWithId extends ListItemProps {
+  id: number;
+}
+
+export interface GetItemsRes {
+  hasNext: boolean;
+  items: Item[];
+}
+
+export interface ConvertedGetItemsRes {
+  hasNext: boolean;
+  items: ListItemPropsWithId[];
+}
+
+export interface APIItemDetail {
+  itemIdx: number;
+  title: string;
+  sellerId: string;
+  status: Item['status'];
+  category: string;
+  description: string;
+  price: number;
+  chat: number;
+  interest: number;
+  view: number;
+  interestChecked: boolean;
+  postedAt: string;
+  images: string[];
+}
+
+export interface ItemDetail {
+  itemIdx: number;
+  title: string;
+  sellerId: string;
+  status: Item['status'];
+  category: string;
+  description: string;
+  price: number;
+  chat: number;
+  interest: number;
+  view: number;
+  interestChecked: boolean;
+  postedAt: Date;
+  images: string[];
 }

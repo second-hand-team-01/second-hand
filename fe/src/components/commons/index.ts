@@ -22,6 +22,8 @@ import { ImgPreview } from './ImgPreview/ImgPreview';
 import { TextArea } from './TextArea/TextArea';
 import { Portal } from './Portal/Portal';
 import { Menu } from './Menu/Menu';
+import { Error } from './Error/Error';
+import { Loading } from './Loading/Loading';
 
 export {
   Icon,
@@ -48,4 +50,6 @@ export {
   TextArea,
   Portal,
   Menu,
+  Error,
+  Loading,
 };

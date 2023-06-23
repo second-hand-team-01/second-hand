@@ -1,4 +1,4 @@
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import * as S from './DialogStyle';
 import { Button, Portal } from '@commons/index';
 import { createPortal } from 'react-dom';

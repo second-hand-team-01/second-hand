@@ -1,6 +1,6 @@
 import * as S from './NavBarStyle';
 import { Button, Tab } from '@commons/index';
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import { TabProps } from '@commons/Tab/Tab';
 import { ReactNode } from 'react';
 
@@ -9,11 +9,18 @@ export interface NavBarProps {
   leftBtn?: ReactNode;
   rightBtn?: ReactNode;
   tabInfo?: TabProps;
+  isTransparent?: boolean;
 }
 
-export const NavBar = ({ title, leftBtn, rightBtn, tabInfo }: NavBarProps) => {
+export const NavBar = ({
+  title,
+  leftBtn,
+  rightBtn,
+  tabInfo,
+  isTransparent = false,
+}: NavBarProps) => {
   return (
-    <S.Header>
+    <S.Header isTransparent={isTransparent}>
       <S.HeaderTop>
         <S.ButtonContainer>{leftBtn}</S.ButtonContainer>
         <S.Title>{title}</S.Title>

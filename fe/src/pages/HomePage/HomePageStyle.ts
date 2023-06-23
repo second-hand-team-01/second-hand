@@ -18,22 +18,6 @@ export const Error = styled.div`
   color: ${({ theme }) => theme.colors.neutralTextWeak};
 `;
 
-export const InitialLoading = styled.div`
-  width: 100%;
-  height: 100%;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const NextPageLoading = styled.div`
-  width: 100%;
-  height: 40px;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const FloatingBtn = styled.div`
   position: fixed;
   max-width: ${MAX_WIDTH - 32}px;
@@ -45,5 +29,5 @@ export const FloatingBtn = styled.div`
 
 export const ObserverTarget = styled.div`
   width: 100%;
-  height: 1px;
+  height: 3px;
 `;

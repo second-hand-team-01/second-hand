@@ -1,5 +1,5 @@
 import { useState, useReducer, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import * as S from './LoginPageStyle';
 import {
   NavBar,
@@ -62,6 +62,7 @@ const passwordReducer = (state: State, action: Action): State => {
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [idFocus, setIdFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
 
@@ -114,12 +115,12 @@ export const LoginPage = () => {
 
   // TODO: post 요청, 성공시 localStorage에 token 저장
   const loginBtnHandler = () => {
-    navigate('/');
+    navigate('/', { state: pathname });
   };
 
   // TODO: 로그아웃 요청, 성공시 localStorage에 저장된 token 삭제
   const logoutBtnHandler = () => {
-    navigate('/profile');
+    navigate('/profile', { state: pathname });
   };
 
   const loginState = true;
@@ -133,7 +134,6 @@ export const LoginPage = () => {
       }}
       footerOption={{ type: 'tab' }}
     >
-      <NavBar title={navBarInfo.title} />
       <S.LoginPage>
         {loginState && (
           <S.InputSection>

@@ -6,7 +6,7 @@ export const FilterBar = styled.div`
   display: grid;
   align-items: center;
   justify-items: stretch;
-  padding: 0 0 0 16px;
+  padding: 0 16px 0;
   grid-template-columns: 1fr max-content;
   justify-content: space-between;
 `;

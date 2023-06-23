@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { icons } from '@assets/icons/index';
+import icons from '@assets/icons/index';
 import { colors, palette } from '@styles/Color';
 
 const shapes = {
@@ -55,6 +55,7 @@ const shapes = {
       font-weight: ${theme.typography.subhead.fontWeight};
       background-color: transparent;
       color: ${theme.colors.accentText};
+      border-radius: 100%;
     `}
   `,
 };
@@ -71,10 +72,11 @@ const textAlignments = {
 const states = {
   default: css`
     background-color: ${({ theme }) => theme.colors.neutralBackground};
+    color: ${({ theme }) => theme.colors.neutralText};
   `,
   active: css`
     background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
-    color: ${({ theme }) => theme.colors.neutralBackground};
+    color: ${({ theme }) => theme.colors.accentText};
   `,
   disabled: css`
     background-color: ${({ theme }) => theme.colors.accentBackgroundPrimary};
@@ -94,7 +96,9 @@ export interface ButtonStyleProps {
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;
   hasBorder?: boolean;
-  backgroundColor?: string;
+  backgroundColor?: keyof typeof palette | keyof typeof colors | string;
+  isWidthFitContent?: boolean;
+  isIconBtn?: boolean;
 }
 
 const shapesStyles = css<ButtonStyleProps>`
@@ -133,7 +137,6 @@ export const Button = styled.button<ButtonStyleProps>`
   cursor: pointer;
   border: none;
   ${({ color, theme }) => (color ? `color: ${theme.colors[color]}` : '')};
-  ${({ hasBorderRadius }) => (!hasBorderRadius ? `border-radius: 0` : '')};
   ${({ hasBorder, theme }) =>
     hasBorder ? `border: 1px solid  ${theme.colors.neutralBorder}` : ''}
   ${({ backgroundColor, theme }) =>
@@ -146,4 +149,7 @@ export const Button = styled.button<ButtonStyleProps>`
       : ''};
   display: flex;
   gap: 4px;
+  ${({ isWidthFitContent }) =>
+    isWidthFitContent ? `width: max-content;` : ''};
+  ${({ isIconBtn }) => (isIconBtn ? 'padding: 4px;' : '')};
 `;

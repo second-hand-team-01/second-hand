@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as S from './TabBarStyle';
 import { Icon } from '@commons/index';
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
 import { NavLink } from 'react-router-dom';
 
 interface TabList {

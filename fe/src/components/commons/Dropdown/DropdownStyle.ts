@@ -10,6 +10,7 @@ export const Dropdown = styled.div`
   font-weight: ${({ theme }) => theme.typography.headline.fontWeight};
   size: ${({ theme }) => theme.typography.headline.size};
   line-height: ${({ theme }) => theme.typography.headline.lineHeight};
+  border-radius: 100%;
 
   &:hover {
     cursor: pointer;

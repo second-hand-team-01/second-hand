@@ -7,26 +7,36 @@ import { HeaderProps, FooterProps, LayoutStyleProps } from './LayoutStyle';
 
 interface LayoutProps extends LayoutStyleProps {
   children?: ReactNode;
+  isHeaderOverlapped?: boolean;
 }
 
-const renderHeader = (
-  type: HeaderProps['type'],
-  props: HeaderProps['navbarOptions']
-) => {
+const renderHeader = ({
+  type,
+  navbarProps,
+}: {
+  type: HeaderProps['type'];
+  navbarProps: HeaderProps['navbarOptions'];
+}) => {
   switch (type) {
     case 'filter':
       return <FilterBar></FilterBar>;
     case 'nav':
-      return <NavBar {...props}></NavBar>;
+      return <NavBar {...navbarProps}></NavBar>;
     default:
       return <></>;
   }
 };
 
-const renderFooter = (type: FooterProps['type']): ReactNode => {
+const renderFooter = ({
+  type,
+  infoBarProps,
+}: {
+  type: FooterProps['type'];
+  infoBarProps: FooterProps['infoBarOptions'];
+}): ReactNode => {
   switch (type) {
     case 'info':
-      return <InfoBar></InfoBar>;
+      return <InfoBar {...infoBarProps}></InfoBar>;
     case 'chat':
       return <ChatBar></ChatBar>;
     case 'tab':
@@ -41,21 +51,30 @@ const renderFooter = (type: FooterProps['type']): ReactNode => {
 export const Layout = ({
   headerOption,
   footerOption,
+  isHeaderOverlapped,
   children,
 }: LayoutProps) => {
   return (
     <S.Wrap>
       <S.Layout headerOption={headerOption} footerOption={footerOption}>
-        <S.Header>
+        <S.Header isHeaderOverlapped={isHeaderOverlapped}>
           {headerOption !== undefined &&
-            renderHeader(headerOption.type, headerOption.navbarOptions)}
+            renderHeader({
+              type: headerOption.type,
+              navbarProps: headerOption.navbarOptions,
+            })}
         </S.Header>
-        <S.Contents>
+        <S.Contents isHeaderOverlapped={isHeaderOverlapped}>
           <Outlet></Outlet>
           {children}
         </S.Contents>
         {footerOption !== undefined && (
-          <S.Footer>{renderFooter(footerOption.type)}</S.Footer>
+          <S.Footer>
+            {renderFooter({
+              type: footerOption.type,
+              infoBarProps: footerOption.infoBarOptions,
+            })}
+          </S.Footer>
         )}
       </S.Layout>
     </S.Wrap>

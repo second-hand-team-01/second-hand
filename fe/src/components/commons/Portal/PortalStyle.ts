@@ -10,4 +10,5 @@ export const Portal = styled.div`
   max-width: 393px;
   width: 100%;
   height: 100dvh;
+  z-index: 1;
 `;

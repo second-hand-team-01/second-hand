@@ -7,7 +7,7 @@ export const FilterBar = () => {
       <Dropdown isOpen={false} onClick={() => console.log('d')}>
         역삼1동
       </Dropdown>
-      <Button icon="hamburger"></Button>
+      <Button icon="hamburger" isWidthFitContent={true} shape="ghost"></Button>
     </S.FilterBar>
   );
 };
