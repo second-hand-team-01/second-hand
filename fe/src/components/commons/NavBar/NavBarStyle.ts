@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { NAVBAR_HEIGHT } from '@constants/style';
-import { theme } from '@styles/theme';
 
 interface HeaderStyleProps {
   isTransparent?: boolean;

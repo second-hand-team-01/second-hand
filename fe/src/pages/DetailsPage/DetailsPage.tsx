@@ -1,12 +1,8 @@
-import { useState, useReducer, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import * as S from './DetailsPageStyle';
 import {
-  NavBar,
-  Button,
-  TextInput,
-  Profile,
   Layout,
   NavbarBtn,
   Slide,
@@ -14,16 +10,11 @@ import {
   Loading,
   Error,
 } from '@commons/index';
-import { useFetch } from '@hooks/useFetch/useFetch';
 import { getItemDetailAPI } from '@services/items/items';
-import {
-  convertDateToTimeStamp,
-  convertNumToPrice,
-} from '@utils/common/common';
+import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 
 export const DetailsPage = () => {
-  const navigate = useNavigate();
   const userId = 'snoopso'; // todo
 
   const param = useParams();

@@ -1,4 +1,4 @@
-import { useRef, MouseEvent } from 'react';
+import { useRef } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
 import { Icon } from '@components/commons';
@@ -57,11 +57,7 @@ export const ListItem = ({
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
-  const listClickHandler = ({ target }: MouseEvent<HTMLLIElement>): void => {
-    // if (moreBtnRef.current?.contains(target as Node)) return;
-  };
-
-  const moreBtnClickHandler = ({ target }) => {
+  const moreBtnClickHandler = () => {
     console.log('더보기 버튼 클릭');
   };
 
