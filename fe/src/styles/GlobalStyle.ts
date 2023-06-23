@@ -1,6 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors, palette } from '@styles/Color';
-import { typography, fontWeight } from '@styles/Typography';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
@@ -89,7 +87,6 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0;
       border: 0;
       font-size: 100%;
-      font: inherit;
       vertical-align: baseline;
     }
     article,
@@ -138,12 +135,30 @@ export const GlobalStyle = createGlobalStyle`
     * {
       box-sizing: border-box;
     }
-    /* end of reset-css*/
-    `;
 
-export const theme = {
-  colors,
-  palette,
-  typography,
-  fontWeight,
-};
+    input[type="number"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* end of reset-css*/
+
+    body {
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    .modal-root {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+    }
+`;

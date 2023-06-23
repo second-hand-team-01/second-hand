@@ -1,37 +1,75 @@
+import { useState } from 'react';
 import * as S from './TabBarStyle';
 import { Icon } from '@commons/index';
-import { icons } from '@assets/icons';
+import icons from '@assets/icons';
+import { NavLink } from 'react-router-dom';
 
-export interface TabBarStyleProps {
+interface TabList {
   title: string;
-  name: string;
   icon: keyof typeof icons;
-  iconSize?: number;
-  iconColor?: string;
+  iconSize: number;
+  path: string;
 }
 
-interface TabBarProps extends TabBarStyleProps {
-  onClick?: () => void;
-}
+const tabList: TabList[] = [
+  {
+    title: '홈화면',
+    icon: 'home',
+    iconSize: 18,
+    path: '/',
+  },
+  {
+    title: '판매내역',
+    icon: 'list',
+    iconSize: 18,
+    path: '/sales-history',
+  },
+  {
+    title: '관심목록',
+    icon: 'heart',
+    iconSize: 18,
+    path: '/favorites',
+  },
+  {
+    title: '채팅',
+    icon: 'talk',
+    iconSize: 18,
+    path: '/chat',
+  },
+  {
+    title: '내 계정',
+    icon: 'person',
+    iconSize: 18,
+    path: '/profile',
+  },
+];
 
-// tab 정보들
+// TODO(POCO) : useParams, useState 사용해서 Tab에 active 색상 변경하기, onClick 이벤트 추가하기
+// TODO(POCO) : tabList 배열 요소의 객체에 id 값 추가해서 params와 일치 시키기
 
-export const TabBar = ({
-  title,
-  icon,
-  iconSize,
-  iconColor,
-  onClick,
-}: TabBarProps) => {
+export const TabBar = () => {
   return (
-    <S.TabBar onClick={onClick}>
-      <Icon name={icon} size={iconSize} color={iconColor} />
-      <span>{title}</span>
+    <S.TabBar>
+      {tabList.map((tab: TabList) => {
+        return (
+          <NavLink to={tab.path} key={tab.title}>
+            {({ isActive }) => (
+              <S.Tab>
+                <Icon
+                  name={tab.icon}
+                  size={tab.iconSize}
+                  color={isActive ? 'neutralText' : 'neutralTextWeak'}
+                />
+                <S.TabTitle
+                  color={isActive ? 'neutralText' : 'neutralTextWeak'}
+                >
+                  {tab.title}
+                </S.TabTitle>
+              </S.Tab>
+            )}
+          </NavLink>
+        );
+      })}
     </S.TabBar>
   );
 };
-
-// 상위에 const로 tab에 대한 내용을 선언하고 하위 컴포넌트에게
-// props로 해당 내용을 전달하는 경우
-// 상위 컴포넌트가 리렌더링(함수의 재실행)이 될때
-// const로 선언한 값이 다시 읽히고 메모  하위 컴포넌트
