@@ -1,19 +1,27 @@
 package codesquad.secondhand.dto.location;
 
 import codesquad.secondhand.entity.Location;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationDto {
 
-    private final Long locationIdx;
-    private final String locationName;
+    private Long locationIdx;
+    private String locationName;
+    private String city;
+    private String district;
+    private String town;
 
     public static LocationDto of(Location location) {
         return new LocationDto(location.getLocationIdx(),
-                buildLocationName(location));
+                buildLocationName(location),
+                location.getCity(),
+                location.getDistrict(),
+                location.getTown());
     }
 
     private static String buildLocationName(Location location) {
