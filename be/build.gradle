@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'codesquad'
+group = 'CodeSquad'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -19,21 +19,12 @@ repositories {
 }
 
 dependencies {
-	// jwt
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-
-	implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.6'
-	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
-	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4' // 프로퍼티 암호화를 위한 의존성 추가
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9' // Swagger를 사용하여 API 문서화를 위한 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.projectlombok:lombok:1.18.26'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.464'
-
-
 }
 
 tasks.named('test') {
