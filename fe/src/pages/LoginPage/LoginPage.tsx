@@ -182,6 +182,12 @@ export const LoginPage = () => {
               state="default"
               onClick={signUpBtnHandler}
             />
+            <Button
+              title="회원가입"
+              shape="small"
+              state="default"
+              onClick={signUpBtnHandler}
+            />
           </S.LoginButtonSection>
         )}
         {loginState && (
