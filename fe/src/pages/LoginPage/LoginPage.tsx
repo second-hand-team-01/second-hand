@@ -117,7 +117,7 @@ export const LoginPage = () => {
     navigate('/signup');
   };
 
-  const loginState = false;
+  const loginState = true;
   // TODO : 현재 로그인 상태 확인 필요
 
   return (
@@ -155,7 +155,7 @@ export const LoginPage = () => {
         {loginState && (
           <S.ProfileSection>
             <Profile
-              url="https://avatars.githubusercontent.com/u/96381221?v=4"
+              imgUrl="https://avatars.githubusercontent.com/u/96381221?v=4"
               size={130}
               isEditable={true}
             />
@@ -165,14 +165,14 @@ export const LoginPage = () => {
         {!loginState && (
           <S.LoginButtonSection>
             <Button
-              title="Github 계정으로 로그인"
-              state="active"
-              backgroundColor="neutralText"
-            />
-            <Button
               title="로그인"
               state={formIsValid ? 'active' : 'disabled'}
               onClick={loginBtnHandler}
+            />
+            <Button
+              title="Github 계정으로 로그인"
+              state="active"
+              backgroundColor="neutralText"
             />
             <Button
               title="회원가입"
