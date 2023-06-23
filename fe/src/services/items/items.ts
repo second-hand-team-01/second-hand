@@ -7,7 +7,6 @@ import {
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
-import { useState } from 'react';
 import { ERROR_MESSAGE } from '@constants/error';
 
 export interface ListItemPropsWithId extends ListItemProps {
