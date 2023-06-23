@@ -1,5 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { HomePage, WritePage, LoginPage, DetailsPage } from '@pages/index';
+import {
+  HomePage,
+  WritePage,
+  LoginPage,
+  DetailsPage,
+  SignUpPage,
+} from '@pages/index';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +23,8 @@ export const router = createBrowserRouter([
       { path: 'edit', element: <WritePage status="edit" /> },
       { path: '', element: <div>Sign</div> },
       { path: 'item/:itemIdx', element: <DetailsPage></DetailsPage> },
+      { path: 'signup', element: <SignUpPage /> },
+      { path: 'item/:itemIdx', element: <div>내용</div> },
     ],
   },
 ]);
