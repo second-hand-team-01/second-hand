@@ -200,7 +200,7 @@ export const convertDataToBody = (
     images,
     price,
     categoryIdx: categoryIdx as number,
-    locationIdx: 0, //TODO
+    locationIdx: locationIdx, //TODO
   };
   return body;
 };
