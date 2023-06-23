@@ -13,9 +13,9 @@ spring:
     hibernate:
       ddl-auto: none
   servlet:
-  multipart:
-    max-file-size: 100MB
-    max-request-size: 100MB
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     url: ENC(QL46yp5WEJn2Q7FCTU8xvWU6TnOM+sR8VRfReuqouQjAXalDDfdKht1+C3vyMiIOLL8sqjVpSVGI8ii1DXC5O9LGr49iljmCfXmJzjvBpUkv2lGY1MDC/i4+RDR6qK1ciIinZXZlhNE=)
     username: ENC(L0kzYFpSX3w8Kp4vGkamFw==)
@@ -32,3 +32,8 @@ spring:
     user:
       name:
       password:
+security:
+  jwt:
+    token:
+      secret-key: ENC(splgClZ0/GF97Phs3Y+wyoKe0+/02DauHDVHznqHY6L7TGcHylZGXj6ljNvaBJqEMekM68X47uOZeYTZT90tUQ==)
+      expire-length: ENC(S3cUIoNjjoBYhjMbWum1oA==)
