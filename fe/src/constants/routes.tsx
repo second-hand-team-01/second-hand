@@ -27,6 +27,8 @@ export const router = createBrowserRouter([
       { path: 'item/:itemIdx', element: <div>내용</div> },
       { path: '', element: <div>Sign</div> },
       { path: 'item/:itemIdx', element: <DetailsPage></DetailsPage> },
+      { path: 'signup', element: <SignUpPage /> },
+      { path: 'item/:itemIdx', element: <div>내용</div> },
     ],
   },
 ]);
