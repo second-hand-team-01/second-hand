@@ -16,31 +16,24 @@ import {
   convertPriceToNum,
   checkAllFilled,
 } from '@utils/common/common';
-import { Category } from '@type-store/services/category';
+import { Category, CategoryRes } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
-import { Image } from '@type-store/services/items';
+import { Image, PostItemRes } from '@type-store/services/items';
 import {
   postItemsAPI,
   convertDataToBody,
   getRandomCategories,
 } from '@services/items/items';
 import { ERROR_MESSAGE } from '@constants/error';
+import { Response } from '@hooks/useFetch/useFetch';
 
-interface WritePageProps {
-  status: 'write' | 'edit';
-}
-
-export const WritePage = ({ status }: WritePageProps) => {
+export const WritePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [title, setTitle] = useState<string>('');
-  const [categoryState, categoryFetch] = useFetch<any, null>(
-    getCategoryAPI,
-    [],
-    true
-  );
+  const [categoryState] = useFetch<CategoryRes, null>(getCategoryAPI, [], true);
   const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
     []
   );
@@ -68,10 +61,13 @@ export const WritePage = ({ status }: WritePageProps) => {
       locationIdx
     );
     const result = await postItemsAPI(body);
-    return result as any;
+    return result as Response<PostItemRes>;
   }, [title, contents, images, price, categoryIdx]);
 
-  const [uploadState, uploadFetch] = useFetch<any, any>(uploadPostItems, []);
+  const [uploadState, uploadFetch] = useFetch<PostItemRes, []>(
+    uploadPostItems,
+    []
+  );
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const handleCategoryBtnClick = ({ target }) => {
@@ -86,7 +82,7 @@ export const WritePage = ({ status }: WritePageProps) => {
     e.preventDefault();
     const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
-    const selectedCategory = categoryState.data.find(
+    const selectedCategory = categoryState.data?.find(
       (category: Category) => category.name === categoryName
     );
     const selectedIdx = selectedCategory?.idx;
@@ -106,8 +102,11 @@ export const WritePage = ({ status }: WritePageProps) => {
   };
 
   useEffect(() => {
-    const randomCategories = getRandomCategories(categoryState.data);
-    categoryState.data && setDisplayedCategories(randomCategories);
+    const randomCategories =
+      categoryState.data && getRandomCategories(categoryState.data);
+    randomCategories &&
+      categoryState.data &&
+      setDisplayedCategories(randomCategories);
   }, [categoryState]);
 
   const handlePostBtnClick = async () => {
@@ -225,7 +224,7 @@ export const WritePage = ({ status }: WritePageProps) => {
               onClick: () => {
                 !uploadState.data && uploadState.error
                   ? setDialogOpen(false)
-                  : navigate(`/item/${uploadState.data.itemIdx}`, {
+                  : navigate(`/item/${uploadState.data?.itemIdx}`, {
                       state: pathname,
                     });
               },

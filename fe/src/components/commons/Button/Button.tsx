@@ -3,8 +3,8 @@ import { Icon } from '@components/commons/Icon/Icon';
 import { ButtonStyleProps } from './ButtonStyle';
 
 interface ButtonProps extends ButtonStyleProps {
-  onClick?: (e: any) => void;
-  onTouchEnd?: (e: any) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onTouchEnd?: (e: React.TouchEvent<HTMLButtonElement>) => void;
   id?: string;
 }
 
