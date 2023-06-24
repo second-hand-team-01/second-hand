@@ -4,7 +4,6 @@
 //
 //  Created by Wood on 2023/06/20.
 //
-
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -13,7 +12,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setViewControllerTitle(title: "내 계정")
+        self.setViewControllerTitle(to: "내 계정")
     }
     
     override func viewWillLayoutSubviews() {
@@ -21,11 +20,12 @@ class LoginViewController: UIViewController {
         self.layoutCosntraints()
     }
     
-    private func setViewControllerTitle(title: String) {
+    private func setViewControllerTitle(to title: String) {
         self.title = "\(title)"
     }
 }
 
+// MARK: - Constraint 설정 메소드 추가
 extension LoginViewController {
     private func layoutCosntraints() {
         self.addSubviews()
