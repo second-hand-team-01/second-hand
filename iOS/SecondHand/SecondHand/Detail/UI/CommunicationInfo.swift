@@ -85,7 +85,7 @@ extension CommunicationInfo {
     private func layoutFavoriteCountLabel() {
         NSLayoutConstraint.activate([
             favoriteCountLabel.leadingAnchor.constraint(equalTo: chatCountLabel.trailingAnchor, constant: 8),
-            favoriteCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor),
+            favoriteCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor)
         ])
     }
     

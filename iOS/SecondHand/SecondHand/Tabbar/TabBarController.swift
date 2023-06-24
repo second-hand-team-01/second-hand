@@ -9,10 +9,14 @@ import UIKit
 
 final class TabBarViewController: UITabBarController {
     private let itemListView = UINavigationController(rootViewController: ItemListViewController())
+    private let accountView = UINavigationController(rootViewController: LoginViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setViewControllers([itemListView], animated: false)
+        setViewControllers([
+            itemListView,
+            accountView
+        ], animated: false)
         configureTabBarColor()
         configureTabBarItem()
     }
@@ -24,5 +28,6 @@ final class TabBarViewController: UITabBarController {
     
     private func configureTabBarItem() {
         itemListView.tabBarItem = UITabBarItem(title: TabBarType.itemList.title, image: UIImage(systemName: TabBarType.itemList.image), tag: 0)
+        accountView.tabBarItem = UITabBarItem(title: TabBarType.account.title, image: UIImage(systemName: TabBarType.account.image), tag: 1)
     }
 }

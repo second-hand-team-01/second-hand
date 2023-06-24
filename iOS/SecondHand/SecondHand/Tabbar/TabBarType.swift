@@ -9,11 +9,14 @@ import Foundation
 
 enum TabBarType {
     case itemList
+    case account
     
     var title: String {
         switch self {
         case .itemList:
             return "홈화면"
+        case .account:
+            return "내 계정"
         }
     }
     
@@ -21,6 +24,8 @@ enum TabBarType {
         switch self {
         case .itemList:
             return "house"
+        case .account:
+            return "person"
         }
     }
 }

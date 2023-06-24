@@ -8,7 +8,11 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    var scrollView = UIScrollView()
+    var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.contentInsetAdjustmentBehavior = .never
+        return scrollView
+    }()
     var detailContentView = DetailContentView(frame: .zero)
     var toolbar = DetailToolbar(frame: .zero)
     var favoriteButton = UIButton()
@@ -19,14 +23,22 @@ class DetailViewController: UIViewController {
         self.view.backgroundColor = .white
         detailContentView.configure()
         toolbar.configure(price: "123,000")
-        self.tabBarController?.tabBar.isHidden = true
-        self.scrollView.contentInsetAdjustmentBehavior = .never
+        setTabBar(isHiding: true)
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         addSubViews()
         layoutConstraint()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setTabBar(isHiding: false)
+    }
+
+    func setTabBar(isHiding: Bool) {
+        self.tabBarController?.tabBar.isHidden = isHiding
     }
 }
 
