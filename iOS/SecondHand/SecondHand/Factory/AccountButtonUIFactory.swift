@@ -8,6 +8,24 @@
 import UIKit
 
 struct AccountButtonUIFactory {
+    enum ButtonType {
+        case github
+        case login
+        case register
+    }
+    
+    enum ButtonName {
+        static let githubLogin = "Github로 로그인"
+        static let login = "로그인"
+        static let register = "회원가입"
+    }
+    
+    enum ButtonTag {
+        static let githubLogin = 0
+        static let login = 1
+        static let register = 2
+    }
+    
     static func make(type: ButtonType) -> UIButton {
         let backgroundColor: UIColor
         let tintColor = UIColor.white
@@ -49,23 +67,5 @@ struct AccountButtonUIFactory {
         button.configuration = configuration
         
         return button
-    }
-    
-    enum ButtonType {
-        case github
-        case login
-        case register
-    }
-    
-    enum ButtonName {
-        static let githubLogin = "Github로 로그인"
-        static let login = "로그인"
-        static let register = "회원가입"
-    }
-    
-    enum ButtonTag {
-        static let githubLogin = 0
-        static let login = 1
-        static let register = 2
     }
 }

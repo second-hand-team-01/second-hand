@@ -197,7 +197,6 @@
 				6320475F2A42F28F0035880A /* AccountInputView.swift */,
 				6320476B2A440B290035880A /* LoginButtonGroupView.swift */,
 				632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */,
-				632047722A4411AC0035880A /* AccountButtonUIFactory.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -231,6 +230,7 @@
 				6328072E2A305CED0033F9D7 /* Info.plist */,
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
+				63D98E882A45462D00DF467A /* Factory */,
 				FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */,
 				FF61AD2C2A36F956006AE167 /* Tabbar */,
 				FF61AD312A36FC72006AE167 /* ItemList */,
@@ -312,6 +312,14 @@
 			children = (
 			);
 			path = Headers;
+			sourceTree = "<group>";
+		};
+		63D98E882A45462D00DF467A /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				632047722A4411AC0035880A /* AccountButtonUIFactory.swift */,
+			);
+			path = Factory;
 			sourceTree = "<group>";
 		};
 		63F3EEB92A35D90500D81961 /* Detail */ = {
