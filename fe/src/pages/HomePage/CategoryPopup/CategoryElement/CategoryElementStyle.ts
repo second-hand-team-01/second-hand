@@ -4,6 +4,7 @@ export const CategoryElement = styled.li`
   display: grid;
   width: max-content;
   justify-items: center;
+  gap: 4px;
 `;
 
 export const CategoryElementImg = styled.img`
