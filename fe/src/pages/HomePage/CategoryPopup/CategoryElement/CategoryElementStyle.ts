@@ -5,6 +5,7 @@ export const CategoryElement = styled.li`
   width: max-content;
   justify-items: center;
   gap: 4px;
+  cursor: pointer;
 `;
 
 export const CategoryElementImg = styled.img`
