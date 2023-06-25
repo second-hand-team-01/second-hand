@@ -33,7 +33,7 @@ export const WritePage = () => {
   const { pathname } = useLocation();
 
   const [title, setTitle] = useState<string>('');
-  const [categoryState] = useFetch<CategoryRes, null>(getCategoryAPI, [], true);
+  const [categoryState] = useFetch(getCategoryAPI, [], true);
   const [displayedCategories, setDisplayedCategories] = useState<Category[]>(
     []
   );
@@ -73,7 +73,7 @@ export const WritePage = () => {
   const handleCategoryBtnClick = ({ target }) => {
     const btn = target as HTMLButtonElement;
     const idx = displayedCategories.find(
-      (category) => category.name === btn.innerText
+      (category) => category.text === btn.innerText
     )?.idx;
     idx && setCategoryIdx(idx);
   };
@@ -83,7 +83,7 @@ export const WritePage = () => {
     const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
     const selectedCategory = categoryState.data?.find(
-      (category: Category) => category.name === categoryName
+      (category: Category) => category.text === categoryName
     );
     const selectedIdx = selectedCategory?.idx;
     if (selectedIdx) {
@@ -156,7 +156,7 @@ export const WritePage = () => {
                 <Button
                   key={category.idx}
                   state={categoryIdx === category.idx ? 'active' : 'default'}
-                  title={category.name}
+                  title={category.text}
                   hasBorder={true}
                   shape="small"
                   onClick={handleCategoryBtnClick}
@@ -212,7 +212,7 @@ export const WritePage = () => {
               key={category.idx}
               onClick={handleCategoryListClick}
             >
-              <S.CategoryListInner>{category.name}</S.CategoryListInner>
+              <S.CategoryListInner>{category.text}</S.CategoryListInner>
             </S.CategoryList>
           ))}
         </BottomSheet>

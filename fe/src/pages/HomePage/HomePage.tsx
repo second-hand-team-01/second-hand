@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { ListItemPropsWithId } from '@type-store/services/items';
 import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { CategoryPopup } from './CategoryPopup/CategoryPopup';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export const HomePage = () => {
   const [hasNext, setHasNext] = useState(true);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -41,36 +43,51 @@ export const HomePage = () => {
   const setTarget = useIntersectionObserver(handleIntersection);
 
   return (
-    <Layout headerOption={{ type: 'filter' }} footerOption={{ type: 'tab' }}>
-      <S.Home>
-        {errorMsg ? (
-          <Error>{errorMsg}</Error>
-        ) : loading && page === 0 ? (
-          <Loading />
-        ) : (
-          <>
-            {items?.map((item: ListItemPropsWithId) => (
-              <ListItem
-                key={item.id}
-                {...item}
-                onClick={() =>
-                  navigate(`/item/${item.id}`, { state: pathname })
-                }
-              ></ListItem>
-            ))}
-            <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
-            {loading && page !== 0 && <Loading height="40px" />}
-          </>
-        )}
-        <S.FloatingBtn>
-          <Button
-            shape={'floating'}
-            icon="plus"
-            color={'accentText'}
-            onClick={() => navigate('/write', { state: pathname })}
-          ></Button>
-        </S.FloatingBtn>
-      </S.Home>
-    </Layout>
+    <>
+      <Layout
+        headerOption={{
+          type: 'filter',
+          filterBarOptions: {
+            region: '우면동',
+            handleFilterBtnClick: (e) => setCategoryPopupOpen(true),
+          },
+        }}
+        footerOption={{ type: 'tab' }}
+      >
+        <S.Home>
+          {errorMsg ? (
+            <Error>{errorMsg}</Error>
+          ) : loading && page === 0 ? (
+            <Loading />
+          ) : (
+            <>
+              {items?.map((item: ListItemPropsWithId) => (
+                <ListItem
+                  key={item.id}
+                  {...item}
+                  onClick={() =>
+                    navigate(`/item/${item.id}`, { state: pathname })
+                  }
+                ></ListItem>
+              ))}
+              <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
+              {loading && page !== 0 && <Loading height="40px" />}
+            </>
+          )}
+          <S.FloatingBtn>
+            <Button
+              shape={'floating'}
+              icon="plus"
+              color={'accentText'}
+              onClick={() => navigate('/write', { state: pathname })}
+            ></Button>
+          </S.FloatingBtn>
+        </S.Home>
+      </Layout>
+      <CategoryPopup
+        isOpen={isCategoryPopupOpen}
+        setOpen={setCategoryPopupOpen}
+      ></CategoryPopup>
+    </>
   );
 };

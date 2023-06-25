@@ -13,13 +13,15 @@ interface LayoutProps extends LayoutStyleProps {
 const renderHeader = ({
   type,
   navbarProps,
+  filterBarProps,
 }: {
   type: HeaderProps['type'];
-  navbarProps: HeaderProps['navbarOptions'];
+  navbarProps?: HeaderProps['navbarOptions'];
+  filterBarProps?: HeaderProps['filterBarOptions'];
 }) => {
   switch (type) {
     case 'filter':
-      return <FilterBar></FilterBar>;
+      return <FilterBar {...filterBarProps}></FilterBar>;
     case 'nav':
       return <NavBar {...navbarProps}></NavBar>;
     default:
@@ -62,6 +64,7 @@ export const Layout = ({
             renderHeader({
               type: headerOption.type,
               navbarProps: headerOption.navbarOptions,
+              filterBarProps: headerOption.filterBarOptions,
             })}
         </S.Header>
         <S.Contents isHeaderOverlapped={isHeaderOverlapped}>

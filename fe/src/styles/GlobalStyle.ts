@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { MAX_WIDTH } from '@constants/style';
 
 export const GlobalStyle = createGlobalStyle`
   /* reset-css */
@@ -159,6 +160,17 @@ export const GlobalStyle = createGlobalStyle`
       top: 0;
       left: 0;
       width: 100%;
+      max-width: ${MAX_WIDTH}px;
       z-index: 1;
+      left: 50%;
+    }
+
+    .modal-root.slide-left {
+      transition: transform .5s ease-in-out;
+      transform: translateX(${MAX_WIDTH / 2}px);
+    }
+
+    .modal-root.slide-left.open {
+      transform: translateX(-50%);
     }
 `;

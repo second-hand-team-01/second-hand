@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
-import { InfoBarProps } from '../InfoBar/InfoBar';
+import { InfoBarProps } from '@commons/InfoBar/InfoBar';
+import { FilterBarProps } from '@commons/FilterBar/FilterBar';
 
 export interface HeaderProps {
   type: 'filter' | 'nav';
   navbarOptions?: NavBarProps;
+  filterBarOptions?: FilterBarProps;
 }
 
 export interface FooterProps {

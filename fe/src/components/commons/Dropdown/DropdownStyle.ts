@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Dropdown = styled.div`
+export const Dropdown = styled.button`
   display: grid;
   align-items: center;
   justify-content: center;
@@ -11,6 +11,8 @@ export const Dropdown = styled.div`
   size: ${({ theme }) => theme.typography.headline.size};
   line-height: ${({ theme }) => theme.typography.headline.lineHeight};
   border-radius: 100%;
+  border: none;
+  background-color: transparent;
 
   &:hover {
     cursor: pointer;
