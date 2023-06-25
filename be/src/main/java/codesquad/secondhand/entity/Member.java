@@ -3,6 +3,8 @@ package codesquad.secondhand.entity;
 import codesquad.secondhand.dto.location.LocationDto;
 import codesquad.secondhand.dto.member.SaveMemberDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "member")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -36,12 +38,22 @@ public class Member {
     @JoinColumn(name = "sub_location_idx")
     private Location subLocation;
 
+    @Column(name = "oauth_id")
+    private String oauthId;
+
     public Member(String loginId, String password, String imageUrl, Location mainLocation, Location subLocation) {
         this.loginId = loginId;
         this.password = password;
         this.imageUrl = imageUrl;
         this.mainLocation = mainLocation;
         this.subLocation = subLocation;
+    }
+
+    @Builder
+    public Member(String loginId, String imageUrl, String oauthId) {
+        this.loginId = loginId;
+        this.imageUrl = imageUrl;
+        this.oauthId = oauthId;
     }
 
     public void updateLocations(Location newMainLocation, Location newSubLocation) {
