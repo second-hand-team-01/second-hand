@@ -1,7 +1,8 @@
 package codesquad.secondhand.repository;
 
-import codesquad.secondhand.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import codesquad.secondhand.entity.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 }

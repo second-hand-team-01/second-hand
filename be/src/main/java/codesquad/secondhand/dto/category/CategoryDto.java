@@ -8,14 +8,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryDto {
 
-    private final Long idx;
-    private final String name;
-    private final String imgUrl;
+	private final Long idx;
+	private final String name;
+	private final String imgUrl;
 
-    public static CategoryDto of(Category category) {
-        return new CategoryDto(category.getCategoryIdx(),
-                category.getName(),
-                category.getImageUrl());
-    }
+	public static CategoryDto of(Category category) {
+		return new CategoryDto(category.getCategoryIdx(),
+			category.getName(),
+			category.getImageUrl());
+	}
 
 }

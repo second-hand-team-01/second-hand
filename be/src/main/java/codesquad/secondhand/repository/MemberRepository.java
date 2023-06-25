@@ -1,12 +1,13 @@
 package codesquad.secondhand.repository;
 
-import codesquad.secondhand.entity.Member;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import codesquad.secondhand.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Optional<Member> findByLoginId(String loginId);
+	Optional<Member> findByLoginId(String loginId);
 
 }

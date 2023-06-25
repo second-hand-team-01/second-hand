@@ -8,10 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberIdxLoginIdDto {
 
-    private Long memberIdx;
-    private String loginId;
+	private Long memberIdx;
+	private String loginId;
 
-    public static MemberIdxLoginIdDto of(Member member) {
-        return new MemberIdxLoginIdDto(member.getMemberIdx(), member.getLoginId());
-    }
+	public static MemberIdxLoginIdDto of(Member member) {
+		return new MemberIdxLoginIdDto(member.getMemberIdx(), member.getLoginId());
+	}
 }

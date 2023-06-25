@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MainSubDto {
 
-    private LocationDto main;
-    private LocationDto sub;
+	private LocationDto main;
+	private LocationDto sub;
 
 }

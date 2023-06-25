@@ -2,11 +2,11 @@ package codesquad.secondhand.exception.code;
 
 public interface Code {
 
-    boolean isSuccess();
+	boolean isSuccess();
 
-    int getStatus();
+	int getStatus();
 
-    int getCode();
+	int getCode();
 
-    String getMessage();
+	String getMessage();
 }

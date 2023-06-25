@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberInfoDto {
 
-    private final Long memberIdx;
-    private final String memberLoginId;
-    private final String imageUrl;
+	private final Long memberIdx;
+	private final String memberLoginId;
+	private final String imageUrl;
 
-    public static MemberInfoDto of(Member member) {
-        return new MemberInfoDto(member.getMemberIdx(), member.getLoginId(), member.getImageUrl());
-    }
+	public static MemberInfoDto of(Member member) {
+		return new MemberInfoDto(member.getMemberIdx(), member.getLoginId(), member.getImageUrl());
+	}
 }
