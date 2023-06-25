@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setViewControllerTitle(to: "내 계정")
+        addObservers()
     }
     
     override func viewWillLayoutSubviews() {
@@ -23,6 +24,54 @@ class LoginViewController: UIViewController {
     
     private func setViewControllerTitle(to title: String) {
         self.title = "\(title)"
+    }
+    
+    private func addObservers() {
+        observeLogin()
+        observeLoginByGithub()
+        observeRegisterUser()
+    }
+}
+
+// MARK: - Observer 적용 메소드
+extension LoginViewController {
+    private func observeLogin() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(login),
+            name: .account.login,
+            object: nil
+        )
+    }
+    
+    @objc private func login(_ notification: Notification) {
+        
+    }
+    
+    private func observeLoginByGithub() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(loginByGithub),
+            name: .account.githubLogin,
+            object: nil
+        )
+    }
+    
+    @objc private func loginByGithub(_ notification: Notification) {
+        
+    }
+    
+    private func observeRegisterUser() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(registerUser),
+            name: .account.register,
+            object: nil
+        )
+    }
+    
+    @objc private func registerUser(_ notification: Notification) {
+        
     }
 }
 
