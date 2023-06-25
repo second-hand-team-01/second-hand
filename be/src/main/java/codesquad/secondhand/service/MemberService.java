@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
-
+	public static final int FIRST_IMAGE_URL_IDX = 0;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -45,7 +45,7 @@ public class MemberService {
 
 		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
 		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
-		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, urlList.get(0), main, sub);
+		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, urlList.get(FIRST_IMAGE_URL_IDX), main, sub);
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
