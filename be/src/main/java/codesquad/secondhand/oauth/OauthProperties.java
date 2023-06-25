@@ -11,6 +11,9 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "oauth2")
 public class OauthProperties {
 
+    private final Map<String, User> user = new HashMap<>();
+    private final Map<String, Provider> provider = new HashMap<>();
+
     @Getter
     @Setter
     public static class User {
@@ -26,4 +29,5 @@ public class OauthProperties {
         private String userInfoUri;
         private String userNameAttribute;
     }
+
 }
