@@ -9,6 +9,7 @@ import UIKit
 class LoginViewController: UIViewController {
     private var accountInputView = AccountInputView(frame: CGRect.zero)
     private var loginButtonGroupView = LoginButtonGroupView(frame: CGRect.zero)
+    private var networkManager = LoginNetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()

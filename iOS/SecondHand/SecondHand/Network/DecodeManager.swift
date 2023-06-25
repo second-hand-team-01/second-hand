@@ -7,12 +7,10 @@
 
 import Foundation
 
+// TODO: - 프로토콜 vs 구조체
 protocol DecodeManager {
     associatedtype DTO
-    associatedtype Model
+    var decoder: JSONDecoder { get }
     
-    func decode(
-        data: Data,
-        dto: DTO
-    ) -> Model
+    func decode(using data: Data) throws -> DTO
 }

@@ -13,9 +13,8 @@
 		6320476C2A440B290035880A /* LoginButtonGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320476B2A440B290035880A /* LoginButtonGroupView.swift */; };
 		632047732A4411AC0035880A /* AccountButtonUIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632047722A4411AC0035880A /* AccountButtonUIFactory.swift */; };
 		632047772A4428B40035880A /* LoginButtonGroupView+addAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */; };
-		6320477A2A44A2AE0035880A /* LoginDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632047792A44A2AE0035880A /* LoginDTO.swift */; };
 		6320477C2A44A3980035880A /* LoginResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320477B2A44A3980035880A /* LoginResponseDTO.swift */; };
-		6320477E2A44A5840035880A /* LoginNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320477D2A44A5840035880A /* LoginNetworkManager.swift */; };
+		6320477E2A44A5840035880A /* LoginNetworkManager+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320477D2A44A5840035880A /* LoginNetworkManager+Error.swift */; };
 		632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807202A305CED0033F9D7 /* AppDelegate.swift */; };
 		632807232A305CED0033F9D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807222A305CED0033F9D7 /* SceneDelegate.swift */; };
 		6328072A2A305CED0033F9D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632807292A305CED0033F9D7 /* Assets.xcassets */; };
@@ -24,6 +23,8 @@
 		632807422A305CEE0033F9D7 /* SecondHandUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807412A305CEE0033F9D7 /* SecondHandUITests.swift */; };
 		632807442A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */; };
 		632807512A316B790033F9D7 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 632807502A316B790033F9D7 /* .swiftlint.yml */; };
+		633AC5B12A480B3600A34501 /* LoginDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B02A480B3600A34501 /* LoginDTO.swift */; };
+		633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B22A480C6C00A34501 /* LogManager.swift */; };
 		63608CBF2A4061E0006CD876 /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CBE2A4061E0006CD876 /* ProductInfo.swift */; };
 		63608CC62A407FB8006CD876 /* CommunicationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC52A407FB8006CD876 /* CommunicationInfo.swift */; };
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
@@ -107,9 +108,8 @@
 		6320476B2A440B290035880A /* LoginButtonGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonGroupView.swift; sourceTree = "<group>"; };
 		632047722A4411AC0035880A /* AccountButtonUIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonUIFactory.swift; sourceTree = "<group>"; };
 		632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginButtonGroupView+addAction.swift"; sourceTree = "<group>"; };
-		632047792A44A2AE0035880A /* LoginDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDTO.swift; sourceTree = "<group>"; };
 		6320477B2A44A3980035880A /* LoginResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseDTO.swift; sourceTree = "<group>"; };
-		6320477D2A44A5840035880A /* LoginNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManager.swift; sourceTree = "<group>"; };
+		6320477D2A44A5840035880A /* LoginNetworkManager+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginNetworkManager+Error.swift"; sourceTree = "<group>"; };
 		6328071D2A305CED0033F9D7 /* SecondHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecondHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632807202A305CED0033F9D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		632807222A305CED0033F9D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +122,8 @@
 		632807412A305CEE0033F9D7 /* SecondHandUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITests.swift; sourceTree = "<group>"; };
 		632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		632807502A316B790033F9D7 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = ../../iOS/SecondHand/.swiftlint.yml; sourceTree = "<group>"; };
+		633AC5B02A480B3600A34501 /* LoginDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDTO.swift; sourceTree = "<group>"; };
+		633AC5B22A480C6C00A34501 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		63608CBE2A4061E0006CD876 /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
 		63608CC52A407FB8006CD876 /* CommunicationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationInfo.swift; sourceTree = "<group>"; };
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
@@ -196,7 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				63129C992A4145B00049EC0C /* LoginViewController.swift */,
-				6320477D2A44A5840035880A /* LoginNetworkManager.swift */,
+				6320477D2A44A5840035880A /* LoginNetworkManager+Error.swift */,
 				632047782A4474880035880A /* UI */,
 			);
 			path = Login;
@@ -240,6 +242,7 @@
 			children = (
 				6328072E2A305CED0033F9D7 /* Info.plist */,
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
+				633AC5B22A480C6C00A34501 /* LogManager.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
 				63D98E892A4546C600DF467A /* Network */,
 				63D98E882A45462D00DF467A /* Factory */,
@@ -347,8 +350,8 @@
 		63D98E8A2A4546CE00DF467A /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				632047792A44A2AE0035880A /* LoginDTO.swift */,
 				6320477B2A44A3980035880A /* LoginResponseDTO.swift */,
+				633AC5B02A480B3600A34501 /* LoginDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -735,8 +738,8 @@
 				FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */,
 				FFD62C2F2A3C1E260014D2D4 /* Typography.swift in Sources */,
 				FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */,
+				633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */,
 				63A3FCDE2A3740C800361FAD /* SellerInfo.swift in Sources */,
-				6320477A2A44A2AE0035880A /* LoginDTO.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */,
 				FF61AD272A36F24D006AE167 /* TabBarController.swift in Sources */,
@@ -753,9 +756,10 @@
 				63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */,
 				FF61AD602A3BE4D9006AE167 /* ColorPalette.swift in Sources */,
 				63608CBF2A4061E0006CD876 /* ProductInfo.swift in Sources */,
+				633AC5B12A480B3600A34501 /* LoginDTO.swift in Sources */,
 				632047772A4428B40035880A /* LoginButtonGroupView+addAction.swift in Sources */,
 				6320477C2A44A3980035880A /* LoginResponseDTO.swift in Sources */,
-				6320477E2A44A5840035880A /* LoginNetworkManager.swift in Sources */,
+				6320477E2A44A5840035880A /* LoginNetworkManager+Error.swift in Sources */,
 				63608CC62A407FB8006CD876 /* CommunicationInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
