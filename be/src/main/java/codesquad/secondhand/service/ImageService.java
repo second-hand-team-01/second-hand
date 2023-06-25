@@ -17,6 +17,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import codesquad.secondhand.exception.EmptyFileException;
+import codesquad.secondhand.exception.FileUploadFailedException;
+import codesquad.secondhand.exception.code.ImageErrorCode;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,11 +34,6 @@ public class ImageService {
 
 	public List<String> upload(List<MultipartFile> multipartFileList, String memberId) {
 		List<String> urlList = new ArrayList<>();
-
-		if (multipartFileList.size() > MAX_FILE_NUMBER) {
-			// TODO MaxFileNumberException 변경
-			throw new IllegalArgumentException();
-		}
 
 		for (MultipartFile multipartFile : multipartFileList) {
 			validateFile(multipartFile);
@@ -54,8 +52,7 @@ public class ImageService {
 				amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead));
 			} catch (IOException e) {
-				// TODO: FileUploadFailedException 변경
-				throw new IllegalArgumentException();
+				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 			}
 			urlList.add(amazonS3.getUrl(bucketName, fileName).toString());
 		}
@@ -64,8 +61,7 @@ public class ImageService {
 
 	private void validateFile(MultipartFile multipartFile) {
 		if (multipartFile.isEmpty()) {
-			//TODO: EmptyFileException 변경
-			throw new IllegalArgumentException();
+			throw new EmptyFileException(ImageErrorCode.EmptyFileException);
 		}
 	}
 
