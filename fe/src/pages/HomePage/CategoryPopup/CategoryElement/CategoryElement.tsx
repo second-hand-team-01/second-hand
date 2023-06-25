@@ -7,11 +7,17 @@ interface CategoryPopupProps {
   idx: string;
   text: Category['text'];
   imgUrl: Category['imgUrl'];
+  onClick: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-export const CategoryElement = ({ idx, text, imgUrl }: CategoryPopupProps) => {
+export const CategoryElement = ({
+  idx,
+  text,
+  imgUrl,
+  onClick,
+}: CategoryPopupProps) => {
   return (
-    <S.CategoryElement id={idx}>
+    <S.CategoryElement id={idx} onClick={onClick}>
       <S.CategoryElementImg src={imgUrl}></S.CategoryElementImg>
       {text}
     </S.CategoryElement>

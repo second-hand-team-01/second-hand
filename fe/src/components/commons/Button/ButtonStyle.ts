@@ -92,6 +92,7 @@ export interface ButtonStyleProps {
   state?: keyof typeof states;
   textAlign?: keyof typeof textAlignments;
   icon?: keyof typeof icons;
+  iconRight?: keyof typeof icons;
   iconSize?: number;
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;

@@ -1,6 +1,6 @@
-import styled, { StyledComponent } from 'styled-components';
+import styled from 'styled-components';
 
-export const CategoryElement = styled.div`
+export const CategoryElement = styled.li`
   display: grid;
   width: max-content;
   justify-items: center;

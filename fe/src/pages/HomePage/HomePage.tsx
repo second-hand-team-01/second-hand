@@ -6,6 +6,9 @@ import { ListItemPropsWithId } from '@type-store/services/items';
 import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
+import { Category } from '@type-store/services/category';
+import { useFetch } from '@hooks/useFetch/useFetch';
+import { getCategoryAPI } from '@services/categories/categories';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -15,20 +18,51 @@ export const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
+  const [categoryState] = useFetch(getCategoryAPI, [], true);
+
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
+    null
+  );
+
+  const runAPI = async (page: number) => {
+    !loading && setLoading(true);
+    errorMsg && setErrorMsg(null);
+
+    const getCategoryIdx = () => {
+      if (selectedCategoryIdx && selectedCategoryIdx !== -1) {
+        return selectedCategoryIdx;
+      } else return undefined;
+    };
+
+    const { data, error } = await getItemsAPI(page, getCategoryIdx());
+    if (error) return setErrorMsg(error.message);
+    if (data) {
+      setHasNext(data.hasNext);
+
+      if (page === 0) {
+        setItems(data.items);
+        if (scrollY !== 0) scrollTo({ top: 0 });
+      } else setItems((prevItems) => [...prevItems, ...data.items]);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    (async () => {
-      !loading && setLoading(true);
-      errorMsg && setErrorMsg(null);
-      const { data, error } = await getItemsAPI(page);
-      if (error) return setErrorMsg(error.message);
-      if (data) {
-        setHasNext(data.hasNext);
-        setItems((prevItems) => [...prevItems, ...data.items]);
-      }
-      setLoading(false);
-    })();
+    runAPI(page);
   }, [page]);
+
+  useEffect(() => {
+    if (selectedCategoryIdx !== null) {
+      if (selectedCategoryIdx === -1) {
+        setPage(0);
+        runAPI(0);
+      } else if (page === 0) {
+        runAPI(0);
+      } else {
+        setPage(0);
+      }
+    }
+  }, [selectedCategoryIdx]);
 
   const [items, setItems] = useState<ListItemPropsWithId[]>([]);
 
@@ -50,6 +84,10 @@ export const HomePage = () => {
           filterBarOptions: {
             region: '우면동',
             handleFilterBtnClick: (e) => setCategoryPopupOpen(true),
+            handleDeleteBtn: () => setSelectedCategoryIdx(-1),
+            selectedCategory: categoryState.data?.find(
+              (category) => category.idx === selectedCategoryIdx
+            ),
           },
         }}
         footerOption={{ type: 'tab' }}
@@ -85,8 +123,10 @@ export const HomePage = () => {
         </S.Home>
       </Layout>
       <CategoryPopup
-        isOpen={isCategoryPopupOpen}
-        setOpen={setCategoryPopupOpen}
+        categoryState={categoryState}
+        categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
+        selectedCategoryIdxState={[selectedCategoryIdx, setSelectedCategoryIdx]}
+        handleCategoryClick={async () => await getItemsAPI(page)}
       ></CategoryPopup>
     </>
   );

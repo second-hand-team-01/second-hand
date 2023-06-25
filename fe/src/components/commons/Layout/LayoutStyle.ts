@@ -38,7 +38,7 @@ const getTemplateRows = (
       : NAVBAR_HEIGHT.top
     : 0;
   const footerHeight = hasFooter ? FOOTER_HEIGHT : 0;
-  const result = `${headerHeight}px 1fr ${footerHeight}px`;
+  const result = `max-content 1fr ${footerHeight}px`;
   return result;
 };
 

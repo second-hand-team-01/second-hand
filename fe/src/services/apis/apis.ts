@@ -13,9 +13,8 @@ export interface FetchProps<B> {
 }
 
 export const addQueriesToURL = (url: string, queries: object) => {
-  const copiedQueries = removeEmptyKeyValues(queries);
-  const queryString = copiedQueries
-    ? '?' + new URLSearchParams(Object.entries(copiedQueries)).toString()
+  const queryString = queries
+    ? '?' + new URLSearchParams(Object.entries(queries)).toString()
     : '';
   const urlWithQueries = url + queryString;
   return urlWithQueries;
