@@ -26,13 +26,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageService {
 	private static final String FILE_EXTENSION_DOT = "\\.";
+	private static final int MEMBER_PROFILE_SIZE = 1;
 
 	private final AmazonS3 amazonS3;
 	@Value("${aws.s3.bucket}")
 	private String bucketName;
 
-	public List<String> upload(List<MultipartFile> multipartFileList, String memberId) {
-		List<String> urlList = new ArrayList<>();
+	//TODO: 맴버 프로필 이미지 업로드, 삭제
+	//TODO: 아이템 이미지 업로드, 삭제
+	//TODO: 이미지 URL DB에 저장
+
+	public	String upload(MultipartFile multipartFile, String memberId) {
+			validateFile(multipartFile);
+
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			String originFileName = multipartFile.getOriginalFilename();
+
+			if (originFileName == null) {
+				originFileName = UUID.randomUUID().toString();
+			}
+
+			String fileName = specifyInitialFormat(originFileName, memberId, multipartFile);
+
+			objectMetadata.setContentType(multipartFile.getContentType());
+
+			try (InputStream inputStream = multipartFile.getInputStream()) {
+				amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+			} catch (IOException e) {
+				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
+			}
+			return amazonS3.getUrl(bucketName, fileName).toString();
+	}
+
+	public List<String> upload(List<MultipartFile> multipartFileList, String itemId, String itemCategory) {
+		List<String> itemUrlList = new ArrayList<>();
 
 		for (MultipartFile multipartFile : multipartFileList) {
 			validateFile(multipartFile);
@@ -44,7 +72,8 @@ public class ImageService {
 				originFileName = UUID.randomUUID().toString();
 			}
 
-			String fileName = fileNameConvert(originFileName, memberId);
+			String fileName = specifyInitialFormat(originFileName, memberId, multipartFileList.size());
+
 			objectMetadata.setContentType(multipartFile.getContentType());
 
 			try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -53,9 +82,9 @@ public class ImageService {
 			} catch (IOException e) {
 				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 			}
-			urlList.add(amazonS3.getUrl(bucketName, fileName).toString());
+			itemUrlList.add(amazonS3.getUrl(bucketName, fileName).toString());
 		}
-		return urlList;
+		return itemUrlList;
 	}
 
 	private void validateFile(MultipartFile multipartFile) {
@@ -64,18 +93,35 @@ public class ImageService {
 		}
 	}
 
-	private String fileNameConvert(String originalFileName, String memberId) {
+	private String specifyInitialFormat(String originalFileName, String memberId, int multipartFileListSize) {
 		StringBuilder sb = new StringBuilder();
 		String[] originalFileNameSplit = originalFileName.split(FILE_EXTENSION_DOT);
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
-		sb.append(memberId)
-			.append("_")
-			.append(originalFileNameSplit[0])
-			.append("_")
-			.append(simpleDateFormat.format(date))
-			.append(".")
-			.append(originalFileNameSplit[1]);
+		String initDate = simpleDateFormat.format(date);
+	}
+
+	private String memberProfileFileNameConvert(String initialFormat) {
+			sb.append("member-profile-image")
+				.append(memberId)
+				.append("_")
+				.append(originalFileNameSplit[0])
+				.append("_")
+				.append(simpleDateFormat.format(date))
+				.append(".")
+				.append(originalFileNameSplit[1]);
+		return sb.toString();
+	}
+
+	private String itemFileNameConvert(String originalFileName, String memberId, int multipartFileListSize) {
+			sb.append("member-profile-image")
+				.append(memberId)
+				.append("_")
+				.append(originalFileNameSplit[0])
+				.append("_")
+				.append(simpleDateFormat.format(date))
+				.append(".")
+				.append(originalFileNameSplit[1]);
 		return sb.toString();
 	}
 }
