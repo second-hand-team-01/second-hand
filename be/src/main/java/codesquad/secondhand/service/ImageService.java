@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
-	private static final int MAX_FILE_NUMBER = 10;
 	private static final String FILE_EXTENSION_DOT = "\\.";
 
 	private final AmazonS3 amazonS3;
