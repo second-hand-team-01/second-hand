@@ -30,10 +30,8 @@ class AccountInputView: UIView {
     
     private func setDeafultText() {
         self.idLabel.text = DefaultText.id
-        self.idInputTextField.textColor = ColorPalette.neutral.textWeak
         self.idInputTextField.placeholder = DefaultText.idInput
         self.passwordLabel.text = DefaultText.password
-        self.passwordInputTextField.textColor = ColorPalette.neutral.textWeak
         self.passwordInputTextField.placeholder = DefaultText.passwordInput
     }
 }
