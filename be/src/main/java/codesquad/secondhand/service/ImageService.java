@@ -10,7 +10,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -21,7 +20,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ImageService {
 	private static final int MAX_FILE_NUMBER = 10;
@@ -56,7 +54,7 @@ public class ImageService {
 				amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead));
 			} catch (IOException e) {
-				// todo FileUploadFailedException 변경
+				// TODO: FileUploadFailedException 변경
 				throw new IllegalArgumentException();
 			}
 			urlList.add(amazonS3.getUrl(bucketName, fileName).toString());
@@ -66,7 +64,7 @@ public class ImageService {
 
 	private void validateFile(MultipartFile multipartFile) {
 		if (multipartFile.isEmpty()) {
-			//TODO EmptyFileException 변경
+			//TODO: EmptyFileException 변경
 			throw new IllegalArgumentException();
 		}
 	}
