@@ -10,21 +10,16 @@ interface CategoryPopupProps {
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
   ];
-  selectedCategoryIdxState: [
-    number | null,
-    React.Dispatch<React.SetStateAction<number | null>>
-  ];
-  handleCategoryClick: (e: React.ChangeEvent<HTMLLIElement>) => void;
+  selectCategoryIdx: (categoryIdx: number | undefined) => void;
 }
 
 export const CategoryPopup = ({
   categoryState,
   categoryPopupOpenState,
-  selectedCategoryIdxState,
+  selectCategoryIdx,
 }: CategoryPopupProps) => {
   const [isOpen, setOpen] = categoryPopupOpenState;
   const { data, error } = categoryState;
-  const [_, setSelectedIdx] = selectedCategoryIdxState;
 
   return (
     <Portal id="modal-root" slide="left" isOpen={isOpen}>
@@ -60,7 +55,7 @@ export const CategoryPopup = ({
                   onClick={({ currentTarget }) => {
                     const target = currentTarget as HTMLLIElement;
                     const categoryIdx = parseInt(target.id);
-                    !isNaN(categoryIdx) && setSelectedIdx(categoryIdx);
+                    !isNaN(categoryIdx) && selectCategoryIdx(categoryIdx);
                     setOpen(false);
                   }}
                 ></CategoryElement>

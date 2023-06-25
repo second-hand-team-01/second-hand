@@ -10,31 +10,30 @@ import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
 
+interface CategoryAndPage {
+  page: number;
+  categoryIdx: number | undefined;
+}
+
 export const HomePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [page, setPage] = useState(0);
   const [hasNext, setHasNext] = useState(true);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
   const [categoryState] = useFetch(getCategoryAPI, [], true);
+  const [categoryAndPage, setCategoryAndPage] = useState<CategoryAndPage>({
+    page: 0,
+    categoryIdx: undefined,
+  });
+  const { page, categoryIdx } = categoryAndPage;
 
-  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
-    null
-  );
-
-  const runAPI = async (page: number) => {
+  const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
     !loading && setLoading(true);
     errorMsg && setErrorMsg(null);
 
-    const getCategoryIdx = () => {
-      if (selectedCategoryIdx && selectedCategoryIdx !== -1) {
-        return selectedCategoryIdx;
-      } else return undefined;
-    };
-
-    const { data, error } = await getItemsAPI(page, getCategoryIdx());
+    const { data, error } = await getItemsAPI(page, categoryIdx);
     if (error) return setErrorMsg(error.message);
     if (data) {
       setHasNext(data.hasNext);
@@ -48,29 +47,28 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    runAPI(page);
-  }, [page]);
-
-  useEffect(() => {
-    if (selectedCategoryIdx !== null) {
-      if (selectedCategoryIdx === -1) {
-        setPage(0);
-        runAPI(0);
-      } else if (page === 0) {
-        runAPI(0);
-      } else {
-        setPage(0);
-      }
-    }
-  }, [selectedCategoryIdx]);
+    runAPI(categoryAndPage);
+  }, [categoryAndPage]);
 
   const [items, setItems] = useState<ListItemPropsWithId[]>([]);
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
-        if (!loading && hasNext) setPage((prevPage) => prevPage + 1);
+        if (!loading && hasNext) {
+          setCategoryAndPage((prevCategoryAndPage) => ({
+            ...prevCategoryAndPage,
+            page: prevCategoryAndPage.page + 1,
+          }));
+        }
       }
+    });
+  };
+
+  const handleDeleteBtn = () => {
+    setCategoryAndPage({
+      page: 0,
+      categoryIdx: undefined,
     });
   };
 
@@ -83,10 +81,10 @@ export const HomePage = () => {
           type: 'filter',
           filterBarOptions: {
             region: '우면동',
-            handleFilterBtnClick: (e) => setCategoryPopupOpen(true),
-            handleDeleteBtn: () => setSelectedCategoryIdx(-1),
+            handleFilterBtnClick: () => setCategoryPopupOpen(true),
+            handleDeleteBtn,
             selectedCategory: categoryState.data?.find(
-              (category) => category.idx === selectedCategoryIdx
+              (category) => category.idx === categoryIdx
             ),
           },
         }}
@@ -125,8 +123,12 @@ export const HomePage = () => {
       <CategoryPopup
         categoryState={categoryState}
         categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
-        selectedCategoryIdxState={[selectedCategoryIdx, setSelectedCategoryIdx]}
-        handleCategoryClick={async () => await getItemsAPI(page)}
+        selectCategoryIdx={(selectedCategoryIdx) =>
+          setCategoryAndPage({
+            categoryIdx: selectedCategoryIdx,
+            page: 0,
+          })
+        }
       ></CategoryPopup>
     </>
   );
