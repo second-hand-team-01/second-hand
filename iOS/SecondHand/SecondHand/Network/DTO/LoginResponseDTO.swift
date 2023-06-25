@@ -17,10 +17,10 @@ struct LoginResponseDTO: Codable {
     struct ResponseData: Codable {
         let accessToken: String
         let memeberInfo: MemberInfo
-
-        struct MemberInfo: Codable {
-            let memeberIdx: Int
-            let loginId: String
-        }
+    }
+    
+    struct MemberInfo: Codable {
+        let memeberIdx: Int
+        let loginId: String
     }
 }
