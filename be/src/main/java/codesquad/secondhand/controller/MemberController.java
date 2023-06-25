@@ -6,7 +6,6 @@ import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
-import codesquad.secondhand.dto.member.SignUpResponseDto;
 import codesquad.secondhand.dto.token.TokenResponse;
 import codesquad.secondhand.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<ResponseDto<?>> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
         memberService.signUp(signUpRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS,null));
+        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, null));
     }
 
     @PostMapping("/login")

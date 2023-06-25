@@ -1,7 +1,7 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.dto.location.LocationDto;
+import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

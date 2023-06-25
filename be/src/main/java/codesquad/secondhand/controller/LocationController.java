@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static codesquad.secondhand.exception.code.CommonResponseCode.RESPONSE_SUCCESS;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor

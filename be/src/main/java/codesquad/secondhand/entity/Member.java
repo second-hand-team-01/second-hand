@@ -1,8 +1,6 @@
 package codesquad.secondhand.entity;
 
-import codesquad.secondhand.dto.location.LocationDto;
 import codesquad.secondhand.dto.member.SaveMemberDto;
-import codesquad.secondhand.dto.member.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,11 +42,6 @@ public class Member {
         this.subLocation = subLocation;
     }
 
-    public void updateLocations(Location newMainLocation, Location newSubLocation) {
-        this.mainLocation = newMainLocation;
-        this.subLocation = newSubLocation;
-    }
-
     public static Member of(SaveMemberDto saveMemberDto) {
         return new Member(
                 saveMemberDto.getLoginId(),
@@ -57,5 +50,10 @@ public class Member {
                 saveMemberDto.getMainLocation(),
                 saveMemberDto.getSubLocation()
         );
+    }
+
+    public void updateLocations(Location newMainLocation, Location newSubLocation) {
+        this.mainLocation = newMainLocation;
+        this.subLocation = newSubLocation;
     }
 }

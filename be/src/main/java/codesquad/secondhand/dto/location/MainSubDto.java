@@ -2,7 +2,6 @@ package codesquad.secondhand.dto.location;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 @NoArgsConstructor

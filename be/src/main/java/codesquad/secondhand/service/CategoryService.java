@@ -1,7 +1,7 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.dto.category.CategoryDto;
+import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,5 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.repository.ItemImageRepository;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -23,27 +22,27 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ImageService {
+    private static final int MAX_FILE_NUMBER = 10;
+    private static final String FILE_EXTENSION_DOT = "\\.";
     private final AmazonS3 amazonS3;
     @Value("${aws.s3.bucket}")
     private String bucketName;
-    private static final int MAX_FILE_NUMBER = 10;
-    private static final String FILE_EXTENSION_DOT = "\\.";
 
     public List<String> upload(List<MultipartFile> multipartFileList, String memberId) {
         List<String> urlList = new ArrayList<>();
 
-        if(multipartFileList.size() > MAX_FILE_NUMBER) {
+        if (multipartFileList.size() > MAX_FILE_NUMBER) {
             // TODO MaxFileNumberException 변경
             throw new IllegalArgumentException();
         }
 
-        for(MultipartFile multipartFile : multipartFileList) {
+        for (MultipartFile multipartFile : multipartFileList) {
             validateFile(multipartFile);
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
             String originFileName = multipartFile.getOriginalFilename();
 
-            if(originFileName == null) {
+            if (originFileName == null) {
                 originFileName = UUID.randomUUID().toString();
             }
 
@@ -63,7 +62,7 @@ public class ImageService {
     }
 
     private void validateFile(MultipartFile multipartFile) {
-        if(multipartFile.isEmpty()) {
+        if (multipartFile.isEmpty()) {
             //TODO EmptyFileException 변경
             throw new IllegalArgumentException();
         }

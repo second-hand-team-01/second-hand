@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 class JasyptConfigTest {
 
     @Test
-    void jasypt(){
+    void jasypt() {
         String url = System.getProperty("db.url");
         String username = System.getProperty("db.username");
         String password = System.getProperty("db.password");
@@ -53,7 +53,7 @@ class JasyptConfigTest {
         return encryptor.encrypt(input);
     }
 
-    private String jasyptDecryt(String input){
+    private String jasyptDecryt(String input) {
         String key = System.getProperty("password");
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setAlgorithm("PBEWithMD5AndDES");

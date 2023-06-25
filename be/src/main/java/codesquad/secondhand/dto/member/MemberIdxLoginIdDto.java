@@ -1,7 +1,5 @@
 package codesquad.secondhand.dto.member;
 
-import codesquad.secondhand.dto.location.LocationTownDto;
-import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

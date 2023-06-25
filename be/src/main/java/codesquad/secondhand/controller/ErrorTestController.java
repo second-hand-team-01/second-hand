@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static codesquad.secondhand.exception.code.MemberErrorCode.*;
+import static codesquad.secondhand.exception.code.MemberErrorCode.AUTHENTICATION_INVALID_USER;
+import static codesquad.secondhand.exception.code.MemberErrorCode.REQUIRED_SIGNUP;
 
 @Slf4j
 @RestController

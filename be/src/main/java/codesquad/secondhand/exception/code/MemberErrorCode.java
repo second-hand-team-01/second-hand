@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum MemberErrorCode implements Code{
+public enum MemberErrorCode implements Code {
 
     AUTHENTICATION_INVALID_USER(false, 401, -40104, "이용할 수 없는 사용자입니다."),
     SAME_ID_ALREADY_EXISTS(false, 400, -40000, "중복된 ID입니다."),
