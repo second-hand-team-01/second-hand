@@ -1,17 +1,9 @@
 package codesquad.secondhand.service;
 
-import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
-import codesquad.secondhand.dto.oauth.OauthLoginResponse;
-import codesquad.secondhand.dto.oauth.OauthTokenResponse;
-import codesquad.secondhand.dto.oauth.MemberProfile;
-import codesquad.secondhand.entity.Member;
-import codesquad.secondhand.jwt.JwtTokenProvider;
-import codesquad.secondhand.oauth.InMemoryProviderRepository;
-import codesquad.secondhand.oauth.OauthAttributes;
-import codesquad.secondhand.oauth.OauthProvider;
-import codesquad.secondhand.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -20,10 +12,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.oauth.MemberProfile;
+import codesquad.secondhand.dto.oauth.OauthLoginResponse;
+import codesquad.secondhand.dto.oauth.OauthTokenResponse;
+import codesquad.secondhand.entity.Member;
+import codesquad.secondhand.jwt.JwtTokenProvider;
+import codesquad.secondhand.oauth.InMemoryProviderRepository;
+import codesquad.secondhand.oauth.OauthAttributes;
+import codesquad.secondhand.oauth.OauthProvider;
+import codesquad.secondhand.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -64,7 +64,8 @@ public class OauthService {
 		return randomId;
 	}
 
-	private MemberProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse, OauthProvider provider) {
+	private MemberProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse,
+		OauthProvider provider) {
 		Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
 
 		return OauthAttributes.extract(providerName, userAttributes);

@@ -18,13 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OauthController {
 
-    private final OauthService oauthService;
+	private final OauthService oauthService;
 
-    @GetMapping("/login/oauth/{provider}")
-    public ResponseDto<OauthLoginResponse> oauthLogin(@PathVariable String provider, @RequestParam String code) {
-        log.info("provider" + provider);
-        log.info("code" + code);
-        OauthLoginResponse oauthLoginResponse = oauthService.oauthLogin(provider, code);
-        return ResponseDto.of(RESPONSE_SUCCESS, oauthLoginResponse);
-    }
+	@GetMapping("/login/oauth/{provider}")
+	public ResponseDto<OauthLoginResponse> oauthLogin(@PathVariable String provider, @RequestParam String code) {
+		log.info("provider" + provider);
+		log.info("code" + code);
+		OauthLoginResponse oauthLoginResponse = oauthService.oauthLogin(provider, code);
+		return ResponseDto.of(RESPONSE_SUCCESS, oauthLoginResponse);
+	}
 }
