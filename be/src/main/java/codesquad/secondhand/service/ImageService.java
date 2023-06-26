@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
-	private static final String FILE_EXTENSION_DOT = "\\.";
+	private static final String FILE_EXTENSION_DOT = ".";
 	private static final int MEMBER_PROFILE_SIZE = 1;
 
 	private final AmazonS3 amazonS3;
@@ -94,22 +94,22 @@ public class ImageService {
 	private String memberProfileFileNameConvert(String originalFileName, String memberId, MultipartFile multipartFile) {
 		StringBuilder sb = new StringBuilder();
 		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
-		String fileName = originalFileName.substring(lastDot);
+		String fileName = originalFileName.substring(lastDot + 1); // 수정된 부분
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd_HH-mm"); // 수정된 부분
 		String initDate = simpleDateFormat.format(date);
-		sb.append("/")
-			.append("member-profile-image")
+		sb.append("member-profile-image")
+			.append("/")
+			.append(memberId)
 			.append("/")
 			.append(memberId)
 			.append("_")
-			.append(fileName)
-			.append("_")
-			.append(simpleDateFormat.format(date))
+			.append(initDate) // 수정된 부분
 			.append(".")
-			.append(originalFileName);
+			.append(fileName); // 수정된 부분
 		return sb.toString();
 	}
+
 
 	private String itemFileNameConvert(String originalFileName, String memberId, int multipartFileListSize) {
 		StringBuilder sb = new StringBuilder();
