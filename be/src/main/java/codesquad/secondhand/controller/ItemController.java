@@ -23,12 +23,12 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<ItemSliceDto>> showItems(@RequestParam(required = false) Long locationIdx,
+    public ResponseDto<ItemSliceDto> showItems(@RequestParam(required = false) Long locationIdx,
                                                                @RequestParam(defaultValue = "0") int page) {
         log.info("[ItemController.showItems()]");
         Pageable pageable = PageRequest.of(page, 10);
         ItemSliceDto itemSliceDto = itemService.showItems(locationIdx, pageable);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto));
+        return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
     }
 
 }

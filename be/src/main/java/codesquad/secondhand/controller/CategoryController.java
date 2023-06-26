@@ -23,10 +23,10 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<ResponseListDto<CategoryDto>> showCategories() {
+    public ResponseListDto<CategoryDto> showCategories() {
         log.info("[CategoryController.showCategories]");
         List<CategoryDto> categoryDtos = categoryService.showAllCategories();
-        return ResponseEntity.ok(ResponseListDto.of(RESPONSE_SUCCESS, categoryDtos));
+        return ResponseListDto.of(RESPONSE_SUCCESS, categoryDtos);
     }
 
 }

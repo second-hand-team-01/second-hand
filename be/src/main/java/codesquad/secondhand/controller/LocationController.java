@@ -22,10 +22,10 @@ public class LocationController {
     private final LocationService locationService;
 
     @GetMapping
-    public ResponseEntity<ResponseListDto<LocationDto>> showLocations() {
+    public ResponseListDto<LocationDto> showLocations() {
         log.info("[LocationController.showLocations]");
         List<LocationDto> locationDtos = locationService.showAllLocations();
-        return ResponseEntity.ok(ResponseListDto.of(RESPONSE_SUCCESS, locationDtos));
+        return ResponseListDto.of(RESPONSE_SUCCESS, locationDtos);
     }
 
 }

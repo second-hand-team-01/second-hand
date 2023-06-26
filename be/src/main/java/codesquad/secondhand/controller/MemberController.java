@@ -23,36 +23,36 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto<?>> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
+    public ResponseDto<?> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
         memberService.signUp(signUpRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS,null));
+        return ResponseDto.of(RESPONSE_SUCCESS,null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto<TokenResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
         MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
         MemberIdxLoginIdDto memberIdxLoginId = memberService.getMemberIdxLoginId(memberIdxTokenDto.getMemberIdx());
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(memberIdxTokenDto.getToken(), memberIdxLoginId)));
+        return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(memberIdxTokenDto.getToken(), memberIdxLoginId));
     }
 
     @GetMapping("/info")
-    public ResponseEntity<ResponseDto<MemberInfoDto>> showMemberInfo(HttpServletRequest request) {
+    public ResponseDto<MemberInfoDto> showMemberInfo(HttpServletRequest request) {
         Long memberIdx = (Long) request.getAttribute("memberIdx");
         MemberInfoDto memberInfo = memberService.getMemberInfo(memberIdx);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, memberInfo));
+        return ResponseDto.of(RESPONSE_SUCCESS, memberInfo);
     }
 
     @GetMapping("/location")
-    public ResponseEntity<ResponseDto<MainSubTownDto>> showMemberLocations(HttpServletRequest request) {
+    public ResponseDto<MainSubTownDto> showMemberLocations(HttpServletRequest request) {
         Long memberIdx = (Long) request.getAttribute("memberIdx");
         MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(memberIdx);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
+        return ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto);
     }
 
     @PutMapping("/location")
-    public ResponseEntity<ResponseDto<MainSubTownDto>> updateMemberLocations(@RequestBody MainSubDto mainSubDto, HttpServletRequest request) {
+    public ResponseDto<MainSubTownDto> updateMemberLocations(@RequestBody MainSubDto mainSubDto, HttpServletRequest request) {
         Long memberIdx = (Long) request.getAttribute("memberIdx");
         MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(memberIdx, mainSubDto);
-        return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
+        return ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto);
     }
 }
