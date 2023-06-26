@@ -21,17 +21,6 @@ spring:
     username: ENC(L0kzYFpSX3w8Kp4vGkamFw==)
     password: ENC(+l0rNkHYeHjfoTmkxYate/tZxZ+6B/KM)
     driver-class-name: com.mysql.cj.jdbc.Driver
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId:
-            clientSecret:
-            redirectUri:
-    user:
-      name:
-      password:
 security:
   jwt:
     token:
