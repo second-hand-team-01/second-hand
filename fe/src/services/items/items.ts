@@ -215,7 +215,7 @@ export const postItemsAPI = async (body: ItemReqBody) => {
   }
 };
 
-export const editItemsAPI = async (body: ItemReqBody) => {
+export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
   const convertedBody = convertItemReqBodyToAPIReqBody(body);
   if (!convertedBody)
     return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
@@ -232,7 +232,7 @@ export const editItemsAPI = async (body: ItemReqBody) => {
 
   try {
     const res = await customFetch<FormData, null>({
-      path: '/items',
+      path: `/items/${itemIdx}`,
       method: 'PATCH',
       body: formData,
     });
@@ -270,4 +270,22 @@ export const convertDataToBody = (
 export const getRandomCategories = (categories: Category[]) => {
   if (categories) return getRandomElements(categories, 3);
   else return [];
+};
+
+export const deleteItemsAPI = async (itemIdx: number) => {
+  try {
+    const res = await customFetch<FormData, null>({
+      path: `/items/${itemIdx}`,
+      method: 'DELETE',
+    });
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      data: null,
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
 };

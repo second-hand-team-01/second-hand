@@ -8,7 +8,7 @@ export const Dropdown = styled.button`
   gap: 4px;
   width: fit-content;
   font-weight: ${({ theme }) => theme.typography.headline.fontWeight};
-  size: ${({ theme }) => theme.typography.headline.size};
+  font-size: ${({ theme }) => theme.typography.headline.size};
   line-height: ${({ theme }) => theme.typography.headline.lineHeight};
   border-radius: 100%;
   border: none;

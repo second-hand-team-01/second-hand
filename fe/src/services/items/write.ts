@@ -96,14 +96,10 @@ export const uploadPostItems = async ({
   return result as Response<PostItemRes>;
 };
 
-export const uploadEditItems = async ({
-  title,
-  description,
-  images,
-  price,
-  categoryIdx,
-  locationIdx,
-}) => {
+export const uploadEditItems = async (
+  itemIdx: number,
+  { title, description, images, price, categoryIdx, locationIdx }
+) => {
   const body = convertDataToBody(
     title,
     description,
@@ -112,6 +108,6 @@ export const uploadEditItems = async ({
     categoryIdx as number,
     locationIdx
   );
-  const result = await editItemsAPI(body);
+  const result = await editItemsAPI(itemIdx, body);
   return result as Response<null>;
 };

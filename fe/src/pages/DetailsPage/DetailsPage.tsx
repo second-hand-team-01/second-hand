@@ -11,8 +11,9 @@ import {
   Error,
   Button,
   Menu,
+  Dialog,
 } from '@commons/index';
-import { getItemDetailAPI } from '@services/items/items';
+import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +29,8 @@ export const DetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -61,7 +64,10 @@ export const DetailsPage = () => {
               shape="ghost"
               isWidthFitContent={true}
               color="accentText"
-              onClick={() => setMenuOpen(true)}
+              onClick={() => {
+                console.log('dddd');
+                setMenuOpen(true);
+              }}
             ></Button>
           ),
           isTransparent: true,
@@ -120,18 +126,64 @@ export const DetailsPage = () => {
             state: 'default',
             color: 'systemDefault',
             name: '게시글 수정',
-            onClick: () => navigate(`/edit/${itemIdx}`, { state: details }),
+            onClick: () => navigate(`/edit/${itemIdx}`),
           },
           {
             shape: 'large',
             state: 'default',
             color: 'systemWarning',
             name: '삭제',
-            onClick: () => console.log('d'),
+            onClick: () => setDeleteDialogOpen(true),
           },
         ]}
         openState={[menuOpen, setMenuOpen]}
       ></Menu>
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        btnInfos={{
+          left: {
+            text: '취소',
+            onClick: () => {
+              setDeleteDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+          right: {
+            text: '삭제',
+            onClick: async () => {
+              const { error } = await deleteItemsAPI(Number(itemIdx));
+              if (error) return setErrorDialogOpen(true);
+              setMenuOpen(false);
+              navigate('/');
+            },
+            color: 'systemWarning',
+          },
+        }}
+        handleBackDropClick={() => {
+          setDeleteDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        정말 삭제하시겠어요?
+      </Dialog>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: async () => {
+              setErrorDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => {
+          setErrorDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        에러가 발생했습니다.
+      </Dialog>
     </Layout>
   );
 };

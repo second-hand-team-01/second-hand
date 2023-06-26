@@ -18,6 +18,7 @@ export const Menu = ({
   openState,
 }: MenuProps) => {
   const [isOpen, setIsOpen] = openState;
+  console.log('menu', isOpen);
 
   const backDropHandler = ({
     target,
@@ -45,7 +46,12 @@ export const Menu = ({
         </S.ButtonContainer>
         {location === 'bottom' && (
           <S.ButtonContainer>
-            <S.MenuButton shape="large" state="default" fontWeight="semibold">
+            <S.MenuButton
+              shape="large"
+              state="default"
+              fontWeight="semibold"
+              onClick={() => setIsOpen(false)}
+            >
               취소
             </S.MenuButton>
           </S.ButtonContainer>

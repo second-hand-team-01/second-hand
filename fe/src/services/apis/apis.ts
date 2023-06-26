@@ -4,7 +4,7 @@ import { getAccessToken } from '@services/login/login';
 import { ERROR_MESSAGE } from '@constants/error';
 
 export interface FetchProps<B> {
-  method: 'GET' | 'POST' | 'PATCH' | 'PUT';
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   path: string;
   queries?: object;
   body?: B;
