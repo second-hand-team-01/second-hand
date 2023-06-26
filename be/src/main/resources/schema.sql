@@ -22,12 +22,12 @@ DROP TABLE IF EXISTS `second-hand`.`member` ;
 
 CREATE TABLE IF NOT EXISTS `second-hand`.`member` (
   `member_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
-  `main_location_idx` BIGINT(10) NOT NULL,
+  `main_location_idx` BIGINT(10) NULL,
   `sub_location_idx` BIGINT(10) NULL,
   `login_id` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NULL,
   `image_url` VARCHAR(500) NULL,
-  `refresh_token` VARCHAR(500) NULL,
+  `oauth_id` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`member_idx`),
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) VISIBLE,
   INDEX `fk_member_location1_idx` (`main_location_idx` ASC) VISIBLE,
