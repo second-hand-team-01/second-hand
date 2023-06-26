@@ -9,6 +9,8 @@ import {
   Dropdown,
   Loading,
   Error,
+  Button,
+  Menu,
 } from '@commons/index';
 import { getItemDetailAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
@@ -23,6 +25,7 @@ export const DetailsPage = () => {
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +53,15 @@ export const DetailsPage = () => {
               color="accentText"
             ></NavbarBtn>
           ),
-          rightBtn: <NavbarBtn icon="more" color="accentText"></NavbarBtn>,
+          rightBtn: (
+            <Button
+              icon="more"
+              shape="ghost"
+              isWidthFitContent={true}
+              color="accentText"
+              onClick={() => setMenuOpen(true)}
+            ></Button>
+          ),
           isTransparent: true,
         },
       }}
@@ -99,6 +110,19 @@ export const DetailsPage = () => {
           </S.Contents>
         </S.DetailsPages>
       )}
+      <Menu
+        location="bottom"
+        menuButtonPropsList={[
+          {
+            shape: 'small',
+            state: 'default',
+            color: 'neutralText',
+            name: '안녕',
+            onClick: () => console.log('d'),
+          },
+        ]}
+        openState={[menuOpen, setMenuOpen]}
+      ></Menu>
     </Layout>
   );
 };

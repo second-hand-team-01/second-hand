@@ -6,6 +6,7 @@ import { Portal } from '@components/commons';
 interface MenuProps extends MenuStyleProps {
   menuButtonPropsList: MenuButtonProps[];
   onClick?: () => void;
+  openState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 // TODO: props로 받은 onClick을 MenuButton에 전달해야 함
@@ -14,8 +15,9 @@ export const Menu = ({
   location,
   menuButtonPropsList,
   parentHeight,
+  openState,
 }: MenuProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = openState;
 
   const backDropHandler = ({
     target,

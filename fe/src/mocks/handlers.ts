@@ -3,17 +3,24 @@ import page0 from './data/items/page0.json';
 import page1 from './data/items/page1.json';
 import page2 from './data/items/page2.json';
 import { items } from './data/items/items';
+import categoryPage0 from './data/items/category-page0.json';
+import categoryPage1 from './data/items/category-page1.json';
 import details from './data/items/details.json';
 import category from './data/category.json';
 import { HOST } from '@constants/apis';
 import CLIENT_ERROR from './data/error/400.json';
 
 const itemList = [page0, page1, page2];
+const categoryItemList = [categoryPage0, categoryPage1];
 
 export const handlers = [
   rest.get(`${HOST}/items`, (req, res, ctx) => {
     const query = req.url.searchParams;
-    const page = query.get('page');
+    const page = query.get('currentPageNum');
+    const categoryIdx = query.get('categoryIdx');
+
+    if (categoryIdx)
+      return res(ctx.status(200), ctx.json(categoryItemList[Number(page)]));
     return res(ctx.status(200), ctx.json(itemList[Number(page)]));
   }),
 

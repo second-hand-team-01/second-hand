@@ -13,7 +13,7 @@ import { Response } from '@hooks/useFetch/useFetch';
 import { ERROR_MESSAGE } from '@constants/error';
 import { Image } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
-import { getRandomElements } from '@utils/common/common';
+import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
 
 export const convertItemsToListItems = (
   items: Item[]
@@ -50,12 +50,22 @@ export const convertItemsToListItems = (
   });
 };
 
-export const getItemsAPI = async (page: number) => {
+export const getItemsAPI = async (
+  page: number,
+  categoryIdx?: number,
+  locationIdx?: number
+) => {
+  const queries = removeEmptyKeyValues({
+    currentPageNum: page,
+    categoryIdx,
+    locationIdx: 1, //TODO
+  });
+
   try {
     const res = (await customFetch<null, GetItemsRes>({
       path: '/items',
       method: 'GET',
-      queries: { page },
+      queries,
     })) as Response<GetItemsRes>;
 
     if (!res || !res.data || res.error) {

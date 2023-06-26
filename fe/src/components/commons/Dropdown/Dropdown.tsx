@@ -5,7 +5,7 @@ import { Icon } from '@components/commons/index';
 interface DropdownProps {
   children: ReactElement | string;
   isOpen: boolean;
-  onClick: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const Dropdown = ({ children, isOpen, onClick }: DropdownProps) => {

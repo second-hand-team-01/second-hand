@@ -6,8 +6,8 @@ export interface APICategory {
 
 export interface Category {
   idx: number;
-  name: string;
+  text: string;
   imgUrl: string;
 }
 
-export type CategoryRes = Category[];
+export type CategoryRes = APICategory[];

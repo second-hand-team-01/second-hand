@@ -11,7 +11,7 @@ export const convertResToCategory = (categories: APICategory[]): Category[] => {
     const { idx, name, imgUrl } = category;
     const newCategory: Category = {
       idx,
-      name,
+      text: name,
       imgUrl,
     };
     return newCategory;
