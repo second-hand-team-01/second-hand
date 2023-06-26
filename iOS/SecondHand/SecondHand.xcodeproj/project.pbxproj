@@ -28,6 +28,7 @@
 		633AC5B72A487B0300A34501 /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B62A487B0300A34501 /* AccountInfoView.swift */; };
 		633AC5BD2A49224F00A34501 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5BC2A49224F00A34501 /* LoginView.swift */; };
 		633AC5BF2A495B4400A34501 /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5BE2A495B4400A34501 /* AccountInfoViewController.swift */; };
+		633AC5CA2A499FC700A34501 /* UIViewController+setTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */; };
 		63608CBF2A4061E0006CD876 /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CBE2A4061E0006CD876 /* ProductInfo.swift */; };
 		63608CC62A407FB8006CD876 /* CommunicationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC52A407FB8006CD876 /* CommunicationInfo.swift */; };
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
@@ -130,6 +131,7 @@
 		633AC5B62A487B0300A34501 /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 		633AC5BC2A49224F00A34501 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		633AC5BE2A495B4400A34501 /* AccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
+		633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+setTitle.swift"; sourceTree = "<group>"; };
 		63608CBE2A4061E0006CD876 /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
 		63608CC52A407FB8006CD876 /* CommunicationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationInfo.swift; sourceTree = "<group>"; };
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				633AC5B22A480C6C00A34501 /* LogManager.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
+				633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */,
 				63D98E892A4546C600DF467A /* Network */,
 				63D98E882A45462D00DF467A /* Factory */,
 				FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */,
@@ -752,6 +755,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				633AC5CA2A499FC700A34501 /* UIViewController+setTitle.swift in Sources */,
 				633AC5BF2A495B4400A34501 /* AccountInfoViewController.swift in Sources */,
 				FFD62C222A3C1BBF0014D2D4 /* TimeLabel.swift in Sources */,
 				FFD62C252A3C1BBF0014D2D4 /* PriceLabel.swift in Sources */,

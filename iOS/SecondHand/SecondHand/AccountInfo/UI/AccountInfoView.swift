@@ -10,30 +10,49 @@ import UIKit
 class AccountInfoView: UIView {
     private var profileImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "person.fill")
         imageView.layer.cornerRadius = imageView.frame.height / 2
         return imageView
     }()
     private var userNameLabel: UILabel = {
         let label = UILabel()
         label.font = .typo.headLine
+        label.textAlignment = .center
         return label
     }()
     private var logoutButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = .typo.subHead
+        button.tintColor = .white
+        button.setTitle("로그아웃", for: .normal)
+        button.layer.cornerRadius = 8
+        button.backgroundColor = .orange
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+            top: 16,
+            leading: 20,
+            bottom: 16,
+            trailing: 20
+        )
+        button.configuration = configuration
         return button
     }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layoutConstraints()
+        self.addConstraints()
     }
 
-    private func layoutConstraints() {
+    private func addConstraints() {
         self.addSubviews()
-        self.layoutProfileImageView()
-        self.layoutUserNameLabel()
-        self.layoutLogoutButton()
+        self.addConstraintToProfileImageView()
+        self.addConstraintToUserNameLabel()
+        self.addConstraintToLogoutButton()
+    }
+    
+    func configure(userName: String) {
+        self.userNameLabel.text = "\(userName)"
     }
 }
 
@@ -52,7 +71,7 @@ extension AccountInfoView {
         }
     }
     
-    private func layoutProfileImageView() {
+    private func addConstraintToProfileImageView() {
         guard let screenWidth = self.window?.windowScene?.screen.bounds.size.width else { return }
         let widthRatio: CGFloat = 0.2
         
@@ -64,7 +83,7 @@ extension AccountInfoView {
         ])
     }
     
-    private func layoutUserNameLabel() {
+    private func addConstraintToUserNameLabel() {
         let topConstraint: CGFloat = 24
         
         NSLayoutConstraint.activate([
@@ -80,7 +99,7 @@ extension AccountInfoView {
         ])
     }
     
-    private func layoutLogoutButton() {
+    private func addConstraintToLogoutButton() {
         let topConstraint: CGFloat = 276
         
         NSLayoutConstraint.activate([
