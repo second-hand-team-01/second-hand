@@ -13,13 +13,17 @@ class LoginView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layoutConstraints()
+        self.addConstraints()
     }
 
-    private func layoutConstraints() {
+    private func addConstraints() {
         addSubviews()
-        layoutAccountInputView()
-        layoutLoginButtonGroupView()
+        addConstraintToAccountInputView()
+        addConstraintToLoginButtonGroupView()
+    }
+    
+    func getEnteredInfo() -> (String?, String?) {
+        return (accountInputView.getEnteredId(), accountInputView.getEnteredPassword())
     }
 }
 
@@ -37,7 +41,7 @@ extension LoginView {
         }
     }
 
-    private func layoutAccountInputView() {
+    private func addConstraintToAccountInputView() {
         NSLayoutConstraint.activate([
             self.accountInputView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.accountInputView.trailingAnchor.constraint(
@@ -47,7 +51,7 @@ extension LoginView {
         ])
     }
 
-    private func layoutLoginButtonGroupView() {
+    private func addConstraintToLoginButtonGroupView() {
         NSLayoutConstraint.activate([
             self.loginButtonGroupView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.loginButtonGroupView.trailingAnchor.constraint(
