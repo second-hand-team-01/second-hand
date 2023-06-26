@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class RestApiException extends RuntimeException {
-
+public class EmptyFileException extends RuntimeException {
 	private final Code errorCode;
 
 	@Override

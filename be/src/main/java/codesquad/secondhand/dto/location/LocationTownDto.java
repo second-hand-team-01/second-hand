@@ -8,15 +8,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocationTownDto {
 
-    private final Long locationIdx;
-    private final String locationName;
+	private final Long locationIdx;
+	private final String locationName;
 
-    public static LocationTownDto of(Location location) {
-        if (location == null) {
-            return new LocationTownDto(null, null);
-        }
-        return new LocationTownDto(location.getLocationIdx(),
-                location.getTown());
-    }
+	public static LocationTownDto of(Location location) {
+		if (location == null) {
+			return new LocationTownDto(null, null);
+		}
+		return new LocationTownDto(location.getLocationIdx(),
+			location.getTown());
+	}
 
 }
