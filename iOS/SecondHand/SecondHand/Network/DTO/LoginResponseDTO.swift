@@ -16,7 +16,7 @@ struct LoginResponseDTO: Codable {
 
     struct ResponseData: Codable {
         let accessToken: String
-        let memeberInfo: MemberInfo
+        let memeberInfo: MemberInfo?
     }
     
     struct MemberInfo: Codable {
