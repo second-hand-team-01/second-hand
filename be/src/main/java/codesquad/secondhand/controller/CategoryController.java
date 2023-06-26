@@ -4,7 +4,6 @@ import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +23,10 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@GetMapping
-	public ResponseEntity<ResponseListDto<CategoryDto>> showCategories() {
+	public ResponseListDto<CategoryDto> showCategories() {
 		log.info("[CategoryController.showCategories]");
 		List<CategoryDto> categoryDtos = categoryService.showAllCategories();
-		return ResponseEntity.ok(ResponseListDto.of(RESPONSE_SUCCESS, categoryDtos));
+		return ResponseListDto.of(RESPONSE_SUCCESS, categoryDtos);
 	}
 
 }

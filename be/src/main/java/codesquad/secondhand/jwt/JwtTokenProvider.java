@@ -43,6 +43,15 @@ public class JwtTokenProvider {
 			.compact();
 	}
 
+	public Long getMemberIdx(String token) {
+		Integer memberIdx = (Integer)Jwts.parser()
+			.setSigningKey(secretKey)
+			.parseClaimsJws(token)
+			.getBody()
+			.get("memberIdx");
+		return memberIdx.longValue();
+	}
+
 	// 토큰에서 loginId 추출
 	public String getLoginId(String token) {
 		return (String)Jwts.parser()

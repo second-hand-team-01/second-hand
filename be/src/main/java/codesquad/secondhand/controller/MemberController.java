@@ -4,7 +4,6 @@ import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,8 @@ import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxTokenDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
 import codesquad.secondhand.dto.token.TokenResponse;
@@ -31,37 +32,38 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<ResponseDto<?>> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
+	public ResponseDto<?> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
 		memberService.signUp(signUpRequestDto);
-		return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, null));
+		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDto<TokenResponse>> login(@RequestBody LoginRequestDto loginRequestDto) {
-		String token = memberService.createToken(loginRequestDto);
-		return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS,
-			TokenResponse.of(token, memberService.getMemberIdxLoginId(loginRequestDto.getLoginId()))));
+	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
+		MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
+		MemberIdxLoginIdDto memberIdxLoginId = memberService.getMemberIdxLoginId(memberIdxTokenDto.getMemberIdx());
+		String accessToken = memberIdxTokenDto.getToken();
+		return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginId));
 	}
 
 	@GetMapping("/info")
-	public ResponseEntity<ResponseDto<MemberInfoDto>> showMemberInfo(HttpServletRequest request) {
-		String loginId = (String)request.getAttribute("loginId");
-		MemberInfoDto memberInfo = memberService.getMemberInfo(loginId);
-		return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, memberInfo));
+	public ResponseDto<MemberInfoDto> showMemberInfo(HttpServletRequest request) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		MemberInfoDto memberInfo = memberService.getMemberInfo(memberIdx);
+		return ResponseDto.of(RESPONSE_SUCCESS, memberInfo);
 	}
 
 	@GetMapping("/location")
-	public ResponseEntity<ResponseDto<MainSubTownDto>> showMemberLocations(HttpServletRequest request) {
-		String loginId = (String)request.getAttribute("loginId");
-		MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(loginId);
-		return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
+	public ResponseDto<MainSubTownDto> showMemberLocations(HttpServletRequest request) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		MainSubTownDto mainSubTownDto = memberService.getMainSubLocation(memberIdx);
+		return ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto);
 	}
 
 	@PutMapping("/location")
-	public ResponseEntity<ResponseDto<MainSubTownDto>> updateMemberLocations(@RequestBody MainSubDto mainSubDto,
+	public ResponseDto<MainSubTownDto> updateMemberLocations(@RequestBody MainSubDto mainSubDto,
 		HttpServletRequest request) {
-		String loginId = (String)request.getAttribute("loginId");
-		MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(loginId, mainSubDto);
-		return ResponseEntity.ok(ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto));
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(memberIdx, mainSubDto);
+		return ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto);
 	}
 }
