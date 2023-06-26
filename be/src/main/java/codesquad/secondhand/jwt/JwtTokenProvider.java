@@ -27,7 +27,6 @@ public class JwtTokenProvider {
 		this.validityInMilliseconds = validityInMilliseconds;
 	}
 
-	// 토큰 생성
 	public String createToken(MemberIdxLoginIdDto subject) {
 
 		Date now = new Date();
@@ -52,7 +51,6 @@ public class JwtTokenProvider {
 		return memberIdx.longValue();
 	}
 
-	// 토큰에서 loginId 추출
 	public String getLoginId(String token) {
 		return (String)Jwts.parser()
 			.setSigningKey(secretKey)
@@ -61,7 +59,6 @@ public class JwtTokenProvider {
 			.get("loginId");
 	}
 
-	// 유효한 토큰인지 확인
 	public boolean validateToken(String token) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
