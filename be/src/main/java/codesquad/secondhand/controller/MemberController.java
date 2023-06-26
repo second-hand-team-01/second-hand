@@ -31,7 +31,8 @@ public class MemberController {
     public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
         MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
         MemberIdxLoginIdDto memberIdxLoginId = memberService.getMemberIdxLoginId(memberIdxTokenDto.getMemberIdx());
-        return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(memberIdxTokenDto.getToken(), memberIdxLoginId));
+        String accessToken = memberIdxTokenDto.getToken();
+        return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginId));
     }
 
     @GetMapping("/info")
