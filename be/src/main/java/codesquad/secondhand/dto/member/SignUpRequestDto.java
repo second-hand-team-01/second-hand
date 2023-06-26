@@ -1,7 +1,5 @@
 package codesquad.secondhand.dto.member;
 
-import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -24,7 +22,7 @@ public class SignUpRequestDto {
 	@Size(min = 6, max = 12, message = "패스워드는 6자 이상 15자 이하로 입력해주세요.")
 	private String password;
 
-	private List<MultipartFile> image;
+	private MultipartFile image;
 	private Long mainLocationIdx;
 	private Long subLocationIdx;
 

@@ -2,8 +2,6 @@ package codesquad.secondhand.service;
 
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +39,11 @@ public class MemberService {
 				throw new RestApiException(SAME_ID_ALREADY_EXISTS);
 			});
 
-		List<String> urlList = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId());
+		String memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId());
 
 		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
 		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
-		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, urlList.get(0), main, sub);
+		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl, main, sub);
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
