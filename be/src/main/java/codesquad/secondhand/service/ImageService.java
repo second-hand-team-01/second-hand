@@ -104,12 +104,11 @@ public class ImageService {
 			.append("/")
 			.append(memberId)
 			.append("_")
-			.append(initDate) // 수정된 부분
+			.append(initDate)
 			.append(".")
-			.append(fileName); // 수정된 부분
+			.append(fileName);
 		return sb.toString();
 	}
-
 
 	private String itemFileNameConvert(String originalFileName, String memberId, int multipartFileListSize) {
 		StringBuilder sb = new StringBuilder();
