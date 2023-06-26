@@ -53,35 +53,25 @@ extension AccountInfoView {
     }
     
     private func layoutProfileImageView() {
-        let topConstant: CGFloat = 96
         guard let screenWidth = self.window?.windowScene?.screen.bounds.size.width else { return }
         let widthRatio: CGFloat = 0.2
         
         NSLayoutConstraint.activate([
             self.profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.profileImageView.topAnchor.constraint(
-                equalTo: self.topAnchor,
-                constant: topConstant
-            ),
+            self.profileImageView.topAnchor.constraint(equalTo: self.topAnchor),
             self.profileImageView.widthAnchor.constraint(equalToConstant: screenWidth * widthRatio),
             self.profileImageView.heightAnchor.constraint(equalTo: self.profileImageView.widthAnchor)
         ])
     }
     
     private func layoutUserNameLabel() {
-        let leadingConstraint: CGFloat = 15
-        let trailingConstraint: CGFloat = -15
         let topConstraint: CGFloat = 24
         
         NSLayoutConstraint.activate([
             self.userNameLabel.leadingAnchor.constraint(
-                equalTo: self.leadingAnchor,
-                constant: leadingConstraint
-            ),
+                equalTo: self.leadingAnchor),
             self.userNameLabel.trailingAnchor.constraint(
-                equalTo: self.trailingAnchor,
-                constant: trailingConstraint
-            ),
+                equalTo: self.trailingAnchor),
             self.userNameLabel.topAnchor.constraint(
                 equalTo: self.profileImageView.bottomAnchor,
                 constant: topConstraint
@@ -91,24 +81,18 @@ extension AccountInfoView {
     }
     
     private func layoutLogoutButton() {
-        let leadingConstraint: CGFloat = 16
-        let trailingConstraint: CGFloat = -16
         let topConstraint: CGFloat = 276
         
         NSLayoutConstraint.activate([
             self.logoutButton.leadingAnchor.constraint(
-                equalTo: self.leadingAnchor,
-                constant: leadingConstraint
-            ),
+                equalTo: self.leadingAnchor),
             self.logoutButton.trailingAnchor.constraint(
-                equalTo: self.trailingAnchor,
-                constant: trailingConstraint
-            ),
+                equalTo: self.trailingAnchor),
             self.logoutButton.topAnchor.constraint(
                 equalTo: self.userNameLabel.bottomAnchor,
                 constant: topConstraint
             ),
-            self.logoutButton.bottomAnchor.constraint(greaterThanOrEqualTo: self.bottomAnchor)
+            self.logoutButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

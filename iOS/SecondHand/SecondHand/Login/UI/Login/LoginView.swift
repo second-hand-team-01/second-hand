@@ -10,12 +10,12 @@ import UIKit
 class LoginView: UIView {
     private var accountInputView = AccountInputView(frame: CGRect.zero)
     private var loginButtonGroupView = LoginButtonGroupView(frame: CGRect.zero)
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layoutConstraints()
     }
-    
+
     private func layoutConstraints() {
         addSubviews()
         layoutAccountInputView()
@@ -30,13 +30,13 @@ extension LoginView {
             self.accountInputView,
             self.loginButtonGroupView
         ]
-        
+
         subViews.forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview($0)
         }
     }
-    
+
     private func layoutAccountInputView() {
         NSLayoutConstraint.activate([
             self.accountInputView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -46,7 +46,7 @@ extension LoginView {
             )
         ])
     }
-    
+
     private func layoutLoginButtonGroupView() {
         NSLayoutConstraint.activate([
             self.loginButtonGroupView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
