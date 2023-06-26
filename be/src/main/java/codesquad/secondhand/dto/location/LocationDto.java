@@ -10,27 +10,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LocationDto {
 
-    private Long locationIdx;
-    private String locationName;
-    private String city;
-    private String district;
-    private String town;
+	private Long locationIdx;
+	private String locationName;
+	private String city;
+	private String district;
+	private String town;
 
-    public static LocationDto of(Location location) {
-        return new LocationDto(location.getLocationIdx(),
-                buildLocationName(location),
-                location.getCity(),
-                location.getDistrict(),
-                location.getTown());
-    }
+	public static LocationDto of(Location location) {
+		return new LocationDto(location.getLocationIdx(),
+			buildLocationName(location),
+			location.getCity(),
+			location.getDistrict(),
+			location.getTown());
+	}
 
-    private static String buildLocationName(Location location) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(location.getCity())
-                .append(" ")
-                .append(location.getDistrict())
-                .append(" ")
-                .append(location.getTown());
-        return stringBuilder.toString();
-    }
+	private static String buildLocationName(Location location) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(location.getCity())
+			.append(" ")
+			.append(location.getDistrict())
+			.append(" ")
+			.append(location.getTown());
+		return stringBuilder.toString();
+	}
 }

@@ -7,10 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberIdxTokenDto {
 
-    private Long memberIdx;
-    private String token;
+	private Long memberIdx;
+	private String token;
 
-    public static MemberIdxTokenDto of(Long memberIdx, String token) {
-        return new MemberIdxTokenDto(memberIdx, token);
-    }
+	public static MemberIdxTokenDto of(Long memberIdx, String token) {
+		return new MemberIdxTokenDto(memberIdx, token);
+	}
 }

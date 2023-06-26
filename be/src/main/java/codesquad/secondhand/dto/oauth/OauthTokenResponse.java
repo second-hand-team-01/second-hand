@@ -1,6 +1,7 @@
 package codesquad.secondhand.dto.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,18 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OauthTokenResponse {
 
-    @JsonProperty("access_token")
-    private String accessToken;
+	@JsonProperty("access_token")
+	private String accessToken;
 
-    private String scope;
+	private String scope;
 
-    @JsonProperty("token_type")
-    private String tokenType;
+	@JsonProperty("token_type")
+	private String tokenType;
 
-    @Builder
-    public OauthTokenResponse(String accessToken, String scope, String tokenType) {
-        this.accessToken = accessToken;
-        this.scope = scope;
-        this.tokenType = tokenType;
-    }
+	@Builder
+	public OauthTokenResponse(String accessToken, String scope, String tokenType) {
+		this.accessToken = accessToken;
+		this.scope = scope;
+		this.tokenType = tokenType;
+	}
 }

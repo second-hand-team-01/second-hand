@@ -1,9 +1,14 @@
 package codesquad.secondhand.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @Entity
@@ -11,24 +16,24 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Location {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_idx")
-    private Long locationIdx;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "location_idx")
+	private Long locationIdx;
 
-    @Column(name = "city", nullable = false)
-    private String city;
+	@Column(name = "city", nullable = false)
+	private String city;
 
-    @Column(name = "district", nullable = false)
-    private String district;
+	@Column(name = "district", nullable = false)
+	private String district;
 
-    @Column(name = "town", nullable = false)
-    private String town;
+	@Column(name = "town", nullable = false)
+	private String town;
 
-    public Location(Long locationIdx, String city, String district, String town) {
-        this.locationIdx = locationIdx;
-        this.city = city;
-        this.district = district;
-        this.town = town;
-    }
+	public Location(Long locationIdx, String city, String district, String town) {
+		this.locationIdx = locationIdx;
+		this.city = city;
+		this.district = district;
+		this.town = town;
+	}
 }

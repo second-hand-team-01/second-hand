@@ -31,7 +31,7 @@ oauth2:
     github:
       client-id: bbdc7d55a4bad1b5bae9
       client-secret: ENC(enLB/MEvcV/Iu77ZcKFW1V5TcOWiIZmRX8MEj1y0LnKyMBgfl1Xm80Cr8f7K+XiI6sp49D6mbTk=)
-      redirect-uri: https://guardiansofthecodesquad.site/redirect/oauth
+      redirect-uri: http://localhost:3000/redirect/oauth
   provider:
     github:
       token-uri: https://github.com/login/oauth/access_token

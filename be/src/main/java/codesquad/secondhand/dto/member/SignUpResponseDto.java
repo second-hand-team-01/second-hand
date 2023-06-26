@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignUpResponseDto {
 
-    private final Long memberIdx;
+	private final Long memberIdx;
 
-    public static SignUpResponseDto of(Member member) {
-        return new SignUpResponseDto(member.getMemberIdx());
-    }
+	public static SignUpResponseDto of(Member member) {
+		return new SignUpResponseDto(member.getMemberIdx());
+	}
 }
