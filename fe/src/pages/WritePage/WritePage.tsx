@@ -10,30 +10,32 @@ import {
 } from '@components/commons';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import * as S from './WritePageStyle';
-import { useEffect, useState, useCallback } from 'react';
-import {
-  convertNumToPrice,
-  convertPriceToNum,
-  getType,
-  Type,
-} from '@utils/common/common';
-import { Category, CategoryRes } from '@type-store/services/category';
-import { ItemDetail } from '@type-store/services/items';
+import { useEffect, useState, useCallback, MouseEvent } from 'react';
+import { convertNumToPrice, convertPriceToNum } from '@utils/common/common';
+import { Category } from '@type-store/services/category';
+import { Image, PostItemRes } from '@type-store/services/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
-import { getItemDetailAPI } from '@services/items/items';
-import { Image, PostItemRes } from '@type-store/services/items';
 import {
   postItemsAPI,
   convertDataToBody,
   getRandomCategories,
+  editItemsAPI,
 } from '@services/items/items';
-import { ERROR_MESSAGE } from '@constants/error';
+import {
+  getDialogMessage,
+  useDetails,
+  checkAllFilled,
+  uploadPostItems,
+  uploadEditItems,
+} from '@services/items/write';
+
 import { Response } from '@hooks/useFetch/useFetch';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { itemIdx } = useParams();
 
   const [title, setTitle] = useState<string>('');
   const [categoryState] = useFetch(getCategoryAPI, [], true);
@@ -47,16 +49,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isAllFilled, setAllFilled] = useState(false);
   const locationIdx = -1; // TODO
-
-  const { data } = useDetails(type);
-
-  useEffect(() => {
-    if (!data) return;
-    const { title, description, images, price, category } = data;
-    setTitle(title);
-    setDescription(description);
-    setPrice(price);
-  }, [data]);
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     checkAllFilled([title, description, images, categoryIdx])
@@ -64,24 +57,80 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       : setAllFilled(false);
   }, [title, description, images, price, categoryIdx]);
 
-  const uploadPostItems = useCallback(async () => {
-    const body = convertDataToBody(
+  const [uploadState, uploadFetch] = useFetch<PostItemRes, []>(
+    uploadPostItems.bind(null, {
       title,
       description,
       images,
       price,
-      categoryIdx as number,
-      locationIdx
-    );
-    const result = await postItemsAPI(body);
-    return result as Response<PostItemRes>;
-  }, [title, description, images, price, categoryIdx]);
-
-  const [uploadState, uploadFetch] = useFetch<PostItemRes, []>(
-    uploadPostItems,
+      categoryIdx,
+      locationIdx,
+    }),
     []
   );
-  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const handlePostBtnClick = async () => {
+    await uploadFetch();
+    if (uploadState.error) return setDialogOpen(true);
+    const itemIdx = uploadState.data?.itemIdx;
+    if (!itemIdx) return setDialogOpen(true);
+    setDialogOpen(true);
+  };
+
+  const { details } = useDetails(type);
+
+  useEffect(() => {
+    const loadPrevDetails = () => {
+      if (type === 'write' || !details) return;
+      const { title, description, images, price, categoryIdx } = details;
+      setTitle(title);
+      setDescription(description);
+      setPrice(price);
+      setImages(images);
+      setCategoryIdx(categoryIdx);
+      const category = categoryState.data?.find(
+        (category) => categoryIdx === category.idx
+      );
+      if (!category) return;
+      setDisplayedCategories([category]);
+    };
+
+    loadPrevDetails();
+  }, [details]);
+
+  const [editState, editFetch] = useFetch<null, []>(
+    uploadEditItems.bind(null, {
+      title,
+      description,
+      images,
+      price,
+      categoryIdx,
+      locationIdx,
+    }),
+    []
+  );
+
+  const handleEditBtnClick = async () => {
+    await editFetch();
+    if (editState.error) {
+      return setDialogOpen(true);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleConfirmDialogBtnClick = () => {
+    type === 'write'
+      ? !uploadState.data && uploadState.error
+        ? setDialogOpen(false)
+        : navigate(`/item/${uploadState.data?.itemIdx}`, {
+            state: pathname,
+          })
+      : editState.error
+      ? setDialogOpen(false)
+      : navigate(`/item/${itemIdx}`, {
+          state: pathname,
+        });
+  };
 
   const handleCategoryBtnClick = ({ target }) => {
     const btn = target as HTMLButtonElement;
@@ -91,7 +140,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
     idx && setCategoryIdx(idx);
   };
 
-  const handleCategoryListClick = (e) => {
+  const handleCategoryListClick = (e: MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
     const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
@@ -115,20 +164,15 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   };
 
   useEffect(() => {
-    const randomCategories =
-      categoryState.data && getRandomCategories(categoryState.data);
-    randomCategories &&
-      categoryState.data &&
-      setDisplayedCategories(randomCategories);
+    const getDisplayedCategories = () => {
+      const randomCategories =
+        categoryState.data && getRandomCategories(categoryState.data);
+      randomCategories &&
+        categoryState.data &&
+        setDisplayedCategories(randomCategories);
+    };
+    getDisplayedCategories();
   }, [categoryState]);
-
-  const handlePostBtnClick = async () => {
-    await uploadFetch();
-    if (uploadState.error) return setDialogOpen(true);
-    const itemIdx = uploadState.data?.itemIdx;
-    if (!itemIdx) return setDialogOpen(true);
-    setDialogOpen(true);
-  };
 
   return (
     <Layout
@@ -142,7 +186,9 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
               title="완료"
               shape="medium"
               color="neutralText"
-              onClick={handlePostBtnClick}
+              onClick={
+                type === 'write' ? handlePostBtnClick : handleEditBtnClick
+              }
               state={isAllFilled ? 'default' : 'disabled'}
               backgroundColor="transparent"
             ></Button>
@@ -234,54 +280,14 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
           btnInfos={{
             right: {
               text: '확인',
-              onClick: () => {
-                !uploadState.data && uploadState.error
-                  ? setDialogOpen(false)
-                  : navigate(`/item/${uploadState.data?.itemIdx}`, {
-                      state: pathname,
-                    });
-              },
+              onClick: handleConfirmDialogBtnClick,
             },
           }}
           handleBackDropClick={() => setDialogOpen(false)}
         >
-          {!uploadState.data && uploadState.error
-            ? ERROR_MESSAGE.FILE_UPLOAD_ERROR
-            : '상품이 등록 되었어요.'}
+          {getDialogMessage(type, { uploadState, editState })}
         </Dialog>
       </S.WritePage>
     </Layout>
   );
-};
-
-const useDetails = (type: 'write' | 'edit') => {
-  if (type === 'write') return { data: null };
-  const { itemIdx } = useParams();
-  const [state] = useFetch(
-    getItemDetailAPI.bind(null, Number(itemIdx)),
-    [],
-    true
-  );
-
-  return { data: state.data };
-};
-
-const checkAllFilled = (values: unknown[]) => {
-  return values.every((value) => {
-    const type = getType(value);
-    if (type === Type.String) {
-      return Boolean(value) === false ? false : true;
-    }
-    if (type === Type.Number) {
-      return value === -1 ? false : true;
-    }
-    if (type === Type.LiteralObject) {
-      return Object.keys(value as object) ? false : true;
-    }
-    if (type === Type.Array) {
-      const arr = value as unknown[];
-      return arr.length === 0 ? false : true;
-    }
-    return false;
-  }, false);
 };

@@ -99,7 +99,7 @@ export const DetailsPage = () => {
             )}
             <S.Title>{details?.title}</S.Title>
             <S.Info>
-              <span>{details?.category}</span>
+              <span>{details?.category.text}</span>
               <span>・</span>
               <span>
                 {details?.postedAt && convertDateToTimeStamp(details?.postedAt)}
