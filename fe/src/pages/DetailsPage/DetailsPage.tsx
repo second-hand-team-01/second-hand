@@ -15,12 +15,14 @@ import {
 import { getItemDetailAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
+import { useNavigate } from 'react-router-dom';
 
 export const DetailsPage = () => {
   const userId = 'snoopso'; // todo
 
   const param = useParams();
   const itemIdx = param.itemIdx;
+  const navigate = useNavigate();
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -114,10 +116,17 @@ export const DetailsPage = () => {
         location="bottom"
         menuButtonPropsList={[
           {
-            shape: 'small',
+            shape: 'large',
             state: 'default',
-            color: 'neutralText',
-            name: '안녕',
+            color: 'systemDefault',
+            name: '게시글 수정',
+            onClick: () => navigate(`/edit/${itemIdx}`, { state: details }),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemWarning',
+            name: '삭제',
             onClick: () => console.log('d'),
           },
         ]}

@@ -122,7 +122,9 @@ const convertAPIItemDetailsToItemDetails = (
   return newDetails;
 };
 
-export const getItemDetailAPI = async (itemIdx: number) => {
+export const getItemDetailAPI = async (
+  itemIdx: number
+): Promise<Response<ItemDetail | null>> => {
   if (isNaN(itemIdx)) return { error: new Error(ERROR_MESSAGE[400]) };
   try {
     const res = (await customFetch<null, APIItemDetail>({
@@ -141,7 +143,7 @@ export const getItemDetailAPI = async (itemIdx: number) => {
     };
   } catch (error) {
     if (error instanceof Error) return { error };
-    return {};
+    return { error: undefined, data: null };
   }
 };
 
