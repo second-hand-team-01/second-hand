@@ -22,6 +22,7 @@ export const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
+  const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
   const [categoryState] = useFetch(getCategoryAPI, [], true);
   const [categoryAndPage, setCategoryAndPage] = useState<CategoryAndPage>({
     page: 0,
@@ -49,6 +50,10 @@ export const HomePage = () => {
   useEffect(() => {
     runAPI(categoryAndPage);
   }, [categoryAndPage]);
+
+  useEffect(() => {
+    setCategoryPopupRendered(true);
+  }, []);
 
   const [items, setItems] = useState<ListItemPropsWithId[]>([]);
 
@@ -120,16 +125,18 @@ export const HomePage = () => {
           </S.FloatingBtn>
         </S.Home>
       </Layout>
-      <CategoryPopup
-        categoryState={categoryState}
-        categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
-        selectCategoryIdx={(selectedCategoryIdx) =>
-          setCategoryAndPage({
-            categoryIdx: selectedCategoryIdx,
-            page: 0,
-          })
-        }
-      ></CategoryPopup>
+      {isCategoryPopupRendered && (
+        <CategoryPopup
+          categoryState={categoryState}
+          categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
+          selectCategoryIdx={(selectedCategoryIdx) =>
+            setCategoryAndPage({
+              categoryIdx: selectedCategoryIdx,
+              page: 0,
+            })
+          }
+        ></CategoryPopup>
+      )}
     </>
   );
 };

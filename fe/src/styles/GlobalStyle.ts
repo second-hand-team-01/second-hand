@@ -163,6 +163,8 @@ export const GlobalStyle = createGlobalStyle`
       max-width: ${MAX_WIDTH}px;
       z-index: 1;
       left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
     }
 
     .modal-root.slide-left {

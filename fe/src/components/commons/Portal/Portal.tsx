@@ -29,7 +29,7 @@ export const Portal = ({
     }
 
     return () => {
-      if (dynamicDiv && !slide) document.body.removeChild(modalDiv.current);
+      modalDiv.current.remove();
     };
   }, [id]);
 
