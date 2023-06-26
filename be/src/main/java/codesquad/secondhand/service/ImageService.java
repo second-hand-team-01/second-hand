@@ -54,7 +54,7 @@ public class ImageService {
 		} catch (IOException e) {
 			throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 		}
-		return amazonS3.getUrl(bucketName, fileName).toString();
+		return fileName + "@" +amazonS3.getUrl(bucketName, fileName).toString();
 	}
 
 	// public List<String> upload(List<MultipartFile> multipartFileList, String itemId, String itemCategory) {

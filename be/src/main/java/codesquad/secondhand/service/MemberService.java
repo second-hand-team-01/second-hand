@@ -27,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
-
+	public static final int MEMBER_IMAGE_PATH = 0;
+	public static final int MEMBER_IMAGE_URL = 1;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -39,11 +40,11 @@ public class MemberService {
 				throw new RestApiException(SAME_ID_ALREADY_EXISTS);
 			});
 
-		String memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId());
+		String[] memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId()).split("@");
 
 		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
 		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
-		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl, main, sub);
+		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl[MEMBER_IMAGE_PATH], memberProfileUrl[MEMBER_IMAGE_URL],main, sub);
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
