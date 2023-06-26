@@ -8,7 +8,6 @@ import UIKit
 
 class LoginViewController: UIViewController {
     private var loginView = LoginView()
-    private var accountInfoView = AccountInfoView()
     private var networkManager = LoginNetworkManager()
     
     override func viewDidLoad() {
@@ -59,33 +58,6 @@ extension LoginViewController {
                 constant: topConstraint
             ),
             self.loginView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
-        ])
-    }
-    
-    private func layoutAccountInfoView() {
-        self.loginView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(loginView)
-        
-        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor,
-              let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else { return }
-        let leadingConstraint: CGFloat = 16
-        let trailingConstraint: CGFloat = -16
-        let topConstraint: CGFloat = 96
-        
-        NSLayoutConstraint.activate([
-            self.accountInfoView.leadingAnchor.constraint(
-                equalTo: self.view.leadingAnchor,
-                constant: leadingConstraint
-            ),
-            self.accountInfoView.trailingAnchor.constraint(
-                equalTo: self.view.trailingAnchor,
-                constant: trailingConstraint
-            ),
-            self.accountInfoView.topAnchor.constraint(
-                equalTo: navigationBarBottomAnchor,
-                constant: topConstraint
-            ),
-            self.accountInfoView.bottomAnchor.constraint(greaterThanOrEqualTo: tabBarTopAnchor)
         ])
     }
 }

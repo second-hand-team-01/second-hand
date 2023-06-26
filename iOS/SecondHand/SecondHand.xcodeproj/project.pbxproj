@@ -27,6 +27,7 @@
 		633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B22A480C6C00A34501 /* LogManager.swift */; };
 		633AC5B72A487B0300A34501 /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B62A487B0300A34501 /* AccountInfoView.swift */; };
 		633AC5BD2A49224F00A34501 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5BC2A49224F00A34501 /* LoginView.swift */; };
+		633AC5BF2A495B4400A34501 /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5BE2A495B4400A34501 /* AccountInfoViewController.swift */; };
 		63608CBF2A4061E0006CD876 /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CBE2A4061E0006CD876 /* ProductInfo.swift */; };
 		63608CC62A407FB8006CD876 /* CommunicationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC52A407FB8006CD876 /* CommunicationInfo.swift */; };
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
@@ -128,6 +129,7 @@
 		633AC5B22A480C6C00A34501 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		633AC5B62A487B0300A34501 /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 		633AC5BC2A49224F00A34501 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		633AC5BE2A495B4400A34501 /* AccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
 		63608CBE2A4061E0006CD876 /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
 		63608CC52A407FB8006CD876 /* CommunicationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationInfo.swift; sourceTree = "<group>"; };
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
@@ -211,8 +213,10 @@
 		632047782A4474880035880A /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				633AC5B82A4881BC00A34501 /* Login */,
-				633AC5B92A4881E400A34501 /* AccountInfo */,
+				633AC5BC2A49224F00A34501 /* LoginView.swift */,
+				6320475F2A42F28F0035880A /* AccountInputView.swift */,
+				6320476B2A440B290035880A /* LoginButtonGroupView.swift */,
+				632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -254,6 +258,7 @@
 				FF61AD312A36FC72006AE167 /* ItemList */,
 				63F3EEB92A35D90500D81961 /* Detail */,
 				63129C9B2A4145B70049EC0C /* Login */,
+				633AC5B92A4881E400A34501 /* AccountInfo */,
 				632807292A305CED0033F9D7 /* Assets.xcassets */,
 				6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */,
 			);
@@ -277,23 +282,21 @@
 			path = SecondHandUITests;
 			sourceTree = "<group>";
 		};
-		633AC5B82A4881BC00A34501 /* Login */ = {
+		633AC5B92A4881E400A34501 /* AccountInfo */ = {
 			isa = PBXGroup;
 			children = (
-				633AC5BC2A49224F00A34501 /* LoginView.swift */,
-				6320475F2A42F28F0035880A /* AccountInputView.swift */,
-				6320476B2A440B290035880A /* LoginButtonGroupView.swift */,
-				632047762A4428B40035880A /* LoginButtonGroupView+addAction.swift */,
+				633AC5BE2A495B4400A34501 /* AccountInfoViewController.swift */,
+				633AC5C02A495BAE00A34501 /* UI */,
 			);
-			path = Login;
+			path = AccountInfo;
 			sourceTree = "<group>";
 		};
-		633AC5B92A4881E400A34501 /* AccountInfo */ = {
+		633AC5C02A495BAE00A34501 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				633AC5B62A487B0300A34501 /* AccountInfoView.swift */,
 			);
-			path = AccountInfo;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		63608CCD2A40DD83006CD876 /* UI */ = {
@@ -749,6 +752,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				633AC5BF2A495B4400A34501 /* AccountInfoViewController.swift in Sources */,
 				FFD62C222A3C1BBF0014D2D4 /* TimeLabel.swift in Sources */,
 				FFD62C252A3C1BBF0014D2D4 /* PriceLabel.swift in Sources */,
 				63D98E902A46C9AB00DF467A /* DecodeManager.swift in Sources */,
