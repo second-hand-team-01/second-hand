@@ -50,10 +50,15 @@ export const convertItemsToListItems = (
   });
 };
 
-export const getItemsAPI = async (page: number, categoryIdx?: number) => {
+export const getItemsAPI = async (
+  page: number,
+  categoryIdx?: number,
+  locationIdx?: number
+) => {
   const queries = removeEmptyKeyValues({
     currentPageNum: page,
     categoryIdx,
+    locationIdx: 1, //TODO
   });
 
   try {
