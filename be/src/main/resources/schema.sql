@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `second-hand`.`category` ;
 CREATE TABLE IF NOT EXISTS `second-hand`.`category` (
   `category_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `image_url` VARCHAR(45) NOT NULL,
+  `image_url` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`category_idx`))
 ENGINE = InnoDB;
 
@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS `second-hand`.`item_image` ;
 CREATE TABLE IF NOT EXISTS `second-hand`.`item_image` (
   `item_image_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `item_idx` BIGINT(10) NOT NULL,
-  `image_url` VARCHAR(45) NOT NULL,
+  `image_url` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`item_image_idx`),
   INDEX `fk_item_image_item2_idx` (`item_idx` ASC) VISIBLE,
   CONSTRAINT `fk_item_image_item2`
