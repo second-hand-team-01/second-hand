@@ -7,8 +7,7 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    private var accountInputView = AccountInputView(frame: CGRect.zero)
-    private var loginButtonGroupView = LoginButtonGroupView(frame: CGRect.zero)
+    private var loginView = LoginView()
     private var networkManager = LoginNetworkManager()
     
     override func viewDidLoad() {
@@ -17,19 +16,49 @@ class LoginViewController: UIViewController {
         addObservers()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        self.layoutCosntraints()
-    }
-    
     private func setViewControllerTitle(to title: String) {
         self.title = "\(title)"
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.layoutLoginView()
     }
     
     private func addObservers() {
         observeLogin()
         observeLoginByGithub()
         observeRegisterUser()
+    }
+}
+
+// MARK: - Constraint 설정 메소드 추가
+extension LoginViewController {
+    private func layoutLoginView() {
+        self.loginView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(loginView)
+        
+        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor,
+              let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else { return }
+        let leadingConstraint: CGFloat = 16
+        let trailingConstraint: CGFloat = -16
+        let topConstraint: CGFloat = 80
+        
+        NSLayoutConstraint.activate([
+            self.loginView.leadingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
+                constant: leadingConstraint
+            ),
+            self.loginView.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: trailingConstraint
+            ),
+            self.loginView.topAnchor.constraint(
+                equalTo: navigationBarBottomAnchor,
+                constant: topConstraint
+            ),
+            self.loginView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
+        ])
     }
 }
 
@@ -72,68 +101,5 @@ extension LoginViewController {
     
     @objc private func registerUser(_ notification: Notification) {
         
-    }
-}
-
-// MARK: - Constraint 설정 메소드 추가
-extension LoginViewController {
-    private func layoutCosntraints() {
-        self.addSubviews()
-        self.layoutAccountInputView()
-        self.layoutLoginButtonGroupView()
-    }
-    
-    private func addSubviews() {
-        let subViews = [
-            self.accountInputView,
-            self.loginButtonGroupView
-        ]
-        
-        subViews.forEach {
-            self.view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-    }
-    
-    private func layoutAccountInputView() {
-        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor else {
-            return
-        }
-        
-        NSLayoutConstraint.activate([
-            self.accountInputView.leadingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-                constant: 16
-            ),
-            self.accountInputView.trailingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -16
-            ),
-            self.accountInputView.topAnchor.constraint(
-                equalTo: navigationBarBottomAnchor,
-                constant: 80
-            )
-        ])
-    }
-    
-    private func layoutLoginButtonGroupView() {
-        guard let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else {
-            return
-        }
-        
-        NSLayoutConstraint.activate([
-            self.loginButtonGroupView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-                constant: 16
-            ),
-            self.loginButtonGroupView.trailingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -16
-            ),
-            self.loginButtonGroupView.topAnchor.constraint(
-                equalTo: self.accountInputView.bottomAnchor,
-                constant: 200
-            ),
-            self.loginButtonGroupView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
-        ])
     }
 }

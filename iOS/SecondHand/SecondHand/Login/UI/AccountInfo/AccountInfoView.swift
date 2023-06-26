@@ -29,7 +29,6 @@ class AccountInfoView: UIView {
         self.layoutConstraints()
     }
 
-    
     private func layoutConstraints() {
         self.addSubviews()
         self.layoutProfileImageView()
