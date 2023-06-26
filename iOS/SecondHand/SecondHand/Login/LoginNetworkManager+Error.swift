@@ -27,10 +27,14 @@ struct LoginNetworkManager: DecodeManager {
         
         var request = URLRequest(url: loginUrl)
         request.httpMethod = "POST"
-        request.allHTTPHeaderFields = [
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let loginData = [
             "loginId": loginInfo.loginId,
             "password": loginInfo.password
         ]
+        let body = try? JSONSerialization.data(withJSONObject: loginData, options: [])
+        request.httpBody = body
 
         do {
             let (data, urlResponse) = try await session.data(for: request)

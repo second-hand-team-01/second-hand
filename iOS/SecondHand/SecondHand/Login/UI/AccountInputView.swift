@@ -25,7 +25,7 @@ class AccountInputView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layoutConstraints()
+        self.addConstraints()
     }
     
     private func setDeafultText() {
@@ -33,6 +33,15 @@ class AccountInputView: UIView {
         self.idInputTextField.placeholder = DefaultText.idInput
         self.passwordLabel.text = DefaultText.password
         self.passwordInputTextField.placeholder = DefaultText.passwordInput
+    }
+    
+    // TODO: - 델리게이트를 이용해서 가져올 수 있을까? 생각해보자.
+    func getEnteredId() -> String? {
+        return self.idInputTextField.text
+    }
+    
+    func getEnteredPassword() -> String? {
+        return self.passwordInputTextField.text
     }
 }
 
@@ -52,13 +61,13 @@ extension AccountInputView {
         }
     }
     
-    private func layoutConstraints() {
+    private func addConstraints() {
         self.addSubviews()
-        self.layoutIdViews()
-        self.layoutPasswordViews()
+        self.addConstraintToIdViews()
+        self.addConstraintToPasswordViews()
     }
 
-    private func layoutIdViews() {
+    private func addConstraintToIdViews() {
         NSLayoutConstraint.activate([
             self.idLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.idLabel.topAnchor.constraint(equalTo: self.topAnchor),
@@ -69,7 +78,7 @@ extension AccountInputView {
         ])
     }
     
-    private func layoutPasswordViews() {
+    private func addConstraintToPasswordViews() {
         NSLayoutConstraint.activate([
             self.passwordLabel.leadingAnchor.constraint(equalTo: self.idLabel.leadingAnchor),
             self.passwordLabel.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: 30),

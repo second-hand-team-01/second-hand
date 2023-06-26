@@ -28,25 +28,29 @@ struct AccountButtonUIFactory {
     
     static func make(type: ButtonType) -> UIButton {
         let backgroundColor: UIColor
-        let tintColor = UIColor.white
         let title: String
+        let tag: Int
 
         switch type {
         case .github:
             backgroundColor = .black
             title = ButtonName.githubLogin
+            tag = ButtonTag.githubLogin
         case .login:
             backgroundColor = .orange
             title = ButtonName.login
+            tag = ButtonTag.login
         case .register:
             backgroundColor = .lightGray
             title = ButtonName.register
+            tag = ButtonTag.register
         }
 
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.backgroundColor = backgroundColor
-        button.tintColor = tintColor
+        button.tag = tag
+        button.tintColor = .white
         button.setTitle(
             title,
             for: .normal

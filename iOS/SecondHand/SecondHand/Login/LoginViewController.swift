@@ -7,84 +7,103 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    private var accountInputView = AccountInputView(frame: CGRect.zero)
-    private var loginButtonGroupView = LoginButtonGroupView(frame: CGRect.zero)
+    private var loginView = LoginView()
     private var networkManager = LoginNetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setViewControllerTitle(to: "내 계정")
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        self.layoutCosntraints()
+        addObservers()
     }
     
     private func setViewControllerTitle(to title: String) {
         self.title = "\(title)"
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.layoutLoginView()
+    }
+    
+    private func addObservers() {
+        observeLogin()
+        observeLoginByGithub()
+        observeRegisterUser()
+    }
 }
 
 // MARK: - Constraint 설정 메소드 추가
 extension LoginViewController {
-    private func layoutCosntraints() {
-        self.addSubviews()
-        self.layoutAccountInputView()
-        self.layoutLoginButtonGroupView()
-    }
-    
-    private func addSubviews() {
-        let subViews = [
-            self.accountInputView,
-            self.loginButtonGroupView
-        ]
+    private func layoutLoginView() {
+        self.loginView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(loginView)
         
-        subViews.forEach {
-            self.view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-    }
-    
-    private func layoutAccountInputView() {
-        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor else {
-            return
-        }
+        guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor,
+              let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else { return }
+        let leadingConstraint: CGFloat = 16
+        let trailingConstraint: CGFloat = -16
+        let topConstraint: CGFloat = 80
         
         NSLayoutConstraint.activate([
-            self.accountInputView.leadingAnchor.constraint(
+            self.loginView.leadingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-                constant: 16
+                constant: leadingConstraint
             ),
-            self.accountInputView.trailingAnchor.constraint(
+            self.loginView.trailingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -16
+                constant: trailingConstraint
             ),
-            self.accountInputView.topAnchor.constraint(
+            self.loginView.topAnchor.constraint(
                 equalTo: navigationBarBottomAnchor,
-                constant: 80
-            )
+                constant: topConstraint
+            ),
+            self.loginView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
         ])
     }
+}
+
+// MARK: - Observer 적용 메소드
+extension LoginViewController {
+    private func observeLogin() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(login),
+            name: .account.login,
+            object: nil
+        )
+    }
     
-    private func layoutLoginButtonGroupView() {
-        guard let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else {
-            return
+    @objc private func login(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.loginView.removeFromSuperview()
+            self.view.addSubview(self.accountInfoView)
+            self.layoutAccountInfoView()
         }
+    }
+    
+    private func observeLoginByGithub() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(loginByGithub),
+            name: .account.githubLogin,
+            object: nil
+        )
+    }
+    
+    @objc private func loginByGithub(_ notification: Notification) {
         
-        NSLayoutConstraint.activate([
-            self.loginButtonGroupView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-                constant: 16
-            ),
-            self.loginButtonGroupView.trailingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -16
-            ),
-            self.loginButtonGroupView.topAnchor.constraint(
-                equalTo: self.accountInputView.bottomAnchor,
-                constant: 200
-            ),
-            self.loginButtonGroupView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
-        ])
+    }
+    
+    private func observeRegisterUser() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(registerUser),
+            name: .account.register,
+            object: nil
+        )
+    }
+    
+    @objc private func registerUser(_ notification: Notification) {
+        
     }
 }
