@@ -13,7 +13,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SignUpRequestDto {
 
-	@NotBlank(message = "아이디를 입력해주세요.")
+	@NotBlank(message = "공백 없이 아이디를 입력해주세요.")
 	@Pattern(regexp = "^[A-Za-z0-9]+$")
 	@Size(min = 3, max = 12, message = "영어 소문자, 대문자 3자 이상 10자 이하로 입력해주세요.")
 	private String loginId;
