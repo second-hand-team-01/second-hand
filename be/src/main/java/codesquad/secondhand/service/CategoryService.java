@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import codesquad.secondhand.dto.category.CategoryDto;
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,4 +28,13 @@ public class CategoryService {
 			.map(CategoryDto::of)
 			.collect(Collectors.toList());
 	}
+
+	public List<CategoryWithoutImageDto> showAllCategoriesWithoutImage() {
+		log.info("[CategoryService.showAllCategoriesWithoutImage]");
+		List<Category> categories = categoryRepository.findAll();
+		return categories.stream()
+			.map(CategoryWithoutImageDto::of)
+			.collect(Collectors.toList());
+	}
+
 }
