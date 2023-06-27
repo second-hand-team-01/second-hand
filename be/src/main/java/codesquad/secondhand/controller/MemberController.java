@@ -2,6 +2,8 @@ package codesquad.secondhand.controller;
 
 import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
@@ -74,7 +76,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/members/items")
-	public ResponseDto<ItemSliceDto> showMemberSellingItems(@RequestParam(required = true) String status,
+	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam(required = true) String status,
 		@RequestParam(defaultValue = "0") int page,
 		HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
