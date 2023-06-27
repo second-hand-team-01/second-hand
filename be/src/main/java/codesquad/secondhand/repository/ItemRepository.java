@@ -9,4 +9,6 @@ import codesquad.secondhand.entity.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	Slice<Item> findByLocationLocationIdx(Long locationIdx, Pageable pageable);
+
+	Slice<Item> findBySellerIdx(Long sellerIdx, Pageable pageable);
 }
