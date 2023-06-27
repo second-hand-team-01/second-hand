@@ -10,6 +10,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
@@ -25,6 +26,7 @@ import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.exception.RestApiException;
 import codesquad.secondhand.jwt.JwtTokenProvider;
+import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
 import codesquad.secondhand.repository.ItemRepository;
@@ -46,6 +48,7 @@ public class MemberService {
 	private final InterestRepository interestRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final ImageService imageService;
+	private final CategoryRepository categoryRepository;
 
 	public void signUp(SignUpRequestDto signUpRequestDto) {
 		memberRepository.findByLoginId(signUpRequestDto.getLoginId()) // ID 중복 검사
@@ -93,7 +96,7 @@ public class MemberService {
 		log.debug("sellerIdx: {}", sellerIdx);
 		Slice<Item> itemSlice = itemRepository.findBySellerIdxAndStatus(sellerIdx, status, pageable);
 		List<ItemDto> itemDtos = itemSlice.getContent().stream()
-			.map(item->{
+			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
 				return ItemDto.of(item, chatRooms, interests);
@@ -101,6 +104,29 @@ public class MemberService {
 			.collect(Collectors.toList());
 
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
+	}
+
+	public ItemSliceDto showInterestedItems(Long sellerIdx, Long categoryIdx, Pageable pageable) {
+		log.debug("[MemberService.showInterestedItems()]");
+		Slice<Item> itemSlice = itemRepository.findItemsBySellerInterest(sellerIdx, pageable);
+		List<ItemDto> itemDtos = itemSlice.getContent().stream()
+			.map(item -> {
+				int chatRooms = chatRoomRepository.countByItem(item);
+				int interests = interestRepository.countByItem(item);
+				return ItemDto.of(item, chatRooms, interests);
+			})
+			.collect(Collectors.toList());
+
+		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
+	}
+
+	public List<CategoryWithoutImageDto> extractCategories(Long sellerIdx) {
+		List<Long> categoryIndexes = itemRepository.findDistinctCategoryIdxByMemberIdx(sellerIdx);
+		return categoryIndexes.stream()
+			.map(categoryIdx -> categoryRepository.findById(categoryIdx)
+				.map(CategoryWithoutImageDto::of)
+				.get())
+			.collect(Collectors.toList());
 	}
 
 	public MemberIdxLoginIdDto getMemberIdxLoginId(Long memberIdx) {
