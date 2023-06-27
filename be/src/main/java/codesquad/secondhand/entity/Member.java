@@ -64,6 +64,7 @@ public class Member {
 	}
 
 	public static Member of(SaveMemberDto saveMemberDto) {
+		// TODO: 정적 팩토리 메서드 네이밍 공부하기
 		return new Member(
 			saveMemberDto.getLoginId(),
 			saveMemberDto.getPassword(),
