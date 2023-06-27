@@ -33,7 +33,7 @@ public class ItemService {
 		Slice<Item> itemSlice = itemRepository.findByLocationLocationIdx(locationIdx, pageable);
 
 		List<ItemDto> itemDtos = itemSlice.getContent().stream()
-			.map(item->{
+			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
 				return ItemDto.of(item, chatRooms, interests);
