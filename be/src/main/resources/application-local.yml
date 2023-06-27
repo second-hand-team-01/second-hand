@@ -9,6 +9,9 @@ aws:
   s3:
     bucket: ENC(DkFZypoaguNPKzi+G7VWxVUZb7uYM/xPo/SBS+h9xL64oEIj/MN7Hw==)
 spring:
+  logging:
+    level:
+      root: DEBUG
   jpa:
     hibernate:
       ddl-auto: none

@@ -2,9 +2,16 @@ package codesquad.secondhand.service;
 
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import codesquad.secondhand.dto.item.ItemDto;
+import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
@@ -13,10 +20,14 @@ import codesquad.secondhand.dto.member.MemberIdxTokenDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SaveMemberDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
+import codesquad.secondhand.entity.Item;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.exception.RestApiException;
 import codesquad.secondhand.jwt.JwtTokenProvider;
+import codesquad.secondhand.repository.ChatRoomRepository;
+import codesquad.secondhand.repository.InterestRepository;
+import codesquad.secondhand.repository.ItemRepository;
 import codesquad.secondhand.repository.LocationRepository;
 import codesquad.secondhand.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 
+	private final ItemRepository itemRepository;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
+	private final ChatRoomRepository chatRoomRepository;
+	private final InterestRepository interestRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final ImageService imageService;
 
@@ -72,6 +86,21 @@ public class MemberService {
 		}
 		member.updateLocations(newMainLocation, newSubLocation);
 		return MainSubTownDto.of(member);
+	}
+
+	public ItemSliceDto showSellerItems(Long sellerIdx, String status, Pageable pageable) {
+		log.debug("[MemberService.showSellerItems()]");
+		log.debug("sellerIdx: {}", sellerIdx);
+		Slice<Item> itemSlice = itemRepository.findBySellerIdxAndStatus(sellerIdx, status, pageable);
+		List<ItemDto> itemDtos = itemSlice.getContent().stream()
+			.map(item->{
+				int chatRooms = chatRoomRepository.countByItem(item);
+				int interests = interestRepository.countByItem(item);
+				return ItemDto.of(item, chatRooms, interests);
+			})
+			.collect(Collectors.toList());
+
+		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
 	public MemberIdxLoginIdDto getMemberIdxLoginId(Long memberIdx) {
