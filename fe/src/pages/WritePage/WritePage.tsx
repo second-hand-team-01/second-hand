@@ -99,7 +99,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   }, [details]);
 
   const [editState, editFetch] = useFetch<null, []>(
-    uploadEditItems.bind(null, {
+    uploadEditItems.bind(null, Number(itemIdx), {
       title,
       description,
       images,
