@@ -48,4 +48,35 @@ export const handlers = [
       })
     );
   }),
+
+  rest.patch(`${HOST}/items/:itemIdx`, (req, res, ctx) => {
+    const { itemIdx } = req.params;
+    if (!itemIdx)
+      return res(
+        ctx.status(400),
+        ctx.json({
+          code: 400,
+          message: '해당 상품이 존재하지 않아요.',
+        })
+      );
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        message: '요청이 정상 처리되었습니다.',
+      })
+    );
+  }),
+
+  rest.delete(`${HOST}/items/:itemIdx`, (req, res, ctx) => {
+    const { itemIdx } = req.params;
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        message: '요청이 정상 처리되었습니다.',
+      })
+    );
+  }),
 ];

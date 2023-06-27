@@ -4,7 +4,7 @@ import { getAccessToken } from '@services/login/login';
 import { ERROR_MESSAGE } from '@constants/error';
 
 export interface FetchProps<B> {
-  method: 'GET' | 'POST' | 'PATCH' | 'PUT';
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   path: string;
   queries?: object;
   body?: B;
@@ -83,11 +83,6 @@ export const customFetch = async <B, D>({
     const res = await fetch(url, init);
     if (res.ok) {
       const resJSON = await res.json();
-      if (resJSON.data === undefined) {
-        return {
-          error: new Error(`${ERROR_MESSAGE['NO_DATA']}`),
-        };
-      }
       const data = resJSON.data;
       return { data };
     }

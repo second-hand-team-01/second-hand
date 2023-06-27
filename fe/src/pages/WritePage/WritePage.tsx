@@ -8,29 +8,34 @@ import {
   Layout,
   NavbarBtn,
 } from '@components/commons';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import * as S from './WritePageStyle';
-import { useEffect, useState, useCallback } from 'react';
-import {
-  convertNumToPrice,
-  convertPriceToNum,
-  checkAllFilled,
-} from '@utils/common/common';
-import { Category, CategoryRes } from '@type-store/services/category';
+import { useEffect, useState, useCallback, MouseEvent } from 'react';
+import { convertNumToPrice, convertPriceToNum } from '@utils/common/common';
+import { Category } from '@type-store/services/category';
+import { Image, PostItemRes } from '@type-store/services/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
-import { Image, PostItemRes } from '@type-store/services/items';
 import {
   postItemsAPI,
   convertDataToBody,
   getRandomCategories,
+  editItemsAPI,
 } from '@services/items/items';
-import { ERROR_MESSAGE } from '@constants/error';
+import {
+  getDialogMessage,
+  useDetails,
+  checkAllFilled,
+  uploadPostItems,
+  uploadEditItems,
+} from '@services/items/write';
+
 import { Response } from '@hooks/useFetch/useFetch';
 
-export const WritePage = () => {
+export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { itemIdx } = useParams();
 
   const [title, setTitle] = useState<string>('');
   const [categoryState] = useFetch(getCategoryAPI, [], true);
@@ -39,36 +44,93 @@ export const WritePage = () => {
   );
   const [categoryIdx, setCategoryIdx] = useState<number | null>(-1);
   const [price, setPrice] = useState<number>(0);
-  const [contents, setContents] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [images, setImages] = useState<Image[]>([]);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isAllFilled, setAllFilled] = useState(false);
   const locationIdx = -1; // TODO
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    checkAllFilled([title, contents, images, categoryIdx])
+    checkAllFilled([title, description, images, categoryIdx])
       ? setAllFilled(true)
       : setAllFilled(false);
-  }, [title, contents, images, price, categoryIdx]);
-
-  const uploadPostItems = useCallback(async () => {
-    const body = convertDataToBody(
-      title,
-      contents,
-      images,
-      price,
-      categoryIdx as number,
-      locationIdx
-    );
-    const result = await postItemsAPI(body);
-    return result as Response<PostItemRes>;
-  }, [title, contents, images, price, categoryIdx]);
+  }, [title, description, images, price, categoryIdx]);
 
   const [uploadState, uploadFetch] = useFetch<PostItemRes, []>(
-    uploadPostItems,
+    uploadPostItems.bind(null, {
+      title,
+      description,
+      images,
+      price,
+      categoryIdx,
+      locationIdx,
+    }),
     []
   );
-  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const handlePostBtnClick = async () => {
+    await uploadFetch();
+    if (uploadState.error) return setDialogOpen(true);
+    const itemIdx = uploadState.data?.itemIdx;
+    if (!itemIdx) return setDialogOpen(true);
+    setDialogOpen(true);
+  };
+
+  const { details } = useDetails(type);
+
+  useEffect(() => {
+    const loadPrevDetails = () => {
+      if (type === 'write' || !details) return;
+      const { title, description, images, price, categoryIdx } = details;
+      setTitle(title);
+      setDescription(description);
+      setPrice(price);
+      setImages(images);
+      setCategoryIdx(categoryIdx);
+      const category = categoryState.data?.find(
+        (category) => categoryIdx === category.idx
+      );
+      if (!category) return;
+      setDisplayedCategories([category]);
+    };
+
+    loadPrevDetails();
+  }, [details]);
+
+  const [editState, editFetch] = useFetch<null, []>(
+    uploadEditItems.bind(null, Number(itemIdx), {
+      title,
+      description,
+      images,
+      price,
+      categoryIdx,
+      locationIdx,
+    }),
+    []
+  );
+
+  const handleEditBtnClick = async () => {
+    await editFetch();
+    if (editState.error) {
+      return setDialogOpen(true);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleConfirmDialogBtnClick = () => {
+    type === 'write'
+      ? !uploadState.data && uploadState.error
+        ? setDialogOpen(false)
+        : navigate(`/item/${uploadState.data?.itemIdx}`, {
+            state: pathname,
+          })
+      : editState.error
+      ? setDialogOpen(false)
+      : navigate(`/item/${itemIdx}`, {
+          state: pathname,
+        });
+  };
 
   const handleCategoryBtnClick = ({ target }) => {
     const btn = target as HTMLButtonElement;
@@ -78,7 +140,7 @@ export const WritePage = () => {
     idx && setCategoryIdx(idx);
   };
 
-  const handleCategoryListClick = (e) => {
+  const handleCategoryListClick = (e: MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
     const li = e.target as HTMLLIElement;
     const categoryName = li.innerText;
@@ -102,34 +164,31 @@ export const WritePage = () => {
   };
 
   useEffect(() => {
-    const randomCategories =
-      categoryState.data && getRandomCategories(categoryState.data);
-    randomCategories &&
-      categoryState.data &&
-      setDisplayedCategories(randomCategories);
+    const getDisplayedCategories = () => {
+      const randomCategories =
+        categoryState.data && getRandomCategories(categoryState.data);
+      randomCategories &&
+        categoryState.data &&
+        setDisplayedCategories(randomCategories);
+    };
+    getDisplayedCategories();
   }, [categoryState]);
-
-  const handlePostBtnClick = async () => {
-    await uploadFetch();
-    if (uploadState.error) return setDialogOpen(true);
-    const itemIdx = uploadState.data?.itemIdx;
-    if (!itemIdx) return setDialogOpen(true);
-    setDialogOpen(true);
-  };
 
   return (
     <Layout
       headerOption={{
         type: 'nav',
         navbarOptions: {
-          title: '글 작성',
-          leftBtn: <NavbarBtn text="닫기" path="/"></NavbarBtn>,
+          title: '내 물건 팔기',
+          leftBtn: <NavbarBtn text="닫기" path="back"></NavbarBtn>,
           rightBtn: (
             <Button
               title="완료"
               shape="medium"
               color="neutralText"
-              onClick={handlePostBtnClick}
+              onClick={
+                type === 'write' ? handlePostBtnClick : handleEditBtnClick
+              }
               state={isAllFilled ? 'default' : 'disabled'}
               backgroundColor="transparent"
             ></Button>
@@ -189,10 +248,10 @@ export const WritePage = () => {
         </S.PriceSection>
         <S.Contents>
           <TextArea
-            value={contents}
+            value={description}
             shape="small"
             placeholder="역삼1동에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)" //TODO: 내 동네로 수정
-            onChange={({ target }) => setContents(target.value)}
+            onChange={({ target }) => setDescription(target.value)}
             hasPadding={false}
             maxLength={1000}
             rows={20}
@@ -221,20 +280,12 @@ export const WritePage = () => {
           btnInfos={{
             right: {
               text: '확인',
-              onClick: () => {
-                !uploadState.data && uploadState.error
-                  ? setDialogOpen(false)
-                  : navigate(`/item/${uploadState.data?.itemIdx}`, {
-                      state: pathname,
-                    });
-              },
+              onClick: handleConfirmDialogBtnClick,
             },
           }}
           handleBackDropClick={() => setDialogOpen(false)}
         >
-          {!uploadState.data && uploadState.error
-            ? ERROR_MESSAGE.FILE_UPLOAD_ERROR
-            : '상품이 등록 되었어요.'}
+          {getDialogMessage(type, { uploadState, editState })}
         </Dialog>
       </S.WritePage>
     </Layout>

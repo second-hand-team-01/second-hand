@@ -29,6 +29,8 @@ const locations = {
     bottom: 0;
     max-width: 393px;
     width: 100%;
+    top: unset;
+    padding: 12px 8px;
   `,
 };
 
@@ -118,9 +120,10 @@ export const Menu = styled.div<MenuStyleProps>`
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  ${locationStyles}
+
   ${({ parentHeight }) =>
     parentHeight ? `top: calc(${parentHeight}px + 4px)` : 'top:4px'};
+  ${locationStyles}
 `;
 
 export const ButtonContainer = styled.div`

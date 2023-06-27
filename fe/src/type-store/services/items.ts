@@ -1,4 +1,5 @@
 import { ListItemProps } from '@commons/ListItem/ListItem';
+import { Category } from './category';
 
 export interface Item {
   itemIdx: number;
@@ -59,7 +60,7 @@ export interface APIItemDetail {
   title: string;
   sellerId: string;
   status: Item['status'];
-  category: string;
+  category: { categoryIdx: number; categoryName: string };
   description: string;
   price: number;
   chat: number;
@@ -75,7 +76,7 @@ export interface ItemDetail {
   title: string;
   sellerId: string;
   status: Item['status'];
-  category: string;
+  category: Category;
   description: string;
   price: number;
   chat: number;
@@ -84,4 +85,12 @@ export interface ItemDetail {
   interestChecked: boolean;
   postedAt: Date;
   images: string[];
+}
+
+export interface WriteItemDetails {
+  title: string;
+  categoryIdx: number;
+  description: string;
+  price: number;
+  images: Image[];
 }

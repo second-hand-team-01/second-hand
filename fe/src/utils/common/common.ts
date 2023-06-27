@@ -118,26 +118,6 @@ export const getRandomElements = <T>(array: T[], count: number) => {
   return shuffled.slice(0, count);
 };
 
-export const checkAllFilled = (values: unknown[]) => {
-  return values.every((value) => {
-    const type = getType(value);
-    if (type === Type.String) {
-      return Boolean(value) === false ? false : true;
-    }
-    if (type === Type.Number) {
-      return value === -1 ? false : true;
-    }
-    if (type === Type.LiteralObject) {
-      return Object.keys(value as object) ? false : true;
-    }
-    if (type === Type.Array) {
-      const arr = value as unknown[];
-      return arr.length === 0 ? false : true;
-    }
-    return false;
-  }, false);
-};
-
 export const isMobileDevice = () => {
   return navigator.userAgent.indexOf('IEMobile') !== -1;
 };

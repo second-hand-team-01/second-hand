@@ -168,11 +168,13 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .modal-root.slide-left {
-      transition: transform .5s ease-in-out;
+      transition: transform .5s ease-in-out, opacity .2s;
+      opacity: 0;
       transform: translateX(${MAX_WIDTH / 2}px);
     }
 
     .modal-root.slide-left.open {
       transform: translateX(-50%);
+      opacity: 1;
     }
 `;

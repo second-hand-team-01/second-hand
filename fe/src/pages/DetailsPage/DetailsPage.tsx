@@ -11,21 +11,26 @@ import {
   Error,
   Button,
   Menu,
+  Dialog,
 } from '@commons/index';
-import { getItemDetailAPI } from '@services/items/items';
+import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
+import { useNavigate } from 'react-router-dom';
 
 export const DetailsPage = () => {
   const userId = 'snoopso'; // todo
 
   const param = useParams();
   const itemIdx = param.itemIdx;
+  const navigate = useNavigate();
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -59,7 +64,10 @@ export const DetailsPage = () => {
               shape="ghost"
               isWidthFitContent={true}
               color="accentText"
-              onClick={() => setMenuOpen(true)}
+              onClick={() => {
+                console.log('dddd');
+                setMenuOpen(true);
+              }}
             ></Button>
           ),
           isTransparent: true,
@@ -97,7 +105,7 @@ export const DetailsPage = () => {
             )}
             <S.Title>{details?.title}</S.Title>
             <S.Info>
-              <span>{details?.category}</span>
+              <span>{details?.category.text}</span>
               <span>・</span>
               <span>
                 {details?.postedAt && convertDateToTimeStamp(details?.postedAt)}
@@ -114,15 +122,68 @@ export const DetailsPage = () => {
         location="bottom"
         menuButtonPropsList={[
           {
-            shape: 'small',
+            shape: 'large',
             state: 'default',
-            color: 'neutralText',
-            name: '안녕',
-            onClick: () => console.log('d'),
+            color: 'systemDefault',
+            name: '게시글 수정',
+            onClick: () => navigate(`/edit/${itemIdx}`),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemWarning',
+            name: '삭제',
+            onClick: () => setDeleteDialogOpen(true),
           },
         ]}
         openState={[menuOpen, setMenuOpen]}
       ></Menu>
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        btnInfos={{
+          left: {
+            text: '취소',
+            onClick: () => {
+              setDeleteDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+          right: {
+            text: '삭제',
+            onClick: async () => {
+              const { error } = await deleteItemsAPI(Number(itemIdx));
+              if (error) return setErrorDialogOpen(true);
+              setMenuOpen(false);
+              navigate('/');
+            },
+            color: 'systemWarning',
+          },
+        }}
+        handleBackDropClick={() => {
+          setDeleteDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        정말 삭제하시겠어요?
+      </Dialog>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: async () => {
+              setErrorDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => {
+          setErrorDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        에러가 발생했습니다.
+      </Dialog>
     </Layout>
   );
 };

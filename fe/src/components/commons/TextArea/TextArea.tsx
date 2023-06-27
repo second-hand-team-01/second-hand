@@ -44,7 +44,7 @@ export const TextArea = ({
 
   useEffect(() => {
     resizeTextarea();
-  }, []);
+  }, [value]);
 
   return (
     <S.Wrap
