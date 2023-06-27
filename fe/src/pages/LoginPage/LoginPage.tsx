@@ -1,15 +1,18 @@
-import { useState, useReducer, useEffect } from 'react';
+import { useState, useReducer, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as S from './LoginPageStyle';
 import { Button, TextInput, Profile, Layout } from '@components/commons';
+import { UserContext } from '@stores/UserContext';
+import { OAUTH_CLIENT_ID } from '@constants/login';
+import { URL } from '@constants/apis';
 
 const checkIdValidity = (id: string): boolean => {
-  const regex = /^[a-zA-Z0-9]{3,10}$/;
+  const regex = /^[a-zA-Z0-9]+$/;
   return regex.test(id);
 };
 
 const checkPasswordValidity = (password: string): boolean => {
-  const regex = /^[a-zA-Z0-9]{5,10}$/;
+  const regex = /^[a-zA-Z0-9]+$/;
   return regex.test(password);
 };
 
@@ -59,8 +62,9 @@ const passwordReducer = (state: State, action: Action): State => {
 };
 
 export const LoginPage = () => {
+  const { isLoggedIn, userInfo, loginHandler, logoutHandler } =
+    useContext(UserContext);
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -107,20 +111,28 @@ export const LoginPage = () => {
 
   // TODO: post 요청, 성공시 localStorage에 token 저장
   const loginBtnHandler = () => {
-    navigate('/', { state: pathname });
+    // 비동기 요청하고 성공하면 loginHandler() 호출
+    loginHandler();
+    navigate('/');
   };
 
   // TODO: 로그아웃 요청, 성공시 localStorage에 저장된 token 삭제
   const logoutBtnHandler = () => {
-    navigate('/profile', { state: pathname });
+    logoutHandler();
+    navigate('/profile');
+  };
+
+  const scope = 'user';
+  const redirectUri = `${URL}/redirect/oauth`;
+  const clientId = OAUTH_CLIENT_ID;
+
+  const githubLoginBtnHandler = () => {
+    window.location.href = `https://github.com/login/oauth/authorize?response_type=code&redirect_uri=${redirectUri}&client_id=${clientId}&scope=${scope}`;
   };
 
   const signUpBtnHandler = () => {
-    navigate('/signup');
+    navigate('/signUp');
   };
-
-  const loginState = true;
-  // TODO : 현재 로그인 상태 확인 필요
 
   return (
     <Layout
@@ -133,7 +145,7 @@ export const LoginPage = () => {
       footerOption={{ type: 'tab' }}
     >
       <S.LoginPage>
-        {!loginState && (
+        {!isLoggedIn && (
           <S.InputSection>
             <TextInput
               shape="large"
@@ -154,17 +166,17 @@ export const LoginPage = () => {
             />
           </S.InputSection>
         )}
-        {loginState && (
+        {isLoggedIn && (
           <S.ProfileSection>
             <Profile
-              imgUrl="https://avatars.githubusercontent.com/u/96381221?v=4"
+              imgUrl={userInfo.imgUrl ? userInfo.imgUrl : ''}
               size={130}
               isEditable={true}
             />
-            <S.UserId>snoop</S.UserId>
+            <S.UserId>{userInfo.loginId}</S.UserId>
           </S.ProfileSection>
         )}
-        {!loginState && (
+        {!isLoggedIn && (
           <S.LoginButtonSection>
             <Button
               title="로그인"
@@ -175,12 +187,7 @@ export const LoginPage = () => {
               title="Github 계정으로 로그인"
               state="active"
               backgroundColor="neutralText"
-            />
-            <Button
-              title="회원가입"
-              shape="small"
-              state="default"
-              onClick={signUpBtnHandler}
+              onClick={githubLoginBtnHandler}
             />
             <Button
               title="회원가입"
@@ -190,7 +197,7 @@ export const LoginPage = () => {
             />
           </S.LoginButtonSection>
         )}
-        {loginState && (
+        {isLoggedIn && (
           <S.LoginButtonSection>
             <Button
               title="로그아웃"
