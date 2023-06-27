@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -74,4 +75,26 @@ public class Item {
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Interest> interests = new ArrayList<>();
 
+	@Builder
+	public Item(Long itemIdx, Member seller, Category category, Location location, ItemImage itemImage,
+		LocalDateTime postedAt, String name, String description, Integer price, Integer view, String status,
+		List<ItemImage> itemImages, List<Interest> interests) {
+		this.itemIdx = itemIdx;
+		this.seller = seller;
+		this.category = category;
+		this.location = location;
+		this.itemImage = itemImage;
+		this.postedAt = postedAt;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.view = view;
+		this.status = status;
+		this.itemImages = itemImages;
+		this.interests = interests;
+	}
+
+	public Item() {
+
+	}
 }

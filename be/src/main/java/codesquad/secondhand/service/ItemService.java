@@ -8,6 +8,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import codesquad.secondhand.dto.item.ItemDetailDto;
 import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.entity.Item;
@@ -57,7 +58,8 @@ public class ItemService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemDto creatItem(String status) {
+	public ItemDto creatItem(ItemDetailDto itemDetailDto) {
+		Item item = itemRepository.save(item);
 		return null;
 	}
 
