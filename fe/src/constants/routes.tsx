@@ -5,6 +5,7 @@ import {
   LoginPage,
   DetailsPage,
   SignUpPage,
+  AuthPage,
 } from '@pages/index';
 
 export const router = createBrowserRouter([
@@ -19,16 +20,13 @@ export const router = createBrowserRouter([
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
       { path: 'profile', element: <LoginPage /> },
+      { path: '', element: <div>Sign</div> },
       { path: 'write', element: <WritePage /> },
       { path: 'edit', element: <WritePage /> },
-      { path: '', element: <div>Sign</div> },
       { path: 'item/:itemIdx', element: <DetailsPage></DetailsPage> },
-      { path: 'signup', element: <SignUpPage /> },
+      { path: 'signUp', element: <SignUpPage /> },
       { path: 'item/:itemIdx', element: <div>내용</div> },
-      { path: '', element: <div>Sign</div> },
-      { path: 'item/:itemIdx', element: <DetailsPage></DetailsPage> },
-      { path: 'signup', element: <SignUpPage /> },
-      { path: 'item/:itemIdx', element: <div>내용</div> },
+      { path: 'redirect/oauth', element: <AuthPage /> },
     ],
   },
 ]);
