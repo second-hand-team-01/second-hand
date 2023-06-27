@@ -120,6 +120,7 @@ export const HomePage = () => {
               shape={'floating'}
               icon="plus"
               color={'accentText'}
+              backgroundColor="accentBackgroundPrimary"
               onClick={() => navigate('/write', { state: pathname })}
             ></Button>
           </S.FloatingBtn>

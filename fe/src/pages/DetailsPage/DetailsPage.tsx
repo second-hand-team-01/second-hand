@@ -64,6 +64,7 @@ export const DetailsPage = () => {
               shape="ghost"
               isWidthFitContent={true}
               color="accentText"
+              backgroundColor="transparent"
               onClick={() => {
                 console.log('dddd');
                 setMenuOpen(true);
