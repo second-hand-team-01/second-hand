@@ -64,6 +64,7 @@ public class Member {
 		this.loginId = loginId;
 		this.imageUrl = imageUrl;
 		this.oauthId = oauthId;
+		this.mainLocation = new Location(1L, "서울", "강남구", "역삼1동");
 	}
 
 	public static Member of(SaveMemberDto saveMemberDto) {

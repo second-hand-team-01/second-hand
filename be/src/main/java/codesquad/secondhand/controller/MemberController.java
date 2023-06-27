@@ -4,14 +4,19 @@ import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
+import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
@@ -28,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class MemberController {
 
 	private final MemberService memberService;
@@ -72,5 +78,15 @@ public class MemberController {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		MainSubTownDto mainSubTownDto = memberService.updateMainSubLocation(memberIdx, mainSubDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, mainSubTownDto);
+	}
+
+	@GetMapping("/members/items")
+	public ResponseDto<ItemSliceDto> showMemberSellingItems(@RequestParam(required = true) String status,
+		@RequestParam(defaultValue = "0") int page,
+		HttpServletRequest request) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		Pageable pageable = PageRequest.of(page, 10);
+		ItemSliceDto itemSliceDto = memberService.showSellerItems(memberIdx, status, pageable);
+		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 }
