@@ -2,8 +2,8 @@ package codesquad.secondhand.dto.item;
 
 import java.util.List;
 
-import codesquad.secondhand.entity.Item;
-import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,16 +19,18 @@ public class ItemDetailDto {
 	private final String description;
 	private final Long locationIdx;
 	private final Long categoryIdx;
-	private final List<String> image;
+	private final List<MultipartFile> image;
 
-	public static Item toEntity(ItemDetailDto itemDetailDto) {
-		return Item.builder().itemIdx(itemDetailDto.getSellerIdx()).
-		// return new Item(itemDetailDto.getSellerIdx(),
-		// 	itemDetailDto.getCategoryIdx(),
-		// 	itemDetailDto.getLocationIdx(),
-		// 	null,
-		// 	itemDetailDto.getDescription(),
-		// 	itemDetailDto.getPrice(),
-		// 	)
+	@Override
+	public String toString() {
+		return "ItemDetailDto{" +
+			"sellerIdx=" + sellerIdx +
+			", name='" + name + '\'' +
+			", price=" + price +
+			", description='" + description + '\'' +
+			", locationIdx=" + locationIdx +
+			", categoryIdx=" + categoryIdx +
+			", image=" + image +
+			'}';
 	}
 }

@@ -18,5 +18,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 		+ "(i.status = '판매중' OR i.status = '예약중') AND :status = 'sell' "
 		+ "OR (i.status = '판매완료') AND :status = 'sold')")
 	Slice<Item> findBySellerIdxAndStatus(@Param("sellerIdx") Long sellerIdx, @Param("status") String status, @Param("pageable") Pageable pageable);
-
 }

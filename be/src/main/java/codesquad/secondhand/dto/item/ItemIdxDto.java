@@ -9,7 +9,4 @@ public class ItemIdxDto {
 
 	private final Long itemIdx;
 
-	public int of(ItemDetailDto itemDetailDto) {
-		return new ItemIdxDto(itemDetailDto.getLocationIdx());
-	}
 }

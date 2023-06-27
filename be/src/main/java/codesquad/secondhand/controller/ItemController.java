@@ -51,24 +51,24 @@ public class ItemController {
 	public ResponseDto<ItemSliceDto> addItem(HttpServletRequest httpServletRequest,
 		@ModelAttribute ItemDetailDto itemDetailDto) {
 		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
-		itemDetailDto.setMemberIdx(memberIdx);
+		itemDetailDto.setSellerIdx(memberIdx);
 		itemService.creatItem(itemDetailDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 
-	@GetMapping
-	public ResponseDto<ItemSliceDto> showItemDetail() {
-		return ResponseDto.of(RESPONSE_SUCCESS, null);
-	}
-
-	@PatchMapping
-	public ResponseDto<ItemSliceDto> editItemDetail() {
-		return ResponseDto.of(RESPONSE_SUCCESS, null);
-	}
-
-	@DeleteMapping
-	public ResponseDto<ItemSliceDto> deleteItem() {
-		return ResponseDto.of(RESPONSE_SUCCESS, null);
-	}
+	// @GetMapping
+	// public ResponseDto<ItemSliceDto> showItemDetail() {
+	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
+	// }
+	//
+	// @PatchMapping
+	// public ResponseDto<ItemSliceDto> editItemDetail() {
+	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
+	// }
+	//
+	// @DeleteMapping
+	// public ResponseDto<ItemSliceDto> deleteItem() {
+	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
+	// }
 
 }
