@@ -10,6 +10,9 @@ import writerDetails from './data/items/details-writer.json';
 import category from './data/category.json';
 import { HOST } from '@constants/apis';
 import CLIENT_ERROR from './data/error/400.json';
+import sales from './data/items/sales.json';
+import salesDone from './data/items/sales-done.json';
+import { ItemStatus } from '@type-store/services/items';
 
 const itemList = [page0, page1, page2];
 const categoryItemList = [categoryPage0, categoryPage1];
@@ -39,6 +42,16 @@ export const handlers = [
 
   rest.get(`${HOST}/category`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(category));
+  }),
+
+  rest.get(`${HOST}/members/items`, (req, res, ctx) => {
+    const query = req.url.searchParams;
+    const status = query.get('status');
+    if (status === ItemStatus.SELLING)
+      return res(ctx.status(200), ctx.json(sales));
+    if (status === ItemStatus.SOLD)
+      return res(ctx.status(200), ctx.json(salesDone));
+    res(ctx.status(400), ctx.json(CLIENT_ERROR));
   }),
 
   rest.post(`${HOST}/items`, (req, res, ctx) => {

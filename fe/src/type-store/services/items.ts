@@ -100,3 +100,22 @@ export interface WriteItemDetails {
   price: number;
   images: Image[];
 }
+
+export type GetSalesItemsRes = APISalesItem[];
+
+export interface APISalesItem {
+  itemIdx: number;
+  imageUrl: string;
+  name: string;
+  location: string;
+  postedAt: string;
+  status: string;
+  price: number;
+  chat: number;
+  like: number;
+}
+
+export enum ItemStatus {
+  SELLING = 'selling',
+  SOLD = 'sold',
+}

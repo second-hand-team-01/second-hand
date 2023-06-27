@@ -1,0 +1,28 @@
+{
+  "code": 200,
+  "message": "요청이 정상 처리되었습니다.",
+  "data": [
+    {
+      "itemIdx": 1,
+      "imageUrl": "https://imgurl.com",
+      "name": "파랑 선풍기",
+      "location": "서울 강남구 역삼1동",
+      "postedAt": "2023-02-06T09:10:35",
+      "status": "예약중",
+      "price": 24500,
+      "chat": 1,
+      "like": 2
+    },
+    {
+      "itemIdx": 2,
+      "imageUrl": "https://imgurl.com",
+      "name": "빈티지 밀크 그래스 램프",
+      "location": "서울 강남구 역삼1동",
+      "postedAt": "2023-02-06T09:11:35",
+      "status": "판매중",
+      "price": 158000,
+      "chat": 0,
+      "like": 0
+    }
+  ]
+}
