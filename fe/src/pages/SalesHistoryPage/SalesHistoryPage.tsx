@@ -5,6 +5,7 @@ import { Layout, ListItem } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus, ListItemPropsWithId } from '@type-store/services/items';
+import { Error } from '@commons/index';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
@@ -36,13 +37,17 @@ export const SalesHistoryPage = () => {
       footerOption={{ type: 'tab' }}
     >
       <S.SalesHistoryPage>
-        {state.data?.map((item: ListItemPropsWithId) => (
-          <ListItem
-            key={item.id}
-            {...item}
-            onClick={() => navigate(`/item/${item.id}`)}
-          ></ListItem>
-        ))}
+        {state.data ? (
+          state.data.map((item: ListItemPropsWithId) => (
+            <ListItem
+              key={item.id}
+              {...item}
+              onClick={() => navigate(`/item/${item.id}`)}
+            ></ListItem>
+          ))
+        ) : (
+          <Error>아무것도 없어요</Error>
+        )}
       </S.SalesHistoryPage>
     </Layout>
   );
