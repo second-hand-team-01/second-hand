@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import * as S from './DetailsPageStyle';
@@ -17,9 +17,24 @@ import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '@stores/UserContext';
+import { DEV_USER } from '@constants/login';
 
 export const DetailsPage = () => {
-  const userId = 'snoopso'; // todo
+  const { userInfo, dispatch } = useContext(UserContext);
+
+  if (process.env.NODE_ENV === 'development') {
+    useEffect(() => {
+      dispatch({
+        type: 'SET_USER',
+        payload: {
+          memberIdx: DEV_USER.memberIdx,
+          loginId: DEV_USER.memberId,
+          imgUrl: null,
+        },
+      });
+    }, []);
+  }
 
   const param = useParams();
   const itemIdx = param.itemIdx;
@@ -44,7 +59,7 @@ export const DetailsPage = () => {
     })();
   }, []);
 
-  const isWriter = userId === details?.sellerId;
+  const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
 
   return (
     <Layout
@@ -58,7 +73,7 @@ export const DetailsPage = () => {
               color="accentText"
             ></NavbarBtn>
           ),
-          rightBtn: (
+          rightBtn: isWriter ? (
             <Button
               icon="more"
               shape="ghost"
@@ -70,6 +85,8 @@ export const DetailsPage = () => {
                 setMenuOpen(true);
               }}
             ></Button>
+          ) : (
+            <></>
           ),
           isTransparent: true,
         },
@@ -97,12 +114,19 @@ export const DetailsPage = () => {
           <S.Contents>
             <S.WriterSection>
               <p>판매자 정보</p>
-              <p>{details?.sellerId}</p>
+              <p>{details?.seller.memberId}</p>
             </S.WriterSection>
             {isWriter && (
-              <Dropdown isOpen={false} onClick={() => console.log('d')}>
-                {details?.status ?? ''}
-              </Dropdown>
+              <S.StatusSection>
+                <Dropdown
+                  isOpen={false}
+                  onClick={() => console.log('d')}
+                  hasBorder={true}
+                  size="small"
+                >
+                  {details?.status ?? ''}
+                </Dropdown>
+              </S.StatusSection>
             )}
             <S.Title>{details?.title}</S.Title>
             <S.Info>

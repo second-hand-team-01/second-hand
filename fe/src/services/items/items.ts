@@ -60,8 +60,9 @@ export const getItemsAPI = async (
   const queries = removeEmptyKeyValues({
     page,
     categoryIdx,
-    locationIdx,
   });
+
+  queries['locationIdx'] = locationIdx ?? LOCATION_FALLBACK.locationIdx;
 
   try {
     const res = (await customFetch<null, GetItemsRes>({
@@ -109,7 +110,7 @@ const convertAPIItemDetailsToItemDetails = (
   const {
     itemIdx,
     title,
-    sellerId,
+    seller,
     status,
     category,
     description,
@@ -125,7 +126,7 @@ const convertAPIItemDetailsToItemDetails = (
   const newDetails = {
     itemIdx,
     title,
-    sellerId,
+    seller,
     status,
     category: { idx: category.categoryIdx, text: category.categoryName },
     description,

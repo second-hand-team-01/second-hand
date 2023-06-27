@@ -139,6 +139,7 @@ export const UserContextProvider = ({ children }) => {
         loginHandler,
         logoutHandler,
         setLocationHandler,
+        dispatch,
       }}
     >
       {children}
