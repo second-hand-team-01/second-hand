@@ -8,20 +8,20 @@ import {
   Layout,
   NavbarBtn,
 } from '@components/commons';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import {
+  useNavigate,
+  useLocation,
+  useParams,
+  Navigate,
+} from 'react-router-dom';
 import * as S from './WritePageStyle';
-import { useEffect, useState, useCallback, MouseEvent } from 'react';
+import { useEffect, useState, useContext, MouseEvent } from 'react';
 import { convertNumToPrice, convertPriceToNum } from '@utils/common/common';
 import { Category } from '@type-store/services/category';
 import { Image, PostItemRes } from '@type-store/services/items';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
-import {
-  postItemsAPI,
-  convertDataToBody,
-  getRandomCategories,
-  editItemsAPI,
-} from '@services/items/items';
+import { getRandomCategories } from '@services/items/items';
 import {
   getDialogMessage,
   useDetails,
@@ -29,8 +29,7 @@ import {
   uploadPostItems,
   uploadEditItems,
 } from '@services/items/write';
-
-import { Response } from '@hooks/useFetch/useFetch';
+import { UserContext } from '@stores/UserContext';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
@@ -48,8 +47,11 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const [images, setImages] = useState<Image[]>([]);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isAllFilled, setAllFilled] = useState(false);
-  const locationIdx = -1; // TODO
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const { locationIdx } = userInfo.main;
   const [isDialogOpen, setDialogOpen] = useState(false);
+
+  if (!isLoggedIn) return <Navigate to="/profile"></Navigate>;
 
   useEffect(() => {
     checkAllFilled([title, description, images, categoryIdx])

@@ -15,6 +15,7 @@ import { ERROR_MESSAGE } from '@constants/error';
 import { Image } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
 import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
+import { LOCATION_FALLBACK } from '@constants/login';
 
 export const convertItemsToListItems = (
   items: Item[]
@@ -173,7 +174,9 @@ const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
     title,
     price: price === null ? '0' : price.toString(),
     description: contents,
-    locationIdx: locationIdx.toString(),
+    locationIdx: locationIdx
+      ? locationIdx.toString()
+      : LOCATION_FALLBACK.locationIdx.toString(),
     categoryIdx: categoryIdx.toString(),
     images: imageFiles,
   };
@@ -261,8 +264,8 @@ export const convertDataToBody = (
     contents,
     images,
     price,
-    categoryIdx: categoryIdx as number,
-    locationIdx: locationIdx, //TODO
+    categoryIdx,
+    locationIdx: locationIdx ?? LOCATION_FALLBACK.locationIdx,
   };
   return body;
 };

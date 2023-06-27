@@ -32,17 +32,13 @@ export const HomePage = () => {
   });
   const { page, categoryIdx } = categoryAndPage;
   const { isLoggedIn, userInfo } = useContext(UserContext);
-  const { main } = userInfo;
+  const { locationIdx, locationName } = userInfo.main;
 
   const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
     !loading && setLoading(true);
     errorMsg && setErrorMsg(null);
 
-    const { data, error } = await getItemsAPI(
-      page,
-      categoryIdx,
-      main.locationIdx ?? LOCATION_FALLBACK.locationIdx
-    );
+    const { data, error } = await getItemsAPI(page, categoryIdx, locationIdx);
     if (error) return setErrorMsg(error.message);
     if (data) {
       setHasNext(data.hasNext);
@@ -94,7 +90,7 @@ export const HomePage = () => {
           type: 'filter',
           filterBarOptions: {
             region: isLoggedIn
-              ? main.locationName ?? LOCATION_FALLBACK.locationName
+              ? locationName ?? LOCATION_FALLBACK.locationName
               : LOCATION_FALLBACK.locationName,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
