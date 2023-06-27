@@ -4,12 +4,14 @@ import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
+import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SaveMemberDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
@@ -40,11 +42,13 @@ public class MemberService {
 				throw new RestApiException(SAME_ID_ALREADY_EXISTS);
 			});
 
-		String[] memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId()).split("@");
+		String[] memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId())
+			.split("@");
 
 		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
 		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
-		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl[MEMBER_IMAGE_PATH], memberProfileUrl[MEMBER_IMAGE_URL],main, sub);
+		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl[MEMBER_IMAGE_PATH],
+			memberProfileUrl[MEMBER_IMAGE_URL], main, sub);
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
@@ -91,6 +95,17 @@ public class MemberService {
 		Member member = memberRepository.findById(memberIdx)
 			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 		return MainSubTownDto.of(member);
+	}
+
+	public MemberImageDto editMemberProfileImage(Long memberIdx, MultipartFile image) {
+		Member member = memberRepository.findByMemberIdx(memberIdx)
+			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+
+		imageService.delete(member.getImagePath());
+		imageService.upload(image, member.getLoginId());
+
+		memberRepository.save(member);
+		return MemberImageDto.of(member);
 	}
 
 }
