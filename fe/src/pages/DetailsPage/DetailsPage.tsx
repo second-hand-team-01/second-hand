@@ -46,6 +46,7 @@ export const DetailsPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -119,8 +120,22 @@ export const DetailsPage = () => {
             {isWriter && (
               <S.StatusSection>
                 <Dropdown
-                  isOpen={false}
-                  onClick={() => console.log('d')}
+                  menuButtonPropsList={[
+                    {
+                      shape: 'small',
+                      state: 'default',
+                      name: 'ddd',
+                      onClick: () => setStatusDropdownOpen(false),
+                    },
+                    {
+                      shape: 'small',
+                      state: 'default',
+                      name: 'ddd2',
+                      onClick: () => setStatusDropdownOpen(false),
+                    },
+                  ]}
+                  openState={[isStatusDropdownOpen, setStatusDropdownOpen]}
+                  onClick={() => setStatusDropdownOpen(true)}
                   hasBorder={true}
                   size="small"
                 >

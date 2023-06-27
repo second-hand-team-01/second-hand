@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, MutableRefObject, useEffect } from 'react';
 import * as S from './MenuStyle';
 import { MenuStyleProps, MenuButtonProps } from './MenuStyle';
 import { Portal } from '@components/commons';
@@ -14,11 +14,14 @@ interface MenuProps extends MenuStyleProps {
 export const Menu = ({
   location,
   menuButtonPropsList,
-  parentHeight,
+  parentCoordinate,
   openState,
 }: MenuProps) => {
   const [isOpen, setIsOpen] = openState;
-  console.log('menu', isOpen);
+
+  useEffect(() => {
+    console.log(parentCoordinate);
+  }, []);
 
   const backDropHandler = ({
     target,
@@ -34,9 +37,9 @@ export const Menu = ({
   }
 
   return (
-    <Portal id="modal-root">
-      {location === 'bottom' && <S.BackDrop onClick={backDropHandler} />}
-      <S.Menu location={location} parentHeight={parentHeight}>
+    <Portal id="dropdown-root">
+      <S.BackDrop onClick={backDropHandler} location={location} />
+      <S.Menu location={location} parentCoordinate={parentCoordinate}>
         <S.ButtonContainer>
           {menuButtonPropsList.map((props) => (
             <S.MenuButton key={props.name} {...props}>

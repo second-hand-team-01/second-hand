@@ -1,4 +1,4 @@
-import { ReactComponent as arrowUp } from './arrowUp.svg';
+import { ReactComponent as arrowUp } from './chevronTop.svg';
 import { ReactComponent as camera } from './camera.svg';
 import { ReactComponent as arrowDown } from './chevronDown.svg';
 import { ReactComponent as arrowLeft } from './chevronLeft.svg';

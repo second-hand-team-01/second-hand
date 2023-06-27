@@ -34,6 +34,8 @@ export const HomePage = () => {
   const { isLoggedIn, userInfo } = useContext(UserContext);
   const { locationIdx, locationName } = userInfo.main;
 
+  const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
+
   const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
     !loading && setLoading(true);
     errorMsg && setErrorMsg(null);
@@ -89,6 +91,7 @@ export const HomePage = () => {
         headerOption={{
           type: 'filter',
           filterBarOptions: {
+            openState: [isLocationDropdownOpen, setLocationDropdownOpen],
             region: isLoggedIn
               ? locationName ?? LOCATION_FALLBACK.locationName
               : LOCATION_FALLBACK.locationName,
