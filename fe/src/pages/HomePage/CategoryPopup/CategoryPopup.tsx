@@ -6,6 +6,7 @@ import { Category } from '@type-store/services/category';
 
 interface CategoryPopupProps {
   categoryState: { data: Category[] | null; error: Error | null };
+  categoryFetch: () => Promise<void>;
   categoryPopupOpenState: [
     boolean,
     React.Dispatch<React.SetStateAction<boolean>>
@@ -15,6 +16,7 @@ interface CategoryPopupProps {
 
 export const CategoryPopup = ({
   categoryState,
+  categoryFetch,
   categoryPopupOpenState,
   selectCategoryIdx,
 }: CategoryPopupProps) => {
