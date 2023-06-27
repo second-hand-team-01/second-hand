@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
+import codesquad.secondhand.dto.ResponseListDto;
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
@@ -82,6 +84,22 @@ public class MemberController {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		Pageable pageable = PageRequest.of(page, 10);
 		ItemSliceDto itemSliceDto = memberService.showSellerItems(memberIdx, status, pageable);
+		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
+	}
+
+	@GetMapping("/members/interest/category")
+	public ResponseListDto<CategoryWithoutImageDto> extractCategories(HttpServletRequest request) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		List<CategoryWithoutImageDto> categories = memberService.extractCategories(memberIdx);
+		return ResponseListDto.of(RESPONSE_SUCCESS, categories);
+	}
+
+	@GetMapping("/members/interest")
+	public ResponseDto<ItemSliceDto> showInterestedItems(HttpServletRequest request,
+		@RequestParam(required = false) Long categoryIdx) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		Pageable pageable = PageRequest.of(0, 10);
+		ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 }
