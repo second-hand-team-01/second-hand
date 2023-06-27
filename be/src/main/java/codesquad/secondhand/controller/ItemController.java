@@ -25,7 +25,6 @@ public class ItemController {
 	public static final int END_PAGE = 10;
 	private final ItemService itemService;
 
-	// TODO: page 상수처리
 	@GetMapping
 	public ResponseDto<ItemSliceDto> showItems(@RequestParam(required = false) Long locationIdx) {
 		log.info("[ItemController.showItems()]");
