@@ -7,6 +7,7 @@ import {
   GetItemsRes,
   ItemDetail,
   APIItemDetail,
+  WriteItemDetails,
 } from '@type-store/services/items';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
@@ -85,6 +86,22 @@ export const getItemsAPI = async (
   }
 };
 
+export const convertAPIItemsDetailsToWriteItemsDetails = (
+  details: ItemDetail
+): WriteItemDetails => {
+  const { title, category, description, price, images } = details;
+  const newImages = images.map((image): Image => {
+    return { file: image, size: -1, name: '' };
+  });
+  return {
+    title,
+    categoryIdx: category.idx,
+    description,
+    price,
+    images: newImages,
+  };
+};
+
 const convertAPIItemDetailsToItemDetails = (
   details: APIItemDetail
 ): ItemDetail => {
@@ -109,7 +126,7 @@ const convertAPIItemDetailsToItemDetails = (
     title,
     sellerId,
     status,
-    category,
+    category: { idx: category.categoryIdx, text: category.categoryName },
     description,
     price,
     chat,
@@ -122,7 +139,9 @@ const convertAPIItemDetailsToItemDetails = (
   return newDetails;
 };
 
-export const getItemDetailAPI = async (itemIdx: number) => {
+export const getItemDetailAPI = async (
+  itemIdx: number
+): Promise<Response<ItemDetail | null>> => {
   if (isNaN(itemIdx)) return { error: new Error(ERROR_MESSAGE[400]) };
   try {
     const res = (await customFetch<null, APIItemDetail>({
@@ -141,7 +160,7 @@ export const getItemDetailAPI = async (itemIdx: number) => {
     };
   } catch (error) {
     if (error instanceof Error) return { error };
-    return {};
+    return { error: undefined, data: null };
   }
 };
 
@@ -189,6 +208,39 @@ export const postItemsAPI = async (body: ItemReqBody) => {
       data: {
         itemIdx: res.data.itemIdx,
       },
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+export const editItemsAPI = async (body: ItemReqBody) => {
+  const convertedBody = convertItemReqBodyToAPIReqBody(body);
+  if (!convertedBody)
+    return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
+
+  const formData = new FormData();
+  formData.append('title', convertedBody.title);
+  formData.append('description', convertedBody.description);
+  formData.append('price', convertedBody.price);
+  formData.append('locationIdx', convertedBody.locationIdx);
+  formData.append('categoryIdx', convertedBody.categoryIdx);
+  convertedBody.images.forEach((image, i) => {
+    formData.append(`image${i}`, image);
+  });
+
+  try {
+    const res = await customFetch<FormData, null>({
+      path: '/items',
+      method: 'PATCH',
+      body: formData,
+    });
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      data: null,
     };
   } catch (error) {
     if (error instanceof Error) return { error };

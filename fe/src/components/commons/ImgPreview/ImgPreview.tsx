@@ -20,6 +20,7 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
 
     if (file) {
       const isDuplicate = images.some((existingImage: Image) => {
+        if (!existingImage.name || !existingImage.size) return false;
         return (
           existingImage.name === file.name && existingImage.size === file.size
         );
@@ -64,7 +65,7 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         ></S.FileInput>
         {images.map((image, i) => (
           <ImgElement
-            key={`${image.name}`}
+            key={`${image.file}`}
             file={image.file}
             isFirst={i === 0 ? true : false}
             handleDelete={({ currentTarget }) => {
