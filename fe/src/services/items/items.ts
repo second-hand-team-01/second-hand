@@ -57,9 +57,9 @@ export const getItemsAPI = async (
   locationIdx?: number
 ) => {
   const queries = removeEmptyKeyValues({
-    currentPageNum: page,
+    page,
     categoryIdx,
-    locationIdx: 1, //TODO
+    locationIdx,
   });
 
   try {

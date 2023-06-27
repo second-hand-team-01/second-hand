@@ -10,6 +10,7 @@ import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
 import { UserContext } from '@stores/UserContext';
+import { LOCATION_FALLBACK } from '@constants/login';
 
 interface CategoryAndPage {
   page: number;
@@ -30,13 +31,18 @@ export const HomePage = () => {
     categoryIdx: undefined,
   });
   const { page, categoryIdx } = categoryAndPage;
-  const test = useContext(UserContext);
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const { main } = userInfo;
 
   const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
     !loading && setLoading(true);
     errorMsg && setErrorMsg(null);
 
-    const { data, error } = await getItemsAPI(page, categoryIdx);
+    const { data, error } = await getItemsAPI(
+      page,
+      categoryIdx,
+      main.locationIdx ?? LOCATION_FALLBACK.locationIdx
+    );
     if (error) return setErrorMsg(error.message);
     if (data) {
       setHasNext(data.hasNext);
@@ -87,7 +93,9 @@ export const HomePage = () => {
         headerOption={{
           type: 'filter',
           filterBarOptions: {
-            region: '우면동',
+            region: isLoggedIn
+              ? main.locationName ?? LOCATION_FALLBACK.locationName
+              : LOCATION_FALLBACK.locationName,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
               !categoryState.data && categoryFetch();
