@@ -39,4 +39,22 @@ public class ItemService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
+	public ItemSliceDto filterItems(Long categoryIdx, Pageable pageable) {
+		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdx(categoryIdx, pageable);
+
+		List<ItemDto> itemDtos = itemSlice.getContent().stream()
+			.map(item -> {
+				int chatRooms = chatRoomRepository.countByItem(item);
+				int interests = interestRepository.countByItem(item);
+				return ItemDto.of(item, chatRooms, interests);
+			})
+			.collect(Collectors.toList());
+
+		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
+	}
+
+	public ItemDto creatItem(String status) {
+		return null;
+	}
+
 }
