@@ -32,26 +32,37 @@ export const NavBar = ({
         <S.Title>{title}</S.Title>
         <S.ButtonContainer>{rightBtn}</S.ButtonContainer>
       </S.HeaderTop>
+
       {tabInfo && (
-        <S.HeaderBottom>
-          <Tab {...tabInfo}></Tab>
+        <S.HeaderBottom hasTab={true}>
+          <S.TabContainer>
+            <Tab {...tabInfo}></Tab>
+          </S.TabContainer>
         </S.HeaderBottom>
       )}
-      {categoryInfo?.categories.map((category) => {
-        const isActive = category.idx === categoryInfo.selectedCategoryIdx;
-        return (
-          <Button
-            key={category.idx}
-            id={String(category.idx)}
-            title={category?.text}
-            state={isActive ? 'active' : 'default'}
-            hasBorder={true}
-            shape="small"
-            color={isActive ? 'accentText' : 'neutralText'}
-            onClick={categoryInfo.onClick}
-          ></Button>
-        );
-      })}
+
+      {categoryInfo && (
+        <S.HeaderBottom hasCategory={true}>
+          <S.CategoryContainer>
+            {categoryInfo.categories.map((category) => {
+              const isActive =
+                category.idx === categoryInfo.selectedCategoryIdx;
+              return (
+                <Button
+                  key={category.idx}
+                  id={String(category.idx)}
+                  title={category?.text}
+                  state={isActive ? 'active' : 'default'}
+                  hasBorder={true}
+                  shape="small"
+                  color={isActive ? 'accentText' : 'neutralText'}
+                  onClick={categoryInfo.onClick}
+                ></Button>
+              );
+            })}
+          </S.CategoryContainer>
+        </S.HeaderBottom>
+      )}
     </S.Header>
   );
 };

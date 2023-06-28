@@ -27,11 +27,9 @@ export const FavoritesPage = () => {
           title: '관심 목록',
           categoryInfo: {
             categories: navbarCategories,
-            selectedCategoryIdx: -1,
-            onClick: ({ currentTarget }) => {
-              console.log(currentTarget.id);
-              setSelectedCategoryIdx(parseInt(currentTarget.id));
-            },
+            selectedCategoryIdx,
+            onClick: ({ currentTarget }) =>
+              setSelectedCategoryIdx(parseInt(currentTarget.id)),
           },
         },
       }}

@@ -60,6 +60,7 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
+  interestChecked,
   onClick,
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
@@ -110,9 +111,11 @@ export const ListItem = ({
             {!!like && (
               <S.ChatAndLikeInfo>
                 <Icon
-                  name={heartIcon.name}
-                  size={heartIcon.size}
-                  color={heartIcon.color}
+                  name={interestChecked ? heartFillIcon.name : heartIcon.name}
+                  size={interestChecked ? heartFillIcon.size : heartIcon.size}
+                  color={
+                    interestChecked ? heartFillIcon.color : heartIcon.color
+                  }
                 />
                 <span>{like}</span>
               </S.ChatAndLikeInfo>

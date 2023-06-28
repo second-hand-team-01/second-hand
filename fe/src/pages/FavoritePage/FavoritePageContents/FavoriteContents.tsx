@@ -3,13 +3,15 @@ import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FavoriteContentsProps {
   categoryIdx?: number;
 }
 
 export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
-  const [{ data: contents }, contentsFetch] = useFetch(
+  const navigate = useNavigate();
+  const [{ data: items }, contentsFetch] = useFetch(
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
@@ -20,8 +22,12 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
 
   return (
     <S.FavoriteContents>
-      {contents?.map((list) => (
-        <ListItem key={list.id} {...list}></ListItem>
+      {items?.map((item) => (
+        <ListItem
+          key={item.id}
+          {...item}
+          onClick={() => navigate(`/item/${item.id}`)}
+        ></ListItem>
       ))}
     </S.FavoriteContents>
   );
