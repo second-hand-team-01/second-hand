@@ -17,6 +17,17 @@ public enum OauthAttributes {
 				.build();
 		}
 	},
+	GITHUB_IOS("github-ios") {
+		@Override
+		public MemberProfile of(Map<String, Object> attributes) {
+			return MemberProfile.builder()
+				.oauthId(String.valueOf(attributes.get("id")))
+				.email((String)attributes.get("email"))
+				.name((String)attributes.get("name"))
+				.imageUrl((String)attributes.get("avatar_url"))
+				.build();
+		}
+	},
 	NAVER("naver") {
 		@Override
 		public MemberProfile of(Map<String, Object> attributes) {
