@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokenResponse {
 
-    private final String accessToken;
-    private final MemberIdxLoginIdDto memberInfo;
+	private final String accessToken;
+	private final MemberIdxLoginIdDto memberInfo;
 
-    public static TokenResponse of(String token, MemberIdxLoginIdDto memberIdxLoginIdDto) {
-        return new TokenResponse(token, memberIdxLoginIdDto);
-    }
+	public static TokenResponse of(String token, MemberIdxLoginIdDto memberIdxLoginIdDto) {
+		return new TokenResponse(token, memberIdxLoginIdDto);
+	}
 }

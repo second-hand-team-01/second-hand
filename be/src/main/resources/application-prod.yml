@@ -21,19 +21,18 @@ spring:
     username: ENC(L0kzYFpSX3w8Kp4vGkamFw==)
     password: ENC(+l0rNkHYeHjfoTmkxYate/tZxZ+6B/KM)
     driver-class-name: com.mysql.cj.jdbc.Driver
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId:
-            clientSecret:
-            redirectUri:
-    user:
-      name:
-      password:
 security:
   jwt:
     token:
       secret-key: ENC(splgClZ0/GF97Phs3Y+wyoKe0+/02DauHDVHznqHY6L7TGcHylZGXj6ljNvaBJqEMekM68X47uOZeYTZT90tUQ==)
       expire-length: ENC(S3cUIoNjjoBYhjMbWum1oA==)
+oauth2:
+  user:
+    github:
+      client-id: bbdc7d55a4bad1b5bae9
+      client-secret: ENC(enLB/MEvcV/Iu77ZcKFW1V5TcOWiIZmRX8MEj1y0LnKyMBgfl1Xm80Cr8f7K+XiI6sp49D6mbTk=)
+      redirect-uri: http://localhost:3000/redirect/oauth
+  provider:
+    github:
+      token-uri: https://github.com/login/oauth/access_token
+      user-info-uri: https://api.github.com/user

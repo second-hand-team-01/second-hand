@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainSubTownDto {
 
-    private final LocationTownDto main;
-    private final LocationTownDto sub;
+	private final LocationTownDto main;
+	private final LocationTownDto sub;
 
-    public static MainSubTownDto of(Member member) {
-        LocationTownDto main = LocationTownDto.of(member.getMainLocation());
-        LocationTownDto sub = LocationTownDto.of(member.getSubLocation());
-        return new MainSubTownDto(main, sub);
-    }
+	public static MainSubTownDto of(Member member) {
+		LocationTownDto main = LocationTownDto.of(member.getMainLocation());
+		LocationTownDto sub = LocationTownDto.of(member.getSubLocation());
+		return new MainSubTownDto(main, sub);
+	}
 }

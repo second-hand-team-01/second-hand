@@ -6,16 +6,13 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CategoryDto {
+public class CategoryWithoutImageDto {
 
 	private final Long idx;
 	private final String name;
-	private final String imgUrl;
 
-	public static CategoryDto of(Category category) {
-		return new CategoryDto(category.getCategoryIdx(),
-			category.getName(),
-			category.getImageUrl());
+	public static CategoryWithoutImageDto of(Category category) {
+		return new CategoryWithoutImageDto(category.getCategoryIdx(),
+			category.getName());
 	}
-
 }
