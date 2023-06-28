@@ -105,7 +105,8 @@ public class MemberService {
 			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
-				return ItemDto.of(item, chatRooms, interests);
+				boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, sellerIdx);
+				return ItemDto.of(item, chatRooms, interests, interestChecked);
 			})
 			.collect(Collectors.toList());
 
@@ -119,7 +120,8 @@ public class MemberService {
 			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
-				return ItemDto.of(item, chatRooms, interests);
+				boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, sellerIdx);
+				return ItemDto.of(item, chatRooms, interests, interestChecked);
 			})
 			.collect(Collectors.toList());
 
@@ -134,7 +136,8 @@ public class MemberService {
 			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
-				return ItemDto.of(item, chatRooms, interests);
+				boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, sellerIdx);
+				return ItemDto.of(item, chatRooms, interests, interestChecked);
 			})
 			.collect(Collectors.toList());
 
