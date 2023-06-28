@@ -54,6 +54,7 @@ public class ItemController {
 	@PostMapping
 	public ResponseDto<ItemIdxDto> addItem(HttpServletRequest httpServletRequest,
 		@ModelAttribute ItemDetailDto itemDetailDto) {
+		log.info("addItem call" + itemDetailDto);
 		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		itemDetailDto.setSellerIdx(memberIdx);
 		ItemIdxDto itemIdxDto = itemService.creatItem(itemDetailDto);

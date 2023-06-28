@@ -37,11 +37,13 @@ public class ImageService {
 
 	public String upload(MultipartFile multipartFile, String memberId) {
 
+		String originFileName;
 		ObjectMetadata objectMetadata = new ObjectMetadata();
-		String originFileName = multipartFile.getOriginalFilename();
 
-		if (originFileName == null) {
+		if(multipartFile.getOriginalFilename() == null) {
 			originFileName = UUID.randomUUID().toString();
+		} else {
+			originFileName = multipartFile.getOriginalFilename();
 		}
 
 		String fileName = memberProfileFileNameConvert(originFileName, memberId, multipartFile);
