@@ -3,6 +3,8 @@ package codesquad.secondhand.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,6 @@ import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
-import codesquad.secondhand.repository.ItemImageRepository;
 import codesquad.secondhand.repository.ItemRepository;
 import codesquad.secondhand.repository.LocationRepository;
 import codesquad.secondhand.repository.MemberRepository;
@@ -37,28 +38,28 @@ public class ItemService {
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
-	private final ItemImageRepository itemImageRepository;
 
-	public List<ItemDto> getListItemDto(Slice<Item> itemSlice) {
+	public List<ItemDto> getListItemDto(Slice<Item> itemSlice, Long memberIdx) {
 		return itemSlice.getContent().stream()
 			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
-				return ItemDto.of(item, chatRooms, interests);
+				boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
+				return ItemDto.of(item, chatRooms, interests, interestChecked);
 			})
 			.collect(Collectors.toList());
 	}
 
-	public ItemSliceDto showItems(Long locationIdx, Pageable pageable) {
+	public ItemSliceDto showItems(Long memberIdx, Long locationIdx, Pageable pageable) {
 		log.info("[ItemService.showItems()]");
 		Slice<Item> itemSlice = itemRepository.findByLocationLocationIdx(locationIdx, pageable);
-		List<ItemDto> itemDtos = getListItemDto(itemSlice);
+		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemSliceDto filterItems(Long categoryIdx, Pageable pageable) {
+	public ItemSliceDto filterItems(Long memberIdx, Long categoryIdx, Pageable pageable) {
 		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdx(categoryIdx, pageable);
-		List<ItemDto> itemDtos = getListItemDto(itemSlice);
+		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
