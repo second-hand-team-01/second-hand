@@ -1,16 +1,17 @@
 import * as S from './SalesHistoryPageStyle';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Layout, ListItem } from '@components/commons';
+import { Layout, ListItem, Loading } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus, ListItemPropsWithId } from '@type-store/services/items';
 import { Error } from '@commons/index';
+import { ERROR_MESSAGE } from '@constants/error';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<ItemStatus>(ItemStatus.SELLING);
-  const [{ data: salesItems }, fetch] = useFetch(
+  const [{ data: salesItems, error, loading }, fetch] = useFetch(
     getSalesItemsAPI.bind(null, status),
     []
   );
@@ -18,6 +19,25 @@ export const SalesHistoryPage = () => {
   useEffect(() => {
     fetch();
   }, [status]);
+
+  const renderComps = () => {
+    if (loading) {
+      return <Loading></Loading>;
+    }
+    if (error || !salesItems) {
+      return <Error>{error?.message}</Error>;
+    }
+    if (salesItems.length === 0) {
+      return <Error>{ERROR_MESSAGE.NO_DATA}</Error>;
+    }
+    return salesItems.map((item: ListItemPropsWithId) => (
+      <ListItem
+        key={item.id}
+        {...item}
+        onClick={() => navigate(`/item/${item.id}`)}
+      ></ListItem>
+    ));
+  };
 
   return (
     <Layout
@@ -39,19 +59,7 @@ export const SalesHistoryPage = () => {
       }}
       footerOption={{ type: 'tab' }}
     >
-      <S.SalesHistoryPage>
-        {salesItems && salesItems.length !== 0 ? (
-          salesItems.map((item: ListItemPropsWithId) => (
-            <ListItem
-              key={item.id}
-              {...item}
-              onClick={() => navigate(`/item/${item.id}`)}
-            ></ListItem>
-          ))
-        ) : (
-          <Error>아직 판매 중인 상품이 없어요.</Error>
-        )}
-      </S.SalesHistoryPage>
+      <S.SalesHistoryPage>{renderComps()}</S.SalesHistoryPage>
     </Layout>
   );
 };
