@@ -1,7 +1,7 @@
 import * as S from './SalesHistoryPageStyle';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Layout, ListItem, Loading } from '@components/commons';
+import { Layout, ListItem, Loading, Menu } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus } from '@type-store/services/items';
@@ -35,7 +35,11 @@ export const SalesHistoryPage = () => {
       <ListItem
         key={item.itemIdx}
         {...item}
-        onClick={() => navigate(`/item/${item.itemIdx}`)}
+        moreBtn={true}
+        onClick={() => {
+          console.log('click');
+          navigate(`/item/${item.itemIdx}`);
+        }}
       ></ListItem>
     ));
   };

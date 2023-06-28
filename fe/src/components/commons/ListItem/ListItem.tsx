@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
-import { Icon } from '@components/commons';
+import { Icon, Menu } from '@components/commons';
 import { colors, palette } from '@styles/Color';
 import {
   convertDateToTimeStamp,
   convertNumToPrice,
 } from '@utils/common/common';
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
+import { useNavigate } from 'react-router-dom';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -68,6 +69,7 @@ export const ListItem = ({
   onClick,
   setUpdateFlag,
 }: ListItemProps) => {
+  const navigate = useNavigate();
   const listItemRef = useRef<HTMLLIElement>(null);
 
   const moreBtnRef = useRef<HTMLButtonElement>(null);
@@ -75,6 +77,12 @@ export const ListItem = ({
   const [interestChecked, setInterestChecked] = useState(
     initialInterestChecked
   );
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const moreBtnClickHandler = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(true);
+  };
 
   const handleBtnClick = async (e: React.MouseEvent) => {
     const targetElement = e.target as HTMLElement;
@@ -103,14 +111,18 @@ export const ListItem = ({
       return;
     }
     if (icon?.id === 'more') {
+      moreBtnClickHandler(e);
+      return;
+    }
+
+    if (
+      targetElement.classList.contains('backdrop') ||
+      targetElement.classList.contains('menu-button')
+    ) {
       return;
     }
 
     onClick && onClick();
-  };
-
-  const moreBtnClickHandler = () => {
-    console.log('더보기 버튼 클릭');
   };
 
   return (
@@ -167,6 +179,40 @@ export const ListItem = ({
           </S.ChatAndLike>
         </S.Content>
       </S.Wrap>
+      <Menu
+        location="bottom"
+        menuButtonPropsList={[
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemDefault',
+            name: '게시글 수정',
+            onClick: () => console.log('닫기'),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemDefault',
+            name: '판매중 상태로 전환',
+            onClick: () => console.log('닫기'),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemDefault',
+            name: '판매 완료 상태로 전환',
+            onClick: () => console.log('닫기'),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemWarning',
+            name: '삭제',
+            onClick: () => console.log('닫기'),
+          },
+        ]}
+        openState={[menuOpen, setMenuOpen]}
+      ></Menu>
     </S.ListItem>
   );
 };
