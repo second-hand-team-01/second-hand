@@ -9,6 +9,19 @@ import UIKit
 class LoginViewController: UIViewController {
     private var loginView = LoginView()
     private var networkManager = LoginNetworkManager()
+    private var loginAlertController: UIAlertController = {
+        let alertController = UIAlertController(
+            title: "로그인 실패",
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +94,10 @@ extension LoginViewController {
         
         Task {
             let response = await networkManager.request(loginInfo: loginInfo)
-            guard response != nil else { return }
+            guard response != nil else {
+                self.present(self.loginAlertController, animated: true, completion: nil)
+                return
+            }
             let viewController = AccountInfoViewController()
             viewController.modalPresentationStyle = .fullScreen
             viewController.userName = "\(id)"
