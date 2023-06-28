@@ -12,6 +12,7 @@ export const Tab = styled.button`
   text-align: center;
   height: 28px;
   border: none;
+  color: ${({ theme }) => theme.colors.neutralText};
 
   &:hover {
     cursor: pointer;
