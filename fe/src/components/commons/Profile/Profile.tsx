@@ -7,7 +7,7 @@ import { ProfileStyleProps } from './ProfileStyle';
 
 interface ProfileProps extends ProfileStyleProps {
   imgUrl?: string | null;
-  setImgUrl?: (newUrl: string, newFile: string) => void;
+  setImgUrl?: (newUrl: string, newFile: File) => void;
 }
 
 export const Profile = ({
@@ -35,7 +35,7 @@ export const Profile = ({
       const targetFile = target?.result as string;
 
       if (targetFile && file) {
-        setImgUrl && setImgUrl(targetFile, file.name);
+        setImgUrl && setImgUrl(targetFile, file);
         // file.name을 fileName에 넣자
       }
     };
