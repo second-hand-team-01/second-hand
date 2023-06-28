@@ -1,7 +1,8 @@
-import { Layout, NavbarBtn } from '@components/commons';
+import { Button, Layout, NavbarBtn } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
+import { useState } from 'react';
 
 interface ChatDetailsPage {
   salesInfo: {
@@ -12,6 +13,7 @@ interface ChatDetailsPage {
 }
 
 export const ChatDetailsPage = () => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
   const salesInfo = {
     previewImg: 'https://img-cf.kurly.com/shop/data/goods/1656498787170l0.jpg',
     title: '화장품',
@@ -24,7 +26,18 @@ export const ChatDetailsPage = () => {
         navbarOptions: {
           title: '유저 이름',
           leftBtn: <NavbarBtn path="back" text="뒤로"></NavbarBtn>,
-          rightBtn: <NavbarBtn path="back" text="뒤로"></NavbarBtn>,
+          rightBtn: (
+            <Button
+              icon="more"
+              shape="ghost"
+              isWidthFitContent={true}
+              color="neutralText"
+              backgroundColor="transparent"
+              onClick={() => {
+                setMenuOpen(true);
+              }}
+            ></Button>
+          ),
         },
         bottomComp: (
           <S.HeaderBottomWrap>
