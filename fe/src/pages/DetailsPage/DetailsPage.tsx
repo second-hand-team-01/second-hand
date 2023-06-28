@@ -131,6 +131,7 @@ export const DetailsPage = () => {
               : navigate(`/chat/${itemIdx}/0`);
           },
           isWriter,
+          chat: details?.chat,
         },
       }}
       isHeaderOverlapped={true}

@@ -30,7 +30,7 @@ export const InfoBar = ({
       <Button
         title={
           isWriter
-            ? `대화 중인 채팅방${chat !== 0 ? ` (${chat})` : ''}`
+            ? `대화 중인 채팅방${chat && chat !== 0 ? ` (${chat})` : ''}`
             : '채팅하기'
         }
         shape="small"
