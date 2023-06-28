@@ -14,16 +14,18 @@ const renderHeader = ({
   type,
   navbarProps,
   filterBarProps,
+  bottomComps,
 }: {
   type: HeaderProps['type'];
   navbarProps?: HeaderProps['navbarOptions'];
   filterBarProps?: HeaderProps['filterBarOptions'];
+  bottomComps?: HeaderProps['bottomComp'];
 }) => {
   switch (type) {
     case 'filter':
       return <FilterBar {...filterBarProps}></FilterBar>;
     case 'nav':
-      return <NavBar {...navbarProps}></NavBar>;
+      return <NavBar {...navbarProps} bottomComps={bottomComps}></NavBar>;
     default:
       return <></>;
   }
@@ -65,6 +67,7 @@ export const Layout = ({
               type: headerOption.type,
               navbarProps: headerOption.navbarOptions,
               filterBarProps: headerOption.filterBarOptions,
+              bottomComps: headerOption.bottomComp,
             })}
         </S.Header>
         <S.Contents isHeaderOverlapped={isHeaderOverlapped}>

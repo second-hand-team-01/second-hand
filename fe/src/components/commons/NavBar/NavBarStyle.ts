@@ -31,8 +31,7 @@ export const HeaderTop = styled.div`
 `;
 
 export const HeaderBottom = styled.div<HeaderBottomStyleProps>`
-  padding: 0 16px;
-  height: ${NAVBAR_HEIGHT.bottom}px;
+  height: auto;
   width: 100%;
   overflow-x: scroll;
   align-items: center;
@@ -41,12 +40,19 @@ export const HeaderBottom = styled.div<HeaderBottomStyleProps>`
 export const TabContainer = styled.div`
   display: grid;
   justify-content: center;
+  padding: 8px 16px;
 `;
 
 export const CategoryContainer = styled.div`
   width: max-content;
   display: flex;
   gap: 4px;
+  padding: 8px 16px;
+`;
+
+export const BottomChildrenContainer = styled.div`
+  padding: 8px 16px;
+  border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
 `;
 
 export const ButtonContainer = styled.div`
