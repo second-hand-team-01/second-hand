@@ -32,7 +32,14 @@ oauth2:
       client-id: bbdc7d55a4bad1b5bae9
       client-secret: ENC(enLB/MEvcV/Iu77ZcKFW1V5TcOWiIZmRX8MEj1y0LnKyMBgfl1Xm80Cr8f7K+XiI6sp49D6mbTk=)
       redirect-uri: http://localhost:3000/redirect/oauth
+    github-ios:
+      client-id: 3ac935cf627da08c8f03
+      client-secret: ENC(kyC9uQKjyK8/mYRKOpBinQqdNqRtF2jW6fZrxPaL+4/TNct7CFQDcA6BL38+Gy94JY64lgkxIJ0=)
+      redirect: secondhand://login
   provider:
     github:
+      token-uri: https://github.com/login/oauth/access_token
+      user-info-uri: https://api.github.com/user
+    github-ios:
       token-uri: https://github.com/login/oauth/access_token
       user-info-uri: https://api.github.com/user
