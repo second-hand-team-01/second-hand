@@ -10,7 +10,7 @@ export interface State {
     town: string | null;
   };
   imgUrl: string | null;
-  imgFile: string | null;
+  imgFile: File | null;
 }
 
 export interface LocationInfo {
