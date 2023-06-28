@@ -94,7 +94,7 @@ export const convertAPIItemsDetailsToWriteItemsDetails = (
 ): WriteItemDetails => {
   const { title, category, description, price, images } = details;
   const newImages = images.map((image): Image => {
-    return { file: image, size: -1, name: '' };
+    return { file: null, fileString: image, size: -1, name: '' };
   });
   return {
     title,
@@ -170,7 +170,7 @@ export const getItemDetailAPI = async (
 const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
   const { title, price, contents, locationIdx, categoryIdx, images } = body;
 
-  const imageFiles = images.map((image) => image.file);
+  const imageFiles = images.map((image) => image.file) as File[] | null;
 
   const newItem: APIItemReqBody = {
     title,
@@ -191,13 +191,13 @@ export const postItemsAPI = async (body: ItemReqBody) => {
     return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
 
   const formData = new FormData();
-  formData.append('title', convertedBody.title);
+  formData.append('name', convertedBody.title);
   formData.append('description', convertedBody.description);
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images.forEach((image, i) => {
-    formData.append(`image${i}`, image);
+  convertedBody.images?.forEach((image, i) => {
+    formData.append(`image`, image);
   });
 
   try {
@@ -227,12 +227,12 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
     return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
 
   const formData = new FormData();
-  formData.append('title', convertedBody.title);
+  formData.append('name', convertedBody.title);
   formData.append('description', convertedBody.description);
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images.forEach((image, i) => {
+  convertedBody.images?.forEach((image, i) => {
     formData.append(`image${i}`, image);
   });
 
@@ -363,8 +363,6 @@ export const changeStatusItemsAPI = async (
   status: ItemStatus
 ) => {
   if (!status) return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
-  const body = { status };
-
   const formData = new FormData();
   formData.append('status', status);
 

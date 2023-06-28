@@ -33,9 +33,10 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
           const targetFile = target?.result as string;
 
           const newImage = {
-            file: targetFile,
+            file: file,
             name: file.name,
             size: file.size,
+            fileString: targetFile,
           };
 
           if (targetFile) setImages((prevImages) => [...prevImages, newImage]);
@@ -66,7 +67,7 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         {images.map((image, i) => (
           <ImgElement
             key={`${image.file}`}
-            file={image.file}
+            file={image.fileString}
             isFirst={i === 0 ? true : false}
             handleDelete={({ currentTarget }) => {
               const btn = currentTarget as HTMLButtonElement;

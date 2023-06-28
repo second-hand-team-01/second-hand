@@ -15,7 +15,8 @@ export interface Item {
 }
 
 export interface Image {
-  file: string;
+  file: File | null;
+  fileString: string;
   name: string;
   size: number;
 }
@@ -27,15 +28,6 @@ export interface ItemReqBody {
   locationIdx: number;
   categoryIdx: number;
   images: Image[];
-}
-
-export interface APIItemReqBody {
-  title: string;
-  price: string;
-  description: string;
-  locationIdx: string;
-  categoryIdx: string;
-  images: string[];
 }
 
 export interface StatusReqBody {
@@ -52,7 +44,7 @@ export interface APIItemReqBody {
   description: string;
   locationIdx: string;
   categoryIdx: string;
-  images: string[];
+  images: File[] | null;
 }
 
 export interface PostItemRes {

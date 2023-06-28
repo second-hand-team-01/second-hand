@@ -40,7 +40,7 @@ export const setHeader = <B>(
     if (!accessToken) {
       return {}; // TODO: 로그아웃
     }
-    headers['Authorization'] = localStorage.getItem(ACCESS_TOKEN);
+    headers['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
   }
 
   return headers;
