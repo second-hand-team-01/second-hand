@@ -36,7 +36,6 @@ public class ImageService {
 	//TODO: 이미지 URL DB에 저장
 
 	public String upload(MultipartFile multipartFile, String memberId) {
-		validateFile(multipartFile);
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		String originFileName = multipartFile.getOriginalFilename();
@@ -69,7 +68,6 @@ public class ImageService {
 
 		int cnt = 1;
 		for (MultipartFile multipartFile : multipartFileList) {
-			validateFile(multipartFile);
 
 			ObjectMetadata objectMetadata = new ObjectMetadata();
 			String originFileName = multipartFile.getOriginalFilename();
@@ -93,13 +91,6 @@ public class ImageService {
 			cnt++;
 		}
 		return itemUrlList;
-	}
-
-
-	private void validateFile(MultipartFile multipartFile) {
-		if (multipartFile.isEmpty()) {
-			throw new EmptyFileException(ImageErrorCode.EmptyFileException);
-		}
 	}
 
 	private String memberProfileFileNameConvert(String originalFileName, String memberId, MultipartFile multipartFile) {
