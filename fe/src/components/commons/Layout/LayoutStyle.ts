@@ -13,7 +13,8 @@ export interface HeaderProps {
 }
 
 export interface FooterProps {
-  type: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  type?: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  comp?: ReactNode;
   infoBarOptions?: InfoBarProps;
 }
 

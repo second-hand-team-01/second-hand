@@ -6,7 +6,7 @@ export interface Item {
   imageUrl: string;
   name: string;
   location: string;
-  postedAt: Date;
+  postedAt: string;
   status: '예약중' | '판매중' | null;
   price: number;
   chat: number;

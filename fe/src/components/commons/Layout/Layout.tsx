@@ -34,15 +34,18 @@ const renderHeader = ({
 const renderFooter = ({
   type,
   infoBarProps,
+  comps,
 }: {
   type: FooterProps['type'];
   infoBarProps: FooterProps['infoBarOptions'];
+  comps: FooterProps['comp'];
 }): ReactNode => {
+  if (comps) {
+    return comps;
+  }
   switch (type) {
     case 'info':
       return <InfoBar {...infoBarProps}></InfoBar>;
-    case 'chat':
-      return <ChatBar></ChatBar>;
     case 'tab':
       return <TabBar></TabBar>;
     case 'tool':
@@ -79,6 +82,7 @@ export const Layout = ({
             {renderFooter({
               type: footerOption.type,
               infoBarProps: footerOption.infoBarOptions,
+              comps: footerOption.comp,
             })}
           </S.Footer>
         )}

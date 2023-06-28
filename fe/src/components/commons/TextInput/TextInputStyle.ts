@@ -22,9 +22,7 @@ export const Wrap = styled.div<WrapStyleProps>`
   ${({ hasBorder }) => (!hasBorder ? 'border: none' : '')};
   height: ${({ shape }) => (shape === 'large' ? '44' : '36')}px;
   background-color: ${({ theme, hasBackground }) =>
-    hasBackground
-      ? theme.colors.systemBackgroundWeak
-      : theme.colors.neutralBackground};
+    hasBackground ? theme.colors.systemBackgroundWeak : 'transparent'};
   align-items: center;
   border-radius: ${({ hasBackground }) => (hasBackground ? '10px' : '0')};
   &:focus-within {

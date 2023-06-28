@@ -1,8 +1,10 @@
-import { Button, Layout, NavbarBtn } from '@components/commons';
+import { Button, Layout, NavbarBtn, ChatBar } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
-import { useState } from 'react';
+import { Bubble as BubbleType } from '@type-store/services/chat';
+import { useEffect, useRef, useState, KeyboardEvent, useCallback } from 'react';
+import { useFormInput } from '@hooks/useInput/useInput';
 
 interface ChatDetailsPage {
   salesInfo: {
@@ -14,11 +16,33 @@ interface ChatDetailsPage {
 
 export const ChatDetailsPage = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const [bubbles, setBubbles] = useState<BubbleType[]>([
+    { type: 'mine', text: '안녕하세요, 챗방입니다!', bubbleIdx: 0 },
+    {
+      type: 'opponent',
+      text: '반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요',
+      bubbleIdx: 1,
+    },
+    { type: 'mine', text: '사실건지 말씀해주세요', bubbleIdx: 2 },
+    { type: 'opponent', text: '넹', bubbleIdx: 3 },
+    { type: 'opponent', text: '넹', bubbleIdx: 4 },
+  ]);
+
   const salesInfo = {
     previewImg: 'https://img-cf.kurly.com/shop/data/goods/1656498787170l0.jpg',
     title: '화장품',
     price: 1110101010101001,
   };
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(scrollToBottom, [bubbles]);
+
   return (
     <Layout
       headerOption={{
@@ -49,17 +73,17 @@ export const ChatDetailsPage = () => {
           </S.HeaderBottomWrap>
         ),
       }}
+      footerOption={{
+        comp: <ChatBar setBubbles={setBubbles}></ChatBar>,
+      }}
     >
       <S.ChatDetailsPage>
-        <Bubble type="mine">안녕하세요, 챗방입니다!</Bubble>
-        <Bubble type="opponent">
-          반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는
-          스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요
-          저는 스눕이에요
-        </Bubble>
-        <Bubble type="mine">사실건지 말씀해주세요</Bubble>
-        <Bubble type="opponent">넹</Bubble>
-        <Bubble type="opponent">넹</Bubble>
+        {bubbles.map((bubble, i) => (
+          <Bubble type={bubble.type} key={i}>
+            {bubble.text}
+          </Bubble>
+        ))}
+        <div ref={messagesEndRef} />
       </S.ChatDetailsPage>
     </Layout>
   );

@@ -58,6 +58,14 @@ const shapes = {
       border-radius: 100%;
     `}
   `,
+  xSmall: css<ButtonStyleProps>`
+    ${({ theme }) => `
+      padding: 0px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50px;
+    `}
+  `,
 };
 
 const textAlignments = {

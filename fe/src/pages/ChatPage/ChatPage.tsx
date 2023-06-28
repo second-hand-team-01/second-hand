@@ -1,7 +1,3 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { UserContext } from '@stores/UserContext';
-import { useContext } from 'react';
 import * as S from './ChatPageStyle';
 import { Layout } from '@components/commons';
 import { ChatList, ChatListProps } from './ChatList/ChatList';
