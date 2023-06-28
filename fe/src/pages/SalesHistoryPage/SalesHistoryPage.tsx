@@ -11,7 +11,7 @@ import { ERROR_MESSAGE } from '@constants/error';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<ItemStatus>(ItemStatus.SELLING);
+  const [status, setStatus] = useState<ItemStatus>('판매중');
   const [{ data: salesItems, error, loading }, fetch] = useFetch(
     getSalesItemsAPI.bind(null, status),
     []
@@ -56,8 +56,8 @@ export const SalesHistoryPage = () => {
             },
             activeId: status,
             options: [
-              { name: '판매중', id: ItemStatus.SELLING },
-              { name: '판매완료', id: ItemStatus.SOLD },
+              { name: '판매중', id: '판매중' },
+              { name: '판매완료', id: '판매완료' },
             ],
           },
         },

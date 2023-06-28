@@ -9,6 +9,7 @@ import {
   WriteItemDetails,
   ItemStatus,
   APISalesItem,
+  APIStatusReqBody,
 } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 
@@ -238,7 +239,7 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
   try {
     const res = await customFetch<FormData, null>({
       path: `/items/${itemIdx}`,
-      method: 'PATCH',
+      method: 'PUT',
       auth: true,
       body: formData,
     });
@@ -355,4 +356,33 @@ export const convertAPISalesItemsToListItems = (
     };
     return newItem;
   });
+};
+
+export const changeStatusItemsAPI = async (
+  itemIdx: number,
+  status: ItemStatus
+) => {
+  if (!status) return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
+  const body = { status };
+
+  const formData = new FormData();
+  formData.append('status', status);
+
+  try {
+    const res = await customFetch<FormData, null>({
+      path: `/items/${itemIdx}`,
+      method: 'PUT',
+      auth: true,
+      body: formData,
+    });
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      data: null,
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
 };

@@ -16,17 +16,10 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
-  const [updateFlag, setUpdateFlag] = useState(false);
 
   useEffect(() => {
     contentsFetch();
   }, [categoryIdx]);
-
-  useEffect(() => {
-    if (!updateFlag) return;
-    contentsFetch();
-    setUpdateFlag(false);
-  }, [updateFlag]);
 
   const renderComps = () => {
     if (loading) {
@@ -44,8 +37,9 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
       <ListItem
         key={item.itemIdx}
         {...item}
-        onClick={() => navigate(`/item/${item.itemIdx}`)}
-        setUpdateFlag={setUpdateFlag}
+        onClick={() => {
+          navigate(`/item/${item.itemIdx}`);
+        }}
       ></ListItem>
     ));
   };

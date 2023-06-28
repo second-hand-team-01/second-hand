@@ -56,11 +56,9 @@ export const handlers = [
 
   rest.get(`${HOST}/members/items`, (req, res, ctx) => {
     const query = req.url.searchParams;
-    const status = query.get('status');
-    if (status === ItemStatus.SELLING)
-      return res(ctx.status(200), ctx.json(sales));
-    if (status === ItemStatus.SOLD)
-      return res(ctx.status(200), ctx.json(salesDone));
+    const status = query.get('status') as ItemStatus;
+    if (status === '판매중') return res(ctx.status(200), ctx.json(sales));
+    if (status === '판매완료') return res(ctx.status(200), ctx.json(salesDone));
     res(ctx.status(400), ctx.json(CLIENT_ERROR));
   }),
 
@@ -77,7 +75,7 @@ export const handlers = [
     );
   }),
 
-  rest.patch(`${HOST}/items/:itemIdx`, (req, res, ctx) => {
+  rest.put(`${HOST}/items/:itemIdx`, (req, res, ctx) => {
     const { itemIdx } = req.params;
     if (!itemIdx)
       return res(
