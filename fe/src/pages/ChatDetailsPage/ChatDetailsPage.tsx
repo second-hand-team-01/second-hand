@@ -1,10 +1,10 @@
-import { Button, Layout, NavbarBtn, ChatBar } from '@components/commons';
+import { Button, Layout, NavbarBtn, ChatBar, Menu } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
 import { Bubble as BubbleType } from '@type-store/services/chat';
-import { useEffect, useRef, useState, KeyboardEvent, useCallback } from 'react';
-import { useFormInput } from '@hooks/useInput/useInput';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ChatDetailsPage {
   salesInfo: {
@@ -15,6 +15,7 @@ interface ChatDetailsPage {
 }
 
 export const ChatDetailsPage = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const [bubbles, setBubbles] = useState<BubbleType[]>([
@@ -48,7 +49,7 @@ export const ChatDetailsPage = () => {
       headerOption={{
         type: 'nav',
         navbarOptions: {
-          title: '유저 이름',
+          title: '스눕',
           leftBtn: <NavbarBtn path="back" text="뒤로"></NavbarBtn>,
           rightBtn: (
             <Button
@@ -85,6 +86,19 @@ export const ChatDetailsPage = () => {
         ))}
         <div ref={messagesEndRef} />
       </S.ChatDetailsPage>
+      <Menu
+        location="bottom"
+        menuButtonPropsList={[
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemWarning',
+            name: '채팅방 나가기',
+            onClick: () => navigate(-1),
+          },
+        ]}
+        openState={[isMenuOpen, setMenuOpen]}
+      ></Menu>
     </Layout>
   );
 };
