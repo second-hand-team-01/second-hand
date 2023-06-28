@@ -28,8 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageService {
 	private static final String FILE_EXTENSION_DOT = ".";
-	private static final int MEMBER_PROFILE_SIZE = 1;
-
 	private final AmazonS3 amazonS3;
 	@Value("${aws.s3.bucket}")
 	private String bucketName;

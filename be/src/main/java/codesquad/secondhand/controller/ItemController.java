@@ -55,11 +55,11 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
-	@GetMapping
-	// TODO: 조회수
-	public ResponseDto<ItemSliceDto> showItemDetail() {
-		return ResponseDto.of(RESPONSE_SUCCESS, null);
-	}
+	// @GetMapping
+	// // TODO: 조회수
+	// public ResponseDto<ItemDto> showItemDetail(ItemIdxDto itemIdxDto) {
+	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
+	// }
 
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {
