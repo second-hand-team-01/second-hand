@@ -108,6 +108,21 @@ public class MemberService {
 
 	public ItemSliceDto showInterestedItems(Long sellerIdx, Long categoryIdx, Pageable pageable) {
 		log.debug("[MemberService.showInterestedItems()]");
+		Slice<Item> itemSlice = itemRepository.findItemAndCategoryByMemberAndCategory(sellerIdx, categoryIdx, pageable);
+		List<ItemDto> itemDtos = itemSlice.getContent().stream()
+			.map(item -> {
+				int chatRooms = chatRoomRepository.countByItem(item);
+				int interests = interestRepository.countByItem(item);
+				return ItemDto.of(item, chatRooms, interests);
+			})
+			.collect(Collectors.toList());
+
+		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
+	}
+
+
+	public ItemSliceDto showInterestedItems(Long sellerIdx, Pageable pageable) {
+		log.debug("[MemberService.showInterestedItems()]");
 		Slice<Item> itemSlice = itemRepository.findItemsBySellerInterest(sellerIdx, pageable);
 		List<ItemDto> itemDtos = itemSlice.getContent().stream()
 			.map(item -> {
