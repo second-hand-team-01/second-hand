@@ -58,7 +58,10 @@ export interface ConvertedGetItemsRes {
 export interface APIItemDetail {
   itemIdx: number;
   title: string;
-  sellerId: string;
+  seller: {
+    memberIdx: number;
+    memberId: string;
+  };
   status: Item['status'];
   category: { categoryIdx: number; categoryName: string };
   description: string;
@@ -74,7 +77,10 @@ export interface APIItemDetail {
 export interface ItemDetail {
   itemIdx: number;
   title: string;
-  sellerId: string;
+  seller: {
+    memberIdx: number;
+    memberId: string;
+  };
   status: Item['status'];
   category: Category;
   description: string;

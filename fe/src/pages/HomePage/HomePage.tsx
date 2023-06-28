@@ -1,7 +1,7 @@
 import { Layout, ListItem, Error, Button, Loading } from '@commons/index';
 import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ListItemPropsWithId } from '@type-store/services/items';
 import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { CategoryPopup } from './CategoryPopup/CategoryPopup';
 import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
+import { UserContext } from '@stores/UserContext';
+import { LOCATION_FALLBACK } from '@constants/login';
 
 interface CategoryAndPage {
   page: number;
@@ -23,18 +25,22 @@ export const HomePage = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
   const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
-  const [categoryState] = useFetch(getCategoryAPI, [], true);
+  const [categoryState, categoryFetch] = useFetch(getCategoryAPI, []);
   const [categoryAndPage, setCategoryAndPage] = useState<CategoryAndPage>({
     page: 0,
     categoryIdx: undefined,
   });
   const { page, categoryIdx } = categoryAndPage;
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const { locationIdx, locationName } = userInfo.main;
+
+  const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
 
   const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
     !loading && setLoading(true);
     errorMsg && setErrorMsg(null);
 
-    const { data, error } = await getItemsAPI(page, categoryIdx);
+    const { data, error } = await getItemsAPI(page, categoryIdx, locationIdx);
     if (error) return setErrorMsg(error.message);
     if (data) {
       setHasNext(data.hasNext);
@@ -85,8 +91,14 @@ export const HomePage = () => {
         headerOption={{
           type: 'filter',
           filterBarOptions: {
-            region: '우면동',
-            handleFilterBtnClick: () => setCategoryPopupOpen(true),
+            openState: [isLocationDropdownOpen, setLocationDropdownOpen],
+            region: isLoggedIn
+              ? locationName ?? LOCATION_FALLBACK.locationName
+              : LOCATION_FALLBACK.locationName,
+            handleFilterBtnClick: () => {
+              setCategoryPopupOpen(true);
+              !categoryState.data && categoryFetch();
+            },
             handleDeleteBtn,
             selectedCategory: categoryState.data?.find(
               (category) => category.idx === categoryIdx
@@ -120,6 +132,7 @@ export const HomePage = () => {
               shape={'floating'}
               icon="plus"
               color={'accentText'}
+              backgroundColor="accentBackgroundPrimary"
               onClick={() => navigate('/write', { state: pathname })}
             ></Button>
           </S.FloatingBtn>
@@ -128,6 +141,7 @@ export const HomePage = () => {
       {isCategoryPopupRendered && (
         <CategoryPopup
           categoryState={categoryState}
+          categoryFetch={categoryFetch}
           categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
           selectCategoryIdx={(selectedCategoryIdx) =>
             setCategoryAndPage({

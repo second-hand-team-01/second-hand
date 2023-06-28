@@ -6,6 +6,7 @@ import { items } from './data/items/items';
 import categoryPage0 from './data/items/category-page0.json';
 import categoryPage1 from './data/items/category-page1.json';
 import details from './data/items/details.json';
+import writerDetails from './data/items/details-writer.json';
 import category from './data/category.json';
 import { HOST } from '@constants/apis';
 import CLIENT_ERROR from './data/error/400.json';
@@ -29,6 +30,10 @@ export const handlers = [
     if (!itemIdx) return res(ctx.status(400), ctx.json(CLIENT_ERROR));
     const target = items.find((item) => item.itemIdx === Number(itemIdx));
     if (!target) return res(ctx.status(400), ctx.json(CLIENT_ERROR));
+
+    if (itemIdx === '2') {
+      return res(ctx.status(200), ctx.json(writerDetails));
+    }
     return res(ctx.status(200), ctx.json(details));
   }),
 

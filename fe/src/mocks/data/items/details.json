@@ -4,7 +4,7 @@
   "data": {
     "itemIdx": 1,
     "title": "빈티지 롤러 스케이트",
-    "sellerId": "lvalentine6",
+    "seller": { "memberIdx": 1, "memberId": "lvalentine6" },
     "status": "판매중",
     "category": {
       "categoryIdx": 1,

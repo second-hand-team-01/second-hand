@@ -15,6 +15,7 @@ import { ERROR_MESSAGE } from '@constants/error';
 import { Image } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
 import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
+import { LOCATION_FALLBACK } from '@constants/login';
 
 export const convertItemsToListItems = (
   items: Item[]
@@ -57,10 +58,11 @@ export const getItemsAPI = async (
   locationIdx?: number
 ) => {
   const queries = removeEmptyKeyValues({
-    currentPageNum: page,
+    page,
     categoryIdx,
-    locationIdx: 1, //TODO
   });
+
+  queries['locationIdx'] = locationIdx ?? LOCATION_FALLBACK.locationIdx;
 
   try {
     const res = (await customFetch<null, GetItemsRes>({
@@ -108,7 +110,7 @@ const convertAPIItemDetailsToItemDetails = (
   const {
     itemIdx,
     title,
-    sellerId,
+    seller,
     status,
     category,
     description,
@@ -124,7 +126,7 @@ const convertAPIItemDetailsToItemDetails = (
   const newDetails = {
     itemIdx,
     title,
-    sellerId,
+    seller,
     status,
     category: { idx: category.categoryIdx, text: category.categoryName },
     description,
@@ -173,7 +175,9 @@ const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
     title,
     price: price === null ? '0' : price.toString(),
     description: contents,
-    locationIdx: locationIdx.toString(),
+    locationIdx: locationIdx
+      ? locationIdx.toString()
+      : LOCATION_FALLBACK.locationIdx.toString(),
     categoryIdx: categoryIdx.toString(),
     images: imageFiles,
   };
@@ -261,8 +265,8 @@ export const convertDataToBody = (
     contents,
     images,
     price,
-    categoryIdx: categoryIdx as number,
-    locationIdx: locationIdx, //TODO
+    categoryIdx,
+    locationIdx: locationIdx ?? LOCATION_FALLBACK.locationIdx,
   };
   return body;
 };

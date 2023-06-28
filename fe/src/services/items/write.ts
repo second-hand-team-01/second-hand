@@ -1,26 +1,16 @@
 import { ERROR_MESSAGE } from '@constants/error';
-import { useEffect, useState, useCallback, MouseEvent } from 'react';
-import {
-  WriteItemDetails,
-  Image,
-  PostItemRes,
-} from '@type-store/services/items';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { WriteItemDetails, PostItemRes } from '@type-store/services/items';
+import { useParams } from 'react-router-dom';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import {
   getItemDetailAPI,
   convertAPIItemsDetailsToWriteItemsDetails,
   postItemsAPI,
   convertDataToBody,
-  getRandomCategories,
   editItemsAPI,
 } from '@services/items/items';
-import {
-  convertNumToPrice,
-  convertPriceToNum,
-  getType,
-  Type,
-} from '@utils/common/common';
+import { getType, Type } from '@utils/common/common';
 import { Response } from '@hooks/useFetch/useFetch';
 
 export const getDialogMessage = (

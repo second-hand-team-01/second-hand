@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "message": "요청이 정상 처리되었습니다.",
+  "data": {
+    "itemIdx": 1,
+    "title": "더 고항 팝니다",
+    "seller": { "memberIdx": 8, "memberId": "gu#8nt7x18o2" },
+    "status": "판매중",
+    "category": {
+      "categoryIdx": 1,
+      "categoryName": "가구/인테리어"
+    },
+    "description": "더 고항 팔아용",
+    "price": 169000,
+    "chat": 0,
+    "interest": 0,
+    "view": 1,
+    "interestChecked": true,
+    "postedAt": "2023-02-06T09:10:35",
+    "images": [
+      "https://3p-image.kurly.com/product-image/68246f23-5393-4a0c-b359-37e5e0a8a188/144ae7f9-90f7-45c1-9cdf-c60913995067.jpg"
+    ]
+  }
+}
