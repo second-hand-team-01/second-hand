@@ -1,9 +1,10 @@
-import { ListItem, Error } from '@commons/index';
+import { ListItem, Error, Loading } from '@commons/index';
 import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ERROR_MESSAGE } from '@constants/error';
 
 interface FavoriteContentsProps {
   categoryIdx?: number;
@@ -11,7 +12,7 @@ interface FavoriteContentsProps {
 
 export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
   const navigate = useNavigate();
-  const [{ data: items }, contentsFetch] = useFetch(
+  const [{ data: items, error, loading }, contentsFetch] = useFetch(
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
@@ -20,19 +21,26 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
     contentsFetch();
   }, [categoryIdx]);
 
-  return (
-    <S.FavoriteContents>
-      {items && items.length !== 0 ? (
-        items.map((item) => (
-          <ListItem
-            key={item.id}
-            {...item}
-            onClick={() => navigate(`/item/${item.id}`)}
-          ></ListItem>
-        ))
-      ) : (
-        <Error>관심 상품으로 등록된 상품이 없어요.</Error>
-      )}
-    </S.FavoriteContents>
-  );
+  const renderComps = () => {
+    if (loading) {
+      return <Loading />;
+    }
+    if (error || !items) {
+      return <Error>{error ? error.message : ERROR_MESSAGE.UNDEFINED}</Error>;
+    }
+    if (items.length === 0) {
+      <Error>관심 상품으로 등록된 상품이 없어요.</Error>;
+    }
+    if (items && items.length !== 0) {
+      return items.map((item) => (
+        <ListItem
+          key={item.id}
+          {...item}
+          onClick={() => navigate(`/item/${item.id}`)}
+        ></ListItem>
+      ));
+    }
+  };
+
+  return <S.FavoriteContents>{renderComps()}</S.FavoriteContents>;
 };
