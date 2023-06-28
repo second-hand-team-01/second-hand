@@ -33,19 +33,21 @@ export const convertItemsToListItems = (
       price,
       chat,
       interest,
+      interestChecked,
     } = item;
 
     const newItem: ListItemPropsWithId = {
       id: itemIdx,
       title: name,
       imgUrl: imageUrl,
-      location: location,
+      location,
       timeStamp: new Date(postedAt),
-      price: price,
+      price,
       state: status,
       like: interest,
-      chat: chat,
+      chat,
       moreBtn: false,
+      interestChecked,
     };
     return newItem;
   });
@@ -333,6 +335,7 @@ export const convertAPISalesItemsToListItems = (
       price,
       chat,
       like,
+      interestChecked,
     } = item;
 
     const newItem: ListItemPropsWithId = {
@@ -346,6 +349,7 @@ export const convertAPISalesItemsToListItems = (
       like,
       chat: chat,
       moreBtn: false,
+      interestChecked,
     };
     return newItem;
   });

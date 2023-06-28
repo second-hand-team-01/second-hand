@@ -11,6 +11,7 @@ export interface Item {
   price: number;
   chat: number;
   interest: number;
+  interestChecked: boolean;
 }
 
 export interface Image {
@@ -113,6 +114,7 @@ export interface APISalesItem {
   price: number;
   chat: number;
   like: number;
+  interestChecked: boolean;
 }
 
 export enum ItemStatus {

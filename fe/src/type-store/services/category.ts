@@ -10,4 +10,16 @@ export interface Category {
   imgUrl?: string;
 }
 
+export interface FavoriteCategory {
+  idx: number;
+  text: string;
+}
+
+export interface APIFavoriteCategory {
+  idx: number;
+  name: string;
+}
+
 export type CategoryRes = APICategory[];
+
+export type FavoriteCategoryRes = APIFavoriteCategory[];

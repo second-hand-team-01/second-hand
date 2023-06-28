@@ -5,6 +5,7 @@ import { DetailsPage } from './DetailsPage/DetailsPage';
 import { SignUpPage } from './SignUpPage/SignUpPage';
 import { AuthPage } from './AuthPage/AuthPage';
 import { SalesHistoryPage } from './SalesHistoryPage/SalesHistoryPage';
+import { FavoritesPage } from './FavoritePage/FavoritePage';
 
 export {
   HomePage,
@@ -14,4 +15,5 @@ export {
   DetailsPage,
   AuthPage,
   SalesHistoryPage,
+  FavoritesPage,
 };

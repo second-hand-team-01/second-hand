@@ -7,12 +7,14 @@ import categoryPage0 from './data/items/category-page0.json';
 import categoryPage1 from './data/items/category-page1.json';
 import details from './data/items/details.json';
 import writerDetails from './data/items/details-writer.json';
-import category from './data/category.json';
+import category from './data/items/category.json';
+import favoriteCategory from './data/items/favorite-category.json';
 import { HOST } from '@constants/apis';
 import CLIENT_ERROR from './data/error/400.json';
 import sales from './data/items/sales.json';
 import salesDone from './data/items/sales-done.json';
 import { ItemStatus } from '@type-store/services/items';
+import favoriteItems from './data/items/favorite-items.json';
 
 const itemList = [page0, page1, page2];
 const categoryItemList = [categoryPage0, categoryPage1];
@@ -42,6 +44,14 @@ export const handlers = [
 
   rest.get(`${HOST}/category`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(category));
+  }),
+
+  rest.get(`${HOST}/members/interest/category`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(favoriteCategory));
+  }),
+
+  rest.get(`${HOST}/members/interest`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(favoriteItems));
   }),
 
   rest.get(`${HOST}/members/items`, (req, res, ctx) => {

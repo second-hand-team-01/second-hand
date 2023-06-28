@@ -24,6 +24,7 @@ export interface ListItemProps {
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
+  interestChecked: boolean;
   onClick?: () => void;
 }
 
@@ -43,6 +44,12 @@ const heartIcon: IconProps = {
   color: 'neutralText',
 };
 
+const heartFillIcon: IconProps = {
+  name: 'heartFill',
+  size: 13,
+  color: 'neutralText',
+};
+
 export const ListItem = ({
   title,
   imgUrl,
@@ -53,6 +60,7 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
+  interestChecked,
   onClick,
 }: ListItemProps) => {
   const moreBtnRef = useRef<HTMLButtonElement>(null);
@@ -103,9 +111,11 @@ export const ListItem = ({
             {!!like && (
               <S.ChatAndLikeInfo>
                 <Icon
-                  name={heartIcon.name}
-                  size={heartIcon.size}
-                  color={heartIcon.color}
+                  name={interestChecked ? heartFillIcon.name : heartIcon.name}
+                  size={interestChecked ? heartFillIcon.size : heartIcon.size}
+                  color={
+                    interestChecked ? heartFillIcon.color : heartIcon.color
+                  }
                 />
                 <span>{like}</span>
               </S.ChatAndLikeInfo>
