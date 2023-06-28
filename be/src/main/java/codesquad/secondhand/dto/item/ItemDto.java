@@ -19,8 +19,9 @@ public class ItemDto {
 	private Integer price;
 	private int chat;
 	private int interest;
+	private boolean interestChecked;
 
-	public static ItemDto of(Item item, int chatRooms, int interests) {
+	public static ItemDto of(Item item, int chatRooms, int interests, boolean interestChecked) {
 		return new ItemDto(item.getItemIdx(),
 			item.getItemImage().getImageUrl(),
 			item.getName(),
@@ -29,7 +30,9 @@ public class ItemDto {
 			item.getStatus(),
 			item.getPrice(),
 			chatRooms,
-			interests);
+			interests,
+			interestChecked
+		);
 	}
 
 }
