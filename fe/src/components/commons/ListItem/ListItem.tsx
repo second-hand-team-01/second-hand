@@ -28,6 +28,7 @@ export interface ListItemProps {
   moreBtn: boolean;
   interestChecked: boolean;
   onClick?: () => void;
+  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const moreBtnIcon: IconProps = {
@@ -65,7 +66,10 @@ export const ListItem = ({
   moreBtn,
   interestChecked: initialInterestChecked,
   onClick,
+  setUpdateFlag,
 }: ListItemProps) => {
+  const listItemRef = useRef<HTMLLIElement>(null);
+
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
   const [interestChecked, setInterestChecked] = useState(
@@ -85,6 +89,7 @@ export const ListItem = ({
       });
       if (error) return;
       setInterestChecked(true);
+      setUpdateFlag && setUpdateFlag(true);
       return;
     }
     if (icon?.id === 'heartFill') {
@@ -94,6 +99,7 @@ export const ListItem = ({
       });
       if (error) return;
       setInterestChecked(false);
+      setUpdateFlag && setUpdateFlag(true);
       return;
     }
     if (icon?.id === 'more') {
@@ -108,7 +114,7 @@ export const ListItem = ({
   };
 
   return (
-    <S.ListItem onClick={handleBtnClick} id={String(itemIdx)}>
+    <S.ListItem onClick={handleBtnClick} id={String(itemIdx)} ref={listItemRef}>
       <S.Wrap>
         <S.Thumbnail src={imgUrl} alt={title} />
         <S.Content>

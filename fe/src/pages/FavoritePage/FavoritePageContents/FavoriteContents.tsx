@@ -2,7 +2,7 @@ import { ListItem, Error, Loading } from '@commons/index';
 import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_MESSAGE } from '@constants/error';
 
@@ -16,10 +16,17 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
+  const [updateFlag, setUpdateFlag] = useState(false);
 
   useEffect(() => {
     contentsFetch();
   }, [categoryIdx]);
+
+  useEffect(() => {
+    if (!updateFlag) return;
+    contentsFetch();
+    setUpdateFlag(false);
+  }, [updateFlag]);
 
   const renderComps = () => {
     if (loading) {
@@ -38,6 +45,7 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
         key={item.itemIdx}
         {...item}
         onClick={() => navigate(`/item/${item.itemIdx}`)}
+        setUpdateFlag={setUpdateFlag}
       ></ListItem>
     ));
   };
