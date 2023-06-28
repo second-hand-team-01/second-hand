@@ -125,7 +125,12 @@ export const DetailsPage = () => {
           isInterestedChecked: isInterestChecked,
           price: details?.price,
           handleInterestClicked: handleInterestBtn,
-          handleChatClicked: () => console.log('d'),
+          handleChatClicked: () => {
+            isWriter
+              ? navigate(`/chat/${itemIdx}`)
+              : navigate(`/chat/${itemIdx}/0`);
+          },
+          isWriter,
         },
       }}
       isHeaderOverlapped={true}

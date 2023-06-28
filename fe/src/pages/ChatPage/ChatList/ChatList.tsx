@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export interface ChatListProps {
   chatIdx: number;
+  itemIdx: number;
   chat: number;
   user: { imgUrl: string; name: string };
   timestamp: Date;
@@ -13,6 +14,7 @@ export interface ChatListProps {
 }
 
 export const ChatList = ({
+  itemIdx,
   chatIdx,
   chat,
   user,
@@ -23,7 +25,10 @@ export const ChatList = ({
   const navigate = useNavigate();
   const hasChat = chat !== 0;
   return (
-    <S.ChatList hasChat={hasChat} onClick={() => navigate(`/chat/${chatIdx}`)}>
+    <S.ChatList
+      hasChat={hasChat}
+      onClick={() => navigate(`/chat/${itemIdx}/${chatIdx}`)}
+    >
       <Profile size={48} imgUrl={user.imgUrl}></Profile>
       <S.Contents>
         <S.ContentsHeader>
