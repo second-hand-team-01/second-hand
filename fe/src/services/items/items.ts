@@ -8,11 +8,13 @@ import {
   ItemDetail,
   APIItemDetail,
   WriteItemDetails,
+  ItemStatus,
+  APISalesItem,
 } from '@type-store/services/items';
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { ERROR_MESSAGE } from '@constants/error';
-import { Image } from '@type-store/services/items';
+import { Image, GetSalesItemsRes } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
 import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
 import { LOCATION_FALLBACK } from '@constants/login';
@@ -44,9 +46,6 @@ export const convertItemsToListItems = (
       like: interest,
       chat: chat,
       moreBtn: false,
-      onClick: () => {
-        console.log('click');
-      },
     };
     return newItem;
   });
@@ -292,4 +291,62 @@ export const deleteItemsAPI = async (itemIdx: number) => {
     if (error instanceof Error) return { error };
     return {};
   }
+};
+
+export const getSalesItemsAPI = async (status: ItemStatus) => {
+  const queries = removeEmptyKeyValues({
+    status,
+  });
+
+  try {
+    const res = (await customFetch<null, GetSalesItemsRes>({
+      path: '/members/items',
+      method: 'GET',
+      queries,
+      auth: true,
+    })) as Response<GetSalesItemsRes>;
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    const items = res.data;
+    return {
+      ...res,
+      data: convertAPISalesItemsToListItems(items),
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+export const convertAPISalesItemsToListItems = (
+  items: APISalesItem[]
+): ListItemPropsWithId[] => {
+  return items.map((item) => {
+    const {
+      itemIdx,
+      imageUrl,
+      name,
+      location,
+      postedAt,
+      status,
+      price,
+      chat,
+      like,
+    } = item;
+
+    const newItem: ListItemPropsWithId = {
+      id: itemIdx,
+      title: name,
+      imgUrl: imageUrl,
+      location: location,
+      timeStamp: new Date(postedAt),
+      price: price,
+      state: status,
+      like,
+      chat: chat,
+      moreBtn: false,
+    };
+    return newItem;
+  });
 };

@@ -20,7 +20,7 @@ export interface ListItemProps {
   location: string;
   timeStamp: Date;
   price: number | null;
-  state: '예약중' | '판매중' | null;
+  state: '예약중' | '판매중' | string | null;
   like: number | null;
   chat: number | null;
   moreBtn: boolean;

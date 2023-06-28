@@ -6,6 +6,7 @@ import {
   DetailsPage,
   SignUpPage,
   AuthPage,
+  SalesHistoryPage,
 } from '@pages/index';
 
 export const router = createBrowserRouter([
@@ -16,7 +17,7 @@ export const router = createBrowserRouter([
         path: '/',
         element: <HomePage />,
       },
-      { path: 'sales-history', element: <div>Sales-history</div> },
+      { path: 'sales-history', element: <SalesHistoryPage /> },
       { path: 'favorites', element: <div>Favorites</div> },
       { path: 'chat', element: <div>Chat</div> },
       { path: 'profile', element: <LoginPage /> },

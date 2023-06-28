@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "message": "요청이 정상 처리되었습니다.",
+  "data": [
+    {
+      "itemIdx": 3,
+      "imageUrl": "https://imgurl.com",
+      "name": "빨간 선풍기",
+      "location": "서울 강남구 역삼1동",
+      "postedAt": "2023-02-06T09:10:35",
+      "status": "판매완료",
+      "price": 24500,
+      "chat": 5,
+      "like": 0
+    }
+  ]
+}
