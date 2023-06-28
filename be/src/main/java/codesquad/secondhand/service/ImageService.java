@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -30,7 +31,6 @@ public class ImageService {
 	@Value("${aws.s3.bucket}")
 	private String bucketName;
 
-	//TODO: 맴버 프로필 이미지 업로드, 삭제
 	//TODO: 아이템 이미지 업로드, 삭제
 	//TODO: 이미지 URL DB에 저장
 
@@ -54,7 +54,12 @@ public class ImageService {
 		} catch (IOException e) {
 			throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 		}
-		return amazonS3.getUrl(bucketName, fileName).toString();
+		return fileName + "@" + amazonS3.getUrl(bucketName, fileName).toString();
+	}
+
+	public void delete(String filePath) {
+		DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, filePath);
+		amazonS3.deleteObject(deleteObjectRequest);
 	}
 
 	// public List<String> upload(List<MultipartFile> multipartFileList, String itemId, String itemCategory) {
@@ -94,9 +99,9 @@ public class ImageService {
 	private String memberProfileFileNameConvert(String originalFileName, String memberId, MultipartFile multipartFile) {
 		StringBuilder sb = new StringBuilder();
 		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
-		String fileName = originalFileName.substring(lastDot + 1); // 수정된 부분
+		String fileName = originalFileName.substring(lastDot + 1);
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd_HH-mm"); // 수정된 부분
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd_HH-mm");
 		String initDate = simpleDateFormat.format(date);
 		sb.append("member-profile-image")
 			.append("/")

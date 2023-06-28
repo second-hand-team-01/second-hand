@@ -26,6 +26,7 @@ import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
+import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
 import codesquad.secondhand.dto.token.TokenResponse;
@@ -60,6 +61,12 @@ public class MemberController {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		MemberInfoDto memberInfo = memberService.getMemberInfo(memberIdx);
 		return ResponseDto.of(RESPONSE_SUCCESS, memberInfo);
+	}
+
+	@PutMapping("/info")
+	public ResponseDto<MemberImageDto> editMemberProfile(@ModelAttribute MemberImageDto memberImageDto) {
+		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(), memberImageDto.getImage());
+		return ResponseDto.of(RESPONSE_SUCCESS, MemberImageDtoReturn);
 	}
 
 	@GetMapping("/location")

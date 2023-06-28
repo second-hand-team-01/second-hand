@@ -18,24 +18,24 @@ VALUES (1, 2, 'snoop', "12345", 'www.profileimgurl1.com'),
 
 -- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`)
-VALUES (1, '디지털기기', 's3://codesquadsecondhandteam01/category-icons/01_digital.png'),
-       (2, '생활가전', 's3://codesquadsecondhandteam01/category-icons/02_living.png'),
-       (3, '가구/인테리어', 's3://codesquadsecondhandteam01/category-icons/03_furniture.png'),
-       (4, '생활/주방', 's3://codesquadsecondhandteam01/category-icons/04_kitchen.png'),
-       (5, '유아동', 's3://codesquadsecondhandteam01/category-icons/05_baby.png'),
-       (6, '유아도서', 's3://codesquadsecondhandteam01/category-icons/06_baby-book.png'),
-       (7, '여성의류', 's3://codesquadsecondhandteam01/category-icons/07_woman-apparel.png'),
-       (8, '여성잡화', 's3://codesquadsecondhandteam01/category-icons/08_woman-accessories.png'),
-       (9, '남성패션/잡화', 's3://codesquadsecondhandteam01/category-icons/09_man-apparel.png'),
-       (10, '뷰티/미용', 's3://codesquadsecondhandteam01/category-icons/10_beauty.png'),
-       (11, '스포츠/레저', 's3://codesquadsecondhandteam01/category-icons/11_sports.png'),
-       (12, '취미/게임/음반', 's3://codesquadsecondhandteam01/category-icons/12_game.png'),
-       (13, '중고차', 's3://codesquadsecondhandteam01/category-icons/13_car.png'),
-       (14, '티켓/교환권', 's3://codesquadsecondhandteam01/category-icons/14_ticket.png'),
-       (15, '가공식품', 's3://codesquadsecondhandteam01/category-icons/15_processed-foods.png'),
-       (16, '반려동물용품', 's3://codesquadsecondhandteam01/category-icons/16_pet.png'),
-       (17, '식물', 's3://codesquadsecondhandteam01/category-icons/17_plant.png'),
-       (18, '기타 중고물품', 's3://codesquadsecondhandteam01/category-icons/18_etc.png');
+VALUES (1, '디지털기기', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/01_digital.png'),
+       (2, '생활가전', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/02_living.png'),
+       (3, '가구/인테리어', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/03_furniture.png'),
+       (4, '생활/주방', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/04_kitchen.png'),
+       (5, '유아동', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/05_baby.png'),
+       (6, '유아도서', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/06_baby-book.png'),
+       (7, '여성의류', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/07_woman-apparel.png'),
+       (8, '여성잡화', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/08_woman-accessories.png'),
+       (9, '남성패션/잡화', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/09_man-apparel.png'),
+       (10, '뷰티/미용', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/10_beauty.png'),
+       (11, '스포츠/레저', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/11_sports.png'),
+       (12, '취미/게임/음반', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/12_game.png'),
+       (13, '중고차', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/13_car.png'),
+       (14, '티켓/교환권', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/14_ticket.png'),
+       (15, '가공식품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/15_processed-foods.png'),
+       (16, '반려동물용품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/16_pet.png'),
+       (17, '식물', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/17_plant.png'),
+       (18, '기타 중고물품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/18_etc.png');
 
 SET foreign_key_checks = 0;
 

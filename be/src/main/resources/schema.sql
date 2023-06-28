@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`member`
     `sub_location_idx`  BIGINT(10)   NULL,
     `login_id`          VARCHAR(45)  NOT NULL,
     `password`          VARCHAR(45)  NULL,
+    `image_path`        VARCHAR(100) NULL,
     `image_url`         VARCHAR(500) NULL,
     `oauth_id`          VARCHAR(45)  NULL DEFAULT NULL,
     PRIMARY KEY (`member_idx`),
@@ -54,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`category`
 (
     `category_idx` BIGINT(10)   NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(45)  NOT NULL,
-    `image_url`    VARCHAR(100) NOT NULL,
+    `image_url`    VARCHAR(500) NOT NULL,
     PRIMARY KEY (`category_idx`)
 )
     ENGINE = InnoDB;
@@ -108,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item_image`
 (
     `item_image_idx` BIGINT(10)   NOT NULL AUTO_INCREMENT,
     `item_idx`       BIGINT(10)   NOT NULL,
-    `image_url`      VARCHAR(100) NOT NULL,
+    `image_url`      VARCHAR(500) NOT NULL,
     PRIMARY KEY (`item_image_idx`),
     INDEX `fk_item_image_item2_idx` (`item_idx` ASC) VISIBLE,
     CONSTRAINT `fk_item_image_item2`
