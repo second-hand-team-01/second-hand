@@ -1,4 +1,4 @@
-import { ListItem } from '@commons/index';
+import { ListItem, Error } from '@commons/index';
 import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
@@ -22,13 +22,17 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
 
   return (
     <S.FavoriteContents>
-      {items?.map((item) => (
-        <ListItem
-          key={item.id}
-          {...item}
-          onClick={() => navigate(`/item/${item.id}`)}
-        ></ListItem>
-      ))}
+      {items && items.length !== 0 ? (
+        items.map((item) => (
+          <ListItem
+            key={item.id}
+            {...item}
+            onClick={() => navigate(`/item/${item.id}`)}
+          ></ListItem>
+        ))
+      ) : (
+        <Error>관심 상품으로 등록된 상품이 없어요.</Error>
+      )}
     </S.FavoriteContents>
   );
 };

@@ -10,7 +10,10 @@ import { Error } from '@commons/index';
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<ItemStatus>(ItemStatus.SELLING);
-  const [state, fetch] = useFetch(getSalesItemsAPI.bind(null, status), []);
+  const [{ data: salesItems }, fetch] = useFetch(
+    getSalesItemsAPI.bind(null, status),
+    []
+  );
 
   useEffect(() => {
     fetch();
@@ -37,8 +40,8 @@ export const SalesHistoryPage = () => {
       footerOption={{ type: 'tab' }}
     >
       <S.SalesHistoryPage>
-        {state.data ? (
-          state.data.map((item: ListItemPropsWithId) => (
+        {salesItems && salesItems.length !== 0 ? (
+          salesItems.map((item: ListItemPropsWithId) => (
             <ListItem
               key={item.id}
               {...item}
@@ -46,7 +49,7 @@ export const SalesHistoryPage = () => {
             ></ListItem>
           ))
         ) : (
-          <Error>아무것도 없어요</Error>
+          <Error>아직 판매 중인 상품이 없어요.</Error>
         )}
       </S.SalesHistoryPage>
     </Layout>

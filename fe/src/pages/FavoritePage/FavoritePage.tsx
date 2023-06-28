@@ -6,11 +6,7 @@ import { FavoriteContents } from './FavoritePageContents/FavoriteContents';
 import { useState } from 'react';
 
 export const FavoritesPage = () => {
-  const [{ data: categories }, categoryFetch] = useFetch(
-    getFavoriteCategoryAPI,
-    [],
-    true
-  );
+  const [{ data: categories }] = useFetch(getFavoriteCategoryAPI, [], true);
 
   let navbarCategories = [{ text: '전체', idx: -1 }];
   if (categories) {
