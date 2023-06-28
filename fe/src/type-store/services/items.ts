@@ -42,10 +42,6 @@ export interface PostItemRes {
   itemIdx: number;
 }
 
-export interface ListItemPropsWithId extends ListItemProps {
-  id: number;
-}
-
 export interface GetItemsRes {
   hasNext: boolean;
   items: Item[];
@@ -53,7 +49,7 @@ export interface GetItemsRes {
 
 export interface ConvertedGetItemsRes {
   hasNext: boolean;
-  items: ListItemPropsWithId[];
+  items: ListItemProps[];
 }
 
 export interface APIItemDetail {

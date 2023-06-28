@@ -35,9 +35,9 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
 
     return items.map((item) => (
       <ListItem
-        key={item.id}
+        key={item.itemIdx}
         {...item}
-        onClick={() => navigate(`/item/${item.id}`)}
+        onClick={() => navigate(`/item/${item.itemIdx}`)}
       ></ListItem>
     ));
   };

@@ -3,7 +3,6 @@ import {
   Item,
   ItemReqBody,
   PostItemRes,
-  ListItemPropsWithId,
   GetItemsRes,
   ItemDetail,
   APIItemDetail,
@@ -11,6 +10,8 @@ import {
   ItemStatus,
   APISalesItem,
 } from '@type-store/services/items';
+import { ListItemProps } from '@commons/ListItem/ListItem';
+
 import { customFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { ERROR_MESSAGE } from '@constants/error';
@@ -19,9 +20,7 @@ import { Category } from '@type-store/services/category';
 import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
 import { LOCATION_FALLBACK } from '@constants/login';
 
-export const convertItemsToListItems = (
-  items: Item[]
-): ListItemPropsWithId[] => {
+export const convertItemsToListItems = (items: Item[]): ListItemProps[] => {
   return items.map((item) => {
     const {
       itemIdx,
@@ -36,8 +35,8 @@ export const convertItemsToListItems = (
       interestChecked,
     } = item;
 
-    const newItem: ListItemPropsWithId = {
-      id: itemIdx,
+    const newItem: ListItemProps = {
+      itemIdx,
       title: name,
       imgUrl: imageUrl,
       location,
@@ -80,7 +79,7 @@ export const getItemsAPI = async (
       ...res,
       data: {
         hasNext,
-        items: convertItemsToListItems(items) as ListItemPropsWithId[],
+        items: convertItemsToListItems(items) as ListItemProps[],
       },
     };
   } catch (error) {
@@ -326,7 +325,7 @@ export const getSalesItemsAPI = async (status: ItemStatus) => {
 
 export const convertAPISalesItemsToListItems = (
   items: APISalesItem[]
-): ListItemPropsWithId[] => {
+): ListItemProps[] => {
   return items.map((item) => {
     const {
       itemIdx,
@@ -341,8 +340,8 @@ export const convertAPISalesItemsToListItems = (
       interestChecked,
     } = item;
 
-    const newItem: ListItemPropsWithId = {
-      id: itemIdx,
+    const newItem: ListItemProps = {
+      itemIdx,
       title: name,
       imgUrl: imageUrl,
       location: location,

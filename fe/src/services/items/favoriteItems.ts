@@ -3,10 +3,11 @@ import {
   APIFavoriteItem,
   FavoriteItem,
   FavoriteItemsRes,
+  PostFavoriteItemBody,
+  APIPostFavoriteItemBody,
 } from '@type-store/services/favoriteItems';
-import { ListItemPropsWithId } from '@type-store/services/items';
+import { ListItemProps } from '@commons/ListItem/ListItem';
 import { Response } from '@hooks/useFetch/useFetch';
-import { removeEmptyKeyValues } from '@utils/common/common';
 
 export const convertResToFavoriteItems = (
   items: APIFavoriteItem[]
@@ -24,8 +25,8 @@ export const convertResToFavoriteItems = (
       like,
     } = item;
 
-    const newItem: ListItemPropsWithId = {
-      id: itemIdx,
+    const newItem: ListItemProps = {
+      itemIdx: itemIdx,
       title: name,
       imgUrl: imageUrl,
       location: location,
@@ -58,6 +59,33 @@ export const getFavoriteItemsAPI = async (categoryIdx?: number) => {
       ...res,
       data: convertResToFavoriteItems(items),
     };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
+};
+
+export const convertPostFavoriteItemToAPIBody = (
+  body: PostFavoriteItemBody
+): APIPostFavoriteItemBody => {
+  const { itemIdx, interestChecked } = body;
+  return { itemIdx, interestChecked };
+};
+
+export const postFavoriteItemAPI = async (body: PostFavoriteItemBody) => {
+  const convertedBody = convertPostFavoriteItemToAPIBody(body);
+
+  try {
+    const res = await customFetch<APIPostFavoriteItemBody, undefined>({
+      path: `/members/interest`,
+      method: 'POST',
+      body: convertedBody,
+    });
+
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {};
   } catch (error) {
     if (error instanceof Error) return { error };
     return {};

@@ -107,4 +107,14 @@ export const handlers = [
       })
     );
   }),
+
+  rest.post(`${HOST}/members/interest`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        message: '요청이 정상 처리되었습니다.',
+      })
+    );
+  }),
 ];

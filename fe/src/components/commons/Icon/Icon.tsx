@@ -13,6 +13,7 @@ export const Icon = ({ name, size = 20, color = 'neutralText' }: IconProps) => {
   return (
     <S.Icon size={size} fill={color}>
       <IconComponent
+        id={name}
         fill={colors[color]}
         width={size}
         height={size}
