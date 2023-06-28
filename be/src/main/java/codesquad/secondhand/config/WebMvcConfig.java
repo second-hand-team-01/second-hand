@@ -41,7 +41,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addMapping("/**")
 			.allowedMethods("*")
 			.allowedOrigins("*")
-			.allowedHeaders("*");
+			.allowedHeaders("*")
+			.allowedOriginPatterns("*");
 		log.info("[CORS 도메인 등록]");
 	}
 
