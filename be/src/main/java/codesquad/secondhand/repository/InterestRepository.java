@@ -9,4 +9,6 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
 
 	int countByItem(Item item);
 
+	boolean existsByItemAndMember_MemberIdx(Item item, Long memberIdx);
+
 }

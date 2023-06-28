@@ -32,17 +32,22 @@ public class ItemController {
 	private final ItemService itemService;
 
 	@GetMapping
-	public ResponseDto<ItemSliceDto> showItems(@RequestParam(required = false) Long locationIdx) {
+	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx) {
 		log.info("[ItemController.showItems()]");
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
-		ItemSliceDto itemSliceDto = itemService.showItems(locationIdx, pageable);
+		if (memberIdx == null) { // 로그인 하지 않은 사용자 분기 처리
+			locationIdx = 1L;
+		}
+		ItemSliceDto itemSliceDto = itemService.showItems(memberIdx, locationIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
 	@GetMapping("/{categoryIdx}")
-	public ResponseDto<ItemSliceDto> filterItems(@PathVariable Long categoryIdx) {
+	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx) {
 		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
-		ItemSliceDto itemSliceDto = itemService.filterItems(categoryIdx, pageable);
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
