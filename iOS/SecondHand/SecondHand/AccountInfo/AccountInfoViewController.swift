@@ -14,6 +14,7 @@ class AccountInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.accountInfoView.configure(userName: userName)
+        self.navigationItem.hidesBackButton = true
     }
     
     override func viewWillLayoutSubviews() {
