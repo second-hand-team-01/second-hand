@@ -87,14 +87,16 @@ extension LoginViewController {
     }
     
     @objc private func login(_ notification: Notification) {
-<<<<<<< HEAD
         let enteredLoginData = loginView.getEnteredInfo()
         guard let id = enteredLoginData.0,
               let password = enteredLoginData.1 else { return }
         let loginInfo = LoginDTO(loginId: id, password: password)
         
         Task {
-            let response = await networkManager.request(loginInfo: loginInfo)
+            let response = await networkManager.request(
+                type: .signIn,
+                data: loginInfo
+            )
             guard response != nil else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
@@ -107,8 +109,6 @@ extension LoginViewController {
                 animated: true
             )
         }
-=======
->>>>>>> 6390a66 (돔황챠!)
     }
     
     private func observeLoginByGithub() {

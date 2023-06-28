@@ -8,14 +8,4 @@
 import UIKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:])
-    -> Bool {
-        print("AppDelegate: \(options)")
-        print("AppDelegate: \(url)")
-        return true
-    }
-}
+class AppDelegate: UIResponder, UIApplicationDelegate { }

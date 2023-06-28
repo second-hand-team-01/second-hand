@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LoginDTO {
+struct LoginDTO: Encodable {
     var loginId: String
     var password: String
 }

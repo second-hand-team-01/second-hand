@@ -42,7 +42,7 @@ extension AccountInfoView {
     private func addSubviews() {
         let subViews = [
             self.profileImageView,
-            self.userNameLabel,
+            self.userNameLabel
         ]
         
         subViews.forEach {

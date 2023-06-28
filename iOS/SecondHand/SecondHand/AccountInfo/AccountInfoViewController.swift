@@ -88,7 +88,7 @@ extension AccountInfoViewController {
             self.accountInfoView.topAnchor.constraint(
                 equalTo: navigationBarBottomAnchor,
                 constant: topConstraint
-            ),
+            )
         ])
     }
     
