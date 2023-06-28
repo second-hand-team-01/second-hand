@@ -24,6 +24,7 @@ export interface ListItemProps {
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
+  interestChecked: boolean;
   onClick?: () => void;
 }
 
@@ -39,6 +40,12 @@ const chatIcon: IconProps = {
 };
 const heartIcon: IconProps = {
   name: 'heart',
+  size: 13,
+  color: 'neutralText',
+};
+
+const heartFillIcon: IconProps = {
+  name: 'heartFill',
   size: 13,
   color: 'neutralText',
 };
