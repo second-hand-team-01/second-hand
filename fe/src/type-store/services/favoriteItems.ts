@@ -1,6 +1,6 @@
-import { Item, ListItemPropsWithId } from './items';
+import { ListItemProps } from '@commons/ListItem/ListItem';
 
-export type APIFavoriteItem = {
+export interface APIFavoriteItem {
   itemIdx: number;
   imageUrl: string;
   name: string;
@@ -10,8 +10,18 @@ export type APIFavoriteItem = {
   price: number;
   chat: number;
   like: number;
-};
+}
 
-export type FavoriteItem = ListItemPropsWithId;
+export type FavoriteItem = ListItemProps;
 
 export type FavoriteItemsRes = APIFavoriteItem[];
+
+export interface PostFavoriteItemBody {
+  itemIdx: number;
+  interestChecked: boolean;
+}
+
+export interface APIPostFavoriteItemBody {
+  itemIdx: number;
+  interestChecked: boolean;
+}

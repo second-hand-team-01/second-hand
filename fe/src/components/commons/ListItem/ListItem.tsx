@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
 import { Icon } from '@components/commons';
@@ -7,6 +7,7 @@ import {
   convertDateToTimeStamp,
   convertNumToPrice,
 } from '@utils/common/common';
+import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -15,6 +16,7 @@ export interface IconProps {
 }
 
 export interface ListItemProps {
+  itemIdx: number;
   title: string;
   imgUrl: string;
   location: string;
@@ -26,6 +28,7 @@ export interface ListItemProps {
   moreBtn: boolean;
   interestChecked: boolean;
   onClick?: () => void;
+  setUpdateFlag?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const moreBtnIcon: IconProps = {
@@ -51,6 +54,7 @@ const heartFillIcon: IconProps = {
 };
 
 export const ListItem = ({
+  itemIdx,
   title,
   imgUrl,
   location,
@@ -60,17 +64,57 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
-  interestChecked,
+  interestChecked: initialInterestChecked,
   onClick,
+  setUpdateFlag,
 }: ListItemProps) => {
+  const listItemRef = useRef<HTMLLIElement>(null);
+
   const moreBtnRef = useRef<HTMLButtonElement>(null);
+
+  const [interestChecked, setInterestChecked] = useState(
+    initialInterestChecked
+  );
+
+  const handleBtnClick = async (e: React.MouseEvent) => {
+    const targetElement = e.target as HTMLElement;
+    const currentTargetElement = e.currentTarget as HTMLLIElement;
+    const icon = targetElement.closest('svg');
+    const itemIdx = parseInt(currentTargetElement.id);
+    if (!itemIdx) return;
+    if (icon?.id === 'heart') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: true,
+      });
+      if (error) return;
+      setInterestChecked(true);
+      setUpdateFlag && setUpdateFlag(true);
+      return;
+    }
+    if (icon?.id === 'heartFill') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: false,
+      });
+      if (error) return;
+      setInterestChecked(false);
+      setUpdateFlag && setUpdateFlag(true);
+      return;
+    }
+    if (icon?.id === 'more') {
+      return;
+    }
+
+    onClick && onClick();
+  };
 
   const moreBtnClickHandler = () => {
     console.log('더보기 버튼 클릭');
   };
 
   return (
-    <S.ListItem onClick={onClick}>
+    <S.ListItem onClick={handleBtnClick} id={String(itemIdx)} ref={listItemRef}>
       <S.Wrap>
         <S.Thumbnail src={imgUrl} alt={title} />
         <S.Content>
@@ -117,7 +161,7 @@ export const ListItem = ({
                     interestChecked ? heartFillIcon.color : heartIcon.color
                   }
                 />
-                <span>{like}</span>
+                <span className="like-counts">{like}</span>
               </S.ChatAndLikeInfo>
             )}
           </S.ChatAndLike>

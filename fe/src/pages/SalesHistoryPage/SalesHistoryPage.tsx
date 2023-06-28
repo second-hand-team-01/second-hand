@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Layout, ListItem, Loading } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
-import { ItemStatus, ListItemPropsWithId } from '@type-store/services/items';
+import { ItemStatus } from '@type-store/services/items';
+import { ListItemProps } from '@commons/ListItem/ListItem';
 import { Error } from '@commons/index';
 import { ERROR_MESSAGE } from '@constants/error';
 
@@ -30,11 +31,11 @@ export const SalesHistoryPage = () => {
     if (salesItems.length === 0) {
       return <Error>{ERROR_MESSAGE.NO_DATA}</Error>;
     }
-    return salesItems.map((item: ListItemPropsWithId) => (
+    return salesItems.map((item: ListItemProps) => (
       <ListItem
-        key={item.id}
+        key={item.itemIdx}
         {...item}
-        onClick={() => navigate(`/item/${item.id}`)}
+        onClick={() => navigate(`/item/${item.itemIdx}`)}
       ></ListItem>
     ));
   };

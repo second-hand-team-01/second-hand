@@ -5,6 +5,7 @@ import { ChatList, ChatListProps } from './ChatList/ChatList';
 export const ChatPage = () => {
   const chatList: ChatListProps[] = [
     {
+      itemIdx: 1,
       chatIdx: 0,
       chat: 2,
       user: {
@@ -18,6 +19,7 @@ export const ChatPage = () => {
         'https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/da44c42c-9e28-445e-acfb-0ef79f438f7e/704b6dc2-b8ba-439f-adbf-f204e90f19db.jpg',
     },
     {
+      itemIdx: 1,
       chatIdx: 1,
       chat: 0,
       user: {

@@ -2,7 +2,7 @@ import { Layout, ListItem, Error, Button, Loading } from '@commons/index';
 import * as S from './HomePageStyle';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState, useContext } from 'react';
-import { ListItemPropsWithId } from '@type-store/services/items';
+import { ListItemProps } from '@commons/ListItem/ListItem';
 import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
@@ -61,7 +61,7 @@ export const HomePage = () => {
     setCategoryPopupRendered(true);
   }, []);
 
-  const [items, setItems] = useState<ListItemPropsWithId[]>([]);
+  const [items, setItems] = useState<ListItemProps[]>([]);
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(async (entry) => {
@@ -114,12 +114,12 @@ export const HomePage = () => {
             <Loading />
           ) : (
             <>
-              {items?.map((item: ListItemPropsWithId) => (
+              {items?.map((item: ListItemProps) => (
                 <ListItem
-                  key={item.id}
+                  key={item.itemIdx}
                   {...item}
                   onClick={() =>
-                    navigate(`/item/${item.id}`, { state: pathname })
+                    navigate(`/item/${item.itemIdx}`, { state: pathname })
                   }
                 ></ListItem>
               ))}

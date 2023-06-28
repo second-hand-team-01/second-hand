@@ -19,10 +19,6 @@ export const Menu = ({
 }: MenuProps) => {
   const [isOpen, setIsOpen] = openState;
 
-  useEffect(() => {
-    console.log(parentCoordinate);
-  }, []);
-
   const backDropHandler = ({
     target,
     currentTarget,
