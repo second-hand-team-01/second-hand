@@ -3,7 +3,9 @@ package codesquad.secondhand.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import codesquad.secondhand.dto.item.ItemDetailDto;
 import codesquad.secondhand.exception.EmptyFileException;
 import codesquad.secondhand.exception.FileUploadFailedException;
 import codesquad.secondhand.exception.code.ImageErrorCode;
@@ -25,8 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ImageService {
 	private static final String FILE_EXTENSION_DOT = ".";
-	private static final int MEMBER_PROFILE_SIZE = 1;
-
 	private final AmazonS3 amazonS3;
 	@Value("${aws.s3.bucket}")
 	private String bucketName;
@@ -62,33 +63,38 @@ public class ImageService {
 		amazonS3.deleteObject(deleteObjectRequest);
 	}
 
-	// public List<String> upload(List<MultipartFile> multipartFileList, String itemId, String itemCategory) {
-	// 	List<String> itemUrlList = new ArrayList<>();
-	//
-	// 	for (MultipartFile multipartFile : multipartFileList) {
-	// 		validateFile(multipartFile);
-	//
-	// 		ObjectMetadata objectMetadata = new ObjectMetadata();
-	// 		String originFileName = multipartFile.getOriginalFilename();
-	//
-	// 		if (originFileName == null) {
-	// 			originFileName = UUID.randomUUID().toString();
-	// 		}
-	//
-	// 		String fileName = itemFileNameConvert(originFileName, memberId, multipartFileList.size());
-	//
-	// 		objectMetadata.setContentType(multipartFile.getContentType());
-	//
-	// 		try (InputStream inputStream = multipartFile.getInputStream()) {
-	// 			amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
-	// 				.withCannedAcl(CannedAccessControlList.PublicRead));
-	// 		} catch (IOException e) {
-	// 			throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
-	// 		}
-	// 		itemUrlList.add(amazonS3.getUrl(bucketName, fileName).toString());
-	// 	}
-	// 	return itemUrlList;
-	// }
+	public List<String> upload(Long imageIdx, ItemDetailDto itemDetailDto) {
+		List<String> itemUrlList = new ArrayList<>();
+		List<MultipartFile> multipartFileList = itemDetailDto.getImage();
+
+		int cnt = 1;
+		for (MultipartFile multipartFile : multipartFileList) {
+			validateFile(multipartFile);
+
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			String originFileName = multipartFile.getOriginalFilename();
+
+			if (originFileName == null) {
+				originFileName = UUID.randomUUID().toString();
+			}
+
+			String fileName = itemFileNameConvert(originFileName, imageIdx, cnt);
+
+			objectMetadata.setContentType(multipartFile.getContentType());
+			objectMetadata.setContentLength(multipartFile.getSize());
+
+			try (InputStream inputStream = multipartFile.getInputStream()) {
+				amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+			} catch (IOException e) {
+				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
+			}
+			itemUrlList.add(amazonS3.getUrl(bucketName, fileName).toString());
+			cnt++;
+		}
+		return itemUrlList;
+	}
+
 
 	private void validateFile(MultipartFile multipartFile) {
 		if (multipartFile.isEmpty()) {
@@ -115,20 +121,24 @@ public class ImageService {
 		return sb.toString();
 	}
 
-	private String itemFileNameConvert(String originalFileName, String memberId, int multipartFileListSize) {
+	private String itemFileNameConvert(String originalFileName, Long itemIdx, int cnt) {
 		StringBuilder sb = new StringBuilder();
-		String[] originalFileNameSplit = originalFileName.split(FILE_EXTENSION_DOT);
+		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
+		String fileName = originalFileName.substring(lastDot + 1);
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd_HH-mm");
 		String initDate = simpleDateFormat.format(date);
-		sb.append("member-profile-image")
-			.append(memberId)
+		sb.append("item-image")
+			.append("/")
+			.append(itemIdx)
+			.append("/")
+			.append(itemIdx)
 			.append("_")
-			.append(originalFileNameSplit[0])
+			.append(cnt)
 			.append("_")
-			.append(simpleDateFormat.format(date))
+			.append(initDate)
 			.append(".")
-			.append(originalFileNameSplit[1]);
+			.append(fileName);
 		return sb.toString();
 	}
 }

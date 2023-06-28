@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -51,6 +52,7 @@ public class Item {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "main_image_idx")
+	@Setter
 	private ItemImage itemImage;
 
 	@LastModifiedDate
