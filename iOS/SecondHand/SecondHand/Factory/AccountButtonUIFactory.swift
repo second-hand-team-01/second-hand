@@ -8,6 +8,7 @@
 import UIKit
 
 struct AccountButtonUIFactory {
+    // TODO: - enum 열거형 내 필요한 자료들을 넣도록 수정
     enum ButtonType {
         case github
         case login

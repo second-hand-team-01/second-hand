@@ -98,15 +98,12 @@ extension LoginViewController {
         let loginInfo = LoginDTO(loginId: id, password: password)
         
         Task {
-            let response = await networkManager.request(
-                type: .signIn,
-                data: loginInfo
-            )
-            guard response != nil else {
+            guard let response = await networkManager.request(type: .githubSignIn, data: "") else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
-            viewController.userName = "\(id)"
+            SecretKeys.accessToken = response.data.accessToken
+            viewController.userName = response.data.memeberInfo?.loginId ?? ""
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true
@@ -133,12 +130,12 @@ extension LoginViewController {
         }
     
         Task {
-            let response = await networkManager.request(type: .githubSignIn, data: "")
-            guard response != nil else {
+            guard let response = await networkManager.request(type: .githubSignIn, data: "") else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
-            viewController.userName = "\(response?.data.memeberInfo?.loginId)"
+            SecretKeys.accessToken = response.data.accessToken
+            viewController.userName = response.data.memeberInfo?.loginId ?? ""
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true

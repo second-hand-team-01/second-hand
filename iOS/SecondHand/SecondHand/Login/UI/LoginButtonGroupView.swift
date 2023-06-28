@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: - 버튼을 뷰 컨트롤러로부터 나눌 정도의 의미가 있는가?
 class LoginButtonGroupView: UIView {
     private var githubLoginButton = UIButton()
     private var loginButton = UIButton()
