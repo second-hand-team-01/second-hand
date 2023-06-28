@@ -19,6 +19,7 @@ import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@stores/UserContext';
 import { DEV_USER } from '@constants/login';
+import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 
 export const DetailsPage = () => {
   const { userInfo, dispatch } = useContext(UserContext);
@@ -47,6 +48,7 @@ export const DetailsPage = () => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
   const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [isInterestChecked, setInterestChecked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -55,12 +57,38 @@ export const DetailsPage = () => {
       if (error) return setErrorMsg(error.message);
       if (data) {
         setDetails(data);
+        details && setInterestChecked(details.interestChecked);
       }
       setLoading(false);
     })();
   }, []);
 
   const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
+
+  const handleInterestBtn = async (e: React.MouseEvent) => {
+    const targetElement = e.target as HTMLElement;
+    const icon = targetElement.closest('svg');
+    const itemIdx = details?.itemIdx;
+    if (!itemIdx || !icon) return;
+    if (icon?.id === 'heart') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: true,
+      });
+      if (error) return;
+      setInterestChecked(true);
+      return;
+    }
+    if (icon?.id === 'heartFill') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: false,
+      });
+      if (error) return;
+      setInterestChecked(false);
+      return;
+    }
+  };
 
   return (
     <Layout
@@ -82,7 +110,6 @@ export const DetailsPage = () => {
               color="accentText"
               backgroundColor="transparent"
               onClick={() => {
-                console.log('dddd');
                 setMenuOpen(true);
               }}
             ></Button>
@@ -95,9 +122,9 @@ export const DetailsPage = () => {
       footerOption={{
         type: 'info',
         infoBarOptions: {
-          isInterestedChecked: details?.interestChecked,
+          isInterestedChecked: isInterestChecked,
           price: details?.price,
-          handleInterestClicked: () => console.log('d'),
+          handleInterestClicked: handleInterestBtn,
           handleChatClicked: () => console.log('d'),
         },
       }}

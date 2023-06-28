@@ -76,8 +76,9 @@ export const ListItem = ({
     const targetElement = e.target as HTMLElement;
     const currentTargetElement = e.currentTarget as HTMLLIElement;
     const icon = targetElement.closest('svg');
+    const itemIdx = parseInt(currentTargetElement.id);
+    if (!itemIdx) return;
     if (icon?.id === 'heart') {
-      const itemIdx = parseInt(currentTargetElement.id);
       const { error } = await postFavoriteItemAPI({
         itemIdx,
         interestChecked: true,

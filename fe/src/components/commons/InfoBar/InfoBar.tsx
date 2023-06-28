@@ -5,7 +5,7 @@ import * as S from './InfoBarStyle';
 export interface InfoBarProps {
   isInterestedChecked?: boolean;
   price?: number;
-  handleInterestClicked?: () => void;
+  handleInterestClicked?: (e: React.MouseEvent) => Promise<void>;
   handleChatClicked?: () => void;
 }
 
