@@ -30,4 +30,13 @@ public class ItemImage {
 
 	@Column(name = "image_url")
 	private String imageUrl;
+
+	public ItemImage(Item item, String imageUrl) {
+		this.item = item;
+		this.imageUrl = imageUrl;
+	}
+
+	public ItemImage() {
+
+	}
 }

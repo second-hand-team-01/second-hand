@@ -3,8 +3,6 @@ package codesquad.secondhand.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -12,14 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import codesquad.secondhand.dto.item.ItemDetailDto;
 import codesquad.secondhand.dto.item.ItemDto;
+import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.entity.Item;
+import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
+import codesquad.secondhand.repository.ItemImageRepository;
 import codesquad.secondhand.repository.ItemRepository;
 import codesquad.secondhand.repository.LocationRepository;
 import codesquad.secondhand.repository.MemberRepository;
@@ -38,6 +39,8 @@ public class ItemService {
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
+	private final ItemImageRepository itemImageRepository;
+	private final ImageService imageService;
 
 	public List<ItemDto> getListItemDto(Slice<Item> itemSlice, Long memberIdx) {
 		return itemSlice.getContent().stream()
@@ -63,7 +66,7 @@ public class ItemService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemDto creatItem(ItemDetailDto itemDetailDto) {
+	public ItemIdxDto creatItem(ItemDetailDto itemDetailDto) {
 		log.info(itemDetailDto.toString());
 		Category category = categoryRepository.findById(itemDetailDto.getCategoryIdx())
 			.orElseThrow();
@@ -75,9 +78,17 @@ public class ItemService {
 			itemDetailDto.getName(), itemDetailDto.getDescription(), itemDetailDto.getPrice(),
 			0, "판매중");
 
-		itemRepository.save(item);
-
-		return null;
+		Item save = itemRepository.save(item);
+		List<String> itemUrlList = imageService.upload(save.getItemIdx(), itemDetailDto);
+		for (int i = 0; i < itemUrlList.size(); i++) {
+			if(i == 0) {
+				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+				item.setItemImage(itemImage);
+				continue;
+			}
+			itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+		}
+		return new ItemIdxDto(item.getItemIdx());
 	}
 
 }

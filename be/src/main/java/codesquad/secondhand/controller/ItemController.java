@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -51,19 +52,20 @@ public class ItemController {
 	}
 
 	@PostMapping
-	public ResponseDto<ItemSliceDto> addItem(HttpServletRequest httpServletRequest,
+	public ResponseDto<ItemIdxDto> addItem(HttpServletRequest httpServletRequest,
 		@ModelAttribute ItemDetailDto itemDetailDto) {
 		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		itemDetailDto.setSellerIdx(memberIdx);
-		itemService.creatItem(itemDetailDto);
-		return ResponseDto.of(RESPONSE_SUCCESS, null);
+		ItemIdxDto itemIdxDto = itemService.creatItem(itemDetailDto);
+		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
 	// @GetMapping
-	// public ResponseDto<ItemSliceDto> showItemDetail() {
+	// // TODO: 조회수
+	// public ResponseDto<ItemDto> showItemDetail(ItemIdxDto itemIdxDto) {
 	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
 	// }
-	//
+
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {
 	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
