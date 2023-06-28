@@ -38,7 +38,7 @@ struct LoginNetworkManager {
         return URLRequest(url: url)
     }
     
-    func request<T>(type: RequestType, data: T) async -> LoginResponseDTO? {
+    func request<T: Encodable>(type: RequestType, data: T) async -> LoginResponseDTO? {
         guard var request = makeRequest(type) else {
             return nil
         }
@@ -52,7 +52,7 @@ struct LoginNetworkManager {
                 return nil
             }
             
-            let body = try? JSONSerialization.data(withJSONObject: loginData, options: [])
+            let body = try? JSONEncoder().encode(loginData)
             request.httpBody = body
         }
         
