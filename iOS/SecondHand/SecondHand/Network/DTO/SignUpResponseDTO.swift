@@ -12,9 +12,4 @@ struct SignUpResponseDTO: Codable {
     let status: Int
     let code: Int
     let message: String
-    let data: ResponseData
-
-    struct ResponseData: Codable {
-        let idx: Int
-    }
 }

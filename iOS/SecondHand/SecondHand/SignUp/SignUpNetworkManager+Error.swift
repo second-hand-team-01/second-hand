@@ -30,9 +30,9 @@ struct SignUpNetworkManager: DecodeManager {
         let boundary = "Boundary-\(UUID().uuidString)"
         
         request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary\(boundary)",
+        request.setValue("multipart/form-data; boundary=\(boundary)",
                 forHTTPHeaderField: "Content-Type")
-        
+                
         let signUpData = [
             "loginId": signUpInfo.loginId,
             "password": signUpInfo.password,
@@ -71,21 +71,23 @@ struct SignUpNetworkManager: DecodeManager {
     
     func createBody(paramaeters: [String: Any], image: Data?, boundary: String) -> Data {
         var body = Data()
-        let boundaryPrefix = "--\(boundary)\r\n"
+        
         for (key, value) in paramaeters {
-            body.append(boundaryPrefix.data(using: .utf8) ?? Data())
+            body.append("--\(boundary)\r\n".data(using: .utf8) ?? Data())
             body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8) ?? Data())
-            body.append("\(value)\r\n".data(using: .utf8) ?? Data())
+            body.append("\(value)".data(using: .utf8) ?? Data())
+            body.append("\r\n".data(using: .utf8) ?? Data())
         }
         
         if let image = image {
             body.append("--\(boundary)\r\n".data(using: .utf8) ?? Data())
-            body.append("Content-Disposition: form-data; name=\"file\"\r\n".data(using: .utf8) ?? Data())
+            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\n".data(using: .utf8) ?? Data())
             body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8) ?? Data())
             body.append(image)
+            body.append("\r\n".data(using: .utf8) ?? Data())
         }
-        
-        body.append(boundaryPrefix.data(using: .utf8) ?? Data())
+                
+        body.append("--\(boundary)--\r\n".data(using: .utf8) ?? Data())
         return body
     }
 }
