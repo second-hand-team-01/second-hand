@@ -9,6 +9,19 @@ import UIKit
 class LoginViewController: UIViewController {
     private var loginView = LoginView()
     private var networkManager = LoginNetworkManager()
+    private var loginAlertController: UIAlertController = {
+        let alertController = UIAlertController(
+            title: "로그인 실패",
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,10 +87,24 @@ extension LoginViewController {
     }
     
     @objc private func login(_ notification: Notification) {
-        DispatchQueue.main.async {
-            self.loginView.removeFromSuperview()
-            self.view.addSubview(self.accountInfoView)
-            self.layoutAccountInfoView()
+        let enteredLoginData = loginView.getEnteredInfo()
+        guard let id = enteredLoginData.0,
+              let password = enteredLoginData.1 else { return }
+        let loginInfo = LoginDTO(loginId: id, password: password)
+        
+        Task {
+            let response = await networkManager.request(loginInfo: loginInfo)
+            guard response != nil else {
+                self.present(self.loginAlertController, animated: true, completion: nil)
+                return
+            }
+            let viewController = AccountInfoViewController()
+            viewController.modalPresentationStyle = .fullScreen
+            viewController.userName = "\(id)"
+            self.navigationController?.pushViewController(
+                viewController,
+                animated: true
+            )
         }
     }
     

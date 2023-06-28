@@ -20,24 +20,6 @@ class AccountInfoView: UIView {
         label.textAlignment = .center
         return label
     }()
-    private var logoutButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = .typo.subHead
-        button.tintColor = .white
-        button.setTitle("로그아웃", for: .normal)
-        button.layer.cornerRadius = 8
-        button.backgroundColor = .orange
-        
-        var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(
-            top: 16,
-            leading: 20,
-            bottom: 16,
-            trailing: 20
-        )
-        button.configuration = configuration
-        return button
-    }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -48,7 +30,6 @@ class AccountInfoView: UIView {
         self.addSubviews()
         self.addConstraintToProfileImageView()
         self.addConstraintToUserNameLabel()
-        self.addConstraintToLogoutButton()
     }
     
     func configure(userName: String) {
@@ -62,7 +43,6 @@ extension AccountInfoView {
         let subViews = [
             self.profileImageView,
             self.userNameLabel,
-            self.logoutButton
         ]
         
         subViews.forEach {
@@ -96,22 +76,6 @@ extension AccountInfoView {
                 constant: topConstraint
             ),
             self.userNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-    }
-    
-    private func addConstraintToLogoutButton() {
-        let topConstraint: CGFloat = 276
-        
-        NSLayoutConstraint.activate([
-            self.logoutButton.leadingAnchor.constraint(
-                equalTo: self.leadingAnchor),
-            self.logoutButton.trailingAnchor.constraint(
-                equalTo: self.trailingAnchor),
-            self.logoutButton.topAnchor.constraint(
-                equalTo: self.userNameLabel.bottomAnchor,
-                constant: topConstraint
-            ),
-            self.logoutButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }
