@@ -18,6 +18,7 @@ export const Dropdown = styled.button<DropdownStyleProps>`
   border-radius: 8px;
   border: none;
   background-color: transparent;
+  color: ${({ theme }) => theme.colors.neutralText};
 
   &:hover {
     cursor: pointer;

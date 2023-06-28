@@ -3,15 +3,18 @@ import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 import { InfoBarProps } from '@commons/InfoBar/InfoBar';
 import { FilterBarProps } from '@commons/FilterBar/FilterBar';
+import { ReactNode } from 'react';
 
 export interface HeaderProps {
   type: 'filter' | 'nav';
   navbarOptions?: NavBarProps;
   filterBarOptions?: FilterBarProps;
+  bottomComp?: ReactNode;
 }
 
 export interface FooterProps {
-  type: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  type?: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  comp?: ReactNode;
   infoBarOptions?: InfoBarProps;
 }
 

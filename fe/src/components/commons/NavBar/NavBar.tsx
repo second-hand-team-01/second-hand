@@ -15,6 +15,7 @@ export interface NavBarProps {
     onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   };
   isTransparent?: boolean;
+  bottomComps?: ReactNode;
 }
 
 export const NavBar = ({
@@ -24,6 +25,7 @@ export const NavBar = ({
   tabInfo,
   isTransparent = false,
   categoryInfo,
+  bottomComps,
 }: NavBarProps) => {
   return (
     <S.Header isTransparent={isTransparent}>
@@ -61,6 +63,12 @@ export const NavBar = ({
               );
             })}
           </S.CategoryContainer>
+        </S.HeaderBottom>
+      )}
+
+      {bottomComps && (
+        <S.HeaderBottom>
+          <S.BottomChildrenContainer>{bottomComps}</S.BottomChildrenContainer>
         </S.HeaderBottom>
       )}
     </S.Header>

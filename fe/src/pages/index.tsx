@@ -7,6 +7,7 @@ import { AuthPage } from './AuthPage/AuthPage';
 import { SalesHistoryPage } from './SalesHistoryPage/SalesHistoryPage';
 import { FavoritesPage } from './FavoritePage/FavoritePage';
 import { ChatPage } from './ChatPage/ChatPage';
+import { ChatDetailsPage } from './ChatDetailsPage/ChatDetailsPage';
 
 export {
   HomePage,
@@ -18,4 +19,5 @@ export {
   SalesHistoryPage,
   FavoritesPage,
   ChatPage,
+  ChatDetailsPage,
 };

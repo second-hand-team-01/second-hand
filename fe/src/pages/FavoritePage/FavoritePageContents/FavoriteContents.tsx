@@ -28,18 +28,18 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
     if (error || !items) {
       return <Error>{error ? error.message : ERROR_MESSAGE.UNDEFINED}</Error>;
     }
+
     if (items.length === 0) {
-      <Error>관심 상품으로 등록된 상품이 없어요.</Error>;
+      return <Error>관심 상품으로 등록된 상품이 없어요.</Error>;
     }
-    if (items && items.length !== 0) {
-      return items.map((item) => (
-        <ListItem
-          key={item.id}
-          {...item}
-          onClick={() => navigate(`/item/${item.id}`)}
-        ></ListItem>
-      ));
-    }
+
+    return items.map((item) => (
+      <ListItem
+        key={item.id}
+        {...item}
+        onClick={() => navigate(`/item/${item.id}`)}
+      ></ListItem>
+    ));
   };
 
   return <S.FavoriteContents>{renderComps()}</S.FavoriteContents>;

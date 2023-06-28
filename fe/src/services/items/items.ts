@@ -204,6 +204,7 @@ export const postItemsAPI = async (body: ItemReqBody) => {
     const res = (await customFetch<FormData, PostItemRes>({
       path: '/items',
       method: 'POST',
+      auth: true,
       body: formData,
     })) as Response<PostItemRes>;
     if (!res || !res.data || res.error) {
@@ -239,6 +240,7 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
     const res = await customFetch<FormData, null>({
       path: `/items/${itemIdx}`,
       method: 'PATCH',
+      auth: true,
       body: formData,
     });
     if (!res || !res.data || res.error) {
@@ -282,6 +284,7 @@ export const deleteItemsAPI = async (itemIdx: number) => {
     const res = await customFetch<FormData, null>({
       path: `/items/${itemIdx}`,
       method: 'DELETE',
+      auth: true,
     });
     if (!res || !res.data || res.error) {
       return { error: res.error, data: undefined };
