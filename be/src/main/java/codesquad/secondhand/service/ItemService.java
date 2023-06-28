@@ -42,26 +42,27 @@ public class ItemService {
 	private final ItemImageRepository itemImageRepository;
 	private final ImageService imageService;
 
-	public List<ItemDto> getListItemDto(Slice<Item> itemSlice) {
+	public List<ItemDto> getListItemDto(Slice<Item> itemSlice, Long memberIdx) {
 		return itemSlice.getContent().stream()
 			.map(item -> {
 				int chatRooms = chatRoomRepository.countByItem(item);
 				int interests = interestRepository.countByItem(item);
-				return ItemDto.of(item, chatRooms, interests);
+				boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
+				return ItemDto.of(item, chatRooms, interests, interestChecked);
 			})
 			.collect(Collectors.toList());
 	}
 
-	public ItemSliceDto showItems(Long locationIdx, Pageable pageable) {
+	public ItemSliceDto showItems(Long memberIdx, Long locationIdx, Pageable pageable) {
 		log.info("[ItemService.showItems()]");
 		Slice<Item> itemSlice = itemRepository.findByLocationLocationIdx(locationIdx, pageable);
-		List<ItemDto> itemDtos = getListItemDto(itemSlice);
+		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemSliceDto filterItems(Long categoryIdx, Pageable pageable) {
+	public ItemSliceDto filterItems(Long memberIdx, Long categoryIdx, Pageable pageable) {
 		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdx(categoryIdx, pageable);
-		List<ItemDto> itemDtos = getListItemDto(itemSlice);
+		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
