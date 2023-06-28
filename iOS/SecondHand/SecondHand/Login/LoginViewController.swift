@@ -22,6 +22,11 @@ class LoginViewController: UIViewController {
         alertController.addAction(alertAction)
         return alertController
     }()
+    let viewController: AccountInfoViewController = {
+        let viewController = AccountInfoViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        return viewController
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,8 +106,6 @@ extension LoginViewController {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
-            let viewController = AccountInfoViewController()
-            viewController.modalPresentationStyle = .fullScreen
             viewController.userName = "\(id)"
             self.navigationController?.pushViewController(
                 viewController,
@@ -131,8 +134,15 @@ extension LoginViewController {
     
         Task {
             let response = await networkManager.request(type: .githubSignIn, data: "")
-            guard response != nil else { return }
-            print("OAuth 성공!!")
+            guard response != nil else {
+                self.present(self.loginAlertController, animated: true, completion: nil)
+                return
+            }
+            viewController.userName = "\(response?.data.memeberInfo?.loginId)"
+            self.navigationController?.pushViewController(
+                viewController,
+                animated: true
+            )
         }
     }
     
