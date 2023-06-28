@@ -8,7 +8,13 @@
 import UIKit
 
 class SignUpViewController: UIViewController {
-    private let signUpView = SignUpView()
+    private let imagePicker = UIImagePickerController()
+    private let signUpView: SignUpView = {
+        let signUpView = SignUpView()
+        signUpView.cameraSymbol.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
+        return signUpView
+    }()
+    
     private var networkManager = SignUpNetworkManager()
     private var signUpAlertController: UIAlertController = {
         let alertController = UIAlertController(
@@ -56,7 +62,7 @@ extension SignUpViewController {
         let enteredSignUpData = signUpView.getEnteredInfo()
         guard let id = enteredSignUpData.0,
               let password = enteredSignUpData.1 else { return }
-        let signUpInfo = SignUpDTO(loginId: id, password: password, imageURL: "", mainLocationIdx: "6", subLocationIdx: "2")
+        let signUpInfo = SignUpDTO(loginId: id, password: password, image: enteredSignUpData.2, mainLocationIdx: "6", subLocationIdx: "2")
         
         Task {
             let response = await networkManager.request(signUpInfo: signUpInfo)
@@ -91,5 +97,25 @@ extension SignUpViewController {
             ),
             self.signUpView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
+    }
+}
+
+extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @objc func pickImage() {
+        self.imagePicker.delegate = self
+        self.imagePicker.sourceType = .photoLibrary
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let pickedImage = info[.originalImage] as? UIImage {
+            signUpView.cameraSymbol.setImage(pickedImage, for: .normal)
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

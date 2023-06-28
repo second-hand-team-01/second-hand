@@ -10,7 +10,7 @@ import Foundation
 struct SignUpDTO {
     var loginId: String
     var password: String
-    var imageURL: String
+    var image: Data?
     var mainLocationIdx: String
     var subLocationIdx: String
 }

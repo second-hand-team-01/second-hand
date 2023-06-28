@@ -36,7 +36,6 @@ struct SignUpNetworkManager: DecodeManager {
         let signUpData = [
             "loginId": signUpInfo.loginId,
             "password": signUpInfo.password,
-            "image": signUpInfo.imageURL,
             "mainLocationIdx": signUpInfo.mainLocationIdx,
             "subLocationIdx": signUpInfo.subLocationIdx
         ]

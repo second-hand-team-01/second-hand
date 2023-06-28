@@ -8,7 +8,7 @@
 import UIKit
 
 class SignUpView: UIView {
-    private let cameraSymbol = {
+    let cameraSymbol = {
         let button = UIButton()
         let cameraImage = UIImage(systemName: "camera")
         button.layer.cornerRadius = 40
@@ -16,9 +16,6 @@ class SignUpView: UIView {
         button.setImage(cameraImage, for: .normal)
         button.layer.borderWidth = 1.0
         button.layer.borderColor = ColorPalette.neutral.border?.cgColor
-        
-//        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
         return button
     }()
     
@@ -82,8 +79,8 @@ class SignUpView: UIView {
 }
 
 extension SignUpView {
-    func getEnteredInfo() -> (String?, String?) {
-        return (getEnteredId(), getEnteredPassword())
+    func getEnteredInfo() -> (String?, String?, Data?) {
+        return (getEnteredId(), getEnteredPassword(), getProfileImageData())
     }
     
     func getEnteredId() -> String? {
@@ -92,6 +89,10 @@ extension SignUpView {
     
     func getEnteredPassword() -> String? {
         return self.passwordTextfield.text
+    }
+    
+    func getProfileImageData() -> Data? {
+        return self.cameraSymbol.imageView?.image?.pngData()
     }
 }
 
