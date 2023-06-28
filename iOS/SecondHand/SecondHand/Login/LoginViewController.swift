@@ -104,6 +104,7 @@ extension LoginViewController {
     }
     
     @objc private func registerUser(_ notification: Notification) {
-        
+        let signUpNavigation = UINavigationController(rootViewController: SignUpViewController())
+        self.present(signUpNavigation, animated: true)
     }
 }
