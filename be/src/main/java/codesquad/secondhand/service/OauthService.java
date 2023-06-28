@@ -37,7 +37,7 @@ public class OauthService {
 	public OauthLoginResponse oauthLogin(String providerName, String code) {
 
 		OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
-
+		log.info("provider: {}", provider);
 		OauthTokenResponse oauthTokenResponse = getToken(code, provider);
 
 		MemberProfile memberProfile = getUserProfile(providerName, oauthTokenResponse, provider);

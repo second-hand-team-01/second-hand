@@ -21,6 +21,7 @@ class JasyptConfigTest {
 		String aws_secretKey = System.getProperty("aws.secretKey");
 		String aws_S3_bucket = System.getProperty("aws.S3_bucket");
 		String oauth_client_secret = System.getProperty("oauth.client_secret");
+		String oauth_client_secret_ios = System.getProperty("oauth.client_secret_ios");
 
 		String encryptUrl = jasyptEncrypt(url);
 		String encryptUsername = jasyptEncrypt(username);
@@ -31,6 +32,7 @@ class JasyptConfigTest {
 		String encryptAws_secretKey = jasyptEncrypt(aws_secretKey);
 		String encryptAws_S3_bucket = jasyptEncrypt(aws_S3_bucket);
 		String encryptOauth_client_secret = jasyptEncrypt(oauth_client_secret);
+		String encryptOauth_client_secret_ios = jasyptEncrypt(oauth_client_secret_ios);
 
 		log.info("Encrypted URL: {}", encryptUrl);
 		log.info("Encrypted username: {}", encryptUsername);
@@ -41,6 +43,7 @@ class JasyptConfigTest {
 		log.info("Encrypted aws_secretKey: {}", encryptAws_secretKey);
 		log.info("Encrypted aws_S3_bucket: {}", encryptAws_S3_bucket);
 		log.info("Encrypted oauth_client_secret: {}", encryptOauth_client_secret);
+		log.info("Encrypted oauth_client_secret_ios: {}", encryptOauth_client_secret_ios);
 
 		assertThat(url).isEqualTo(jasyptDecryt(encryptUrl));
 		assertThat(username).isEqualTo(jasyptDecryt(encryptUsername));
@@ -48,6 +51,7 @@ class JasyptConfigTest {
 		assertThat(secretKey).isEqualTo(jasyptDecryt(encryptSecretKey));
 		assertThat(expireLength).isEqualTo(jasyptDecryt(encryptExpireLength));
 		assertThat(oauth_client_secret).isEqualTo(jasyptDecryt(encryptOauth_client_secret));
+		assertThat(oauth_client_secret_ios).isEqualTo(jasyptDecryt(encryptOauth_client_secret_ios));
 	}
 
 	private String jasyptEncrypt(String input) {
