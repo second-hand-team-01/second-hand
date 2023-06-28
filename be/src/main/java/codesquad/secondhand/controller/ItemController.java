@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.service.ItemService;
