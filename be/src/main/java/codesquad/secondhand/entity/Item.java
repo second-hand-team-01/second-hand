@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,13 +18,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
 @Table(name = "item")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Item {
 
 	@Id
@@ -45,10 +52,11 @@ public class Item {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "main_image_idx")
+	@Setter
 	private ItemImage itemImage;
 
-	@CreatedDate
-	@Column(name = "posted_at", nullable = false)
+	@LastModifiedDate
+	@Column(name = "posted_at", nullable = true)
 	private LocalDateTime postedAt;
 
 	@Column(name = "name", nullable = false)
@@ -74,4 +82,17 @@ public class Item {
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Interest> interests = new ArrayList<>();
 
+	public Item(Member seller, Category category, Location location, ItemImage itemImage, String name,
+		String description,
+		Integer price, Integer view, String status) {
+		this.seller = seller;
+		this.category = category;
+		this.location = location;
+		this.itemImage = itemImage;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.view = view;
+		this.status = status;
+	}
 }

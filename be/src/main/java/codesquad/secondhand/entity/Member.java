@@ -33,6 +33,9 @@ public class Member {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "image_path")
+	private String imagePath;
+
 	@Column(name = "image_url")
 	private String imageUrl;
 
@@ -47,9 +50,10 @@ public class Member {
 	@Column(name = "oauth_id")
 	private String oauthId;
 
-	public Member(String loginId, String password, String imageUrl, Location mainLocation, Location subLocation) {
+	public Member(String loginId, String password, String imagePath, String imageUrl, Location mainLocation, Location subLocation) {
 		this.loginId = loginId;
 		this.password = password;
+		this.imagePath = imagePath;
 		this.imageUrl = imageUrl;
 		this.mainLocation = mainLocation;
 		this.subLocation = subLocation;
@@ -64,9 +68,11 @@ public class Member {
 	}
 
 	public static Member of(SaveMemberDto saveMemberDto) {
+		// TODO: 정적 팩토리 메서드 네이밍 공부하기
 		return new Member(
 			saveMemberDto.getLoginId(),
 			saveMemberDto.getPassword(),
+			saveMemberDto.getImagePath(),
 			saveMemberDto.getImageUrl(),
 			saveMemberDto.getMainLocation(),
 			saveMemberDto.getSubLocation()

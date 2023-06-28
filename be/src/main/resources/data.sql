@@ -1,43 +1,43 @@
+SET foreign_key_checks = 0;
 -- location 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`location` (`city`, `district`, `town`)
 VALUES ('서울', '강남구', '역삼1동'),
-       ('서울', '강남구', '역삼2동'),
-       ('서울', '강남구', '개포1동'),
-       ('서울', '강남구', '개포2동'),
-       ('서울', '강남구', '개포3동'),
-       ('서울', '강남구', '개포4동');
+('서울', '강남구', '역삼2동'),
+('서울', '강남구', '개포1동'),
+('서울', '강남구', '개포2동'),
+('서울', '강남구', '개포3동'),
+('서울', '강남구', '개포4동');
 
 -- member 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`member` (`main_location_idx`, `sub_location_idx`, `login_id`, `password`, `image_url`)
 VALUES (1, 2, 'snoop', "12345", 'www.profileimgurl1.com'),
-       (2, 3, 'poco', "12345", NULL),
-       (4, NULL, 'roy', "12345", 'www.profileimgurl2.com'),
-       (1, 5, 'gomungnam', "12345", NULL),
-       (3, 5, 'sol', "12345", 'www.profileimgurl3.com'),
-       (5, 6, 'wood', "12345", 'www.profileimgurl4.com');
+(2, 3, 'poco', "12345", NULL),
+(4, NULL, 'roy', "12345", 'www.profileimgurl2.com'),
+(1, 5, 'gomungnam', "12345", NULL),
+(3, 5, 'sol', "12345", 'www.profileimgurl3.com'),
+(5, 6, 'wood', "12345", 'www.profileimgurl4.com');
 
 -- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`)
-VALUES (1, '디지털기기', 's3://codesquadsecondhandteam01/category-icons/01_digital.png'),
-       (2, '생활가전', 's3://codesquadsecondhandteam01/category-icons/02_living.png'),
-       (3, '가구/인테리어', 's3://codesquadsecondhandteam01/category-icons/03_furniture.png'),
-       (4, '생활/주방', 's3://codesquadsecondhandteam01/category-icons/04_kitchen.png'),
-       (5, '유아동', 's3://codesquadsecondhandteam01/category-icons/05_baby.png'),
-       (6, '유아도서', 's3://codesquadsecondhandteam01/category-icons/06_baby-book.png'),
-       (7, '여성의류', 's3://codesquadsecondhandteam01/category-icons/07_woman-apparel.png'),
-       (8, '여성잡화', 's3://codesquadsecondhandteam01/category-icons/08_woman-accessories.png'),
-       (9, '남성패션/잡화', 's3://codesquadsecondhandteam01/category-icons/09_man-apparel.png'),
-       (10, '뷰티/미용', 's3://codesquadsecondhandteam01/category-icons/10_beauty.png'),
-       (11, '스포츠/레저', 's3://codesquadsecondhandteam01/category-icons/11_sports.png'),
-       (12, '취미/게임/음반', 's3://codesquadsecondhandteam01/category-icons/12_game.png'),
-       (13, '중고차', 's3://codesquadsecondhandteam01/category-icons/13_car.png'),
-       (14, '티켓/교환권', 's3://codesquadsecondhandteam01/category-icons/14_ticket.png'),
-       (15, '가공식품', 's3://codesquadsecondhandteam01/category-icons/15_processed-foods.png'),
-       (16, '반려동물용품', 's3://codesquadsecondhandteam01/category-icons/16_pet.png'),
-       (17, '식물', 's3://codesquadsecondhandteam01/category-icons/17_plant.png'),
-       (18, '기타 중고물품', 's3://codesquadsecondhandteam01/category-icons/18_etc.png');
+VALUES (1, '디지털기기', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/01_digital.png'),
+(2, '생활가전', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/02_living.png'),
+(3, '가구/인테리어', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/03_furniture.png'),
+(4, '생활/주방', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/04_kitchen.png'),
+(5, '유아동', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/05_baby.png'),
+(6, '유아도서', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/06_baby-book.png'),
+(7, '여성의류', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/07_woman-apparel.png'),
+(8, '여성잡화', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/08_woman-accessories.png'),
+(9, '남성패션/잡화', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/09_man-apparel.png'),
+(10, '뷰티/미용', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/10_beauty.png'),
+(11, '스포츠/레저', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/11_sports.png'),
+(12, '취미/게임/음반', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/12_game.png'),
+(13, '중고차', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/13_car.png'),
+(14, '티켓/교환권', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/14_ticket.png'),
+(15, '가공식품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/15_processed-foods.png'),
+(16, '반려동물용품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/16_pet.png'),
+(17, '식물', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/17_plant.png'),
+(18, '기타 중고물품', 'https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/category-icons/18_etc.png');
 
-SET foreign_key_checks = 0;
 
 -- item_image 테이블에 더미 데이터 추가
 INSERT INTO `second-hand`.`item_image` (`item_image_idx`, `item_idx`, `image_url`)
@@ -142,9 +142,6 @@ VALUES (1, 1, 'www.itemimageurl1.com'),
        (99, 99, 'www.itemimageurl99.com'),
        (100, 100, 'www.itemimageurl100.com');
 
-SET foreign_key_checks = 1;
-
--- item 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`item` (`seller_idx`, `category_idx`, `location_idx`, `main_image_idx`, `posted_at`, `name`,
                                   `description`, `price`, `view`, `status`)
 VALUES (1, 18, 2, 1, '2022-06-30 13:13:56', 'Quas.', 'Nesciunt suscipit ipsa deleniti.', 63013, 24, '판매중'),
@@ -267,7 +264,7 @@ VALUES (1, 18, 2, 1, '2022-06-30 13:13:56', 'Quas.', 'Nesciunt suscipit ipsa del
        (4, 16, 3, 99, '2023-05-20 09:58:34', 'Similique.', 'Quo qui modi ipsum.', 369860, 11, '판매중'),
        (4, 5, 5, 100, '2023-04-17 12:50:50', 'Sequi.', 'NULL', 319796, 28, '예약중');
 
--- interest 테이블 더미 데이터 추가
+-- item 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`interest` (`interest_idx`, `member_idx`, `item_idx`)
 VALUES (1, 3, 29),
        (2, 4, 47),
@@ -320,7 +317,7 @@ VALUES (1, 3, 29),
        (49, 1, 26),
        (50, 4, 28);
 
--- chat_room 테이블 더미 데이터 추가
+-- interest 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`chat_room` (`chat_room_idx`, `item_idx`, `buyer_idx`)
 VALUES (1, 54, 1),
        (2, 62, 4),
@@ -352,3 +349,6 @@ VALUES (1, 54, 1),
        (28, 60, 3),
        (29, 54, 3),
        (30, 60, 1);
+
+-- chat_room 테이블 더미 데이터 추가
+SET foreign_key_checks = 1;

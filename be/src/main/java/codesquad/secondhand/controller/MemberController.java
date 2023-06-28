@@ -2,6 +2,8 @@ package codesquad.secondhand.controller;
 
 import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
+import codesquad.secondhand.dto.ResponseListDto;
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
+import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
 import codesquad.secondhand.dto.token.TokenResponse;
@@ -58,6 +63,12 @@ public class MemberController {
 		return ResponseDto.of(RESPONSE_SUCCESS, memberInfo);
 	}
 
+	@PutMapping("/info")
+	public ResponseDto<MemberImageDto> editMemberProfile(@ModelAttribute MemberImageDto memberImageDto) {
+		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(), memberImageDto.getImage());
+		return ResponseDto.of(RESPONSE_SUCCESS, MemberImageDtoReturn);
+	}
+
 	@GetMapping("/location")
 	public ResponseDto<MainSubTownDto> showMemberLocations(HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
@@ -74,12 +85,33 @@ public class MemberController {
 	}
 
 	@GetMapping("/members/items")
-	public ResponseDto<ItemSliceDto> showMemberSellingItems(@RequestParam(required = true) String status,
+	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam(required = true) String status,
 		@RequestParam(defaultValue = "0") int page,
 		HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		Pageable pageable = PageRequest.of(page, 10);
 		ItemSliceDto itemSliceDto = memberService.showSellerItems(memberIdx, status, pageable);
+		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
+	}
+
+	@GetMapping("/members/interest/category")
+	public ResponseListDto<CategoryWithoutImageDto> extractCategories(HttpServletRequest request) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		List<CategoryWithoutImageDto> categories = memberService.extractCategories(memberIdx);
+		return ResponseListDto.of(RESPONSE_SUCCESS, categories);
+	}
+
+	@GetMapping("/members/interest")
+	public ResponseDto<ItemSliceDto> showInterestedItems(HttpServletRequest request,
+		@RequestParam(required = false) Long categoryIdx) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		Pageable pageable = PageRequest.of(0, 10);
+		if (categoryIdx == null) { // categoryIdx가 null로 들어오면 전체 상품 조회
+			log.info("categoryIdx: {}", categoryIdx);
+			ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, pageable);
+			return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
+		}
+		ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 }
