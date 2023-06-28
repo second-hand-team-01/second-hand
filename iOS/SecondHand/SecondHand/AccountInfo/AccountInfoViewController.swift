@@ -9,9 +9,11 @@ import UIKit
 
 class AccountInfoViewController: UIViewController {
     private var accountInfoView = AccountInfoView()
+    var userName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.accountInfoView.configure(userName: userName)
     }
     
     override func viewWillLayoutSubviews() {
