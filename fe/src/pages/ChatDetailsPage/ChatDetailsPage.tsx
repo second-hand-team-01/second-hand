@@ -1,6 +1,7 @@
 import { Layout, NavbarBtn } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
+import { Bubble } from './Bubble/Bubble';
 
 interface ChatDetailsPage {
   salesInfo: {
@@ -36,7 +37,17 @@ export const ChatDetailsPage = () => {
         ),
       }}
     >
-      <S.ChatDetailsPage></S.ChatDetailsPage>
+      <S.ChatDetailsPage>
+        <Bubble type="mine">안녕하세요, 챗방입니다!</Bubble>
+        <Bubble type="opponent">
+          반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요 저는
+          스눕이에요 반가워요 저는 스눕이에요 반가워요 저는 스눕이에요 반가워요
+          저는 스눕이에요
+        </Bubble>
+        <Bubble type="mine">사실건지 말씀해주세요</Bubble>
+        <Bubble type="opponent">넹</Bubble>
+        <Bubble type="opponent">넹</Bubble>
+      </S.ChatDetailsPage>
     </Layout>
   );
 };

@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-interface ChatListStyleProps {
-  hasChat: boolean;
-}
-
 export const ChatDetailsPage = styled.div`
   display: grid;
   border: none;
