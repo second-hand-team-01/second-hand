@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export interface ProfileStyleProps {
   url?: string | null;
-  size: number;
-  isEditable: boolean;
+  size?: number;
+  isEditable?: boolean;
 }
 
 export interface WrapStyleProps {

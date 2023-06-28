@@ -8,6 +8,7 @@ import {
   AuthPage,
   SalesHistoryPage,
   FavoritesPage,
+  ChatPage,
 } from '@pages/index';
 
 export const router = createBrowserRouter([
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
       },
       { path: 'sales-history', element: <SalesHistoryPage /> },
       { path: 'favorites', element: <FavoritesPage /> },
-      { path: 'chat', element: <div>Chat</div> },
+      { path: 'chat', element: <ChatPage></ChatPage> },
       { path: 'profile', element: <LoginPage /> },
       { path: 'write', element: <WritePage type="write" /> },
       { path: 'edit/:itemIdx', element: <WritePage type="edit" /> },
