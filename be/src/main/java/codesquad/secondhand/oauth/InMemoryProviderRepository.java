@@ -12,7 +12,7 @@ public class InMemoryProviderRepository {
 	private final Map<String, OauthProvider> providers;
 
 	public OauthProvider findByProviderName(String name) {
-		log.info("[InMemoryProviderRepository]: {}", providers.get("github").getRedirectUrl());
+		log.info("[InMemoryProviderRepository.{}]: {}", name, providers.get(name).getRedirectUrl());
 		return providers.get(name);
 	}
 }
