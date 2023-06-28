@@ -40,7 +40,7 @@ struct SignUpNetworkManager: DecodeManager {
             "subLocationIdx": signUpInfo.subLocationIdx
         ]
 
-        request.httpBody = createBody(paramaeters: signUpData, boundary: boundary)
+        request.httpBody = createBody(paramaeters: signUpData, image: signUpInfo.image, boundary: boundary)
 
         do {
             let (data, urlResponse) = try await session.data(for: request)
@@ -69,14 +69,20 @@ struct SignUpNetworkManager: DecodeManager {
         }
     }
     
-    func createBody(paramaeters: [String: Any], boundary: String) -> Data {
+    func createBody(paramaeters: [String: Any], image: Data?, boundary: String) -> Data {
         var body = Data()
         let boundaryPrefix = "--\(boundary)\r\n"
-        
         for (key, value) in paramaeters {
             body.append(boundaryPrefix.data(using: .utf8) ?? Data())
             body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8) ?? Data())
             body.append("\(value)\r\n".data(using: .utf8) ?? Data())
+        }
+        
+        if let image = image {
+            body.append("--\(boundary)\r\n".data(using: .utf8) ?? Data())
+            body.append("Content-Disposition: form-data; name=\"file\"\r\n".data(using: .utf8) ?? Data())
+            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8) ?? Data())
+            body.append(image)
         }
         
         body.append(boundaryPrefix.data(using: .utf8) ?? Data())
