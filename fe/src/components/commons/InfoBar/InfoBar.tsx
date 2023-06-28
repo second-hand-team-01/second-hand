@@ -1,5 +1,5 @@
 import { Button } from '@commons/index';
-
+import { convertNumToPrice } from '@utils/common/common';
 import * as S from './InfoBarStyle';
 
 export interface InfoBarProps {
@@ -24,7 +24,7 @@ export const InfoBar = ({
         onClick={handleInterestClicked}
         shape="ghost"
       ></Button>
-      {price ?? '0'}
+      {price ? convertNumToPrice(price) : '0'}
       <Button
         title={isWriter ? '대화 중인 채팅방' : '채팅하기'}
         shape="small"
