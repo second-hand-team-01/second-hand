@@ -1,6 +1,6 @@
 import { State, Action } from '@type-store/services/signUp';
 
-export const hasLocationData = (userInfo) => {
+export const hasSelectedLocation = (userInfo) => {
   const { mainLocation } = userInfo;
   return mainLocation.locationIdx === null ? false : true;
 };
@@ -58,38 +58,53 @@ export const userInfoReducer = (state: State, action: Action): any => {
       }
       break;
     case `USER_IMG_INPUT`:
-      if (typeof val === 'string') {
-        return { ...state, imgUrl: val };
+      if (typeof val !== 'string') {
+        return { ...state, imgUrl: val.imgUrl, imgFile: val.imgFile };
       }
       break;
-    case 'SUB_LOCATION_INPUT':
-      if (typeof val !== 'string') {
+    case 'SET_LOCATION':
+      if (typeof val === 'string') break;
+      if (state.mainLocation.locationIdx === null) {
+        return {
+          ...state,
+          mainLocation: {
+            locationIdx: val.locationIdx,
+            locationName: val.locationName,
+            town: val.town,
+          },
+        };
+      } else {
         return {
           ...state,
           subLocation: {
             locationIdx: val.locationIdx,
             locationName: val.locationName,
+            town: val.town,
           },
         };
       }
-      break;
-    case 'SUB_LOCATION_REMOVE':
-      return {
-        ...state,
-        subLocation: {
-          locationIdx: null,
-          locationName: null,
-        },
-      };
-    case 'MAIN_LOCATION_REMOVE':
-      return {
-        ...state,
-        mainLocation: { ...state.subLocation },
-        subLocation: {
-          locationIdx: null,
-          locationName: null,
-        },
-      };
+    case 'REMOVE_LOCATION':
+      if (typeof val !== 'string') break;
+      if (val === state.mainLocation.town) {
+        return {
+          ...state,
+          mainLocation: { ...state.subLocation },
+          subLocation: {
+            locationIdx: null,
+            locationName: null,
+            town: null,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          subLocation: {
+            locationIdx: null,
+            locationName: null,
+            town: null,
+          },
+        };
+      }
     default:
       return state;
   }

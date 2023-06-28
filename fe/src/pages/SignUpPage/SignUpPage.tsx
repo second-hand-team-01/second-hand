@@ -1,49 +1,50 @@
 import { useState, useReducer, useEffect } from 'react';
-
-import {
-  hasLocationData,
-  checkIdValidity,
-  checkPasswordValidity,
-  userInfoReducer,
-} from '@services/signUp/signUp';
+import { useNavigate } from 'react-router-dom';
+import { hasSelectedLocation, userInfoReducer } from '@services/signUp/signUp';
 import {
   Button,
   TextInput,
   Profile,
   Layout,
   NavbarBtn,
-  LocationSelector,
+  BottomSheet,
+  Dialog,
 } from '@components/commons';
 import * as S from './SignUpPageStyle';
 import { getLocationData } from '@services/locations/locations';
+import { LocationDataType } from '@type-store/services/signUp';
+import { API_URL } from '@constants/apis';
 
 export const SignUpPage = () => {
+  const navigate = useNavigate();
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
-  const [isLocationSelectorRendered, setIsLocationSelectorRendered] =
-    useState(false);
-  const [locationData, setLocationData] = useState(null);
+  const [idFocus, setIdFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [locationDataState, setLocationDataState] = useState<
+    LocationDataType[] | null
+  >();
 
   const [formIsValid, setFormIsValid] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const initialUserInfoState = {
     id: { value: '', isValid: null, isTouched: false },
     password: { value: '', isValid: null, isTouched: false },
     mainLocation: {
-      locationIdx: 1,
-      locationName: '강남',
+      locationIdx: null,
+      town: null,
     },
     subLocation: {
       locationIdx: null,
-      locationName: null,
+      town: null,
     },
     imgUrl: '',
+    imgFile: null,
   };
-
   const [userInfo, dispatch] = useReducer(
     userInfoReducer,
     initialUserInfoState
   );
-  const [idFocus, setIdFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const idChangeHandler = ({ target: { value } }) => {
     setIdFocus(true);
@@ -65,27 +66,95 @@ export const SignUpPage = () => {
     dispatch({ type: `INPUT_PASSWORD_BLUR`, val: userInfo.password.value });
   };
 
-  // TODO: val 타입 오류 해결하기(임시방편 ""로 해결)
-  const subLocationDeleteHandler = () => {
+  const setLocationInfoHandler = (locationIdx, locationName, town) => {
     dispatch({
-      type: 'SUB_LOCATION_REMOVE',
-      val: '',
+      type: 'SET_LOCATION',
+      val: {
+        locationIdx,
+        locationName,
+        town,
+      },
     });
+    locationSelectorHandler();
   };
 
-  const mainLocationDeleteHandler = () => {
+  const removeLocationInfoHandler = (town) => {
     dispatch({
-      type: 'MAIN_LOCATION_REMOVE',
-      val: '',
+      type: 'REMOVE_LOCATION',
+      val: town,
     });
+    setIsLocationSelectorOpen(false);
+  };
+
+  const findLocationData = (locationName: string) => {
+    const locationData = locationDataState?.find(
+      (location) => location.locationName === locationName
+    );
+    return locationData;
+  };
+
+  const isSelectedLocation = (locationName) => {
+    const mainLocationName = userInfo.mainLocation.locationName;
+    const subLocationName = userInfo.subLocation.locationName;
+
+    return (
+      mainLocationName === locationName || subLocationName === locationName
+    );
+  };
+
+  const locationClickHandler = (locationName) => {
+    const locationData = findLocationData(locationName);
+    const locationIdx = locationData?.locationIdx;
+    const locationTown = locationData?.town;
+
+    isSelectedLocation(locationName)
+      ? removeLocationInfoHandler(locationTown)
+      : setLocationInfoHandler(locationIdx, locationName, locationTown);
   };
 
   const locationSelectorHandler = () => {
-    setIsLocationSelectorOpen(true);
+    setIsLocationSelectorOpen((prev) => !prev);
   };
 
-  const postBtnClickHandler = () => {
-    console.log(2);
+  const signUpUser = async (signUpData) => {
+    const response = await fetch(`${API_URL}/signup`, {
+      method: 'POST',
+      body: signUpData,
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
+
+    const data = await response.json();
+    return data;
+  };
+
+  const signUpUserHandler = async () => {
+    const { id, password, mainLocation, subLocation, imgFile } = userInfo;
+
+    const formData = new FormData();
+    formData.append('loginId', id.value);
+    formData.append('password', password.value);
+    formData.append('image', imgFile);
+    formData.append('mainLocationIdx', mainLocation.locationIdx.toString());
+    formData.append(
+      'subLocationIdx',
+      subLocation.locationIdx ? subLocation.locationIdx.toString() : null
+    );
+    try {
+      await signUpUser(formData);
+      navigate('/profile');
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+      setDialogOpen(true);
+      console.log(error); // TODO: 삭제
+    }
+  };
+
+  const signUpBtnClickHandler = () => {
+    signUpUserHandler();
   };
 
   const {
@@ -100,24 +169,26 @@ export const SignUpPage = () => {
     },
   } = userInfo;
 
-  const locationState = hasLocationData(userInfo);
+  const locationState = hasSelectedLocation(userInfo);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(!!idIsValid && !!passwordIsValid);
+      setFormIsValid(
+        !!idIsValid &&
+          !!passwordIsValid &&
+          userInfo.mainLocation.locationIdx !== null
+      );
     }, 500);
 
     return () => {
       clearTimeout(identifier);
     };
-  }, [idIsValid, passwordIsValid]);
+  }, [idIsValid, passwordIsValid, userInfo.mainLocation.locationIdx]);
 
   useEffect(() => {
-    setIsLocationSelectorRendered(true);
     const fetchLocationData = async () => {
-      setIsLocationSelectorRendered(true);
       const locationData = await getLocationData();
-      setLocationData(locationData);
+      setLocationDataState(locationData);
     };
 
     fetchLocationData();
@@ -138,7 +209,7 @@ export const SignUpPage = () => {
                 state={formIsValid ? 'active' : 'disabled'}
                 color="neutralText"
                 backgroundColor="neutralBackground"
-                onClick={postBtnClickHandler}
+                onClick={signUpBtnClickHandler}
               />
             ),
           },
@@ -150,8 +221,11 @@ export const SignUpPage = () => {
               size={90}
               isEditable={true}
               imgUrl={userInfo.imgUrl}
-              setImgUrl={(newUrl) =>
-                dispatch({ type: 'USER_IMG_INPUT', val: newUrl })
+              setImgUrl={(newUrl: string, newFile: File) =>
+                dispatch({
+                  type: 'USER_IMG_INPUT',
+                  val: { imgUrl: newUrl, imgFile: newFile },
+                })
               }
             />
           </S.ProfileImgInput>
@@ -199,19 +273,21 @@ export const SignUpPage = () => {
             {locationState && (
               <>
                 <Button
-                  title={userInfo.mainLocation.locationName}
+                  title={userInfo.mainLocation.town}
                   shape="large"
                   state="active"
                   textAlign="left"
                   color="systemBackground"
                   icon="close"
                   hasBorder={true}
-                  onClick={mainLocationDeleteHandler}
+                  onClick={() =>
+                    removeLocationInfoHandler(userInfo.mainLocation.town)
+                  }
                 />
                 <Button
                   title={
-                    userInfo.subLocation.locationName
-                      ? userInfo.subLocation.locationName
+                    userInfo.subLocation.town
+                      ? userInfo.subLocation.town
                       : '위치 추가'
                   }
                   shape="large"
@@ -229,7 +305,8 @@ export const SignUpPage = () => {
                   icon={userInfo.subLocation.locationIdx ? 'close' : 'plus'}
                   onClick={
                     userInfo.subLocation.locationIdx
-                      ? subLocationDeleteHandler
+                      ? () =>
+                          removeLocationInfoHandler(userInfo.subLocation.town)
                       : locationSelectorHandler
                   }
                   hasBorder={true}
@@ -239,28 +316,43 @@ export const SignUpPage = () => {
           </S.LocationButtonSection>
         </S.SignUpPage>
       </Layout>
-      {isLocationSelectorRendered && locationData && (
-        <LocationSelector
-          locationData={locationData}
-          locationState={userInfo}
-          locationSelectorOpenState={[
-            isLocationSelectorOpen,
-            setIsLocationSelectorOpen,
-          ]}
-          // dispatch를 내려줘야되는데..... 조건분기 어케 처리하누
-          //
-        />
-      )}
+      <BottomSheet
+        isOpen={isLocationSelectorOpen}
+        handleBackdropClick={() => setIsLocationSelectorOpen(false)}
+        leftBtn={{
+          text: '닫기',
+          onClick: () => setIsLocationSelectorOpen(false),
+        }}
+      >
+        {locationDataState?.map((locationData) => (
+          <S.LocationList
+            key={locationData.locationIdx}
+            onClick={() => locationClickHandler(locationData.locationName)}
+          >
+            <S.LocationListInner
+              color={
+                isSelectedLocation(locationData.locationName)
+                  ? 'accentBackgroundPrimary'
+                  : 'neutralText'
+              }
+            >
+              {locationData.locationName}
+            </S.LocationListInner>
+          </S.LocationList>
+        ))}
+      </BottomSheet>
+      <Dialog
+        isOpen={isDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: () => setDialogOpen(false),
+          },
+        }}
+        handleBackDropClick={() => setDialogOpen(false)}
+      >
+        {errorMessage}
+      </Dialog>
     </>
   );
 };
-
-// alert text
-// 로그인 화면에서는 아이디만 (비밀번호는 x)
-// 가입화면에서는 아이디, 비밀번호 둘다
-
-// locationSelector에 dispatch 내려야함
-
-// locationSelector에 data 상태가 있고
-// locationSelector가 렌더링 되고, fetch 하고 나서 data 상태를 변경해서 다시 렌더
-// idx 매핑해서 클릭 함수 prop 전달하고
