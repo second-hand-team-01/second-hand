@@ -99,6 +99,11 @@ public class MemberController {
 		@RequestParam(required = false) Long categoryIdx) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		Pageable pageable = PageRequest.of(0, 10);
+		if (categoryIdx == null) { // categoryIdx가 null로 들어오면 전체 상품 조회
+			log.info("categoryIdx: {}", categoryIdx);
+			ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, pageable);
+			return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
+		}
 		ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
