@@ -6,36 +6,56 @@
 //
 import Foundation
 
-struct LoginNetworkManager: DecodeManager {
-    typealias DTO = LoginResponseDTO
-    var decoder = JSONDecoder()
-    private var session = URLSession.shared
-    
-    func decode(using data: Data) throws -> LoginResponseDTO {
-        do {
-            return try decoder.decode(DTO.self, from: data)
-        } catch {
-            throw error
-        }
+struct LoginNetworkManager {
+    enum RequestType: String {
+        case githubSignIn = "https://guardiansofthecodesquad.site/login/oauth/github-ios?code="
+        case signIn = "login"
+        case signOut = "signup"
     }
     
-    func request(loginInfo: LoginDTO) async -> DTO? {
-        guard let loginUrl = URL(string: ServerURL.base + "login") else {
-            LogManger.generate(level: .network, "badURL")
+    private var decoder = JSONDecoder()
+    private var session = URLSession.shared
+    
+    func makeRequest(_ type: RequestType) -> URLRequest? {
+        let urlString: String
+        switch type {
+        case .githubSignIn:
+            urlString = type.rawValue + OAuth.code
+        case .signIn:
+            urlString = ServerURL.base + type.rawValue
+        case .signOut:
+            urlString = ServerURL.base + type.rawValue
+        }
+        
+        guard let url = URL(string: urlString) else {
             return nil
         }
         
-        var request = URLRequest(url: loginUrl)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard type != .githubSignIn else {
+            return URLRequest(url: url)
+        }
         
-        let loginData = [
-            "loginId": loginInfo.loginId,
-            "password": loginInfo.password
-        ]
-        let body = try? JSONSerialization.data(withJSONObject: loginData, options: [])
-        request.httpBody = body
-
+        return URLRequest(url: url)
+    }
+    
+    func request<T>(type: RequestType, data: T) async -> LoginResponseDTO? {
+        guard var request = makeRequest(type) else {
+            return nil
+        }
+        
+        if let url = request.url,
+           url.absoluteString != RequestType.githubSignIn.rawValue {
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let loginData = data as? LoginDTO else {
+                return nil
+            }
+            
+            let body = try? JSONSerialization.data(withJSONObject: loginData, options: [])
+            request.httpBody = body
+        }
+        
         do {
             let (data, urlResponse) = try await session.data(for: request)
 
@@ -50,7 +70,7 @@ struct LoginNetworkManager: DecodeManager {
                 throw LoginError.badStatusCode(response.statusCode)
             }
             
-            return try decode(using: data)
+            return try decoder.decode(LoginResponseDTO.self, from: data)
         } catch let error {
             if let decodingError = error as? DecodingError {
                 LogManger.generate(level: .network, "\(decodingError)")

@@ -87,6 +87,7 @@ extension LoginViewController {
     }
     
     @objc private func login(_ notification: Notification) {
+<<<<<<< HEAD
         let enteredLoginData = loginView.getEnteredInfo()
         guard let id = enteredLoginData.0,
               let password = enteredLoginData.1 else { return }
@@ -106,6 +107,8 @@ extension LoginViewController {
                 animated: true
             )
         }
+=======
+>>>>>>> 6390a66 (돔황챠!)
     }
     
     private func observeLoginByGithub() {
@@ -118,7 +121,19 @@ extension LoginViewController {
     }
     
     @objc private func loginByGithub(_ notification: Notification) {
+        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03") else {
+            return
+        }
         
+        if UIApplication.shared.canOpenURL(githubURL) {
+            UIApplication.shared.open(githubURL)
+        }
+    
+        Task {
+            let response = await networkManager.request(type: .githubSignIn, data: "")
+            guard response != nil else { return }
+            print("OAuth 성공!!")
+        }
     }
     
     private func observeRegisterUser() {

@@ -19,4 +19,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = window
     }
+    
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        if let url = URLContexts.first?.url {
+            let code = String(url.absoluteString.split(separator: "=")[1])
+            OAuth.code = code
+            print(OAuth.code)
+        }
+    }
+}
+
+struct OAuth {
+    static var code = ""
 }
