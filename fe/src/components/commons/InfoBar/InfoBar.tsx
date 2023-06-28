@@ -8,6 +8,7 @@ export interface InfoBarProps {
   handleInterestClicked?: (e: React.MouseEvent) => Promise<void>;
   handleChatClicked?: () => void;
   isWriter?: boolean;
+  chat?: number;
 }
 
 export const InfoBar = ({
@@ -16,6 +17,7 @@ export const InfoBar = ({
   handleInterestClicked,
   handleChatClicked,
   isWriter,
+  chat,
 }: InfoBarProps) => {
   return (
     <S.InfoBar>
@@ -26,7 +28,11 @@ export const InfoBar = ({
       ></Button>
       {price ? convertNumToPrice(price) : '0'}
       <Button
-        title={isWriter ? '대화 중인 채팅방' : '채팅하기'}
+        title={
+          isWriter
+            ? `대화 중인 채팅방${chat !== 0 ? ` (${chat})` : ''}`
+            : '채팅하기'
+        }
         shape="small"
         isWidthFitContent={true}
         backgroundColor="accentBackgroundPrimary"
