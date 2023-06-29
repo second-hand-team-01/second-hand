@@ -3,6 +3,8 @@ package codesquad.secondhand.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -91,4 +93,22 @@ public class ItemService {
 		return new ItemIdxDto(item.getItemIdx());
 	}
 
+	public ItemDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
+		Item item = itemRepository.findById(itemIdx)
+			.orElseThrow();
+
+		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+
+		int view;
+		if(memberIdx.equals(item.getSeller().getMemberIdx())) {
+			view = item.getView();
+			item.setView(++view);
+		}
+
+		int chatRooms = interestRepository.countByItem(item);
+		int interest = chatRoomRepository.countByItem(item);
+		boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
+
+		return ItemDto.of(item, chatRooms, interest, interestChecked, item.getView(), item.getItemImages(), item.getCategory());
+	}
 }

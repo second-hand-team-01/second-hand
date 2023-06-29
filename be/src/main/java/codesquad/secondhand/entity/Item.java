@@ -68,6 +68,7 @@ public class Item {
 	@Column(name = "price", nullable = false)
 	private Integer price;
 
+	@Setter
 	@Column(name = "view", nullable = false)
 	private Integer view;
 
@@ -95,4 +96,6 @@ public class Item {
 		this.view = view;
 		this.status = status;
 	}
+
+
 }

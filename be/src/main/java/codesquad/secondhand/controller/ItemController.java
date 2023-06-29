@@ -44,7 +44,7 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
-	@GetMapping("/{categoryIdx}")
+	@GetMapping("/category/{categoryIdx}")
 	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx) {
 		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
@@ -62,11 +62,13 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
-	// @GetMapping
-	// // TODO: 조회수
-	// public ResponseDto<ItemDto> showItemDetail(ItemIdxDto itemIdxDto) {
-	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
-	// }
+	@GetMapping("/{itemIdx}")
+	// TODO: 조회수
+	public ResponseDto<ItemDto> showItemDetail(HttpServletRequest httpServletRequest,
+		ItemIdxDto itemIdxDto) {
+		ItemDto itemDto = itemService.showItemDetail(httpServletRequest, itemIdxDto.getItemIdx());
+		return ResponseDto.of(RESPONSE_SUCCESS, itemDto);
+	}
 
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {
