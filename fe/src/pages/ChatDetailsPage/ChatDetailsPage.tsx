@@ -14,10 +14,18 @@ import {
   ChatRoom,
   MessageObj,
 } from '@type-store/services/chat';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
+import {
+  useNavigate,
+  useLocation,
+  useParams,
+  Navigate,
+} from 'react-router-dom';
 import { useChat } from '@hooks/useChat/useChat';
 import { getOneChatRoom, removeChatRoom } from '@services/chats/chat';
+import { ERROR_MESSAGE } from '@constants/error';
+import { ChatList } from '@pages/ChatPage/ChatList/ChatListStyle';
+import { UserContext } from '@stores/UserContext';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
@@ -61,6 +69,66 @@ export const ChatDetailsPage = () => {
       setMessages(chatroom.messages);
     }
   }, [itemIdxStr, memberIdxStr]);
+
+  const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
+
+  const renderComps = () => {
+    if (isLoggedIn === false) {
+      return <Navigate to="/profile" replace />;
+    }
+
+    return (
+      <S.ChatDetailsPage>
+        {convertMessageToBubble(messages).map((message, i) => {
+          return (
+            <Bubble
+              type={message.type === 'mine' ? 'mine' : 'opponent'}
+              key={i}
+            >
+              {message.text}
+            </Bubble>
+          );
+        })}
+        <div ref={messagesEndRef} />
+        <Menu
+          location="bottom"
+          menuButtonPropsList={[
+            {
+              shape: 'large',
+              state: 'default',
+              color: 'systemWarning',
+              name: '채팅방 나가기',
+              onClick: () => {
+                const { data, error } = removeChatRoom(
+                  Number(itemIdxStr),
+                  Number(memberIdxStr)
+                );
+                if (error || !data) {
+                  setErrorDialogOpen(true);
+                }
+                navigate(-1);
+              },
+            },
+          ]}
+          openState={[isMenuOpen, setMenuOpen]}
+        ></Menu>
+        <Dialog
+          isOpen={isErrorDialogOpen}
+          btnInfos={{
+            right: {
+              text: '확인',
+              onClick: () => {
+                setErrorDialogOpen(false);
+              },
+            },
+          }}
+          handleBackDropClick={() => setErrorDialogOpen(false)}
+        >
+          삭제하면서 에러가 발생했어요. 다시 시도해주세요.
+        </Dialog>
+      </S.ChatDetailsPage>
+    );
+  };
 
   return (
     <Layout
@@ -115,55 +183,7 @@ export const ChatDetailsPage = () => {
         ),
       }}
     >
-      <S.ChatDetailsPage>
-        {convertMessageToBubble(messages).map((message, i) => {
-          return (
-            <Bubble
-              type={message.type === 'mine' ? 'mine' : 'opponent'}
-              key={i}
-            >
-              {message.text}
-            </Bubble>
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </S.ChatDetailsPage>
-      <Menu
-        location="bottom"
-        menuButtonPropsList={[
-          {
-            shape: 'large',
-            state: 'default',
-            color: 'systemWarning',
-            name: '채팅방 나가기',
-            onClick: () => {
-              const { data, error } = removeChatRoom(
-                Number(itemIdxStr),
-                Number(memberIdxStr)
-              );
-              if (error || !data) {
-                setErrorDialogOpen(true);
-              }
-              navigate(-1);
-            },
-          },
-        ]}
-        openState={[isMenuOpen, setMenuOpen]}
-      ></Menu>
-      <Dialog
-        isOpen={isErrorDialogOpen}
-        btnInfos={{
-          right: {
-            text: '확인',
-            onClick: () => {
-              setErrorDialogOpen(false);
-            },
-          },
-        }}
-        handleBackDropClick={() => setErrorDialogOpen(false)}
-      >
-        삭제하면서 에러가 발생했어요. 다시 시도해주세요.
-      </Dialog>
+      {renderComps()}
     </Layout>
   );
 };
