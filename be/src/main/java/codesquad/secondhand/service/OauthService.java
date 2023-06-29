@@ -37,8 +37,11 @@ public class OauthService {
 	public OauthLoginResponse oauthLogin(String providerName, String code) {
 
 		OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
-		log.info("provider: {}", provider);
+		log.info("[OauthService] oauthLogin.provider.getClientId(): {}", provider.getClientId());
+		log.info("[OauthService] oauthLogin.provider.getTokenUrl(): {}", provider.getTokenUrl());
 		OauthTokenResponse oauthTokenResponse = getToken(code, provider);
+
+		log.info("[OauthService] oauthTokenResponse.getAccessToken(): {}", oauthTokenResponse.getAccessToken());
 
 		MemberProfile memberProfile = getUserProfile(providerName, oauthTokenResponse, provider);
 
@@ -66,12 +69,20 @@ public class OauthService {
 
 	private MemberProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse,
 		OauthProvider provider) {
+		log.info("[OauthService] providerName: {}", providerName);
+		log.info("[OauthService] provider: {}", provider);
 		Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
+		log.info("[OauthService] userAttributes: {}", userAttributes);
 
 		return OauthAttributes.extract(providerName, userAttributes);
 	}
 
 	private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
+		log.info("[OauthService] getUserAttributes.provider.getClientId(): {}", provider.getClientId());
+		log.info("[OauthService] getUserAttributes.provider.getClientSecret(): {}", provider.getClientSecret());
+		log.info("[OauthService] getUserAttributes.provider.getRedirectUrl(): {}", provider.getRedirectUrl());
+		log.info("[OauthService] getUserAttributes.provider.getUserInfoUrl(): {}", provider.getUserInfoUrl());
+		log.info("[OauthService] getUserAttributes.tokenResponse: {}", tokenResponse);
 		return WebClient.create()
 			.get()
 			.uri(provider.getUserInfoUrl())
@@ -99,10 +110,12 @@ public class OauthService {
 	}
 
 	private MultiValueMap<String, String> tokenRequest(String code, OauthProvider provider) {
+		log.info("[OauthService] tokenRequest code: {}", code);
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 		formData.add("code", code);
 		formData.add("grant_type", "authorization_code");
 		formData.add("redirect_uri", provider.getRedirectUrl());
+		log.info("[OauthService] tokenRequest formData: {}", formData);
 		return formData;
 	}
 }
