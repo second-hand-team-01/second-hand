@@ -12,6 +12,8 @@ function App() {
   //   worker.start();
   // }
 
+  console.log(process.env);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
