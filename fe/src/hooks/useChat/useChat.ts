@@ -1,9 +1,9 @@
-import { ReceivedMessage } from '@type-store/services/chat';
+import { MessageObj } from '@type-store/services/chat';
 import React, { useEffect, useState } from 'react';
 
 export const onChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<ReceivedMessage[]>([]); // 상태 추가
+  const [messages, setMessages] = useState<MessageObj[]>([]);
 
   useEffect(() => {
     const webSocket = new WebSocket(
@@ -15,7 +15,9 @@ export const onChat = () => {
     };
 
     webSocket.onmessage = (ev) => {
-      setMessages((prevMessages) => [...prevMessages, JSON.parse(ev.data)]); // 메시지 저장
+      const newMessage = JSON.parse(ev.data) as MessageObj;
+      if (newMessage.message === `Internal server error`) return;
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
     webSocket.onerror = (err) => {
@@ -33,7 +35,7 @@ export const onChat = () => {
     };
   }, []);
 
-  const sendMessage = (message: ReceivedMessage) => {
+  const sendMessage = (message: MessageObj) => {
     if (ws) {
       ws.send(JSON.stringify(message));
     }
