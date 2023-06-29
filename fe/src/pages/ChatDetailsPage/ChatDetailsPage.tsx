@@ -1,4 +1,11 @@
-import { Button, Layout, NavbarBtn, ChatBar, Menu } from '@components/commons';
+import {
+  Button,
+  Layout,
+  NavbarBtn,
+  ChatBar,
+  Menu,
+  Dialog,
+} from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
@@ -10,7 +17,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useChat } from '@hooks/useChat/useChat';
-import { getOneChatRoom } from '@services/chats/chat';
+import { getOneChatRoom, removeChatRoom } from '@services/chats/chat';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
@@ -27,6 +34,7 @@ export const ChatDetailsPage = () => {
   const navigate = useNavigate();
   const { itemIdx: itemIdxStr, memberIdx: memberIdxStr } = useParams();
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
 
   const { messages, setMessages, sendMessage, chatroom, setChatroom } =
     useChat();
@@ -128,11 +136,34 @@ export const ChatDetailsPage = () => {
             state: 'default',
             color: 'systemWarning',
             name: '채팅방 나가기',
-            onClick: () => navigate(-1),
+            onClick: () => {
+              const { data, error } = removeChatRoom(
+                Number(itemIdxStr),
+                Number(memberIdxStr)
+              );
+              if (error || !data) {
+                setErrorDialogOpen(true);
+              }
+              navigate(-1);
+            },
           },
         ]}
         openState={[isMenuOpen, setMenuOpen]}
       ></Menu>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: () => {
+              setErrorDialogOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => setErrorDialogOpen(false)}
+      >
+        삭제하면서 에러가 발생했어요. 다시 시도해주세요.
+      </Dialog>
     </Layout>
   );
 };

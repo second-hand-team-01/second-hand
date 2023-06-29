@@ -69,15 +69,15 @@ export const DetailsPage = () => {
     if (isWriter) {
       return navigate(`/chat/${itemIdx}`);
     }
-    navigate(`/chat/${itemIdx}/${details?.seller.memberIdx}`, {
+    navigate(`/chat/${itemIdx}/${details?.seller.memberIdx ?? 0}`, {
       state: {
         user: {
           memberIdx: details?.seller.memberIdx,
-          imgUrl: '',
+          imgUrl: details?.seller.memberProfileImage,
           name: details?.seller.memberId,
         },
         salesInfo: {
-          previewImg: details?.images[0],
+          previewImg: details?.images?.[0],
           price: details?.price,
           title: details?.title,
         },

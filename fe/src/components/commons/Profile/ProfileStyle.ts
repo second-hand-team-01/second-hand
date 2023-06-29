@@ -27,6 +27,7 @@ export const Profile = styled.div<ProfileStyleProps>`
       : `url('${url}')`};
   background-size: cover;
   border-radius: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.neutralBorder};
 `;
 
 export const Editable = styled.div`

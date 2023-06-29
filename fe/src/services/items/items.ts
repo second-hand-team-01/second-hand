@@ -153,7 +153,6 @@ export const getItemDetailAPI = async (
     const res = (await customFetch<null, APIItemDetail>({
       path: `/items/${itemIdx}`,
       method: 'GET',
-      auth: true, // TODO: 지워야함
     })) as Response<APIItemDetail>;
 
     if (!res || !res.data || res.error) {
