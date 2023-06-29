@@ -20,7 +20,7 @@ struct LoginResponseDTO: Codable {
     }
     
     struct MemberInfo: Codable {
-        let memeberIdx: Int
+        let memberIdx: Int
         let loginId: String
     }
 }

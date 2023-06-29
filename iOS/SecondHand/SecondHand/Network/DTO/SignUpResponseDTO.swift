@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SignUpResponseDTO: Codable {
+struct SignUpResponseDTO: DTO {
     let success: Bool
     let status: Int
     let code: Int

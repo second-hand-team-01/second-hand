@@ -104,7 +104,7 @@ extension LoginViewController {
                 return
             }
             SecretKeys.accessToken = response.data.accessToken
-            viewController.userName = response.data.memeberInfo?.loginId ?? ""
+//            viewController.userName = response.data.memeberInfo?.loginId ?? ""
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true
@@ -137,7 +137,7 @@ extension LoginViewController {
                 return
             }
             SecretKeys.accessToken = response.data.accessToken
-            viewController.userName = response.data.memeberInfo?.loginId ?? ""
+//            viewController.userName = response.data.memeberInfo?.loginId ?? ""
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true

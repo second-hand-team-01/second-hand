@@ -27,12 +27,12 @@ class AccountInfoViewController: UIViewController {
         button.configuration = configuration
         return button
     }()
-    var userName: String = ""
+    private var useCase = AccountInfoUseCase()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addSubviews()
-        self.accountInfoView.configure(userName: userName)
+//        self.useCase.loadData()
         self.navigationItem.hidesBackButton = true
         signOutButton.addTarget(
             self,

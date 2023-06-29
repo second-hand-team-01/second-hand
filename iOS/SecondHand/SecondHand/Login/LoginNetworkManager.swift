@@ -62,14 +62,14 @@ struct LoginNetworkManager {
             let (data, urlResponse) = try await session.data(for: request)
 
             guard let response = urlResponse as? HTTPURLResponse else {
-                LogManger.generate(level: .network, LoginError.badResponse.message)
-                throw LoginError.badResponse
+                LogManger.generate(level: .network, NetworkError.badResponse.message)
+                throw NetworkError.badResponse
             }
             
             guard (200..<300).contains(response.statusCode) else {
                 let statusCode = response.statusCode
-                LogManger.generate(level: .network, LoginError.badStatusCode(statusCode).message)
-                throw LoginError.badStatusCode(response.statusCode)
+                LogManger.generate(level: .network, NetworkError.badStatusCode(statusCode).message)
+                throw NetworkError.badStatusCode(response.statusCode)
             }
             
             return try decoder.decode(LoginResponseDTO.self, from: data)
@@ -78,20 +78,6 @@ struct LoginNetworkManager {
                 LogManger.generate(level: .network, "\(decodingError)")
             }
             return nil
-        }
-    }
-}
-
-enum LoginError: Error {
-    case badResponse
-    case badStatusCode(Int)
-    
-    var message: String {
-        switch self {
-        case .badResponse:
-            return "Response가 올바르지 않습니다."
-        case .badStatusCode(let code):
-            return "응답코드가 올바르지 않습니다. 응답코드: \(code)"
         }
     }
 }
