@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item`
     CONSTRAINT `fk_item_item_image1`
         FOREIGN KEY (`main_image_idx`)
             REFERENCES `second-hand`.`item_image` (`item_image_idx`)
-            ON DELETE NO ACTION
+            ON DELETE CASCADE
             ON UPDATE NO ACTION
 )
     ENGINE = InnoDB;
