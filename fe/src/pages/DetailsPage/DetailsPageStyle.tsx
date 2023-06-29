@@ -21,6 +21,10 @@ export const WriterSection = styled.div`
   margin-bottom: 16px;
 `;
 
+export const StatusSection = styled.div`
+  margin-bottom: 16px;
+`;
+
 export const Title = styled.p`
   font-weight: ${({ theme }) => theme.typography.headline.fontWeight};
   font-size: ${({ theme }) => theme.typography.headline.size};

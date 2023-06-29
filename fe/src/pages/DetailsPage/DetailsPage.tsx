@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import * as S from './DetailsPageStyle';
@@ -9,20 +9,46 @@ import {
   Dropdown,
   Loading,
   Error,
+  Button,
+  Menu,
+  Dialog,
 } from '@commons/index';
-import { getItemDetailAPI } from '@services/items/items';
+import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '@stores/UserContext';
+import { DEV_USER } from '@constants/login';
+import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 
 export const DetailsPage = () => {
-  const userId = 'snoopso'; // todo
+  const { userInfo, dispatch } = useContext(UserContext);
+
+  if (process.env.NODE_ENV === 'development') {
+    useEffect(() => {
+      dispatch({
+        type: 'SET_USER',
+        payload: {
+          memberIdx: DEV_USER.memberIdx,
+          loginId: DEV_USER.memberId,
+          imgUrl: null,
+        },
+      });
+    }, []);
+  }
 
   const param = useParams();
   const itemIdx = param.itemIdx;
+  const navigate = useNavigate();
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [isInterestChecked, setInterestChecked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -31,12 +57,38 @@ export const DetailsPage = () => {
       if (error) return setErrorMsg(error.message);
       if (data) {
         setDetails(data);
+        details && setInterestChecked(details.interestChecked);
       }
       setLoading(false);
     })();
   }, []);
 
-  const isWriter = userId === details?.sellerId;
+  const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
+
+  const handleInterestBtn = async (e: React.MouseEvent) => {
+    const targetElement = e.target as HTMLElement;
+    const icon = targetElement.closest('svg');
+    const itemIdx = details?.itemIdx;
+    if (!itemIdx || !icon) return;
+    if (icon?.id === 'heart') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: true,
+      });
+      if (error) return;
+      setInterestChecked(true);
+      return;
+    }
+    if (icon?.id === 'heartFill') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: false,
+      });
+      if (error) return;
+      setInterestChecked(false);
+      return;
+    }
+  };
 
   return (
     <Layout
@@ -50,17 +102,36 @@ export const DetailsPage = () => {
               color="accentText"
             ></NavbarBtn>
           ),
-          rightBtn: <NavbarBtn icon="more" color="accentText"></NavbarBtn>,
+          rightBtn: isWriter ? (
+            <Button
+              icon="more"
+              shape="ghost"
+              isWidthFitContent={true}
+              color="accentText"
+              backgroundColor="transparent"
+              onClick={() => {
+                setMenuOpen(true);
+              }}
+            ></Button>
+          ) : (
+            <></>
+          ),
           isTransparent: true,
         },
       }}
       footerOption={{
         type: 'info',
         infoBarOptions: {
-          isInterestedChecked: details?.interestChecked,
+          isInterestedChecked: isInterestChecked,
           price: details?.price,
-          handleInterestClicked: () => console.log('d'),
-          handleChatClicked: () => console.log('d'),
+          handleInterestClicked: handleInterestBtn,
+          handleChatClicked: () => {
+            isWriter
+              ? navigate(`/chat/${itemIdx}`)
+              : navigate(`/chat/${itemIdx}/0`);
+          },
+          isWriter,
+          chat: details?.chat,
         },
       }}
       isHeaderOverlapped={true}
@@ -77,16 +148,37 @@ export const DetailsPage = () => {
           <S.Contents>
             <S.WriterSection>
               <p>판매자 정보</p>
-              <p>{details?.sellerId}</p>
+              <p>{details?.seller.memberId}</p>
             </S.WriterSection>
             {isWriter && (
-              <Dropdown isOpen={false} onClick={() => console.log('d')}>
-                {details?.status ?? ''}
-              </Dropdown>
+              <S.StatusSection>
+                <Dropdown
+                  menuButtonPropsList={[
+                    {
+                      shape: 'small',
+                      state: 'default',
+                      name: 'ddd',
+                      onClick: () => setStatusDropdownOpen(false),
+                    },
+                    {
+                      shape: 'small',
+                      state: 'default',
+                      name: 'ddd2',
+                      onClick: () => setStatusDropdownOpen(false),
+                    },
+                  ]}
+                  openState={[isStatusDropdownOpen, setStatusDropdownOpen]}
+                  onClick={() => setStatusDropdownOpen(true)}
+                  hasBorder={true}
+                  size="small"
+                >
+                  {details?.status ?? ''}
+                </Dropdown>
+              </S.StatusSection>
             )}
             <S.Title>{details?.title}</S.Title>
             <S.Info>
-              <span>{details?.category}</span>
+              <span>{details?.category.text}</span>
               <span>・</span>
               <span>
                 {details?.postedAt && convertDateToTimeStamp(details?.postedAt)}
@@ -99,6 +191,72 @@ export const DetailsPage = () => {
           </S.Contents>
         </S.DetailsPages>
       )}
+      <Menu
+        location="bottom"
+        menuButtonPropsList={[
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemDefault',
+            name: '게시글 수정',
+            onClick: () => navigate(`/edit/${itemIdx}`),
+          },
+          {
+            shape: 'large',
+            state: 'default',
+            color: 'systemWarning',
+            name: '삭제',
+            onClick: () => setDeleteDialogOpen(true),
+          },
+        ]}
+        openState={[menuOpen, setMenuOpen]}
+      ></Menu>
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        btnInfos={{
+          left: {
+            text: '취소',
+            onClick: () => {
+              setDeleteDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+          right: {
+            text: '삭제',
+            onClick: async () => {
+              const { error } = await deleteItemsAPI(Number(itemIdx));
+              if (error) return setErrorDialogOpen(true);
+              setMenuOpen(false);
+              navigate('/');
+            },
+            color: 'systemWarning',
+          },
+        }}
+        handleBackDropClick={() => {
+          setDeleteDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        정말 삭제하시겠어요?
+      </Dialog>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: async () => {
+              setErrorDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => {
+          setErrorDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        에러가 발생했습니다.
+      </Dialog>
     </Layout>
   );
 };

@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import * as S from './LayoutStyle';
 import { TabBar, ToolBar } from '@commons/index';
 import { ReactNode } from 'react';
-import { ChatBar, FilterBar, InfoBar, NavBar } from '@commons/index';
+import { FilterBar, InfoBar, NavBar } from '@commons/index';
 import { HeaderProps, FooterProps, LayoutStyleProps } from './LayoutStyle';
 
 interface LayoutProps extends LayoutStyleProps {
@@ -13,15 +13,19 @@ interface LayoutProps extends LayoutStyleProps {
 const renderHeader = ({
   type,
   navbarProps,
+  filterBarProps,
+  bottomComps,
 }: {
   type: HeaderProps['type'];
-  navbarProps: HeaderProps['navbarOptions'];
+  navbarProps?: HeaderProps['navbarOptions'];
+  filterBarProps?: HeaderProps['filterBarOptions'];
+  bottomComps?: HeaderProps['bottomComp'];
 }) => {
   switch (type) {
     case 'filter':
-      return <FilterBar></FilterBar>;
+      return <FilterBar {...filterBarProps}></FilterBar>;
     case 'nav':
-      return <NavBar {...navbarProps}></NavBar>;
+      return <NavBar {...navbarProps} bottomComps={bottomComps}></NavBar>;
     default:
       return <></>;
   }
@@ -30,15 +34,18 @@ const renderHeader = ({
 const renderFooter = ({
   type,
   infoBarProps,
+  comps,
 }: {
   type: FooterProps['type'];
   infoBarProps: FooterProps['infoBarOptions'];
+  comps: FooterProps['comp'];
 }): ReactNode => {
+  if (comps) {
+    return comps;
+  }
   switch (type) {
     case 'info':
       return <InfoBar {...infoBarProps}></InfoBar>;
-    case 'chat':
-      return <ChatBar></ChatBar>;
     case 'tab':
       return <TabBar></TabBar>;
     case 'tool':
@@ -62,6 +69,8 @@ export const Layout = ({
             renderHeader({
               type: headerOption.type,
               navbarProps: headerOption.navbarOptions,
+              filterBarProps: headerOption.filterBarOptions,
+              bottomComps: headerOption.bottomComp,
             })}
         </S.Header>
         <S.Contents isHeaderOverlapped={isHeaderOverlapped}>
@@ -73,6 +82,7 @@ export const Layout = ({
             {renderFooter({
               type: footerOption.type,
               infoBarProps: footerOption.infoBarOptions,
+              comps: footerOption.comp,
             })}
           </S.Footer>
         )}

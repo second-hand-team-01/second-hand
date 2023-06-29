@@ -1,12 +1,17 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
-import { Icon } from '@components/commons';
+import { Icon, Menu, Dialog } from '@components/commons';
 import { colors, palette } from '@styles/Color';
 import {
   convertDateToTimeStamp,
   convertNumToPrice,
 } from '@utils/common/common';
+import { postFavoriteItemAPI } from '@services/items/favoriteItems';
+import { useNavigate } from 'react-router-dom';
+import { changeStatusItemsAPI } from '@services/items/items';
+import { MenuButtonProps } from '../Menu/MenuStyle';
+import { deleteItemsAPI } from '@services/items/items';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -15,15 +20,17 @@ export interface IconProps {
 }
 
 export interface ListItemProps {
+  itemIdx: number;
   title: string;
   imgUrl: string;
   location: string;
   timeStamp: Date;
   price: number | null;
-  state: '예약중' | '판매중' | null;
+  state: '예약중' | '판매중' | string | null;
   like: number | null;
   chat: number | null;
   moreBtn: boolean;
+  interestChecked: boolean;
   onClick?: () => void;
 }
 
@@ -43,7 +50,14 @@ const heartIcon: IconProps = {
   color: 'neutralText',
 };
 
+const heartFillIcon: IconProps = {
+  name: 'heartFill',
+  size: 13,
+  color: 'neutralText',
+};
+
 export const ListItem = ({
+  itemIdx,
   title,
   imgUrl,
   location,
@@ -53,16 +67,127 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
+  interestChecked: initialInterestChecked,
   onClick,
 }: ListItemProps) => {
+  const navigate = useNavigate();
+  const listItemRef = useRef<HTMLLIElement>(null);
+
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
-  const moreBtnClickHandler = () => {
-    console.log('더보기 버튼 클릭');
+  const [interestChecked, setInterestChecked] = useState(
+    initialInterestChecked
+  );
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+
+  const moreBtnClickHandler = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(true);
   };
 
+  const handleBtnClick = async (e: React.MouseEvent) => {
+    const targetElement = e.target as HTMLElement;
+    const currentTargetElement = e.currentTarget as HTMLLIElement;
+    const icon = targetElement.closest('svg');
+    const itemIdx = parseInt(currentTargetElement.id);
+    if (!itemIdx) return;
+    if (icon?.id === 'heart') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: true,
+      });
+      if (error) return;
+      setInterestChecked(true);
+      return;
+    }
+    if (icon?.id === 'heartFill') {
+      const { error } = await postFavoriteItemAPI({
+        itemIdx,
+        interestChecked: false,
+      });
+      if (error) return;
+      setInterestChecked(false);
+      return;
+    }
+    if (icon?.id === 'more') {
+      moreBtnClickHandler(e);
+      return;
+    }
+
+    if (
+      targetElement.classList.contains('backdrop') ||
+      targetElement.classList.contains('menu-button')
+    ) {
+      return;
+    }
+
+    onClick && onClick();
+  };
+
+  const menuOptions: { [key: string]: MenuButtonProps } = {
+    ['판매중']: {
+      shape: 'large',
+      state: 'default',
+      color: 'systemDefault',
+      name: '판매중 상태로 전환',
+      onClick: () => {
+        changeStatusItemsAPI(itemIdx, '판매중');
+        setMenuOpen(false);
+      },
+    },
+    ['판매완료']: {
+      shape: 'large',
+      state: 'default',
+      color: 'systemDefault',
+      name: '판매 완료 상태로 전환',
+      onClick: () => {
+        changeStatusItemsAPI(itemIdx, '판매완료');
+        setMenuOpen(false);
+      },
+    },
+    ['예약중']: {
+      shape: 'large',
+      state: 'default',
+      color: 'systemDefault',
+      name: '예약중 상태로 전환',
+      onClick: () => {
+        changeStatusItemsAPI(itemIdx, '예약중');
+        setMenuOpen(false);
+      },
+    },
+  };
+
+  const duplicatedMenuOptions = { ...menuOptions };
+  if (state) {
+    delete duplicatedMenuOptions[state];
+  }
+
+  const menuButtonPropsList: MenuButtonProps[] = [
+    {
+      shape: 'large',
+      state: 'default',
+      color: 'systemDefault',
+      name: '게시글 수정',
+      onClick: () => navigate(`/edit/${itemIdx}`),
+    },
+    ...Object.values(duplicatedMenuOptions),
+    {
+      shape: 'large',
+      state: 'default',
+      color: 'systemWarning',
+      name: '삭제',
+      onClick: async () => {
+        const { error } = await deleteItemsAPI(Number(itemIdx));
+        if (error) return setErrorDialogOpen(true);
+        setMenuOpen(false);
+      },
+    },
+  ];
+
   return (
-    <S.ListItem onClick={onClick}>
+    <S.ListItem onClick={handleBtnClick} id={String(itemIdx)} ref={listItemRef}>
       <S.Wrap>
         <S.Thumbnail src={imgUrl} alt={title} />
         <S.Content>
@@ -103,16 +228,69 @@ export const ListItem = ({
             {!!like && (
               <S.ChatAndLikeInfo>
                 <Icon
-                  name={heartIcon.name}
-                  size={heartIcon.size}
-                  color={heartIcon.color}
+                  name={interestChecked ? heartFillIcon.name : heartIcon.name}
+                  size={interestChecked ? heartFillIcon.size : heartIcon.size}
+                  color={
+                    interestChecked ? heartFillIcon.color : heartIcon.color
+                  }
                 />
-                <span>{like}</span>
+                <span className="like-counts">{like}</span>
               </S.ChatAndLikeInfo>
             )}
           </S.ChatAndLike>
         </S.Content>
       </S.Wrap>
+      <Menu
+        location="bottom"
+        menuButtonPropsList={menuButtonPropsList}
+        openState={[menuOpen, setMenuOpen]}
+      ></Menu>
+      <Dialog
+        isOpen={isDeleteDialogOpen}
+        btnInfos={{
+          left: {
+            text: '취소',
+            onClick: () => {
+              setDeleteDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+          right: {
+            text: '삭제',
+            onClick: async () => {
+              const { error } = await deleteItemsAPI(Number(itemIdx));
+              if (error) return setErrorDialogOpen(true);
+              setMenuOpen(false);
+              navigate('/');
+            },
+            color: 'systemWarning',
+          },
+        }}
+        handleBackDropClick={() => {
+          setDeleteDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        정말 삭제하시겠어요?
+      </Dialog>
+      <Dialog
+        isOpen={isErrorDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: async () => {
+              setErrorDialogOpen(false);
+              setMenuOpen(false);
+            },
+          },
+        }}
+        handleBackDropClick={() => {
+          setErrorDialogOpen(false);
+          setMenuOpen(false);
+        }}
+      >
+        에러가 발생했습니다.
+      </Dialog>
     </S.ListItem>
   );
 };

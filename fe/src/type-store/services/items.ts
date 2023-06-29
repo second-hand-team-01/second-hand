@@ -1,19 +1,22 @@
 import { ListItemProps } from '@commons/ListItem/ListItem';
+import { Category } from './category';
 
 export interface Item {
   itemIdx: number;
   imageUrl: string;
   name: string;
   location: string;
-  postedAt: Date;
-  status: '예약중' | '판매중' | null;
+  postedAt: string;
+  status: ItemStatus | null;
   price: number;
   chat: number;
   interest: number;
+  interestChecked: boolean;
 }
 
 export interface Image {
-  file: string;
+  file: File | null;
+  fileString: string;
   name: string;
   size: number;
 }
@@ -27,21 +30,25 @@ export interface ItemReqBody {
   images: Image[];
 }
 
+export interface StatusReqBody {
+  status: ItemStatus;
+}
+
+export interface APIStatusReqBody {
+  status: ItemStatus;
+}
+
 export interface APIItemReqBody {
-  title: string;
+  name: string;
   price: string;
   description: string;
   locationIdx: string;
   categoryIdx: string;
-  images: string[];
+  images: File[] | null;
 }
 
 export interface PostItemRes {
   itemIdx: number;
-}
-
-export interface ListItemPropsWithId extends ListItemProps {
-  id: number;
 }
 
 export interface GetItemsRes {
@@ -51,15 +58,18 @@ export interface GetItemsRes {
 
 export interface ConvertedGetItemsRes {
   hasNext: boolean;
-  items: ListItemPropsWithId[];
+  items: ListItemProps[];
 }
 
 export interface APIItemDetail {
   itemIdx: number;
   title: string;
-  sellerId: string;
+  seller: {
+    memberIdx: number;
+    memberId: string;
+  };
   status: Item['status'];
-  category: string;
+  category: { categoryIdx: number; categoryName: string };
   description: string;
   price: number;
   chat: number;
@@ -73,9 +83,12 @@ export interface APIItemDetail {
 export interface ItemDetail {
   itemIdx: number;
   title: string;
-  sellerId: string;
+  seller: {
+    memberIdx: number;
+    memberId: string;
+  };
   status: Item['status'];
-  category: string;
+  category: Category;
   description: string;
   price: number;
   chat: number;
@@ -85,3 +98,28 @@ export interface ItemDetail {
   postedAt: Date;
   images: string[];
 }
+
+export interface WriteItemDetails {
+  title: string;
+  categoryIdx: number;
+  description: string;
+  price: number;
+  images: Image[];
+}
+
+export type GetSalesItemsRes = { hasNext: boolean; items: APISalesItem[] };
+
+export interface APISalesItem {
+  itemIdx: number;
+  imageUrl: string;
+  name: string;
+  location: string;
+  postedAt: string;
+  status: string;
+  price: number;
+  chat: number;
+  like: number;
+  interestChecked: boolean;
+}
+
+export type ItemStatus = '판매중' | '예약중' | '판매완료';

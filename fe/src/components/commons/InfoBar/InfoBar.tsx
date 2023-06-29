@@ -1,12 +1,14 @@
 import { Button } from '@commons/index';
-
+import { convertNumToPrice } from '@utils/common/common';
 import * as S from './InfoBarStyle';
 
 export interface InfoBarProps {
   isInterestedChecked?: boolean;
   price?: number;
-  handleInterestClicked?: () => void;
+  handleInterestClicked?: (e: React.MouseEvent) => Promise<void>;
   handleChatClicked?: () => void;
+  isWriter?: boolean;
+  chat?: number;
 }
 
 export const InfoBar = ({
@@ -14,6 +16,8 @@ export const InfoBar = ({
   price,
   handleInterestClicked,
   handleChatClicked,
+  isWriter,
+  chat,
 }: InfoBarProps) => {
   return (
     <S.InfoBar>
@@ -22,9 +26,13 @@ export const InfoBar = ({
         onClick={handleInterestClicked}
         shape="ghost"
       ></Button>
-      {price ?? '0'}
+      {price ? convertNumToPrice(price) : '0'}
       <Button
-        title="대화 중인 채팅방"
+        title={
+          isWriter
+            ? `대화 중인 채팅방${chat && chat !== 0 ? ` (${chat})` : ''}`
+            : '채팅하기'
+        }
         shape="small"
         isWidthFitContent={true}
         backgroundColor="accentBackgroundPrimary"

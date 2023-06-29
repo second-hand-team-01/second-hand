@@ -1,139 +1,111 @@
-import {
-  APIItemReqBody,
-  Item,
-  ItemReqBody,
-  PostItemRes,
-} from '@type-store/services/items';
-import { ListItemProps } from '@commons/ListItem/ListItem';
-import { customFetch } from '@services/apis/apis';
-import { Response } from '@hooks/useFetch/useFetch';
-import { ERROR_MESSAGE } from '@constants/error';
+import { State, Action } from '@type-store/services/signUp';
 
-export interface ListItemPropsWithId extends ListItemProps {
-  id: number;
-}
-
-export const convertItemsToListItems = (
-  items: Item[]
-): ListItemPropsWithId[] => {
-  return items.map((item) => {
-    const {
-      itemIdx,
-      imageUrl,
-      name,
-      location,
-      postedAt,
-      status,
-      price,
-      chat,
-      interest,
-    } = item;
-
-    const newItem: ListItemPropsWithId = {
-      id: itemIdx,
-      title: name,
-      imgUrl: imageUrl,
-      location: location,
-      timeStamp: new Date(postedAt),
-      price: price,
-      state: status,
-      like: interest,
-      chat: chat,
-      moreBtn: false,
-      onClick: () => {
-        console.log('click');
-      },
-    };
-    return newItem;
-  });
+export const hasSelectedLocation = (userInfo) => {
+  const { mainLocation } = userInfo;
+  return mainLocation.locationIdx === null ? false : true;
 };
 
-interface GetItemsRes {
-  hasNext: boolean;
-  items: Item[];
-}
+export const checkIdValidity = (id: string): boolean => {
+  const regex = /^[a-zA-Z0-9]{3,12}$/;
 
-export interface ConvertedGetItemsRes {
-  hasNext: boolean;
-  items: ListItemPropsWithId[];
-}
-
-export const getItemsAPI = async (page: number) => {
-  try {
-    const res = (await customFetch<null, GetItemsRes>({
-      path: '/items',
-      method: 'GET',
-      queries: { page },
-    })) as Response<GetItemsRes>;
-
-    if (!res || !res.data || res.error) {
-      return { error: res.error, data: undefined };
-    }
-    const { hasNext, items } = res.data;
-    return {
-      ...res,
-      data: {
-        hasNext,
-        items: convertItemsToListItems(items) as ListItemPropsWithId[],
-      },
-    };
-  } catch (error) {
-    if (error instanceof Error) return { error };
-    return {};
-  }
+  return regex.test(id);
 };
 
-// const convertUserInfoBodyToAPIReqBody = (
-//   body: UserInfoBody
-// ): APIUserInfoBody => {};
-
-const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
-  const { title, price, contents, locationIdx, categoryIdx, images } = body;
-
-  const imageFiles = images.map((image) => image.file);
-
-  const newItem: APIItemReqBody = {
-    title,
-    price: price.toString(),
-    description: contents,
-    locationIdx: locationIdx.toString(),
-    categoryIdx: categoryIdx.toString(),
-    images: imageFiles,
-  };
-  return newItem;
+export const checkPasswordValidity = (password: string): boolean => {
+  const regex = /^[a-zA-Z0-9]{6,12}$/;
+  return regex.test(password);
 };
 
-export const postItemsAPI = async (body: ItemReqBody) => {
-  const convertedBody = convertItemReqBodyToAPIReqBody(body);
-  if (!convertedBody)
-    return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
-
-  const formData = new FormData();
-  formData.append('title', convertedBody.title);
-  formData.append('description', convertedBody.description);
-  formData.append('price', convertedBody.price);
-  formData.append('locationIdx', convertedBody.locationIdx);
-  formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images.forEach((image, i) => {
-    formData.append(`image${i}`, image);
-  });
-
-  try {
-    const res = (await customFetch<FormData, PostItemRes>({
-      path: '/items',
-      method: 'POST',
-      body: formData,
-    })) as Response<PostItemRes>;
-    if (!res || !res.data || res.error) {
-      return { error: res.error, data: undefined };
-    }
-    return {
-      data: {
-        itemIdx: res.data.itemIdx,
-      },
-    };
-  } catch (error) {
-    if (error instanceof Error) return { error };
-    return {};
+// TODO : any 해결하기
+export const userInfoReducer = (state: State, action: Action): any => {
+  const { type, val } = action;
+  switch (type) {
+    case 'USER_ID_INPUT':
+      if (typeof val === 'string') {
+        return { ...state, id: { value: val, isValid: checkIdValidity(val) } };
+      }
+      break;
+    case `INPUT_ID_BLUR`:
+      if (typeof val === 'string') {
+        return {
+          ...state,
+          id: {
+            value: state.id.value,
+            isValid: checkIdValidity(val),
+            isTouched: true,
+          },
+        };
+      }
+      break;
+    case 'USER_PASSWORD_INPUT':
+      if (typeof val === 'string') {
+        return {
+          ...state,
+          password: { value: val, isValid: checkPasswordValidity(val) },
+        };
+      }
+      break;
+    case `INPUT_PASSWORD_BLUR`:
+      if (typeof val === 'string') {
+        return {
+          ...state,
+          password: {
+            value: state.password.value,
+            isValid: checkPasswordValidity(val),
+            isTouched: true,
+          },
+        };
+      }
+      break;
+    case `USER_IMG_INPUT`:
+      if (typeof val !== 'string') {
+        return { ...state, imgUrl: val.imgUrl, imgFile: val.imgFile };
+      }
+      break;
+    case 'SET_LOCATION':
+      if (typeof val === 'string') break;
+      if (state.mainLocation.locationIdx === null) {
+        return {
+          ...state,
+          mainLocation: {
+            locationIdx: val.locationIdx,
+            locationName: val.locationName,
+            town: val.town,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          subLocation: {
+            locationIdx: val.locationIdx,
+            locationName: val.locationName,
+            town: val.town,
+          },
+        };
+      }
+    case 'REMOVE_LOCATION':
+      if (typeof val !== 'string') break;
+      if (val === state.mainLocation.town) {
+        return {
+          ...state,
+          mainLocation: { ...state.subLocation },
+          subLocation: {
+            locationIdx: null,
+            locationName: null,
+            town: null,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          subLocation: {
+            locationIdx: null,
+            locationName: null,
+            town: null,
+          },
+        };
+      }
+    default:
+      return state;
   }
 };

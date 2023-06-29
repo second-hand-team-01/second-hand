@@ -14,6 +14,7 @@ export const Button = ({
   state = 'default',
   textAlign = 'center',
   icon,
+  iconRight,
   color,
   iconSize,
   onClick,
@@ -42,6 +43,7 @@ export const Button = ({
       {title && textAlign === 'left' && <span>{title}</span>}
       {icon && <Icon name={icon} size={iconSize} color={color} />}
       {title && textAlign === 'center' && <span>{title}</span>}
+      {iconRight && <Icon name={iconRight} size={iconSize} color={color} />}
     </S.Button>
   );
 };

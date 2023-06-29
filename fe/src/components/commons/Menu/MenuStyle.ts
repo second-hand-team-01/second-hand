@@ -1,10 +1,21 @@
 import styled, { css } from 'styled-components';
 import { fontWeights } from '@styles/Typography';
 import { colors } from '@styles/Color';
+import { MAX_WIDTH } from '@constants/style';
 
 export interface MenuStyleProps {
   location: 'top' | 'bottom';
-  parentHeight?: number;
+  parentCoordinate?: ParentCoordinate;
+}
+
+export interface ParentCoordinate {
+  height: number;
+  top: number;
+  left: number;
+}
+
+interface BackdropStyleProps {
+  location: MenuStyleProps['location'];
 }
 
 export interface MenuButtonProps {
@@ -29,6 +40,8 @@ const locations = {
     bottom: 0;
     max-width: 393px;
     width: 100%;
+    top: unset;
+    padding: 12px 8px;
   `,
 };
 
@@ -104,13 +117,16 @@ const stateStyles = css<MenuButtonProps>`
     `}
 `;
 
-export const BackDrop = styled.div`
+export const BackDrop = styled.div<BackdropStyleProps>`
   position: fixed;
   bottom: 0;
   max-width: 393px;
   width: 100%;
   height: 100dvh;
-  background-color: ${({ theme }) => theme.colors.neutralOverlay};
+  ${({ theme, location }) =>
+    location === 'bottom'
+      ? `background-color: ${theme.colors.neutralOverlay};`
+      : ''}
 `;
 
 export const Menu = styled.div<MenuStyleProps>`
@@ -118,9 +134,17 @@ export const Menu = styled.div<MenuStyleProps>`
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+
+  ${({ parentCoordinate }) =>
+    parentCoordinate
+      ? `
+      margin-left: calc((50vw - ${MAX_WIDTH / 2}px) * -1);
+      transform: translate(${parentCoordinate?.left}px, ${
+          parentCoordinate.top + parentCoordinate?.height + 4
+        }px);
+      `
+      : 'top: 4px;'}
   ${locationStyles}
-  ${({ parentHeight }) =>
-    parentHeight ? `top: calc(${parentHeight}px + 4px)` : 'top:4px'};
 `;
 
 export const ButtonContainer = styled.div`

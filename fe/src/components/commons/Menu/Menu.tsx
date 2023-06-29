@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as S from './MenuStyle';
 import { MenuStyleProps, MenuButtonProps } from './MenuStyle';
 import { Portal } from '@components/commons';
@@ -6,6 +5,7 @@ import { Portal } from '@components/commons';
 interface MenuProps extends MenuStyleProps {
   menuButtonPropsList: MenuButtonProps[];
   onClick?: () => void;
+  openState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 // TODO: props로 받은 onClick을 MenuButton에 전달해야 함
@@ -13,9 +13,10 @@ interface MenuProps extends MenuStyleProps {
 export const Menu = ({
   location,
   menuButtonPropsList,
-  parentHeight,
+  parentCoordinate,
+  openState,
 }: MenuProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = openState;
 
   const backDropHandler = ({
     target,
@@ -31,19 +32,28 @@ export const Menu = ({
   }
 
   return (
-    <Portal id="modal-root">
-      {location === 'bottom' && <S.BackDrop onClick={backDropHandler} />}
-      <S.Menu location={location} parentHeight={parentHeight}>
+    <Portal id="dropdown-root">
+      <S.BackDrop
+        className="backdrop"
+        onClick={backDropHandler}
+        location={location}
+      />
+      <S.Menu location={location} parentCoordinate={parentCoordinate}>
         <S.ButtonContainer>
           {menuButtonPropsList.map((props) => (
-            <S.MenuButton key={props.name} {...props}>
+            <S.MenuButton className="menu-button" key={props.name} {...props}>
               {props.name}
             </S.MenuButton>
           ))}
         </S.ButtonContainer>
         {location === 'bottom' && (
           <S.ButtonContainer>
-            <S.MenuButton shape="large" state="default" fontWeight="semibold">
+            <S.MenuButton
+              shape="large"
+              state="default"
+              fontWeight="semibold"
+              onClick={() => setIsOpen(false)}
+            >
               취소
             </S.MenuButton>
           </S.ButtonContainer>

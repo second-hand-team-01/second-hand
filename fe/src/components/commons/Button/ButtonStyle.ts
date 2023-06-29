@@ -58,6 +58,12 @@ const shapes = {
       border-radius: 100%;
     `}
   `,
+  xSmall: css<ButtonStyleProps>`
+    padding: 0px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50px;
+  `,
 };
 
 const textAlignments = {
@@ -87,11 +93,12 @@ const states = {
 };
 
 export interface ButtonStyleProps {
-  title?: string;
+  title?: string | null;
   shape?: keyof typeof shapes;
   state?: keyof typeof states;
   textAlign?: keyof typeof textAlignments;
   icon?: keyof typeof icons;
+  iconRight?: keyof typeof icons;
   iconSize?: number;
   color?: keyof typeof palette | keyof typeof colors;
   hasBorderRadius?: boolean;
@@ -129,10 +136,10 @@ const textAlignStyles = css<ButtonStyleProps>`
 `;
 
 export const Button = styled.button<ButtonStyleProps>`
-  ${stateStyles}
   ${shapesStyles}
+  ${stateStyles}
   ${textAlignStyles}
-  display: flex;
+display: flex;
   align-items: center;
   cursor: pointer;
   border: none;
@@ -151,5 +158,5 @@ export const Button = styled.button<ButtonStyleProps>`
   gap: 4px;
   ${({ isWidthFitContent }) =>
     isWidthFitContent ? `width: max-content;` : ''};
-  ${({ isIconBtn }) => (isIconBtn ? 'padding: 4px;' : '')};
 `;
+// padding 값 수정 필요 (icon이 있어도 shape:large인 경우에는 padding 16,20 적용)

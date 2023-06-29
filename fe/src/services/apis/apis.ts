@@ -1,10 +1,10 @@
-import { removeEmptyKeyValues, getType, Type } from '@utils/common/common';
+import { getType, Type } from '@utils/common/common';
 import { HOST, ACCESS_TOKEN } from '@constants/apis';
 import { getAccessToken } from '@services/login/login';
 import { ERROR_MESSAGE } from '@constants/error';
 
 export interface FetchProps<B> {
-  method: 'GET' | 'POST' | 'PATCH' | 'PUT';
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   path: string;
   queries?: object;
   body?: B;
@@ -13,9 +13,8 @@ export interface FetchProps<B> {
 }
 
 export const addQueriesToURL = (url: string, queries: object) => {
-  const copiedQueries = removeEmptyKeyValues(queries);
-  const queryString = copiedQueries
-    ? '?' + new URLSearchParams(Object.entries(copiedQueries)).toString()
+  const queryString = queries
+    ? '?' + new URLSearchParams(Object.entries(queries)).toString()
     : '';
   const urlWithQueries = url + queryString;
   return urlWithQueries;
@@ -41,7 +40,7 @@ export const setHeader = <B>(
     if (!accessToken) {
       return {}; // TODO: 로그아웃
     }
-    headers['Authorization'] = localStorage.getItem(ACCESS_TOKEN);
+    headers['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
   }
 
   return headers;
@@ -84,11 +83,6 @@ export const customFetch = async <B, D>({
     const res = await fetch(url, init);
     if (res.ok) {
       const resJSON = await res.json();
-      if (resJSON.data === undefined) {
-        return {
-          error: new Error(`${ERROR_MESSAGE['NO_DATA']}`),
-        };
-      }
       const data = resJSON.data;
       return { data };
     }

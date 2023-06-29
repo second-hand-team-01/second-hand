@@ -29,13 +29,20 @@ export const Dialog = styled.div<DialogStyleProps>`
 export const Contents = styled.div`
   width: 100%;
   padding: 20px;
+
+  & p {
+    font-weight: ${({ theme }) => theme.typography.body.fontWeight};
+    font-size: ${({ theme }) => theme.typography.body.size};
+    line-height: ${({ theme }) => theme.typography.body.lineHeight};
+  }
 `;
 
 export const Footer = styled.div`
   display: flex;
   border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
-
+  border-radius: 0;
   & button {
-    border-right: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+    border-left: 1px solid ${({ theme }) => theme.colors.neutralBorder};
+    border-radius: 0;
   }
 `;

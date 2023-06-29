@@ -4,17 +4,20 @@ import { theme } from '@styles/theme';
 import '@styles/index.css';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './constants/routes';
+import { UserContextProvider } from '@stores/UserContext';
 
 function App() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = require('@mocks/browser');
-    worker.start();
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   const { worker } = require('@mocks/browser');
+  //   worker.start();
+  // }
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <RouterProvider router={router} />
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
     </ThemeProvider>
   );
 }

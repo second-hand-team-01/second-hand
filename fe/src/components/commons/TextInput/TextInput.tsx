@@ -10,11 +10,12 @@ interface TextInputProps {
   hasBackground?: boolean;
   hasBorder?: boolean;
   hasPadding?: boolean;
-  shape: 'large' | 'small';
+  shape?: 'large' | 'small';
   type?: string;
   maxLength?: number;
   onBlur?: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export const TextInput = ({
@@ -30,6 +31,7 @@ export const TextInput = ({
   maxLength,
   onChange,
   onBlur,
+  onKeyDown,
 }: TextInputProps) => {
   return (
     <S.Wrap
@@ -45,6 +47,7 @@ export const TextInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         shape={shape}
         type={type}
         maxLength={maxLength}

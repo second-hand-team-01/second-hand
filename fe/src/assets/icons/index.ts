@@ -1,4 +1,5 @@
-import { ReactComponent as arrowUp } from './arrowUp.svg';
+import { ReactComponent as upload } from './arrowUp.svg';
+import { ReactComponent as arrowUp } from './chevronTop.svg';
 import { ReactComponent as camera } from './camera.svg';
 import { ReactComponent as arrowDown } from './chevronDown.svg';
 import { ReactComponent as arrowLeft } from './chevronLeft.svg';
@@ -19,6 +20,7 @@ import { ReactComponent as plus } from './plus.svg';
 import { ReactComponent as search } from './search.svg';
 
 export default {
+  upload,
   arrowUp,
   arrowDown,
   arrowRight,
