@@ -31,4 +31,17 @@ public class Interest {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_idx")
 	private Item item;
+
+	protected Interest() {
+		// for JPA
+	}
+
+	private Interest(Member member, Item item) {
+		this.member = member;
+		this.item = item;
+	}
+
+	public static Interest of(Member member, Item item) {
+		return new Interest(member, item);
+	}
 }
