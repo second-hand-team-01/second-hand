@@ -22,6 +22,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Item {
 
@@ -97,5 +99,22 @@ public class Item {
 		this.status = status;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Item{" +
+			"itemIdx=" + itemIdx +
+			", seller=" + seller +
+			", category=" + category +
+			", location=" + location +
+			", itemImage=" + itemImage +
+			", postedAt=" + postedAt +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", price=" + price +
+			", view=" + view +
+			", status='" + status + '\'' +
+			", itemImages=" + itemImages +
+			", interests=" + interests +
+			'}';
+	}
 }

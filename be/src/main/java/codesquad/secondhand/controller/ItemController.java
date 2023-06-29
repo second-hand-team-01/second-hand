@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemDetailReturnDto;
 import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
@@ -54,20 +55,20 @@ public class ItemController {
 
 	@PostMapping
 	public ResponseDto<ItemIdxDto> addItem(HttpServletRequest httpServletRequest,
-		@ModelAttribute ItemDetailDto itemDetailDto) {
+		ItemDetailDto itemDetailDto) {
 		log.info("addItem call" + itemDetailDto);
 		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		log.info(memberIdx.toString());
 		itemDetailDto.setSellerIdx(memberIdx);
 		ItemIdxDto itemIdxDto = itemService.creatItem(itemDetailDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
 	@GetMapping("/{itemIdx}")
-	// TODO: 조회수
-	public ResponseDto<ItemDto> showItemDetail(HttpServletRequest httpServletRequest,
+	public ResponseDto<ItemDetailReturnDto> showItemDetail(HttpServletRequest httpServletRequest,
 		ItemIdxDto itemIdxDto) {
-		ItemDto itemDto = itemService.showItemDetail(httpServletRequest, itemIdxDto.getItemIdx());
-		return ResponseDto.of(RESPONSE_SUCCESS, itemDto);
+		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest, itemIdxDto.getItemIdx());
+		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
 	}
 
 	// @PatchMapping
