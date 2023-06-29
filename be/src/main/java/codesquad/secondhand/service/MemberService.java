@@ -18,6 +18,7 @@ import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
 import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
@@ -165,6 +166,12 @@ public class MemberService {
 		Member member = memberRepository.findById(memberIdx)
 			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 		return MemberIdxLoginIdDto.of(member);
+	}
+
+	public MemberIdxLoginIdImageDto getMemberIdxLoginIdImage(Long memberIdx) {
+		Member member = memberRepository.findById(memberIdx)
+			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+		return MemberIdxLoginIdImageDto.of(member);
 	}
 
 	public MemberInfoDto getMemberInfo(Long memberIdx) {

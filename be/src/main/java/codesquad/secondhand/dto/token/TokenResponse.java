@@ -1,6 +1,7 @@
 package codesquad.secondhand.dto.token;
 
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 public class TokenResponse {
 
 	private final String accessToken;
-	private final MemberIdxLoginIdDto memberInfo;
+	private final MemberIdxLoginIdImageDto memberInfo;
 
-	public static TokenResponse of(String token, MemberIdxLoginIdDto memberIdxLoginIdDto) {
-		return new TokenResponse(token, memberIdxLoginIdDto);
+	public static TokenResponse of(String token, MemberIdxLoginIdImageDto memberIdxLoginIdImageDto) {
+		return new TokenResponse(token, memberIdxLoginIdImageDto);
 	}
 }
