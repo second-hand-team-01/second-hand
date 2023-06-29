@@ -60,7 +60,9 @@ public class OauthService {
 			.orElseGet(() -> {
 				String randomId = createRandomLoginId();
 				String imageUrl = imageService.uploadFromUrl(memberProfile.getImageUrl(), randomId);
-				return memberRepository.save(memberProfile.toMember(randomId, imageUrl));
+				String[] memberProfileUrl = imageUrl.split("@");
+				return memberRepository.save(
+					memberProfile.toMember(randomId, memberProfileUrl[0], memberProfileUrl[1]));
 			});
 	}
 

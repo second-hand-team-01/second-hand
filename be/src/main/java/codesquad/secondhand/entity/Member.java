@@ -61,8 +61,9 @@ public class Member {
 	}
 
 	@Builder
-	public Member(String loginId, String imageUrl, String oauthId) {
+	public Member(String loginId, String imagePath, String imageUrl, String oauthId) {
 		this.loginId = loginId;
+		this.imagePath = imagePath;
 		this.imageUrl = imageUrl;
 		this.oauthId = oauthId;
 		this.mainLocation = new Location(1L, "서울", "강남구", "역삼1동");
