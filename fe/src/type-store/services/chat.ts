@@ -21,6 +21,7 @@ export interface ChatListProps {
   lastMessage: string;
   previewImg: string;
   unreadChat: number;
+  details: ChatDetailsProps;
 }
 
 export interface ChatDetailsProps {
@@ -38,9 +39,21 @@ export interface ChatDetailsProps {
 
 export interface ChatInfo {
   itemIdx: number;
-  userIdx: number;
-  list: ChatListProps;
-  details: ChatDetailsProps;
+  memberIdx: number;
+  list: ChatListProps[];
 }
 
 export type ChatPostBody = ChatInfo[];
+
+//  const initialChat: ChatInfo = {
+//           itemIdx,
+//           memberIdx,
+//           list: {
+//             itemIdx,
+//             user: { memberIdx, imgUrl, name: loginId };
+//             timestamp: Date;
+//             lastMessage: string;
+//             previewImg: string;
+//             unreadChat: number;
+//           }`
+//           de
