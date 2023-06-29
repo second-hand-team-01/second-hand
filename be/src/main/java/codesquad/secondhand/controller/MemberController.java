@@ -44,6 +44,8 @@ public class MemberController {
 
 	@PostMapping("/signup")
 	public ResponseDto<?> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
+		log.info("[MemberController] signup signUpRequestDto.getMainLocationIdx(): {}", signUpRequestDto.getMainLocationIdx());
+		log.info("[MemberController] signup signUpRequestDto.getSubLocationIdx(): {}", signUpRequestDto.getSubLocationIdx());
 		memberService.signUp(signUpRequestDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
