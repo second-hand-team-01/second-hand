@@ -2,9 +2,10 @@ import * as S from './ChatPageStyle';
 import { Layout } from '@components/commons';
 import { ChatList } from './ChatList/ChatList';
 import { UserContext } from '@stores/UserContext';
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import { ChatListProps } from '@type-store/services/chat';
+import { getItemChatFromStorage } from '@services/chats/chat';
 
 export const ChatPage = () => {
   const chatList: ChatListProps[] = [
@@ -38,10 +39,22 @@ export const ChatPage = () => {
     },
   ];
 
-  const { isLoggedIn } = useContext(UserContext);
+  const { itemIdx } = useParams();
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const memberIdx = userInfo.memberIdx;
+
+  useEffect(() => {
+    if (itemIdx && memberIdx) {
+      const { error, data } = getItemChatFromStorage(
+        parseInt(itemIdx),
+        memberIdx
+      );
+      console.log(error, data);
+    }
+  }, [itemIdx, userInfo]);
 
   const renderComps = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
 

@@ -8,7 +8,7 @@ import {
 
 export const getAllChatFromStorage = (): ChatPostBody | null => {
   const prevChatsStr = localStorage.getItem(chatStorageKey);
-  let prevChats: Object = {};
+  let prevChats = {};
   if (!prevChatsStr) return null;
   prevChats = JSON.parse(prevChatsStr);
   return prevChats as ChatPostBody;
