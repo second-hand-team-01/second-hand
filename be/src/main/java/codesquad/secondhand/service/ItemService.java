@@ -99,10 +99,16 @@ public class ItemService {
 	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
 		Item item = itemRepository.findById(itemIdx)
 			.orElseThrow();
-		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
 
 		int view;
-		if (!memberIdx.equals(item.getSeller().getMemberIdx())) {
+		if (memberIdx.equals(-1L) || !memberIdx.equals(item.getSeller().getMemberIdx())) {
 			view = item.getView();
 			item.setView(++view);
 		}
@@ -121,5 +127,9 @@ public class ItemService {
 
 		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
 			imageUrl);
+	}
+
+	public void deleteItem(Long memberIdx, ItemIdxDto itemIdxDto) {
+		// Item item = itemRepository.delete();
 	}
 }
