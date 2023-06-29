@@ -12,6 +12,7 @@ public class MemberProfile {
 	private final String name;
 	private final String imageUrl;
 
+
 	@Builder
 	public MemberProfile(String oauthId, String email, String name, String imageUrl) {
 		this.oauthId = oauthId;
@@ -20,12 +21,12 @@ public class MemberProfile {
 		this.imageUrl = imageUrl;
 	}
 
-	public Member toMember(String randomId, String imageUrl) {
+	public Member toMember(String randomId, String imagePath, String imageUrl) {
 		return Member.builder()
 			.loginId(randomId)
+			.imagePath(imagePath)
 			.imageUrl(imageUrl)
 			.oauthId(oauthId)
 			.build();
 	}
-
 }
