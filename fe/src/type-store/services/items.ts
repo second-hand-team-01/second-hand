@@ -107,7 +107,7 @@ export interface WriteItemDetails {
   images: Image[];
 }
 
-export type GetSalesItemsRes = APISalesItem[];
+export type GetSalesItemsRes = { hasNext: boolean; items: APISalesItem[] };
 
 export interface APISalesItem {
   itemIdx: number;

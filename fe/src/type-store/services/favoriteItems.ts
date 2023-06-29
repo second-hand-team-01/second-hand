@@ -14,7 +14,7 @@ export interface APIFavoriteItem {
 
 export type FavoriteItem = ListItemProps;
 
-export type FavoriteItemsRes = APIFavoriteItem[];
+export type FavoriteItemsRes = { hasNext: boolean; items: APIFavoriteItem[] };
 
 export interface PostFavoriteItemBody {
   itemIdx: number;

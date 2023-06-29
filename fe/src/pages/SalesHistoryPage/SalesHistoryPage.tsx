@@ -1,37 +1,48 @@
 import * as S from './SalesHistoryPageStyle';
-import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Layout, ListItem, Loading, Menu } from '@components/commons';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Layout, ListItem, Loading, Menu } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { Error } from '@commons/index';
 import { ERROR_MESSAGE } from '@constants/error';
+import { items } from '@mocks/data/items/items';
+import { UserContext } from '@stores/UserContext';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<ItemStatus>('판매중');
-  const [{ data: salesItems, error, loading }, fetch] = useFetch(
+  const [{ data, error, loading }, fetch] = useFetch(
     getSalesItemsAPI.bind(null, status),
     []
   );
 
+  const { isLoggedIn } = useContext(UserContext);
+
   useEffect(() => {
     fetch();
-  }, [status]);
+  }, [status, isLoggedIn]);
 
   const renderComps = () => {
+    if (!isLoggedIn) {
+      return <Navigate to="/profile" replace />;
+    }
     if (loading) {
       return <Loading></Loading>;
     }
-    if (error || !salesItems) {
+    if (error || !data || !data.items) {
       return <Error>{error?.message}</Error>;
     }
-    if (salesItems.length === 0) {
-      return <Error>{ERROR_MESSAGE.NO_DATA}</Error>;
+    if (data.items.length === 0) {
+      return (
+        <Error button="상품 등록하기" onClick={() => navigate('/write')}>
+          아직 등록된 판매 상품이 없어요.
+        </Error>
+      );
     }
-    return salesItems.map((item: ListItemProps) => (
+    return data?.items.map((item: ListItemProps) => (
       <ListItem
         key={item.itemIdx}
         {...item}

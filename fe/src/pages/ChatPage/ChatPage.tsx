@@ -1,6 +1,9 @@
 import * as S from './ChatPageStyle';
 import { Layout } from '@components/commons';
 import { ChatList, ChatListProps } from './ChatList/ChatList';
+import { UserContext } from '@stores/UserContext';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 
 export const ChatPage = () => {
   const chatList: ChatListProps[] = [
@@ -33,6 +36,20 @@ export const ChatPage = () => {
         'https://3p-image.kurly.com/cdn-cgi/image/quality=85,width=676/product-image/da44c42c-9e28-445e-acfb-0ef79f438f7e/704b6dc2-b8ba-439f-adbf-f204e90f19db.jpg',
     },
   ];
+
+  const { isLoggedIn } = useContext(UserContext);
+
+  const renderComps = () => {
+    if (!isLoggedIn) {
+      return <Navigate to="/profile" replace />;
+    }
+
+    return chatList.map((chat) => {
+      const { chatIdx } = chat;
+      return <ChatList key={chatIdx} {...chat}></ChatList>;
+    });
+  };
+
   return (
     <Layout
       headerOption={{
@@ -43,12 +60,7 @@ export const ChatPage = () => {
       }}
       footerOption={{ type: 'tab' }}
     >
-      <S.ChatPage>
-        {chatList.map((chat) => {
-          const { chatIdx } = chat;
-          return <ChatList key={chatIdx} {...chat}></ChatList>;
-        })}
-      </S.ChatPage>
+      <S.ChatPage>{renderComps()}</S.ChatPage>
     </Layout>
   );
 };

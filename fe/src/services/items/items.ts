@@ -313,10 +313,10 @@ export const getSalesItemsAPI = async (status: ItemStatus) => {
     if (!res || !res.data || res.error) {
       return { error: res.error, data: undefined };
     }
-    const items = res.data;
+    const { hasNext, items } = res.data;
     return {
       ...res,
-      data: convertAPISalesItemsToListItems(items),
+      data: { hasNext, items: convertAPISalesItemsToListItems(items) },
     };
   } catch (error) {
     if (error instanceof Error) return { error };
