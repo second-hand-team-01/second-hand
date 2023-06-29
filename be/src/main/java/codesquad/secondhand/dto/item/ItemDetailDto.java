@@ -18,6 +18,7 @@ public class ItemDetailDto {
 	private final Long locationIdx;
 	private final Long categoryIdx;
 	private final List<MultipartFile> image;
+	private final String status;
 	@Setter
 	private Long sellerIdx;
 
