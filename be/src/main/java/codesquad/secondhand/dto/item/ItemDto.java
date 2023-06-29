@@ -26,6 +26,7 @@ public class ItemDto {
 	private Category category;
 	private List<ItemImage> imageList;
 	private int view;
+	private String sellerId;
 
 	public ItemDto(Long itemIdx, String imageUrl, String name, String location, LocalDateTime postedAt, String status,
 		Integer price, int chat, int interest, boolean interestChecked) {
@@ -55,21 +56,21 @@ public class ItemDto {
 		);
 	}
 
-	public static ItemDto of(Item item, int chatRooms, int interests, boolean interestChecked, Integer view,
-		List<ItemImage> imageList, Category category) {
-		return new ItemDto(item.getItemIdx(),
-			item.getItemImage().getImageUrl(),
-			item.getName(),
-			item.getLocation().getTown(),
-			item.getPostedAt(),
-			item.getStatus(),
-			item.getPrice(),
-			chatRooms,
-			interests,
-			interestChecked,
-			category,
-			imageList,
-			view
-		);
+	// public static ItemDto of(Item item, int chatRooms, int interests, boolean interestChecked, Integer view,
+	// 	List<ItemImage> imageList, Category category) {
+	// 	return new ItemDto(item.getItemIdx(),
+	// 		item.getName(),
+	// 		item.getSeller().getLoginId(),
+	// 		item.getStatus(),
+	// 		item.getLocation().getTown(),
+	// 		item.getPostedAt(),
+	// 		item.getPrice(),
+	// 		chatRooms,
+	// 		interests,
+	// 		interestChecked,
+	// 		category,
+	// 		imageList,
+	// 		view
+	// 	);
 	}
 }
