@@ -37,7 +37,7 @@ export const getOneChatRoom = (
   if (!chatRooms) {
     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
   }
-  const targetChatRoom = chatRooms.find((chatroom, i) => {
+  const targetChatRoom = chatRooms.find((chatroom) => {
     return (
       chatroom.itemIdx === itemIdx && chatroom.user.memberIdx === memberIdx
     );

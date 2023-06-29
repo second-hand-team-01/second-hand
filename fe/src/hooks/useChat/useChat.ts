@@ -1,5 +1,5 @@
 import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);

@@ -1,5 +1,5 @@
 import { Button, Dialog, TextInput } from '@commons/index';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
 import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
@@ -9,7 +9,6 @@ import {
   initChatRoomToLocalStorage,
 } from '@services/chats/chat';
 import { useLocation, useParams } from 'react-router-dom';
-import { UserContext } from '@stores/UserContext';
 
 interface ChatBarProps {
   messages: MessageObj[];
@@ -27,12 +26,8 @@ export const ChatBar = ({
   sendMessage,
   setMessages,
   messages,
-  user,
-  salesInfo,
   chatroomState,
 }: ChatBarProps) => {
-  const { isLoggedIn, userInfo } = useContext(UserContext);
-  const { memberIdx, loginId, imgUrl } = userInfo;
   const { itemIdx: itemIdxStr, memberIdx: sellerIdxStr } = useParams();
 
   const [chatroom, setChatroom] = chatroomState;
@@ -40,7 +35,7 @@ export const ChatBar = ({
 
   useEffect(() => {
     if (!itemIdxStr || !sellerIdxStr) return;
-    const { data: prevChatroom, error } = getOneChatRoom(
+    const { data: prevChatroom } = getOneChatRoom(
       parseInt(itemIdxStr),
       parseInt(sellerIdxStr)
     );

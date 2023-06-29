@@ -9,11 +9,7 @@ import {
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
-import {
-  Bubble as BubbleType,
-  ChatRoom,
-  MessageObj,
-} from '@type-store/services/chat';
+import { Bubble as BubbleType, MessageObj } from '@type-store/services/chat';
 import { useContext, useEffect, useRef, useState } from 'react';
 import {
   useNavigate,
@@ -23,8 +19,6 @@ import {
 } from 'react-router-dom';
 import { useChat } from '@hooks/useChat/useChat';
 import { getOneChatRoom, removeChatRoom } from '@services/chats/chat';
-import { ERROR_MESSAGE } from '@constants/error';
-import { ChatList } from '@pages/ChatPage/ChatList/ChatListStyle';
 import { UserContext } from '@stores/UserContext';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
@@ -70,7 +64,7 @@ export const ChatDetailsPage = () => {
     }
   }, [itemIdxStr, memberIdxStr]);
 
-  const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
 
   const renderComps = () => {
     if (isLoggedIn === false) {

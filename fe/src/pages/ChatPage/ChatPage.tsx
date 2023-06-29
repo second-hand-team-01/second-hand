@@ -7,24 +7,17 @@ import { Navigate, useParams } from 'react-router-dom';
 import { ChatRoom } from '@type-store/services/chat';
 
 import { ERROR_MESSAGE } from '@constants/error';
-import {
-  getAllChatRooms,
-  getOneChatRoom,
-  getItemChatRooms,
-} from '@services/chats/chat';
+import { getAllChatRooms, getItemChatRooms } from '@services/chats/chat';
 
 export const ChatPage = () => {
   const [chatRooms, setChatRoom] = useState<ChatRoom[]>([]);
   const { itemIdx: itemIdxStr } = useParams();
-  const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
-  const { memberIdx, imgUrl } = userInfo;
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const { memberIdx } = userInfo;
 
   useEffect(() => {
-    let itemIdx: number | null = null;
     if (itemIdxStr && memberIdx) {
-      const { error, data } = getItemChatRooms(
-        (itemIdx = parseInt(itemIdxStr))
-      );
+      const { error, data } = getItemChatRooms(parseInt(itemIdxStr));
       if (error && !data) {
         return;
       }
