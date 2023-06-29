@@ -1,5 +1,8 @@
 package codesquad.secondhand.service;
 
+import static codesquad.secondhand.exception.code.ItemErrorCode.*;
+import static codesquad.secondhand.exception.code.MemberErrorCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +26,6 @@ import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.exception.RestApiException;
-import codesquad.secondhand.exception.code.ItemErrorCode;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
@@ -98,6 +100,30 @@ public class ItemService {
 		return new ItemIdxDto(item.getItemIdx());
 	}
 
+	public ItemIdxDto editItem(Long memberIdx, Long itemIdx, ItemDetailDto itemDetailDto) {
+		Member member = memberRepository.findById(memberIdx)
+			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+		Item itemToEdit = itemRepository.findById(itemIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_ITEM));
+		if (itemToEdit.getSeller().getMemberIdx() != memberIdx) {
+			log.info("itemDetailDto.getSellerIdx:{}", itemDetailDto.getSellerIdx());
+			throw new RestApiException(UNAUTHORIZED_EXCEPTION_EDIT);
+		}
+		Category category = null;
+		if (itemDetailDto.getCategoryIdx() != null) {
+			category = categoryRepository.findById(itemDetailDto.getCategoryIdx()).get();
+		}
+		Location location = null;
+		if (itemDetailDto.getLocationIdx() != null) {
+			location = locationRepository.findById(itemDetailDto.getLocationIdx()).get();
+		}
+		// TODO: 아이템 이미지 수정하기
+
+		itemToEdit.updateItem(member, category, location, itemDetailDto.getName(), itemDetailDto.getDescription(),
+			itemDetailDto.getPrice(),
+			itemDetailDto.getStatus());
+		return new ItemIdxDto(itemToEdit.getItemIdx());
+	}
+
 	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
 		Item item = itemRepository.findById(itemIdx)
 			.orElseThrow();
@@ -115,8 +141,8 @@ public class ItemService {
 			item.setView(++view);
 		}
 
-		int chatRooms = interestRepository.countByItem(item);
-		int interest = chatRoomRepository.countByItem(item);
+		int interest = interestRepository.countByItem(item);
+		int chatRooms = chatRoomRepository.countByItem(item);
 		boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
 
 		SellerDto sellerDto = SellerDto.to(memberRepository.findByMemberIdx(item.getSeller().getMemberIdx())
@@ -147,7 +173,7 @@ public class ItemService {
 		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
 			itemRepository.delete(item);
 		} else {
-			throw new RestApiException(ItemErrorCode.UnauthorizedException);
+			throw new RestApiException(UNAUTHORIZED_EXCEPTION_DELETE);
 		}
 	}
 }
