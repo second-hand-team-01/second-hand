@@ -19,7 +19,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import codesquad.secondhand.dto.item.ItemDetailDto;
-import codesquad.secondhand.exception.EmptyFileException;
 import codesquad.secondhand.exception.FileUploadFailedException;
 import codesquad.secondhand.exception.code.ImageErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,7 @@ public class ImageService {
 		String originFileName;
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 
-		if(multipartFile.getOriginalFilename() == null) {
+		if (multipartFile.getOriginalFilename() == null) {
 			originFileName = UUID.randomUUID().toString();
 		} else {
 			originFileName = multipartFile.getOriginalFilename();

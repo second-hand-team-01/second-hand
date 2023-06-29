@@ -65,7 +65,8 @@ public class MemberController {
 
 	@PutMapping("/info")
 	public ResponseDto<MemberImageDto> editMemberProfile(@ModelAttribute MemberImageDto memberImageDto) {
-		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(), memberImageDto.getImage());
+		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(),
+			memberImageDto.getImage());
 		return ResponseDto.of(RESPONSE_SUCCESS, MemberImageDtoReturn);
 	}
 
