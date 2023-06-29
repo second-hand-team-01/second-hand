@@ -24,6 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				"/api/info",
 				"/api/location",
 				"/api/items/*",
+				"/api/items",
 				"/api/members/items",
 				"/api/members/interest",
 				"/api/members/interest/category"
