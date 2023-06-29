@@ -63,10 +63,19 @@ public class MemberService {
 		String[] memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId())
 			.split("@");
 
-		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
-		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
+		if (signUpRequestDto.getMainLocationIdx() == null) {
+			throw new RestApiException(MAIN_LOCATION_REQUIRED);
+		}
+
+		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).get();
+		Location sub = null;
+		log.info("[MemberService] signUp signupRequestDto.getSubLocationIdx(): {}", signUpRequestDto.getSubLocationIdx());
+		if (signUpRequestDto.getSubLocationIdx() != null) {
+			sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
+		}
 		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl[MEMBER_IMAGE_PATH],
 			memberProfileUrl[MEMBER_IMAGE_URL], main, sub);
+		log.info("[MemberService] signUp saveMemberDto: {}", saveMemberDto.getSubLocation());
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
