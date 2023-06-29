@@ -3,6 +3,8 @@ import * as S from './ChatListStyle';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { useNavigate } from 'react-router-dom';
 import { ChatRoom } from '@type-store/services/chat';
+import { getAllChatRooms } from '@services/chats/chat';
+import { useEffect } from 'react';
 
 export const ChatList = ({
   itemIdx,
@@ -14,6 +16,7 @@ export const ChatList = ({
 }: ChatRoom) => {
   const navigate = useNavigate();
   const hasChat = unreadChat !== 0;
+
   return (
     <S.ChatList
       hasChat={hasChat}
@@ -23,7 +26,7 @@ export const ChatList = ({
       <S.Contents>
         <S.ContentsHeader>
           <S.User>{user.name}</S.User>
-          <S.Timestamp>{convertDateToTimeStamp(timestamp)}</S.Timestamp>
+          {/* <S.Timestamp>{convertDateToTimeStamp(timestamp)}</S.Timestamp> */}
         </S.ContentsHeader>
         <S.Message>{messages[messages.length - 1].message}</S.Message>
       </S.Contents>

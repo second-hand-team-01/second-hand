@@ -45,6 +45,14 @@ export const ChatPage = () => {
   //   },
   // ];
 
+  useEffect(() => {
+    const { error, data } = getAllChatRooms();
+    if (error || !data) {
+      return;
+    }
+    setChatList(data);
+  }, []);
+
   const [chatList, setChatList] = useState<ChatRoom[]>([]);
   const { itemIdx: itemIdxStr } = useParams();
   const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
