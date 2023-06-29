@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
       { path: 'favorites', element: <FavoritesPage /> },
       { path: 'chat', element: <ChatPage></ChatPage> },
       {
-        path: 'chat/:itemIdx/:chatIdx',
+        path: 'chat/:itemIdx/:memberIdx',
         element: <ChatDetailsPage></ChatDetailsPage>,
       },
       { path: 'chat/:itemIdx', element: <ChatPage></ChatPage> },

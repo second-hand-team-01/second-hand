@@ -1,17 +1,18 @@
 import * as S from './ChatPageStyle';
 import { Layout } from '@components/commons';
-import { ChatList, ChatListProps } from './ChatList/ChatList';
+import { ChatList } from './ChatList/ChatList';
 import { UserContext } from '@stores/UserContext';
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { ChatListProps } from '@type-store/services/chat';
 
 export const ChatPage = () => {
   const chatList: ChatListProps[] = [
     {
       itemIdx: 1,
-      chatIdx: 0,
-      chat: 2,
+      unreadChat: 2,
       user: {
+        memberIdx: 0,
         name: '스눕',
         imgUrl:
           'https://www.indiewire.com/wp-content/uploads/2021/02/The_Snoopy_Show_Photo_010101.jpg?w=3000&h=2000&crop=1',
@@ -23,9 +24,9 @@ export const ChatPage = () => {
     },
     {
       itemIdx: 1,
-      chatIdx: 1,
-      chat: 0,
+      unreadChat: 0,
       user: {
+        memberIdx: 1,
         name: '진짜스눕',
         imgUrl:
           'https://cdnph.upi.com/svc/sv/i/6781685015440/2023/1/16850171782246/Snoopy-returns-as-debonair-as-ever-in-new-Snoopy-Show-trailer.jpg',
@@ -45,8 +46,8 @@ export const ChatPage = () => {
     }
 
     return chatList.map((chat) => {
-      const { chatIdx } = chat;
-      return <ChatList key={chatIdx} {...chat}></ChatList>;
+      const { user } = chat;
+      return <ChatList key={user.memberIdx} {...chat}></ChatList>;
     });
   };
 
