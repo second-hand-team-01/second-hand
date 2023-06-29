@@ -40,6 +40,7 @@ export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
     if (Number(prevCount) >= 5) {
       return false;
     }
+    return true;
   };
 
   const handleBtnClick = () => {
