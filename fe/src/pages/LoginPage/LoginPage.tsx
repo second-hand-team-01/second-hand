@@ -122,30 +122,33 @@ export const LoginPage = () => {
     password: string | number
   ) => {
     const response = await fetch(`${API_URL}/login`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       method: 'POST',
       body: JSON.stringify({ loginId: id, password: password }),
     });
 
-    const data = await response.json();
+    const userInfo = await response.json();
 
     if (!response.ok) {
-      throw new Error(data);
+      throw new Error(userInfo.message);
     }
 
-    return data;
+    return userInfo.data;
   };
-  // TODO: post 요청, 성공시 localStorage에 token 저장
+
   const loginBtnHandler = async () => {
     try {
       const data = await authenticateUser(enteredId, enteredPassword);
       loginHandler(data.token, data.memberInfo);
       navigate('/');
     } catch (error) {
-      console.error(error); // 원하는 에러 처리 방식으로 수정
+      setErrorMessage((error as Error).message);
+      setDialogOpen(true);
     }
   };
 
-  // TODO: 로그아웃 요청, 성공시 localStorage에 저장된 token 삭제
   const logoutBtnHandler = () => {
     logoutHandler();
     navigate('/profile');
@@ -253,5 +256,3 @@ export const LoginPage = () => {
     </>
   );
 };
-
-// TODO : 아이디, 비밀번호가 틀린 경우 alert text 띄우기
