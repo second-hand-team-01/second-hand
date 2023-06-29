@@ -54,10 +54,10 @@ export const getFavoriteItemsAPI = async (categoryIdx?: number) => {
     if (!res || !res.data || res.error) {
       return { error: res.error, data: undefined };
     }
-    const items = res.data;
+    const { hasNext, items } = res.data;
     return {
       ...res,
-      data: convertResToFavoriteItems(items),
+      data: { hasNext, items: convertResToFavoriteItems(items) },
     };
   } catch (error) {
     if (error instanceof Error) return { error };

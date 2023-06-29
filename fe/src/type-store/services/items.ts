@@ -7,7 +7,7 @@ export interface Item {
   name: string;
   location: string;
   postedAt: string;
-  status: '예약중' | '판매중' | null;
+  status: ItemStatus | null;
   price: number;
   chat: number;
   interest: number;
@@ -15,7 +15,8 @@ export interface Item {
 }
 
 export interface Image {
-  file: string;
+  file: File | null;
+  fileString: string;
   name: string;
   size: number;
 }
@@ -29,13 +30,21 @@ export interface ItemReqBody {
   images: Image[];
 }
 
+export interface StatusReqBody {
+  status: ItemStatus;
+}
+
+export interface APIStatusReqBody {
+  status: ItemStatus;
+}
+
 export interface APIItemReqBody {
   name: string;
   price: string;
   description: string;
   locationIdx: string;
   categoryIdx: string;
-  images: string[];
+  images: File[] | null;
 }
 
 export interface PostItemRes {
@@ -98,7 +107,7 @@ export interface WriteItemDetails {
   images: Image[];
 }
 
-export type GetSalesItemsRes = APISalesItem[];
+export type GetSalesItemsRes = { hasNext: boolean; items: APISalesItem[] };
 
 export interface APISalesItem {
   itemIdx: number;
@@ -113,7 +122,4 @@ export interface APISalesItem {
   interestChecked: boolean;
 }
 
-export enum ItemStatus {
-  SELLING = 'selling',
-  SOLD = 'sold',
-}
+export type ItemStatus = '판매중' | '예약중' | '판매완료';

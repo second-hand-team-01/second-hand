@@ -11,3 +11,10 @@ export const Error = styled.div`
   line-height: ${({ theme }) => theme.typography.subhead.lineHeight};
   color: ${({ theme }) => theme.colors.neutralTextWeak};
 `;
+
+export const Contents = styled.div`
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+`;

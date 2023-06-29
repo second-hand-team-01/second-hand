@@ -34,11 +34,15 @@ export const Menu = ({
 
   return (
     <Portal id="dropdown-root">
-      <S.BackDrop onClick={backDropHandler} location={location} />
+      <S.BackDrop
+        className="backdrop"
+        onClick={backDropHandler}
+        location={location}
+      />
       <S.Menu location={location} parentCoordinate={parentCoordinate}>
         <S.ButtonContainer>
           {menuButtonPropsList.map((props) => (
-            <S.MenuButton key={props.name} {...props}>
+            <S.MenuButton className="menu-button" key={props.name} {...props}>
               {props.name}
             </S.MenuButton>
           ))}

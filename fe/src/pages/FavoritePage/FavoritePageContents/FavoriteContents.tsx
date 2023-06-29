@@ -2,9 +2,10 @@ import { ListItem, Error, Loading } from '@commons/index';
 import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ERROR_MESSAGE } from '@constants/error';
+import { UserContext } from '@stores/UserContext';
 
 interface FavoriteContentsProps {
   categoryIdx?: number;
@@ -12,40 +13,39 @@ interface FavoriteContentsProps {
 
 export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
   const navigate = useNavigate();
-  const [{ data: items, error, loading }, contentsFetch] = useFetch(
+  const [{ data, error, loading }, contentsFetch] = useFetch(
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
-  const [updateFlag, setUpdateFlag] = useState(false);
 
   useEffect(() => {
     contentsFetch();
   }, [categoryIdx]);
 
-  useEffect(() => {
-    if (!updateFlag) return;
-    contentsFetch();
-    setUpdateFlag(false);
-  }, [updateFlag]);
+  const { isLoggedIn } = useContext(UserContext);
 
   const renderComps = () => {
+    if (!isLoggedIn) {
+      return <Navigate to="/profile" replace />;
+    }
     if (loading) {
       return <Loading />;
     }
-    if (error || !items) {
+    if (error || !data || !data.items) {
       return <Error>{error ? error.message : ERROR_MESSAGE.UNDEFINED}</Error>;
     }
 
-    if (items.length === 0) {
+    if (data.items.length === 0) {
       return <Error>관심 상품으로 등록된 상품이 없어요.</Error>;
     }
 
-    return items.map((item) => (
+    return data.items.map((item) => (
       <ListItem
         key={item.itemIdx}
         {...item}
-        onClick={() => navigate(`/item/${item.itemIdx}`)}
-        setUpdateFlag={setUpdateFlag}
+        onClick={() => {
+          navigate(`/item/${item.itemIdx}`);
+        }}
       ></ListItem>
     ));
   };

@@ -9,6 +9,7 @@ import {
   WriteItemDetails,
   ItemStatus,
   APISalesItem,
+  APIStatusReqBody,
 } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 
@@ -93,7 +94,7 @@ export const convertAPIItemsDetailsToWriteItemsDetails = (
 ): WriteItemDetails => {
   const { title, category, description, price, images } = details;
   const newImages = images.map((image): Image => {
-    return { file: image, size: -1, name: '' };
+    return { file: null, fileString: image, size: -1, name: '' };
   });
   return {
     title,
@@ -169,7 +170,7 @@ export const getItemDetailAPI = async (
 const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
   const { title, price, contents, locationIdx, categoryIdx, images } = body;
 
-  const imageFiles = images.map((image) => image.file);
+  const imageFiles = images.map((image) => image.file) as File[] | null;
 
   const newItem: APIItemReqBody = {
     name: title,
@@ -195,8 +196,8 @@ export const postItemsAPI = async (body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images.forEach((image, i) => {
-    formData.append(`image${i}`, image);
+  convertedBody.images?.forEach((image, i) => {
+    formData.append(`image`, image);
   });
 
   try {
@@ -231,14 +232,14 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images.forEach((image, i) => {
+  convertedBody.images?.forEach((image, i) => {
     formData.append(`image${i}`, image);
   });
 
   try {
     const res = await customFetch<FormData, null>({
       path: `/items/${itemIdx}`,
-      method: 'PATCH',
+      method: 'PUT',
       auth: true,
       body: formData,
     });
@@ -312,10 +313,10 @@ export const getSalesItemsAPI = async (status: ItemStatus) => {
     if (!res || !res.data || res.error) {
       return { error: res.error, data: undefined };
     }
-    const items = res.data;
+    const { hasNext, items } = res.data;
     return {
       ...res,
-      data: convertAPISalesItemsToListItems(items),
+      data: { hasNext, items: convertAPISalesItemsToListItems(items) },
     };
   } catch (error) {
     if (error instanceof Error) return { error };
@@ -355,4 +356,31 @@ export const convertAPISalesItemsToListItems = (
     };
     return newItem;
   });
+};
+
+export const changeStatusItemsAPI = async (
+  itemIdx: number,
+  status: ItemStatus
+) => {
+  if (!status) return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
+  const formData = new FormData();
+  formData.append('status', status);
+
+  try {
+    const res = await customFetch<FormData, null>({
+      path: `/items/${itemIdx}`,
+      method: 'PUT',
+      auth: true,
+      body: formData,
+    });
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+    return {
+      data: null,
+    };
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
+  }
 };
