@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,15 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/items")
 public class ItemController {
-	public static final int START_PAGE = 0;
 	public static final int END_PAGE = 10;
 	private final ItemService itemService;
 
 	@GetMapping
-	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx) {
+	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx,
+		@RequestParam(defaultValue = "0") int page) {
 		log.info("[ItemController.showItems()]");
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		if (memberIdx == null) { // 로그인 하지 않은 사용자 분기 처리
 			locationIdx = 1L;
 		}
@@ -44,8 +46,9 @@ public class ItemController {
 	}
 
 	@GetMapping("/category/{categoryIdx}")
-	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx) {
-		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
+	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
+		@RequestParam(defaultValue = "0") int page) {
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);

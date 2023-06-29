@@ -28,7 +28,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	@Query("SELECT i FROM Item i WHERE i.itemIdx IN (SELECT interest.item.itemIdx FROM Interest interest WHERE interest.member.memberIdx = :memberIdx)")
 	Slice<Item> findItemsBySellerInterest(@Param("memberIdx") Long memberIdx, Pageable pageable);
 
-	@Query("SELECT i.item FROM Interest i WHERE i.member.memberIdx = :memberIdx AND i.item.category.categoryIdx = :categoryIdx")
-	Slice<Item> findItemAndCategoryByMemberAndCategory(@Param("memberIdx") Long memberIdx,
-		@Param("categoryIdx") Long categoryIdx, Pageable pageable);
+	// @Query("SELECT i.item FROM Interest i WHERE i.member.memberIdx = :memberIdx AND i.item.category.categoryIdx = :categoryIdx")
+	// Slice<Item> findItemAndCategoryByMemberAndCategory(@Param("memberIdx") Long memberIdx,
+	// 	@Param("categoryIdx") Long categoryIdx, Pageable pageable);
+
+	@Query("SELECT i FROM Item i JOIN i.interests interest WHERE interest.member.memberIdx = :memberIdx AND i.category.categoryIdx = :categoryIdx")
+	Slice<Item> findItemAndCategoryByMemberAndCategory(@Param("memberIdx") Long memberIdx, @Param("categoryIdx") Long categoryIdx, Pageable pageable);
+
 }
