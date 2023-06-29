@@ -46,7 +46,10 @@ export const getOneChatRoom = (
     );
   });
   if (!targetChatRoom) {
-    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
+    return {
+      error: new Error('요청하신 채팅 목록이 존재하지 않습니다.'),
+      data: null,
+    };
   }
   return { error: null, data: targetChatRoom };
 };

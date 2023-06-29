@@ -72,7 +72,7 @@ export const DetailsPage = () => {
     navigate(`/chat/${itemIdx}/0`, {
       state: {
         user: {
-          memberIdx: details?.seller.memberId,
+          memberIdx: details?.seller.memberIdx,
           imgUrl: '',
           name: details?.seller.memberId,
         },

@@ -8,8 +8,9 @@ import {
   MessageObj,
 } from '@type-store/services/chat';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useChat } from '@hooks/useChat/useChat';
+import { getOneChatRoom } from '@services/chats/chat';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
@@ -24,10 +25,12 @@ const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
 
 export const ChatDetailsPage = () => {
   const navigate = useNavigate();
+  const { itemIdx: itemIdxStr, memberIdx: memberIdxStr } = useParams();
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const { messages, setMessages, sendMessage, chatroom, setChatroom } =
     useChat();
+
   const { state } = useLocation();
 
   const salesInfo = state?.salesInfo;
@@ -39,6 +42,17 @@ export const ChatDetailsPage = () => {
   };
 
   useEffect(scrollToBottom, [messages]);
+
+  useEffect(() => {
+    const { data: chatroom } = getOneChatRoom(
+      Number(itemIdxStr),
+      Number(memberIdxStr)
+    );
+    if (chatroom) {
+      setChatroom(chatroom);
+      setMessages(chatroom.messages);
+    }
+  }, [itemIdxStr, memberIdxStr]);
 
   return (
     <Layout
