@@ -36,10 +36,6 @@ export const ChatDetailsPage = () => {
 
   const { messages, setMessages, sendMessage } = onChat();
 
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
-
   const [bubbles, setBubbles] = useState<BubbleType[]>([
     { type: 'mine', text: '안녕하세요, 챗방입니다!', bubbleIdx: 0 },
     {
