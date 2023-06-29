@@ -33,6 +33,7 @@ public class OauthService {
 	private final InMemoryProviderRepository inMemoryProviderRepository;
 	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final ImageService imageService;
 
 	public OauthLoginResponse oauthLogin(String providerName, String code) {
 
@@ -57,7 +58,8 @@ public class OauthService {
 		return memberRepository.findByOauthId(memberProfile.getOauthId())
 			.orElseGet(() -> {
 				String randomId = createRandomLoginId();
-				return memberRepository.save(memberProfile.toMember(randomId));
+				String imageUrl = imageService.uploadFromUrl(memberProfile.getImageUrl(), randomId);
+				return memberRepository.save(memberProfile.toMember(randomId, imageUrl));
 			});
 	}
 
