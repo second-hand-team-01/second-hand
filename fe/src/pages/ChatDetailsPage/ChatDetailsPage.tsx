@@ -45,7 +45,7 @@ export const ChatDetailsPage = () => {
       headerOption={{
         type: 'nav',
         navbarOptions: {
-          title: chatroom?.user?.name,
+          title: chatroom?.user?.name ?? state?.user.name,
           leftBtn: <NavbarBtn path="back" text="뒤로"></NavbarBtn>,
           rightBtn: (
             <Button
