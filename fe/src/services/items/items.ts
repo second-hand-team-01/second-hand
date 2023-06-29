@@ -299,10 +299,12 @@ export const deleteItemsAPI = async (itemIdx: number) => {
 };
 
 export const getSalesItemsAPI = async (status: ItemStatus) => {
-  const queries = removeEmptyKeyValues({
-    status,
-  });
-
+  const queries = {
+    status: 'sell',
+  };
+  if (status === '판매완료') {
+    queries.status = 'sold';
+  }
   try {
     const res = (await customFetch<null, GetSalesItemsRes>({
       path: '/members/items',

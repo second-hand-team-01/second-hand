@@ -2,9 +2,14 @@ import { Button, Layout, NavbarBtn, ChatBar, Menu } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
-import { Bubble as BubbleType } from '@type-store/services/chat';
+import {
+  Bubble as BubbleType,
+  Message,
+  ReceivedMessage,
+} from '@type-store/services/chat';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { onChat } from '@hooks/useChat/useChat';
 
 interface ChatDetailsPage {
   salesInfo: {
@@ -14,9 +19,22 @@ interface ChatDetailsPage {
   };
 }
 
+const convertMessageToBubble = (messages: ReceivedMessage[]): BubbleType[] => {
+  return messages.map((message) => {
+    const { message: text, type } = message;
+    return {
+      type: type as BubbleType['type'],
+      text,
+      bubbleIdx: 0,
+    };
+  });
+};
+
 export const ChatDetailsPage = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const { messages, setMessages, sendMessage } = onChat();
 
   const [bubbles, setBubbles] = useState<BubbleType[]>([
     { type: 'mine', text: '안녕하세요, 챗방입니다!', bubbleIdx: 0 },
@@ -75,15 +93,25 @@ export const ChatDetailsPage = () => {
         ),
       }}
       footerOption={{
-        comp: <ChatBar setBubbles={setBubbles}></ChatBar>,
+        comp: (
+          <ChatBar
+            sendMessage={sendMessage}
+            setMessages={setMessages}
+          ></ChatBar>
+        ), // sendMessage 함수 전달
       }}
     >
       <S.ChatDetailsPage>
-        {bubbles.map((bubble, i) => (
-          <Bubble type={bubble.type} key={i}>
-            {bubble.text}
-          </Bubble>
-        ))}
+        {convertMessageToBubble(messages).map((message, i) => {
+          return (
+            <Bubble
+              type={message.type === 'mine' ? 'mine' : 'opponent'}
+              key={i}
+            >
+              {message.text}
+            </Bubble>
+          );
+        })}
         <div ref={messagesEndRef} />
       </S.ChatDetailsPage>
       <Menu

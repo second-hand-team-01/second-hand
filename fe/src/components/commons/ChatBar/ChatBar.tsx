@@ -1,25 +1,59 @@
-import { Button, TextInput } from '@commons/index';
-import { ChangeEvent } from 'react';
+import { Button, Dialog, TextInput } from '@commons/index';
+import { ChangeEvent, useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import { Bubble as BubbleType } from '@type-store/services/chat';
+import {
+  Bubble as BubbleType,
+  ReceivedMessage,
+} from '@type-store/services/chat';
 
 interface ChatBarProps {
-  setBubbles: React.Dispatch<React.SetStateAction<BubbleType[]>>;
+  sendMessage: any;
+  setMessages: React.Dispatch<React.SetStateAction<ReceivedMessage[]>>;
 }
 
-export const ChatBar = ({ setBubbles }: ChatBarProps) => {
+export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
   const uploadBubble = () => {
     if (value === '') return;
-    setBubbles((bubble) => [
-      ...bubble,
-      { type: 'mine', text: value, bubbleIdx: 0 },
-    ]);
+    sendMessage({ prompt: value, action: 'message' });
     setValue('');
   };
 
+  const [isErrorMessageOpen, setErrorMessageOpen] = useState(false);
+
+  const countId = 'CHAT_COUNT';
+
+  const updateChatCount = () => {
+    const prevCount = localStorage.getItem(countId);
+    if (!prevCount || isNaN(Number(prevCount))) {
+      return localStorage.setItem(countId, '0');
+    }
+    const updatedCount = Number(prevCount) + 1;
+    localStorage.setItem(countId, String(updatedCount));
+  };
+
+  const isChatAvailable = () => {
+    const prevCount = localStorage.getItem(countId);
+    if (!prevCount || isNaN(Number(prevCount))) {
+      return true;
+    }
+    if (Number(prevCount) >= 5) {
+      return false;
+    }
+  };
+
   const handleBtnClick = () => {
+    if (!isChatAvailable()) {
+      setErrorMessageOpen(true);
+      return;
+    }
     uploadBubble();
+    const message = {
+      message: value,
+      type: 'mine',
+    } as ReceivedMessage;
+    setMessages((messages) => [...messages, message]);
+    updateChatCount();
   };
 
   const { value, setValue, onChange } = useFormInput('');
@@ -27,7 +61,17 @@ export const ChatBar = ({ setBubbles }: ChatBarProps) => {
   const handleEnterKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (e.nativeEvent.isComposing) return;
+      if (!isChatAvailable()) {
+        setErrorMessageOpen(true);
+        return;
+      }
       uploadBubble();
+      const message = {
+        message: value,
+        type: 'mine',
+      } as ReceivedMessage;
+      setMessages((messages) => [...messages, message]);
+      updateChatCount();
     }
   };
   return (
@@ -50,6 +94,22 @@ export const ChatBar = ({ setBubbles }: ChatBarProps) => {
         shape="xSmall"
         onClick={handleBtnClick}
       ></Button>
+      <Dialog
+        isOpen={isErrorMessageOpen}
+        handleBackDropClick={() => {
+          setErrorMessageOpen(false);
+        }}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: async () => {
+              setErrorMessageOpen(false);
+            },
+          },
+        }}
+      >
+        보낼 수 있는 최대 메세지 수를 초과했습니다.
+      </Dialog>
     </S.ChatBar>
   );
 };
