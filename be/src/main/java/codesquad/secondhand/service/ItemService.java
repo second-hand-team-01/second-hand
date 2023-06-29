@@ -22,6 +22,8 @@ import codesquad.secondhand.entity.Item;
 import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
+import codesquad.secondhand.exception.RestApiException;
+import codesquad.secondhand.exception.code.ItemErrorCode;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
@@ -129,7 +131,22 @@ public class ItemService {
 			imageUrl);
 	}
 
-	public void deleteItem(Long memberIdx, ItemIdxDto itemIdxDto) {
-		// Item item = itemRepository.delete();
+	public void deleteItem(HttpServletRequest httpServletRequest, ItemIdxDto itemIdxDto) {
+		Item item = itemRepository.findById(itemIdxDto.getItemIdx())
+			.orElseThrow();
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
+		log.info("맴바" + memberIdx.toString());
+		log.info("아아앙" + item.getSeller().getMemberIdx().toString());
+		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
+			itemRepository.delete(item);
+		} else {
+			throw new RestApiException(ItemErrorCode.UnauthorizedException);
+		}
 	}
 }

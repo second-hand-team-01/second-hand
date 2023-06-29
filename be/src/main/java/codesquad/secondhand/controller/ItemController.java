@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,14 +71,15 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
 	}
 
+	@DeleteMapping("/{itemIdx}")
+	public ResponseDto<?> deleteItem(HttpServletRequest httpServletRequest, ItemIdxDto itemIdxDto) {
+		itemService.deleteItem(httpServletRequest, itemIdxDto);
+		return ResponseDto.of(RESPONSE_SUCCESS, null);
+	}
+
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {
 	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
 	// }
 	//
-	// @DeleteMapping
-	// public ResponseDto<ItemSliceDto> deleteItem() {
-	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
-	// }
-
 }
