@@ -58,9 +58,13 @@ export const timeInfo = {
 };
 
 export const convertDateToTimeStamp = (date: Date) => {
+  let targetDate = date;
+  if (typeof date === 'string') {
+    targetDate = new Date(targetDate);
+  }
   const now = new Date();
   const nowDate = now.getTime();
-  const compare = date;
+  const compare = targetDate;
   const compareDate = compare.getTime();
   const diff = nowDate - compareDate;
 
@@ -88,8 +92,8 @@ export const convertDateToTimeStamp = (date: Date) => {
     return getDiffText(unit, getTimestamp(unit, diff));
   }
 
-  const yearsDiff = now.getFullYear() - date.getFullYear();
-  const monthsDiff = yearsDiff * 12 + now.getMonth() - date.getMonth();
+  const yearsDiff = now.getFullYear() - targetDate.getFullYear();
+  const monthsDiff = yearsDiff * 12 + now.getMonth() - targetDate.getMonth();
 
   if (monthsDiff < 1) {
     const unit = 'week';
