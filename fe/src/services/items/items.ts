@@ -191,7 +191,7 @@ export const postItemsAPI = async (body: ItemReqBody) => {
     return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
 
   const formData = new FormData();
-  formData.append('name', convertedBody.title);
+  formData.append('name', convertedBody.name);
   formData.append('description', convertedBody.description);
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
@@ -227,7 +227,7 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
     return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
 
   const formData = new FormData();
-  formData.append('name', convertedBody.title);
+  formData.append('name', convertedBody.name);
   formData.append('description', convertedBody.description);
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
