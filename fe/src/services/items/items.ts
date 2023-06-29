@@ -109,7 +109,7 @@ const convertAPIItemDetailsToItemDetails = (
 ): ItemDetail => {
   const {
     itemIdx,
-    title,
+    name,
     seller,
     status,
     category,
@@ -120,15 +120,19 @@ const convertAPIItemDetailsToItemDetails = (
     view,
     interestChecked,
     postedAt,
-    images,
+    imageUrl,
   } = details;
 
   const newDetails = {
     itemIdx,
-    title,
-    seller,
+    title: name,
+    seller: {
+      memberIdx: seller.sellerIdx,
+      memberId: seller.sellerId,
+      memberProfileImage: seller.sellerProfileImage,
+    },
     status,
-    category: { idx: category.categoryIdx, text: category.categoryName },
+    category: { idx: category.idx, text: category.name },
     description,
     price,
     chat,
@@ -136,7 +140,7 @@ const convertAPIItemDetailsToItemDetails = (
     view,
     interestChecked,
     postedAt: new Date(postedAt),
-    images,
+    images: imageUrl,
   };
   return newDetails;
 };

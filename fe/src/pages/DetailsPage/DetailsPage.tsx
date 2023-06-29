@@ -65,6 +65,26 @@ export const DetailsPage = () => {
 
   const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
 
+  const handleChatClicked = () => {
+    if (isWriter) {
+      return navigate(`/chat/${itemIdx}`);
+    }
+    navigate(`/chat/${itemIdx}/${details?.seller.memberIdx ?? 0}`, {
+      state: {
+        user: {
+          memberIdx: details?.seller.memberIdx,
+          imgUrl: details?.seller.memberProfileImage,
+          name: details?.seller.memberId,
+        },
+        salesInfo: {
+          previewImg: details?.images?.[0],
+          price: details?.price,
+          title: details?.title,
+        },
+      },
+    });
+  };
+
   const handleInterestBtn = async (e: React.MouseEvent) => {
     const targetElement = e.target as HTMLElement;
     const icon = targetElement.closest('svg');
@@ -125,11 +145,7 @@ export const DetailsPage = () => {
           isInterestedChecked: isInterestChecked,
           price: details?.price,
           handleInterestClicked: handleInterestBtn,
-          handleChatClicked: () => {
-            isWriter
-              ? navigate(`/chat/${itemIdx}`)
-              : navigate(`/chat/${itemIdx}/0`);
-          },
+          handleChatClicked: handleChatClicked,
           isWriter,
           chat: details?.chat,
         },

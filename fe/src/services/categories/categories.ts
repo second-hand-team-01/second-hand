@@ -60,6 +60,7 @@ export const getFavoriteCategoryAPI = async () => {
     const res = (await customFetch<null, FavoriteCategoryRes>({
       path: '/members/interest/category',
       method: 'GET',
+      auth: true,
     })) as Response<FavoriteCategoryRes>;
 
     if (!res || !res.data || res.error) {
