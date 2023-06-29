@@ -35,7 +35,7 @@ oauth2:
     github-ios:
       client-id: 3ac935cf627da08c8f03
       client-secret: ENC(kyC9uQKjyK8/mYRKOpBinQqdNqRtF2jW6fZrxPaL+4/TNct7CFQDcA6BL38+Gy94JY64lgkxIJ0=)
-      redirect: secondhand://login
+      redirect-uri: secondhand://login
   provider:
     github:
       token-uri: https://github.com/login/oauth/access_token
