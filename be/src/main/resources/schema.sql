@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item`
     `name`           VARCHAR(45)  NOT NULL,
     `description`    VARCHAR(300) NULL,
     `price`          INT          NOT NULL,
-    `view`           INT          NOT NULL DEFAULT 0,
+    `view`           INT          NULL DEFAULT 0,
     `status`         VARCHAR(45)  NOT NULL DEFAULT '판매중',
     PRIMARY KEY (`item_idx`),
     INDEX `fk_item_member2_idx` (`seller_idx` ASC) VISIBLE,
