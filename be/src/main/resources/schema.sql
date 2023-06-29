@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item`
     CONSTRAINT `fk_item_item_image1`
         FOREIGN KEY (`main_image_idx`)
             REFERENCES `second-hand`.`item_image` (`item_image_idx`)
-            ON DELETE NO ACTION
+            ON DELETE CASCADE
             ON UPDATE NO ACTION
 )
     ENGINE = InnoDB;
@@ -124,7 +124,7 @@ DROP TABLE IF EXISTS `second-hand`.`interest`;
 
 CREATE TABLE IF NOT EXISTS `second-hand`.`interest`
 (
-    `interest_idx` BIGINT(10) NOT NULL,
+    `interest_idx` BIGINT(10) NOT NULL AUTO_INCREMENT,
     `member_idx`   BIGINT(10) NOT NULL,
     `item_idx`     BIGINT(10) NOT NULL,
     INDEX `fk_member_has_item_item2_idx` (`item_idx` ASC) VISIBLE,
