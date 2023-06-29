@@ -27,15 +27,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/items")
 public class ItemController {
-	public static final int START_PAGE = 0;
 	public static final int END_PAGE = 10;
 	private final ItemService itemService;
 
 	@GetMapping
-	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx) {
+	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx,
+		@RequestParam(defaultValue = "0") int page) {
 		log.info("[ItemController.showItems()]");
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
+		Pageable pageable = PageRequest.of(page, END_PAGE);
 		if (memberIdx == null) { // 로그인 하지 않은 사용자 분기 처리
 			locationIdx = 1L;
 		}
@@ -44,8 +44,9 @@ public class ItemController {
 	}
 
 	@GetMapping("/{categoryIdx}")
-	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx) {
-		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
+	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
+		@RequestParam(defaultValue = "0") int page) {
+		Pageable pageable = PageRequest.of(page, END_PAGE);
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
