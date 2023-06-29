@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class MemberController {
 
+	private static final int END_PAGE = 10;
 	private final MemberService memberService;
 
 	@PostMapping("/signup")
@@ -95,7 +97,7 @@ public class MemberController {
 		@RequestParam(defaultValue = "0") int page,
 		HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(page, 10);
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		ItemSliceDto itemSliceDto = memberService.showSellerItems(memberIdx, status, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
@@ -109,10 +111,12 @@ public class MemberController {
 
 	@GetMapping("/members/interest")
 	public ResponseDto<ItemSliceDto> showInterestedItems(HttpServletRequest request,
+		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(required = false) Long categoryIdx) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(0, 10);
-		if (categoryIdx == null) { // categoryIdx가 null로 들어오면 전체 상품 조회
+		// Pageable pageable = PageRequest.of(page, END_PAGE);
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
+		if (categoryIdx == null) { // categoryIdx가 null로 들어오// 면 전체 상품 조회
 			log.info("categoryIdx: {}", categoryIdx);
 			ItemSliceDto itemSliceDto = memberService.showInterestedItems(memberIdx, pageable);
 			return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
