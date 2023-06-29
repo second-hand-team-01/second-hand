@@ -20,7 +20,7 @@ public class MemberProfile {
 		this.imageUrl = imageUrl;
 	}
 
-	public Member toMember(String randomId) {
+	public Member toMember(String randomId, String imageUrl) {
 		return Member.builder()
 			.loginId(randomId)
 			.imageUrl(imageUrl)
