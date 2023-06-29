@@ -8,18 +8,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
+import codesquad.secondhand.dto.interest.InterestCheckRequestDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
 import codesquad.secondhand.dto.item.ItemDetailReturnDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
+import codesquad.secondhand.service.InterestService;
 import codesquad.secondhand.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ItemController {
 	public static final int END_PAGE = 10;
 	private final ItemService itemService;
+	private final InterestService interestService;
 
 	@GetMapping
 	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx,
@@ -83,4 +87,14 @@ public class ItemController {
 	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
 	// }
 
+	@PutMapping
+	public ResponseDto<?> checkOrCancelInterest(HttpServletRequest request,
+		@RequestBody InterestCheckRequestDto interestCheckRequestDto) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		log.info("memberIdx: {}", memberIdx);
+		log.info("interestCheckRequestDto: {}", interestCheckRequestDto.getItemIdx());
+		log.info("interestCheckRequestDto: {}", interestCheckRequestDto.getInterestChecked());
+		interestService.checkInterest(interestCheckRequestDto, memberIdx);
+		return ResponseDto.of(RESPONSE_SUCCESS, null);
+	}
 }
