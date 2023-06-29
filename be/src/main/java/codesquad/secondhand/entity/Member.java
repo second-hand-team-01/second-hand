@@ -50,7 +50,8 @@ public class Member {
 	@Column(name = "oauth_id")
 	private String oauthId;
 
-	public Member(String loginId, String password, String imagePath, String imageUrl, Location mainLocation, Location subLocation) {
+	public Member(String loginId, String password, String imagePath, String imageUrl, Location mainLocation,
+		Location subLocation) {
 		this.loginId = loginId;
 		this.password = password;
 		this.imagePath = imagePath;

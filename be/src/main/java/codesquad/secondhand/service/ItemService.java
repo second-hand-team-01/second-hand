@@ -81,7 +81,7 @@ public class ItemService {
 		Item save = itemRepository.save(item);
 		List<String> itemUrlList = imageService.upload(save.getItemIdx(), itemDetailDto);
 		for (int i = 0; i < itemUrlList.size(); i++) {
-			if(i == 0) {
+			if (i == 0) {
 				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
 				item.setItemImage(itemImage);
 				continue;

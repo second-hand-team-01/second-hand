@@ -128,7 +128,6 @@ public class MemberService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-
 	public ItemSliceDto showInterestedItems(Long sellerIdx, Pageable pageable) {
 		log.debug("[MemberService.showInterestedItems()]");
 		Slice<Item> itemSlice = itemRepository.findItemsBySellerInterest(sellerIdx, pageable);
