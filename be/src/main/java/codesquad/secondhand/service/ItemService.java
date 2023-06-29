@@ -142,6 +142,8 @@ public class ItemService {
 			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		}
 
+		//TODO: s3 이미지 삭제
+
 		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
 			itemRepository.delete(item);
 		} else {
