@@ -7,14 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onChat } from '@hooks/useChat/useChat';
 
-interface ChatDetailsPage {
-  salesInfo: {
-    previewImg: string;
-    title: string;
-    price: number;
-  };
-}
-
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
     const { message: text, type } = message;

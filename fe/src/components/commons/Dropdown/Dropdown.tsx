@@ -19,7 +19,7 @@ export const Dropdown = ({
   size = 'large',
   menuButtonPropsList,
 }: DropdownProps) => {
-  const [isOpen, setOpen] = openState;
+  const [isOpen] = openState;
   const dropdownRef = useRef<HTMLButtonElement>(null);
   const [parentCoordinate, setParentCoordinate] = useState<ParentCoordinate>({
     height: 0,

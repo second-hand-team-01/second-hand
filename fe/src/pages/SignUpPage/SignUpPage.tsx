@@ -78,7 +78,7 @@ export const SignUpPage = () => {
     locationSelectorHandler();
   };
 
-  const removeLocationInfoHandler = (town) => {
+  const removeLocationInfoHandler = (town: string) => {
     dispatch({
       type: 'REMOVE_LOCATION',
       val: town,
@@ -93,7 +93,7 @@ export const SignUpPage = () => {
     return locationData;
   };
 
-  const isSelectedLocation = (locationName) => {
+  const isSelectedLocation = (locationName: string) => {
     const mainLocationName = userInfo.mainLocation.locationName;
     const subLocationName = userInfo.subLocation.locationName;
 
@@ -108,7 +108,7 @@ export const SignUpPage = () => {
     const locationTown = locationData?.town;
 
     isSelectedLocation(locationName)
-      ? removeLocationInfoHandler(locationTown)
+      ? removeLocationInfoHandler(locationTown ?? '')
       : setLocationInfoHandler(locationIdx, locationName, locationTown);
   };
 
@@ -123,7 +123,6 @@ export const SignUpPage = () => {
     });
 
     const data = await response.json();
-    console.log(data);
     if (!response.ok) {
       throw new Error(data.message);
     }

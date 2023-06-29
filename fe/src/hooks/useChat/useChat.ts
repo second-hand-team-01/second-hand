@@ -1,5 +1,5 @@
-import { MessageObj } from '@type-store/services/chat';
-import React, { useEffect, useState } from 'react';
+import { MessageObj, SendMessage } from '@type-store/services/chat';
+import { useEffect, useState } from 'react';
 
 export const onChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -35,7 +35,7 @@ export const onChat = () => {
     };
   }, []);
 
-  const sendMessage = (message: MessageObj) => {
+  const sendMessage = (message: SendMessage) => {
     if (ws) {
       ws.send(JSON.stringify(message));
     }

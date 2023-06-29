@@ -6,7 +6,6 @@ import { ListItemProps } from '@commons/ListItem/ListItem';
 import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
-import { Category } from '@type-store/services/category';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getCategoryAPI } from '@services/categories/categories';
 import { UserContext } from '@stores/UserContext';

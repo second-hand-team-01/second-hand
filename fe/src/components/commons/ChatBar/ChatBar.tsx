@@ -1,11 +1,11 @@
 import { Button, Dialog, TextInput } from '@commons/index';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import { Bubble as BubbleType, MessageObj } from '@type-store/services/chat';
+import { MessageObj, SendMessage } from '@type-store/services/chat';
 
 interface ChatBarProps {
-  sendMessage: any;
+  sendMessage: (message: SendMessage) => void;
   setMessages: React.Dispatch<React.SetStateAction<MessageObj[]>>;
 }
 

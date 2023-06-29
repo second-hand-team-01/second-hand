@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
 import { Icon, Menu, Dialog } from '@components/commons';
@@ -10,9 +10,8 @@ import {
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 import { useNavigate } from 'react-router-dom';
 import { changeStatusItemsAPI } from '@services/items/items';
-import { ItemStatus } from '@type-store/services/items';
 import { MenuButtonProps } from '../Menu/MenuStyle';
-import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
+import { deleteItemsAPI } from '@services/items/items';
 
 export interface IconProps {
   name: keyof typeof icons;
