@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TokenResponse {
 
-	private final String accessToken;
+	private final String token;
 	private final MemberIdxLoginIdImageDto memberInfo;
 
 	public static TokenResponse of(String token, MemberIdxLoginIdImageDto memberIdxLoginIdImageDto) {
