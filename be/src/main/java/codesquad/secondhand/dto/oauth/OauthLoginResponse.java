@@ -1,6 +1,7 @@
 package codesquad.secondhand.dto.oauth;
 
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 public class OauthLoginResponse {
 
 	private final String token;
-	private final MemberIdxLoginIdDto memberInfo;
+	private final MemberIdxLoginIdImageDto memberInfo;
 
-	public static OauthLoginResponse of(String token, MemberIdxLoginIdDto memberInfo) {
+	public static OauthLoginResponse of(String token, MemberIdxLoginIdImageDto memberInfo) {
 		return new OauthLoginResponse(token, memberInfo);
 	}
 }

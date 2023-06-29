@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import codesquad.secondhand.dto.oauth.MemberProfile;
 import codesquad.secondhand.dto.oauth.OauthLoginResponse;
 import codesquad.secondhand.dto.oauth.OauthTokenResponse;
@@ -33,12 +34,16 @@ public class OauthService {
 	private final InMemoryProviderRepository inMemoryProviderRepository;
 	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final ImageService imageService;
 
 	public OauthLoginResponse oauthLogin(String providerName, String code) {
 
 		OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
-		log.info("provider: {}", provider);
+		log.info("[OauthService] oauthLogin.provider.getClientId(): {}", provider.getClientId());
+		log.info("[OauthService] oauthLogin.provider.getTokenUrl(): {}", provider.getTokenUrl());
 		OauthTokenResponse oauthTokenResponse = getToken(code, provider);
+
+		log.info("[OauthService] oauthTokenResponse.getAccessToken(): {}", oauthTokenResponse.getAccessToken());
 
 		MemberProfile memberProfile = getUserProfile(providerName, oauthTokenResponse, provider);
 
@@ -46,7 +51,7 @@ public class OauthService {
 
 		String accessToken = jwtTokenProvider.createToken(MemberIdxLoginIdDto.of(member));
 
-		return OauthLoginResponse.of(accessToken, MemberIdxLoginIdDto.of(member));
+		return OauthLoginResponse.of(accessToken, MemberIdxLoginIdImageDto.of(member));
 	}
 
 	private Member saveOrFindMember(MemberProfile memberProfile) {
@@ -54,7 +59,8 @@ public class OauthService {
 		return memberRepository.findByOauthId(memberProfile.getOauthId())
 			.orElseGet(() -> {
 				String randomId = createRandomLoginId();
-				return memberRepository.save(memberProfile.toMember(randomId));
+				String imageUrl = imageService.uploadFromUrl(memberProfile.getImageUrl(), randomId);
+				return memberRepository.save(memberProfile.toMember(randomId, imageUrl));
 			});
 	}
 
@@ -66,12 +72,20 @@ public class OauthService {
 
 	private MemberProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse,
 		OauthProvider provider) {
+		log.info("[OauthService] providerName: {}", providerName);
+		log.info("[OauthService] provider: {}", provider);
 		Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
+		log.info("[OauthService] userAttributes: {}", userAttributes);
 
 		return OauthAttributes.extract(providerName, userAttributes);
 	}
 
 	private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
+		log.info("[OauthService] getUserAttributes.provider.getClientId(): {}", provider.getClientId());
+		log.info("[OauthService] getUserAttributes.provider.getClientSecret(): {}", provider.getClientSecret());
+		log.info("[OauthService] getUserAttributes.provider.getRedirectUrl(): {}", provider.getRedirectUrl());
+		log.info("[OauthService] getUserAttributes.provider.getUserInfoUrl(): {}", provider.getUserInfoUrl());
+		log.info("[OauthService] getUserAttributes.tokenResponse: {}", tokenResponse);
 		return WebClient.create()
 			.get()
 			.uri(provider.getUserInfoUrl())
@@ -99,10 +113,12 @@ public class OauthService {
 	}
 
 	private MultiValueMap<String, String> tokenRequest(String code, OauthProvider provider) {
+		log.info("[OauthService] tokenRequest code: {}", code);
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 		formData.add("code", code);
 		formData.add("grant_type", "authorization_code");
 		formData.add("redirect_uri", provider.getRedirectUrl());
+		log.info("[OauthService] tokenRequest formData: {}", formData);
 		return formData;
 	}
 }

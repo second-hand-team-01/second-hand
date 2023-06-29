@@ -2,6 +2,8 @@ package codesquad.secondhand.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +21,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import codesquad.secondhand.dto.item.ItemDetailDto;
-import codesquad.secondhand.exception.EmptyFileException;
 import codesquad.secondhand.exception.FileUploadFailedException;
 import codesquad.secondhand.exception.code.ImageErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,13 @@ public class ImageService {
 		String originFileName;
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 
-		if(multipartFile.getOriginalFilename() == null) {
+		if (multipartFile.getOriginalFilename() == null) {
 			originFileName = UUID.randomUUID().toString();
 		} else {
 			originFileName = multipartFile.getOriginalFilename();
 		}
 
-		String fileName = memberProfileFileNameConvert(originFileName, memberId, multipartFile);
+		String fileName = memberProfileFileNameConvert(originFileName, memberId);
 
 		objectMetadata.setContentType(multipartFile.getContentType());
 
@@ -54,6 +55,28 @@ public class ImageService {
 			throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 		}
 		return fileName + "@" + amazonS3.getUrl(bucketName, fileName).toString();
+	}
+
+	public String uploadFromUrl(String imageUrl, String loginId) {
+		try {
+			URL url = new URL(imageUrl);
+			URLConnection urlConnection = url.openConnection();
+			String contentType = urlConnection.getContentType();
+
+			InputStream inputStream = urlConnection.getInputStream();
+
+			String originFileName = UUID.randomUUID().toString();
+			String fileExtension = contentType.split("/")[1];
+			String fileName = memberProfileFileNameConvert(originFileName, loginId, fileExtension);
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			objectMetadata.setContentType(contentType);
+
+			amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+				.withCannedAcl(CannedAccessControlList.PublicRead));
+			return fileName + "@" + amazonS3.getUrl(bucketName, fileName).toString();
+		} catch (IOException e) {
+			throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
+		}
 	}
 
 	public void delete(String filePath) {
@@ -92,7 +115,25 @@ public class ImageService {
 		return itemUrlList;
 	}
 
-	private String memberProfileFileNameConvert(String originalFileName, String memberId, MultipartFile multipartFile) {
+	private String memberProfileFileNameConvert(String originalFileName, String memberId, String fileExtension) {
+		StringBuilder sb = new StringBuilder();
+		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd_HH-mm");
+		String initDate = simpleDateFormat.format(date);
+		sb.append("member-profile-image")
+			.append("/")
+			.append(memberId)
+			.append("/")
+			.append(memberId)
+			.append("_")
+			.append(initDate)
+			.append(".")
+			.append(fileExtension);
+		return sb.toString();
+	}
+
+	private String memberProfileFileNameConvert(String originalFileName, String memberId) {
 		StringBuilder sb = new StringBuilder();
 		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
 		String fileName = originalFileName.substring(lastDot + 1);

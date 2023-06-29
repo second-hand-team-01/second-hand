@@ -24,7 +24,7 @@ import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
-import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
 import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
@@ -44,6 +44,8 @@ public class MemberController {
 
 	@PostMapping("/signup")
 	public ResponseDto<?> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
+		log.info("[MemberController] signup signUpRequestDto.getMainLocationIdx(): {}", signUpRequestDto.getMainLocationIdx());
+		log.info("[MemberController] signup signUpRequestDto.getSubLocationIdx(): {}", signUpRequestDto.getSubLocationIdx());
 		memberService.signUp(signUpRequestDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
@@ -51,9 +53,9 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
 		MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
-		MemberIdxLoginIdDto memberIdxLoginId = memberService.getMemberIdxLoginId(memberIdxTokenDto.getMemberIdx());
+		MemberIdxLoginIdImageDto memberIdxLoginIdImage = memberService.getMemberIdxLoginIdImage(memberIdxTokenDto.getMemberIdx());
 		String accessToken = memberIdxTokenDto.getToken();
-		return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginId));
+		return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginIdImage));
 	}
 
 	@GetMapping("/info")
@@ -65,7 +67,8 @@ public class MemberController {
 
 	@PutMapping("/info")
 	public ResponseDto<MemberImageDto> editMemberProfile(@ModelAttribute MemberImageDto memberImageDto) {
-		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(), memberImageDto.getImage());
+		MemberImageDto MemberImageDtoReturn = memberService.editMemberProfileImage(memberImageDto.getMemberIdx(),
+			memberImageDto.getImage());
 		return ResponseDto.of(RESPONSE_SUCCESS, MemberImageDtoReturn);
 	}
 

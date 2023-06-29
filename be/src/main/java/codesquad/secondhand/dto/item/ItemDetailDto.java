@@ -12,14 +12,14 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class ItemDetailDto {
 
-	@Setter
-	private Long sellerIdx;
 	private final String name;
 	private final Integer price;
 	private final String description;
 	private final Long locationIdx;
 	private final Long categoryIdx;
 	private final List<MultipartFile> image;
+	@Setter
+	private Long sellerIdx;
 
 	@Override
 	public String toString() {
