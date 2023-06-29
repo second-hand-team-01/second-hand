@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class ItemController {
 		@RequestParam(defaultValue = "0") int page) {
 		log.info("[ItemController.showItems()]");
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(page, END_PAGE);
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		if (memberIdx == null) { // 로그인 하지 않은 사용자 분기 처리
 			locationIdx = 1L;
 		}
@@ -46,7 +47,7 @@ public class ItemController {
 	@GetMapping("/{categoryIdx}")
 	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
 		@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = PageRequest.of(page, END_PAGE);
+		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
