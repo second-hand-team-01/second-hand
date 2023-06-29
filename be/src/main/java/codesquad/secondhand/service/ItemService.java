@@ -22,6 +22,8 @@ import codesquad.secondhand.entity.Item;
 import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
+import codesquad.secondhand.exception.RestApiException;
+import codesquad.secondhand.exception.code.ItemErrorCode;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
@@ -99,10 +101,16 @@ public class ItemService {
 	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
 		Item item = itemRepository.findById(itemIdx)
 			.orElseThrow();
-		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
 
 		int view;
-		if (!memberIdx.equals(item.getSeller().getMemberIdx())) {
+		if (memberIdx.equals(-1L) || !memberIdx.equals(item.getSeller().getMemberIdx())) {
 			view = item.getView();
 			item.setView(++view);
 		}
@@ -121,5 +129,25 @@ public class ItemService {
 
 		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
 			imageUrl);
+	}
+
+	public void deleteItem(HttpServletRequest httpServletRequest, ItemIdxDto itemIdxDto) {
+		Item item = itemRepository.findById(itemIdxDto.getItemIdx())
+			.orElseThrow();
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
+
+		//TODO: s3 이미지 삭제
+
+		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
+			itemRepository.delete(item);
+		} else {
+			throw new RestApiException(ItemErrorCode.UnauthorizedException);
+		}
 	}
 }
