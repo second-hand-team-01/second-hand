@@ -1,12 +1,18 @@
 import styled from 'styled-components';
-import { NAVBAR_HEIGHT } from '@constants/style';
+import { NAVBAR_HEIGHT, MAX_WIDTH } from '@constants/style';
 
 interface HeaderStyleProps {
   isTransparent?: boolean;
 }
 
+interface HeaderBottomStyleProps {
+  hasTab?: boolean;
+  hasCategory?: boolean;
+}
+
 export const Header = styled.div<HeaderStyleProps>`
   width: 100%;
+  max-width: ${MAX_WIDTH}px;
   ${({ isTransparent }) =>
     isTransparent
       ? `
@@ -24,17 +30,33 @@ export const HeaderTop = styled.div`
   padding: 0 16px;
 `;
 
-export const HeaderBottom = styled.div`
-  padding: 0 16px;
-  height: ${NAVBAR_HEIGHT.bottom}px;
-  display: grid;
+export const HeaderBottom = styled.div<HeaderBottomStyleProps>`
+  height: auto;
+  width: 100%;
+  overflow-x: scroll;
   align-items: center;
+`;
+
+export const TabContainer = styled.div`
+  display: grid;
   justify-content: center;
+  padding: 8px 16px;
+`;
+
+export const CategoryContainer = styled.div`
+  width: max-content;
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+`;
+
+export const BottomChildrenContainer = styled.div`
+  padding: 8px 16px;
+  border-top: 1px solid ${({ theme }) => theme.colors.neutralBorder};
 `;
 
 export const ButtonContainer = styled.div`
   width: 130px;
-
   &:last-child {
     display: grid;
     justify-items: end;

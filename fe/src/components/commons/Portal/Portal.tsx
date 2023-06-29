@@ -5,9 +5,16 @@ import * as S from './PortalStyle';
 interface PortalProps {
   id: string;
   children: React.ReactNode;
+  slide?: 'left' | 'right' | 'up';
+  isOpen?: boolean;
 }
 
-export const Portal = ({ id, children }: PortalProps): React.ReactPortal => {
+export const Portal = ({
+  id,
+  children,
+  slide,
+  isOpen = true,
+}: PortalProps): React.ReactPortal => {
   const modalDiv = useRef(
     document.getElementById(id) || document.createElement('div')
   );
@@ -22,9 +29,20 @@ export const Portal = ({ id, children }: PortalProps): React.ReactPortal => {
     }
 
     return () => {
-      if (dynamicDiv) document.body.removeChild(modalDiv.current);
+      modalDiv.current.remove();
     };
   }, [id]);
+
+  useEffect(() => {
+    if (!slide) return;
+    const slideClassName = 'slide-' + slide;
+    modalDiv.current.classList.add(slideClassName);
+    if (isOpen) {
+      modalDiv.current.classList.add('open');
+    } else {
+      modalDiv.current.classList.remove('open');
+    }
+  }, [isOpen]);
 
   return createPortal(
     <S.PortalWrap>

@@ -1,15 +1,20 @@
 import styled from 'styled-components';
 import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
-import { InfoBarProps } from '../InfoBar/InfoBar';
+import { InfoBarProps } from '@commons/InfoBar/InfoBar';
+import { FilterBarProps } from '@commons/FilterBar/FilterBar';
+import { ReactNode } from 'react';
 
 export interface HeaderProps {
   type: 'filter' | 'nav';
   navbarOptions?: NavBarProps;
+  filterBarOptions?: FilterBarProps;
+  bottomComp?: ReactNode;
 }
 
 export interface FooterProps {
-  type: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  type?: 'info' | 'chat' | 'tab' | 'tool' | undefined;
+  comp?: ReactNode;
   infoBarOptions?: InfoBarProps;
 }
 
@@ -22,21 +27,10 @@ export interface isHeaderOverlappedType {
   isHeaderOverlapped?: boolean;
 }
 
-const getTemplateRows = (
-  headerOption: HeaderProps | undefined,
-  footerOption: FooterProps | undefined
-) => {
-  const hasHeader = headerOption !== undefined;
-  const hasHeaderTab = headerOption?.navbarOptions?.tabInfo !== undefined;
+const getTemplateRows = (footerOption: FooterProps | undefined) => {
   const hasFooter = footerOption !== undefined;
-
-  const headerHeight = hasHeader
-    ? hasHeaderTab
-      ? NAVBAR_HEIGHT.top + NAVBAR_HEIGHT.bottom
-      : NAVBAR_HEIGHT.top
-    : 0;
   const footerHeight = hasFooter ? FOOTER_HEIGHT : 0;
-  const result = `${headerHeight}px 1fr ${footerHeight}px`;
+  const result = `max-content 1fr ${footerHeight}px`;
   return result;
 };
 
@@ -45,8 +39,7 @@ export const Layout = styled.div<LayoutStyleProps>`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.neutralBackground};
   display: grid;
-  grid-template-rows: ${({ headerOption, footerOption }) =>
-    getTemplateRows(headerOption, footerOption)};
+  grid-template-rows: ${({ footerOption }) => getTemplateRows(footerOption)};
   height: 100dvh;
   height: 100dvh;
   outline: 1px solid ${({ theme }) => theme.colors.neutralBorder};

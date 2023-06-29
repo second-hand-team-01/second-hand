@@ -6,7 +6,7 @@ interface OptionType {
 }
 
 export interface TabProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   activeId: string;
   options: OptionType[];
 }

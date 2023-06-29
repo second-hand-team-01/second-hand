@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "status": 200,
+  "code": 20000,
+  "message": "요청이 완료되었습니다.",
+  "data": {
+    "hasNext": false,
+    "items": [
+      {
+        "itemIdx": 24,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1648217339386l0.jpg",
+        "name": "카테고리24",
+        "location": "역삼1동",
+        "postedAt": "2023-05-18T09:47:11",
+        "status": "예약중",
+        "price": 782889,
+        "chat": 0,
+        "interest": 0
+      },
+      {
+        "itemIdx": 25,
+        "imageUrl": "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=676/shop/data/goods/1645443370882l0.jpg",
+        "name": "카테고리25",
+        "location": "역삼1동",
+        "postedAt": "2022-06-22T21:27:33",
+        "status": "판매중",
+        "price": 712027,
+        "chat": 0,
+        "interest": 3
+      }
+    ]
+  }
+}

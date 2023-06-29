@@ -55,9 +55,6 @@ export const CategoryList = styled.li`
   &:focus {
     background-color: ${({ theme }) => theme.colors.neutralBackgroundWeak};
   }
-  &:last-child {
-    border-bottom: 0;
-  }
 `;
 
 export const CategoryListInner = styled.div`

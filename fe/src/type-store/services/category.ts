@@ -6,8 +6,20 @@ export interface APICategory {
 
 export interface Category {
   idx: number;
-  name: string;
-  imgUrl: string;
+  text: string;
+  imgUrl?: string;
 }
 
-export type CategoryRes = Category[];
+export interface FavoriteCategory {
+  idx: number;
+  text: string;
+}
+
+export interface APIFavoriteCategory {
+  idx: number;
+  name: string;
+}
+
+export type CategoryRes = APICategory[];
+
+export type FavoriteCategoryRes = APIFavoriteCategory[];

@@ -20,6 +20,7 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
 
     if (file) {
       const isDuplicate = images.some((existingImage: Image) => {
+        if (!existingImage.name || !existingImage.size) return false;
         return (
           existingImage.name === file.name && existingImage.size === file.size
         );
@@ -32,9 +33,10 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
           const targetFile = target?.result as string;
 
           const newImage = {
-            file: targetFile,
+            file: file,
             name: file.name,
             size: file.size,
+            fileString: targetFile,
           };
 
           if (targetFile) setImages((prevImages) => [...prevImages, newImage]);
@@ -64,8 +66,8 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         ></S.FileInput>
         {images.map((image, i) => (
           <ImgElement
-            key={`${image.name}`}
-            file={image.file}
+            key={`${image.file}`}
+            file={image.fileString}
             isFirst={i === 0 ? true : false}
             handleDelete={({ currentTarget }) => {
               const btn = currentTarget as HTMLButtonElement;
