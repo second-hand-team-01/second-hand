@@ -63,7 +63,7 @@ extension SignUpViewController {
         guard let id = enteredSignUpData.0,
               let password = enteredSignUpData.1 else { return }
         let signUpInfo = SignUpDTO(loginId: id, password: password, image: enteredSignUpData.2, mainLocationIdx: "6", subLocationIdx: "2")
-        
+
         Task {
             let response = await networkManager.request(signUpInfo: signUpInfo)
             guard response != nil else {

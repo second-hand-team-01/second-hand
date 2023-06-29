@@ -13,26 +13,20 @@ struct AccountInfo {
 }
 
 class AccountInfoUseCase {
-    private var accountInfo: AccountInfo?
+    private var accountInfo: AccountInfo
     private var networkManager: AccountInfoNetworkManager
     
     init() {
+        self.accountInfo = AccountInfo(imageUrl: "", userName: "")
         self.networkManager = AccountInfoNetworkManager()
     }
     
-    func loadData() {
-        Task {
-            guard let data = await networkManager.request()?.data else {
-                return
-            }
-            self.accountInfo = AccountInfo(
-                imageUrl: data.imageUrl ?? "",
-                userName: data.memeberLoginId
-            )
-        }
+    func loadData(_ data: LoginResponseDTO.MemberInfo) {
+        self.accountInfo.imageUrl = data.imgUrl
+        self.accountInfo.userName = data.loginId
     }
     
-    func sendAccountInfo() -> AccountInfo? {
+    func sendAccountInfo() -> AccountInfo {
         return self.accountInfo
     }
 }

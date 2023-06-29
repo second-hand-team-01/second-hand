@@ -12,15 +12,16 @@ struct LoginResponseDTO: Codable {
     let status: Int
     let code: Int
     let message: String
-    let data: ResponseData?
+    let data: ResponseData
 
     struct ResponseData: Codable {
-        let accessToken: String?
-        let memeberInfo: MemberInfo?
+        let token: String
+        let memberInfo: MemberInfo
     }
     
     struct MemberInfo: Codable {
         let memberIdx: Int
         let loginId: String
+        let imgUrl: String
     }
 }

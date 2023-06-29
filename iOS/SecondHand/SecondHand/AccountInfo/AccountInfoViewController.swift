@@ -32,13 +32,21 @@ class AccountInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addSubviews()
-//        self.useCase.loadData()
         self.navigationItem.hidesBackButton = true
         signOutButton.addTarget(
             self,
             action: #selector(didTapSignOutButton),
             for: .touchUpInside
         )
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.accountInfoView.configure(accountInfo: self.useCase.sendAccountInfo())
+    }
+    
+    func sendData(_ data: LoginResponseDTO.MemberInfo) {
+        self.useCase.loadData(data)
     }
     
     override func viewWillLayoutSubviews() {
@@ -103,7 +111,7 @@ extension AccountInfoViewController {
                 equalTo: self.accountInfoView.bottomAnchor,
                 constant: topConstraint
             ),
-            self.signOutButton.bottomAnchor.constraint(greaterThanOrEqualTo: tabBarTopAnchor)
+            self.signOutButton.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
         ])
     }
 }

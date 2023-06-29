@@ -32,8 +32,8 @@ class AccountInfoView: UIView {
         self.addConstraintToUserNameLabel()
     }
     
-    func configure(userName: String) {
-        self.userNameLabel.text = "\(userName)"
+    func configure(accountInfo: AccountInfo) {
+        self.userNameLabel.text = "\(accountInfo.userName)"
     }
 }
 

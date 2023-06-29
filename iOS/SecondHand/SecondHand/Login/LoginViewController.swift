@@ -99,12 +99,12 @@ extension LoginViewController {
         let loginInfo = LoginDTO(loginId: id, password: password)
         
         Task {
-            guard let response = await networkManager.request(type: .githubSignIn, data: "") else {
+            guard let response = await networkManager.request(type: .signIn, data: loginInfo) else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
-            SecretKeys.accessToken = response.data?.accessToken ?? ""
-//            viewController.userName = response.data.memeberInfo?.loginId ?? ""
+            SecretKeys.accessToken = response.data.token
+            viewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true
@@ -136,8 +136,8 @@ extension LoginViewController {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
-            SecretKeys.accessToken = response.data?.accessToken ?? ""
-//            viewController.userName = response.data.memeberInfo?.loginId ?? ""
+            SecretKeys.accessToken = response.data.token
+            viewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
                 viewController,
                 animated: true
@@ -146,7 +146,7 @@ extension LoginViewController {
     }
     
     @objc private func loginByGithub(_ notification: Notification) {
-        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03&scope=user") else {
+        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03") else {
             return
         }
         
