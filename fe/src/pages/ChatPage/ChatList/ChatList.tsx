@@ -9,8 +9,8 @@ export const ChatList = ({
   unreadChat,
   user,
   timestamp,
-  lastMessage,
-  previewImg,
+  messages,
+  salesInfo,
 }: ChatListProps) => {
   const navigate = useNavigate();
   const hasChat = unreadChat !== 0;
@@ -25,10 +25,10 @@ export const ChatList = ({
           <S.User>{user.name}</S.User>
           <S.Timestamp>{convertDateToTimeStamp(timestamp)}</S.Timestamp>
         </S.ContentsHeader>
-        <S.Message>{lastMessage}</S.Message>
+        <S.Message>{messages[messages.length - 1].message}</S.Message>
       </S.Contents>
       {hasChat && <S.ChatNum>{unreadChat}</S.ChatNum>}
-      <S.Preview src={previewImg}></S.Preview>
+      <S.Preview src={salesInfo.previewImg}></S.Preview>
     </S.ChatList>
   );
 };

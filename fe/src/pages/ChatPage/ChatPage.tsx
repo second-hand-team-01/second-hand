@@ -4,12 +4,10 @@ import { ChatList } from './ChatList/ChatList';
 import { UserContext } from '@stores/UserContext';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { ChatInfo, ChatListProps } from '@type-store/services/chat';
-import {
-  getItemChatFromStorage,
-  startNewChatsToStorage,
-} from '@services/chats/chat';
+import { ChatListProps } from '@type-store/services/chat';
+
 import { ERROR_MESSAGE } from '@constants/error';
+import { getItemChatFromStorage } from '@services/chats/chat';
 
 export const ChatPage = () => {
   // const chatList: ChatListProps[] = [

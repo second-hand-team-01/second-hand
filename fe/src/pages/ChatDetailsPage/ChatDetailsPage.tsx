@@ -70,6 +70,8 @@ export const ChatDetailsPage = () => {
       footerOption={{
         comp: (
           <ChatBar
+            salesInfo={salesInfo}
+            messages={messages}
             sendMessage={sendMessage}
             setMessages={setMessages}
           ></ChatBar>

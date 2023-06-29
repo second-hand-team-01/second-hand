@@ -1,18 +1,57 @@
 import { Button, Dialog, TextInput } from '@commons/index';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import { MessageObj, SendMessage } from '@type-store/services/chat';
+import {
+  ChatListProps,
+  MessageObj,
+  SendMessage,
+} from '@type-store/services/chat';
+import { setChatInfo } from '@services/chats/chat';
+import { useParams } from 'react-router-dom';
+import { UserContext } from '@stores/UserContext';
 
 interface ChatBarProps {
+  messages: MessageObj[];
   sendMessage: (message: SendMessage) => void;
   setMessages: React.Dispatch<React.SetStateAction<MessageObj[]>>;
+  salesInfo: ChatListProps['salesInfo'];
 }
 
-export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
+export const ChatBar = ({
+  sendMessage,
+  setMessages,
+  messages,
+  salesInfo,
+}: ChatBarProps) => {
+  const { isLoggedIn, userInfo } = useContext(UserContext);
+  const { memberIdx, loginId, imgUrl } = userInfo;
+  const { itemIdx: itemIdxStr, memberIdx: memberIdxStr } = useParams();
+
   const uploadBubble = () => {
     if (value === '') return;
+    const message = {
+      prompt: value,
+      action: 'message',
+    };
     sendMessage({ prompt: value, action: 'message' });
+    if (itemIdxStr && memberIdxStr && messages.length === 0) {
+      const itemIdx = parseInt(itemIdxStr);
+      const memberIdx = parseInt(memberIdxStr);
+      const chatList: ChatListProps = {
+        itemIdx,
+        user: {
+          memberIdx,
+          imgUrl,
+          name: loginId,
+        },
+        timestamp: new Date(),
+        unreadChat: 0,
+        salesInfo,
+        messages: [{ message: value, type: 'mine' }],
+      };
+      setChatInfo(chatList);
+    }
     setValue('');
   };
 
