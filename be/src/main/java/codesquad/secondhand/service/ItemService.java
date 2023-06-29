@@ -141,8 +141,7 @@ public class ItemService {
 		} else {
 			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		}
-		log.info("맴바" + memberIdx.toString());
-		log.info("아아앙" + item.getSeller().getMemberIdx().toString());
+
 		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
 			itemRepository.delete(item);
 		} else {
