@@ -122,12 +122,12 @@ export const SignUpPage = () => {
       body: signUpData,
     });
 
+    const data = await response.json();
+    console.log(data);
     if (!response.ok) {
-      const data = await response.json();
       throw new Error(data.message);
     }
 
-    const data = await response.json();
     return data;
   };
 
@@ -149,7 +149,6 @@ export const SignUpPage = () => {
     } catch (error) {
       setErrorMessage((error as Error).message);
       setDialogOpen(true);
-      console.log(error); // TODO: 삭제
     }
   };
 
