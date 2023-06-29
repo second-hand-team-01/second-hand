@@ -9,7 +9,6 @@ import {
   WriteItemDetails,
   ItemStatus,
   APISalesItem,
-  APIStatusReqBody,
 } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 
@@ -196,7 +195,7 @@ export const postItemsAPI = async (body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images?.forEach((image, i) => {
+  convertedBody.images?.forEach((image) => {
     formData.append(`image`, image);
   });
 

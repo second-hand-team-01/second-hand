@@ -1,6 +1,4 @@
-import { Button, Layout, NavbarBtn, Portal } from '@commons/index';
 import * as S from './CategoryElementStyle';
-import { useEffect } from 'react';
 import { Category } from '@type-store/services/category';
 
 interface CategoryPopupProps {

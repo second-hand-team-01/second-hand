@@ -4,12 +4,12 @@ export interface Bubble {
   bubbleIdx: number;
 }
 
-export interface Message {
-  action: string;
+export interface SendMessage {
   prompt: string;
+  action: 'message';
 }
 
-export interface ReceivedMessage {
+export interface MessageObj {
   message: string;
   type?: 'mine' | 'opponent';
 }

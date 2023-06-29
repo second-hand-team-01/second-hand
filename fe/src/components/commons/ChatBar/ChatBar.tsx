@@ -1,15 +1,12 @@
 import { Button, Dialog, TextInput } from '@commons/index';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import {
-  Bubble as BubbleType,
-  ReceivedMessage,
-} from '@type-store/services/chat';
+import { MessageObj, SendMessage } from '@type-store/services/chat';
 
 interface ChatBarProps {
-  sendMessage: any;
-  setMessages: React.Dispatch<React.SetStateAction<ReceivedMessage[]>>;
+  sendMessage: (message: SendMessage) => void;
+  setMessages: React.Dispatch<React.SetStateAction<MessageObj[]>>;
 }
 
 export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
@@ -52,7 +49,7 @@ export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
     const message = {
       message: value,
       type: 'mine',
-    } as ReceivedMessage;
+    } as MessageObj;
     setMessages((messages) => [...messages, message]);
     updateChatCount();
   };
@@ -70,7 +67,7 @@ export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
       const message = {
         message: value,
         type: 'mine',
-      } as ReceivedMessage;
+      } as MessageObj;
       setMessages((messages) => [...messages, message]);
       updateChatCount();
     }

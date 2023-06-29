@@ -1,7 +1,6 @@
 import * as S from './FilterBarStyle';
 import { Button, Dropdown } from '@commons/index';
 import { Category } from '@type-store/services/category';
-import { useState } from 'react';
 
 export interface FilterBarProps {
   region?: string;
@@ -14,7 +13,6 @@ export interface FilterBarProps {
 
 export const FilterBar = ({
   region = '',
-  handleRegionBtnClick,
   handleFilterBtnClick,
   selectedCategory,
   handleDeleteBtn,

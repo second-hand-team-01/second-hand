@@ -1,6 +1,5 @@
-import { Button, Layout, NavbarBtn, Portal, Error } from '@commons/index';
+import { Button, Layout, Portal, Error } from '@commons/index';
 import * as S from './CategoryPopupStyle';
-import { useEffect } from 'react';
 import { CategoryElement } from './CategoryElement/CategoryElement';
 import { Category } from '@type-store/services/category';
 
@@ -16,7 +15,6 @@ interface CategoryPopupProps {
 
 export const CategoryPopup = ({
   categoryState,
-  categoryFetch,
   categoryPopupOpenState,
   selectCategoryIdx,
 }: CategoryPopupProps) => {
