@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemDetailReturnDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.service.ItemService;
@@ -44,7 +45,7 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
-	@GetMapping("/{categoryIdx}")
+	@GetMapping("/category/{categoryIdx}")
 	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
 		@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
@@ -55,19 +56,22 @@ public class ItemController {
 
 	@PostMapping
 	public ResponseDto<ItemIdxDto> addItem(HttpServletRequest httpServletRequest,
-		@ModelAttribute ItemDetailDto itemDetailDto) {
+		ItemDetailDto itemDetailDto) {
 		log.info("addItem call" + itemDetailDto);
 		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		log.info(memberIdx.toString());
 		itemDetailDto.setSellerIdx(memberIdx);
 		ItemIdxDto itemIdxDto = itemService.creatItem(itemDetailDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
-	// @GetMapping
-	// // TODO: 조회수
-	// public ResponseDto<ItemDto> showItemDetail(ItemIdxDto itemIdxDto) {
-	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
-	// }
+	@GetMapping("/{itemIdx}")
+	public ResponseDto<ItemDetailReturnDto> showItemDetail(HttpServletRequest httpServletRequest,
+		ItemIdxDto itemIdxDto) {
+		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest,
+			itemIdxDto.getItemIdx());
+		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
+	}
 
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {

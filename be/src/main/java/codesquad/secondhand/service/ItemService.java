@@ -3,15 +3,20 @@ package codesquad.secondhand.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemDetailReturnDto;
 import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
+import codesquad.secondhand.dto.item.SellerDto;
 import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.entity.Item;
 import codesquad.secondhand.entity.ItemImage;
@@ -91,4 +96,30 @@ public class ItemService {
 		return new ItemIdxDto(item.getItemIdx());
 	}
 
+	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
+		Item item = itemRepository.findById(itemIdx)
+			.orElseThrow();
+		Long memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+
+		int view;
+		if (!memberIdx.equals(item.getSeller().getMemberIdx())) {
+			view = item.getView();
+			item.setView(++view);
+		}
+
+		int chatRooms = interestRepository.countByItem(item);
+		int interest = chatRoomRepository.countByItem(item);
+		boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
+
+		SellerDto sellerDto = SellerDto.to(memberRepository.findByMemberIdx(item.getSeller().getMemberIdx())
+			.orElseThrow());
+		CategoryWithoutImageDto categoryWithoutImageDto = CategoryWithoutImageDto.of(
+			categoryRepository.findById(item.getCategory().getCategoryIdx())
+				.orElseThrow());
+		List<String> imageUrl = itemImageRepository.findAllByItemItemIdx(itemIdx).stream()
+			.map(ItemImage::getImageUrl).collect(Collectors.toList());
+
+		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
+			imageUrl);
+	}
 }

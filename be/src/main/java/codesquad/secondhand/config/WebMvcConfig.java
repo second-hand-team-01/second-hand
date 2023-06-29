@@ -23,6 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addPathPatterns(
 				"/api/info",
 				"/api/location",
+				"/api/items/*",
 				"/api/items",
 				"/api/members/items",
 				"/api/members/interest",

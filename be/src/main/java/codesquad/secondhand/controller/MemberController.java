@@ -93,7 +93,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/members/items")
-	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam(required = true) String status,
+	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam String status,
 		@RequestParam(defaultValue = "0") int page,
 		HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
