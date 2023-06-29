@@ -46,11 +46,25 @@ struct AccountInfoNetworkManager {
 //            return nil
 //        }
 //        do {
-//            let (url, response) = try await session.download(from: imageURL)
-//            
-//            
-//        } catch {
-//            
+//            let (url, urlResponse) = try await session.download(from: imageURL)
+//
+//            guard let response = urlResponse as? HTTPURLResponse else {
+//                LogManger.generate(level: .info, NetworkError.badResponse.message)
+//                throw NetworkError.badResponse
+//            }
+//
+//            guard (200..<300).contains(response.statusCode) else {
+//                let statusCode = response.statusCode
+//                LogManger.generate(level: .info, NetworkError.badStatusCode(statusCode).message)
+//                throw NetworkError.badStatusCode(response.statusCode)
+//            }
+//
+//            return try decoder.decode(MemberInfoDTO.self, from: data)
+//        } catch let error {
+//            if let decodingError = error as? DecodingError {
+//                LogManger.generate(level: .info, "\(decodingError)")
+//            }
+//            return nil
 //        }
 //    }
 }

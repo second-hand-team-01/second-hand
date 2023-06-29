@@ -12,7 +12,7 @@ struct LoginNetworkManager {
         case signIn = "login"
         case signOut = "signup"
     }
-    
+
     private var decoder = JSONDecoder()
     private var session = URLSession.shared
     
@@ -45,7 +45,7 @@ struct LoginNetworkManager {
         
         switch type {
         case .githubSignIn:
-            break
+            request.httpMethod = "GET"
         default:
             request.httpMethod = "POST"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
