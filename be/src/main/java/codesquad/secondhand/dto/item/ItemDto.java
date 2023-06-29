@@ -1,12 +1,8 @@
 package codesquad.secondhand.dto.item;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.entity.Item;
-import codesquad.secondhand.entity.ItemImage;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

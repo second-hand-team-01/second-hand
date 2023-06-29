@@ -58,7 +58,7 @@ public class Item {
 	private ItemImage itemImage;
 
 	@LastModifiedDate
-	@Column(name = "posted_at", nullable = true)
+	@Column(name = "posted_at")
 	private LocalDateTime postedAt;
 
 	@Column(name = "name", nullable = false)

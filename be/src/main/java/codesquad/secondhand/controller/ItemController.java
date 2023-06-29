@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import codesquad.secondhand.dto.ResponseDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
 import codesquad.secondhand.dto.item.ItemDetailReturnDto;
-import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
 import codesquad.secondhand.service.ItemService;
@@ -67,7 +65,8 @@ public class ItemController {
 	@GetMapping("/{itemIdx}")
 	public ResponseDto<ItemDetailReturnDto> showItemDetail(HttpServletRequest httpServletRequest,
 		ItemIdxDto itemIdxDto) {
-		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest, itemIdxDto.getItemIdx());
+		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest,
+			itemIdxDto.getItemIdx());
 		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
 	}
 

@@ -1,6 +1,5 @@
 package codesquad.secondhand.dto.oauth;
 
-import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
