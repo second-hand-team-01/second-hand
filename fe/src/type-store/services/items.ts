@@ -39,7 +39,7 @@ export interface APIStatusReqBody {
 }
 
 export interface APIItemReqBody {
-  title: string;
+  name: string;
   price: string;
   description: string;
   locationIdx: string;

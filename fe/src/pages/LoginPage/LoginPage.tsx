@@ -1,10 +1,16 @@
 import { useState, useReducer, useEffect, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as S from './LoginPageStyle';
-import { Button, TextInput, Profile, Layout } from '@components/commons';
+import {
+  Button,
+  TextInput,
+  Profile,
+  Layout,
+  Dialog,
+} from '@components/commons';
 import { UserContext } from '@stores/UserContext';
 import { OAUTH_CLIENT_ID } from '@constants/login';
-import { URL } from '@constants/apis';
+import { URL, API_URL } from '@constants/apis';
 
 const checkIdValidity = (id: string): boolean => {
   const regex = /^[a-zA-Z0-9]+$/;
@@ -67,6 +73,8 @@ export const LoginPage = () => {
   const navigate = useNavigate();
 
   const [formIsValid, setFormIsValid] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const initialIdState = { value: '', isValid: null };
   const initialPasswordState = { value: '', isValid: null };
@@ -109,11 +117,32 @@ export const LoginPage = () => {
     dispatchPassword({ type: 'INPUT_BLUR', val: passwordState.value });
   };
 
+  const authenticateUser = async (
+    id: string | number,
+    password: string | number
+  ) => {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      body: JSON.stringify({ loginId: id, password: password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data);
+    }
+
+    return data;
+  };
   // TODO: post 요청, 성공시 localStorage에 token 저장
-  const loginBtnHandler = () => {
-    // 비동기 요청하고 성공하면 loginHandler() 호출
-    loginHandler();
-    navigate('/');
+  const loginBtnHandler = async () => {
+    try {
+      const data = await authenticateUser(enteredId, enteredPassword);
+      loginHandler(data.token, data.memberInfo);
+      navigate('/');
+    } catch (error) {
+      console.error(error); // 원하는 에러 처리 방식으로 수정
+    }
   };
 
   // TODO: 로그아웃 요청, 성공시 localStorage에 저장된 token 삭제
@@ -135,79 +164,93 @@ export const LoginPage = () => {
   };
 
   return (
-    <Layout
-      headerOption={{
-        type: 'nav',
-        navbarOptions: {
-          title: '내 계정',
-        },
-      }}
-      footerOption={{ type: 'tab' }}
-    >
-      <S.LoginPage>
-        {!isLoggedIn && (
-          <S.InputSection>
-            <TextInput
-              shape="large"
-              value={enteredId}
-              placeholder="아이디를 입력하세요"
-              label="아이디"
-              onChange={idChangeHandler}
-              onBlur={validateId}
-            />
-            <TextInput
-              type="password"
-              shape="large"
-              value={enteredPassword}
-              placeholder="비밀번호를 입력하세요"
-              label="비밀번호"
-              onChange={passwordChangeHandler}
-              onBlur={validatePassword}
-            />
-          </S.InputSection>
-        )}
-        {isLoggedIn && (
-          <S.ProfileSection>
-            <Profile
-              imgUrl={userInfo.imgUrl ? userInfo.imgUrl : ''}
-              size={130}
-              isEditable={true}
-            />
-            <S.UserId>{userInfo.loginId}</S.UserId>
-          </S.ProfileSection>
-        )}
-        {!isLoggedIn && (
-          <S.LoginButtonSection>
-            <Button
-              title="로그인"
-              state={formIsValid ? 'active' : 'disabled'}
-              onClick={loginBtnHandler}
-            />
-            <Button
-              title="Github 계정으로 로그인"
-              state="active"
-              backgroundColor="neutralText"
-              onClick={githubLoginBtnHandler}
-            />
-            <Button
-              title="회원가입"
-              shape="small"
-              state="default"
-              onClick={signUpBtnHandler}
-            />
-          </S.LoginButtonSection>
-        )}
-        {isLoggedIn && (
-          <S.LoginButtonSection>
-            <Button
-              title="로그아웃"
-              state="active"
-              onClick={logoutBtnHandler}
-            />
-          </S.LoginButtonSection>
-        )}
-      </S.LoginPage>
-    </Layout>
+    <>
+      <Layout
+        headerOption={{
+          type: 'nav',
+          navbarOptions: {
+            title: '내 계정',
+          },
+        }}
+        footerOption={{ type: 'tab' }}
+      >
+        <S.LoginPage>
+          {!isLoggedIn && (
+            <S.InputSection>
+              <TextInput
+                shape="large"
+                value={enteredId}
+                placeholder="아이디를 입력하세요"
+                label="아이디"
+                onChange={idChangeHandler}
+                onBlur={validateId}
+              />
+              <TextInput
+                type="password"
+                shape="large"
+                value={enteredPassword}
+                placeholder="비밀번호를 입력하세요"
+                label="비밀번호"
+                onChange={passwordChangeHandler}
+                onBlur={validatePassword}
+              />
+            </S.InputSection>
+          )}
+          {isLoggedIn && (
+            <S.ProfileSection>
+              <Profile
+                imgUrl={userInfo.imgUrl ? userInfo.imgUrl : ''}
+                size={130}
+                isEditable={true}
+              />
+              <S.UserId>{userInfo.loginId}</S.UserId>
+            </S.ProfileSection>
+          )}
+          {!isLoggedIn && (
+            <S.LoginButtonSection>
+              <Button
+                title="로그인"
+                state={formIsValid ? 'active' : 'disabled'}
+                onClick={loginBtnHandler}
+              />
+              <Button
+                title="Github 계정으로 로그인"
+                state="active"
+                backgroundColor="neutralText"
+                onClick={githubLoginBtnHandler}
+              />
+              <Button
+                title="회원가입"
+                shape="small"
+                state="default"
+                onClick={signUpBtnHandler}
+              />
+            </S.LoginButtonSection>
+          )}
+          {isLoggedIn && (
+            <S.LoginButtonSection>
+              <Button
+                title="로그아웃"
+                state="active"
+                onClick={logoutBtnHandler}
+              />
+            </S.LoginButtonSection>
+          )}
+        </S.LoginPage>
+      </Layout>
+      <Dialog
+        isOpen={isDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: () => setDialogOpen(false),
+          },
+        }}
+        handleBackDropClick={() => setDialogOpen(false)}
+      >
+        {errorMessage}
+      </Dialog>
+    </>
   );
 };
 

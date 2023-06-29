@@ -173,7 +173,7 @@ const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
   const imageFiles = images.map((image) => image.file) as File[] | null;
 
   const newItem: APIItemReqBody = {
-    title,
+    name: title,
     price: price === null ? '0' : price.toString(),
     description: contents,
     locationIdx: locationIdx
