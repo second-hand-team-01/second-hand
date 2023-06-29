@@ -96,7 +96,10 @@ export const UserContextProvider = ({ children }) => {
       JSON.stringify(userInfo) === JSON.stringify(initialUserInfo);
     if (isInitial) {
       const userInfo = localStorage.getItem(USER_INFO_KEY);
-      if (!userInfo || !JSON.parse(userInfo)) return; // 로그아웃
+      console.log(userInfo);
+
+      if (!userInfo || userInfo === 'undefined' || !JSON.parse(userInfo))
+        return; // 로그아웃
       dispatch({ type: 'SET_USER', payload: JSON.parse(userInfo) });
     }
   }, [userInfo]);
