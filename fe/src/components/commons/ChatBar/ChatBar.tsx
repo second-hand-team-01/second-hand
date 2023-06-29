@@ -2,19 +2,20 @@ import { Button, TextInput } from '@commons/index';
 import { ChangeEvent } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import { Bubble as BubbleType } from '@type-store/services/chat';
+import {
+  Bubble as BubbleType,
+  ReceivedMessage,
+} from '@type-store/services/chat';
 
 interface ChatBarProps {
-  setBubbles: React.Dispatch<React.SetStateAction<BubbleType[]>>;
+  sendMessage: any;
+  setMessages: React.Dispatch<React.SetStateAction<ReceivedMessage[]>>;
 }
 
-export const ChatBar = ({ setBubbles }: ChatBarProps) => {
+export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
   const uploadBubble = () => {
     if (value === '') return;
-    setBubbles((bubble) => [
-      ...bubble,
-      { type: 'mine', text: value, bubbleIdx: 0 },
-    ]);
+    sendMessage({ prompt: value, action: 'message' });
     setValue('');
   };
 
@@ -27,6 +28,11 @@ export const ChatBar = ({ setBubbles }: ChatBarProps) => {
   const handleEnterKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (e.nativeEvent.isComposing) return;
+      const message = {
+        message: value,
+        type: 'mine',
+      } as ReceivedMessage;
+      setMessages((messages) => [...messages, message]);
       uploadBubble();
     }
   };
