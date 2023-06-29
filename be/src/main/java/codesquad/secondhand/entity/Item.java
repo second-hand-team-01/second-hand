@@ -22,6 +22,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Item {
 
@@ -56,7 +58,7 @@ public class Item {
 	private ItemImage itemImage;
 
 	@LastModifiedDate
-	@Column(name = "posted_at", nullable = true)
+	@Column(name = "posted_at")
 	private LocalDateTime postedAt;
 
 	@Column(name = "name", nullable = false)
@@ -68,6 +70,7 @@ public class Item {
 	@Column(name = "price", nullable = false)
 	private Integer price;
 
+	@Setter
 	@Column(name = "view", nullable = false)
 	private Integer view;
 
@@ -94,5 +97,24 @@ public class Item {
 		this.price = price;
 		this.view = view;
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "Item{" +
+			"itemIdx=" + itemIdx +
+			", seller=" + seller +
+			", category=" + category +
+			", location=" + location +
+			", itemImage=" + itemImage +
+			", postedAt=" + postedAt +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", price=" + price +
+			", view=" + view +
+			", status='" + status + '\'' +
+			", itemImages=" + itemImages +
+			", interests=" + interests +
+			'}';
 	}
 }
