@@ -70,7 +70,8 @@ public class MemberService {
 
 		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).get();
 		Location sub = null;
-		log.info("[MemberService] signUp signupRequestDto.getSubLocationIdx(): {}", signUpRequestDto.getSubLocationIdx());
+		log.info("[MemberService] signUp signupRequestDto.getSubLocationIdx(): {}",
+			signUpRequestDto.getSubLocationIdx());
 		if (signUpRequestDto.getSubLocationIdx() != null) {
 			sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
 		}
