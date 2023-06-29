@@ -14,17 +14,14 @@ export const getAllChatRooms = (): {
 };
 
 export const getItemChatRooms = (
-  itemIdx: number,
-  memberIdx: number
+  itemIdx: number
 ): { error: Error | null; data: ChatRoom[] | null } => {
   const { data: chatRooms } = getAllChatRooms();
   if (!chatRooms) {
     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
   }
   const targetChatRoom = chatRooms.filter((chatroom) => {
-    return (
-      chatroom.itemIdx === itemIdx && chatroom.user.memberIdx === memberIdx
-    );
+    return chatroom.itemIdx === itemIdx;
   });
   if (!targetChatRoom) {
     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
@@ -40,11 +37,14 @@ export const getOneChatRoom = (
   if (!chatRooms) {
     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
   }
-  const targetChatRoom = chatRooms.find((chatroom) => {
+  const targetChatRoom = chatRooms.find((chatroom, i) => {
+    console.log(chatroom.user.memberIdx, memberIdx);
+
     return (
       chatroom.itemIdx === itemIdx && chatroom.user.memberIdx === memberIdx
     );
   });
+  console.log(targetChatRoom);
   if (!targetChatRoom) {
     return {
       error: new Error('요청하신 채팅 목록이 존재하지 않습니다.'),
@@ -73,6 +73,13 @@ export const saveMessagesToStorage = (
   localStorage.setItem(chatStorageKey, newChatRooms);
 };
 
-export const initChatInfo = (chatroom: ChatRoom) => {
-  localStorage.setItem(chatStorageKey, JSON.stringify([chatroom]));
+export const initChatRoomToLocalStorage = (chatroom: ChatRoom) => {
+  const prevChatRoomStr = localStorage.getItem(chatStorageKey);
+  if (!prevChatRoomStr) {
+    localStorage.setItem(chatStorageKey, JSON.stringify([chatroom]));
+    return;
+  }
+  const prevChatRoom = JSON.parse(prevChatRoomStr);
+  const newChatRooms = [chatroom, ...prevChatRoom];
+  localStorage.setItem(chatStorageKey, JSON.stringify(newChatRooms));
 };

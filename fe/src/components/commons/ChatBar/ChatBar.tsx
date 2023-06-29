@@ -6,7 +6,7 @@ import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
 import {
   getOneChatRoom,
   saveMessagesToStorage,
-  initChatInfo,
+  initChatRoomToLocalStorage,
 } from '@services/chats/chat';
 import { useLocation, useParams } from 'react-router-dom';
 import { UserContext } from '@stores/UserContext';
@@ -39,9 +39,10 @@ export const ChatBar = ({
   const { state } = useLocation();
 
   useEffect(() => {
-    const { data: prevChatroom } = getOneChatRoom(
-      Number(itemIdxStr),
-      Number(sellerIdxStr)
+    if (!itemIdxStr || !sellerIdxStr) return;
+    const { data: prevChatroom, error } = getOneChatRoom(
+      parseInt(itemIdxStr),
+      parseInt(sellerIdxStr)
     );
 
     if (!prevChatroom) {
@@ -52,7 +53,7 @@ export const ChatBar = ({
 
   const initChatRoom = (initialChatRoom: ChatRoom) => {
     setChatroom(initialChatRoom);
-    initChatInfo(initialChatRoom);
+    initChatRoomToLocalStorage(initialChatRoom);
   };
 
   const saveMessageToChatRoom = (messages: MessageObj[]) => {
@@ -63,10 +64,7 @@ export const ChatBar = ({
   const uploadBubble = () => {
     if (value === '') return;
     sendMessage({ prompt: value, action: 'message' });
-    const messageObj = {
-      message: value,
-      type: 'mine',
-    } as MessageObj;
+    console.log(chatroom);
 
     if (!chatroom) {
       const initialChatRoom: ChatRoom = {
@@ -85,12 +83,6 @@ export const ChatBar = ({
   useEffect(() => {
     if (!chatroom) return;
 
-    const newMessage = messages[messages.length - 1];
-    console.log(newMessage);
-    const messageOjb: MessageObj = {
-      message: newMessage.message,
-      type: newMessage.type,
-    };
     saveMessageToChatRoom(messages);
     saveMessagesToStorage(chatroom, messages);
   }, [messages]);

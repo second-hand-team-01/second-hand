@@ -69,7 +69,7 @@ export const DetailsPage = () => {
     if (isWriter) {
       return navigate(`/chat/${itemIdx}`);
     }
-    navigate(`/chat/${itemIdx}/0`, {
+    navigate(`/chat/${itemIdx}/${details?.seller.memberIdx}`, {
       state: {
         user: {
           memberIdx: details?.seller.memberIdx,

@@ -14,7 +14,7 @@ import {
 } from '@services/chats/chat';
 
 export const ChatPage = () => {
-  const [chatRooms, setChatList] = useState<ChatRoom[]>([]);
+  const [chatRooms, setChatRoom] = useState<ChatRoom[]>([]);
   const { itemIdx: itemIdxStr } = useParams();
   const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
   const { memberIdx, imgUrl } = userInfo;
@@ -23,20 +23,19 @@ export const ChatPage = () => {
     let itemIdx: number | null = null;
     if (itemIdxStr && memberIdx) {
       const { error, data } = getItemChatRooms(
-        (itemIdx = parseInt(itemIdxStr)),
-        memberIdx
+        (itemIdx = parseInt(itemIdxStr))
       );
       if (error && !data) {
         return;
       }
-      data && setChatList(data);
+      data && setChatRoom(data);
       return;
     }
     const { error, data } = getAllChatRooms();
     if (error || !data) {
       return;
     }
-    setChatList(data);
+    setChatRoom(data);
   }, [itemIdxStr, userInfo]);
 
   const renderComps = () => {
@@ -52,14 +51,10 @@ export const ChatPage = () => {
       return <Error>채팅 중인 대화방이 없습니다.</Error>;
     }
 
-    return chatRooms && chatRooms.length !== 0 ? (
-      chatRooms.map((chatroom) => {
-        const { user } = chatroom;
-        return <ChatList key={user.memberIdx} {...chatroom}></ChatList>;
-      })
-    ) : (
-      <></>
-    );
+    return chatRooms.map((chatroom) => {
+      const { user } = chatroom;
+      return <ChatList key={user.memberIdx} {...chatroom}></ChatList>;
+    });
   };
 
   return (
