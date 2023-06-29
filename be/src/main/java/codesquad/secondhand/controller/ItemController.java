@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -95,8 +96,14 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 
-	// @PatchMapping
-	// public ResponseDto<ItemSliceDto> editItemDetail() {
-	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
-	// }
+	@PutMapping("/{itemIdx}")
+	public ResponseDto<ItemDetailReturnDto> editItem(HttpServletRequest request,
+		@ModelAttribute ItemDetailDto itemDetailDto,
+		@PathVariable Long itemIdx) {
+		Long memberIdx = (Long)request.getAttribute("memberIdx");
+		log.info("memberIdx: {}", memberIdx);
+		itemService.editItem(memberIdx, itemIdx, itemDetailDto);
+
+		return ResponseDto.of(RESPONSE_SUCCESS, null);
+	}
 }

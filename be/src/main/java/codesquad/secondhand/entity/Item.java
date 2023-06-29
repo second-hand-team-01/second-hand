@@ -99,6 +99,30 @@ public class Item {
 		this.status = status;
 	}
 
+	// Item 클래스
+	public void updateItem(Member seller, Category category, Location location, String name, String description, Integer price, String status) {
+		this.seller = seller;
+		if (category != null) {
+			this.category = category;
+		}
+		if (location != null) {
+			this.location = location;
+		}
+		if (name != null) {
+			this.name = name;
+		}
+		if (description != null) {
+			this.description = description;
+		}
+		if (price != null) {
+			this.price = price;
+		}
+		if (status != null) {
+			this.status = status;
+		}
+	}
+
+
 	@Override
 	public String toString() {
 		return "Item{" +
