@@ -28,15 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/items")
 public class ItemController {
+	public static final int START_PAGE = 0;
 	public static final int END_PAGE = 10;
 	private final ItemService itemService;
 
 	@GetMapping
-	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx,
-		@RequestParam(defaultValue = "0") int page) {
+	public ResponseDto<ItemSliceDto> showItems(HttpServletRequest request, @RequestParam Long locationIdx) {
 		log.info("[ItemController.showItems()]");
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		Pageable pageable = PageRequest.of(page, END_PAGE);
+		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
 		if (memberIdx == null) { // 로그인 하지 않은 사용자 분기 처리
 			locationIdx = 1L;
 		}
@@ -44,10 +44,9 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
-	@GetMapping("/{categoryIdx}")
-	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
-		@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = PageRequest.of(page, END_PAGE);
+	@GetMapping("/category/{categoryIdx}")
+	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx) {
+		Pageable pageable = PageRequest.of(START_PAGE, END_PAGE);
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
@@ -63,11 +62,13 @@ public class ItemController {
 		return ResponseDto.of(RESPONSE_SUCCESS, itemIdxDto);
 	}
 
-	// @GetMapping
-	// // TODO: 조회수
-	// public ResponseDto<ItemDto> showItemDetail(ItemIdxDto itemIdxDto) {
-	// 	return ResponseDto.of(RESPONSE_SUCCESS, null);
-	// }
+	@GetMapping("/{itemIdx}")
+	// TODO: 조회수
+	public ResponseDto<ItemDto> showItemDetail(HttpServletRequest httpServletRequest,
+		ItemIdxDto itemIdxDto) {
+		ItemDto itemDto = itemService.showItemDetail(httpServletRequest, itemIdxDto.getItemIdx());
+		return ResponseDto.of(RESPONSE_SUCCESS, itemDto);
+	}
 
 	// @PatchMapping
 	// public ResponseDto<ItemSliceDto> editItemDetail() {

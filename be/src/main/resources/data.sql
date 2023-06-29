@@ -10,12 +10,12 @@ VALUES ('서울', '강남구', '역삼1동'),
 
 -- member 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`member` (`main_location_idx`, `sub_location_idx`, `login_id`, `password`, `image_url`)
-VALUES (1, 2, 'snoop', "12345", 'www.profileimgurl1.com'),
-       (2, 3, 'poco', "12345", NULL),
-       (4, NULL, 'roy', "12345", 'www.profileimgurl2.com'),
-       (1, 5, 'gomungnam', "12345", NULL),
-       (3, 5, 'sol', "12345", 'www.profileimgurl3.com'),
-       (5, 6, 'wood', "12345", 'www.profileimgurl4.com');
+VALUES (1, 2, 'snoop', 12345, 'www.profileimgurl1.com'),
+       (2, 3, 'poco', 12345, NULL),
+       (4, NULL, 'roy', 12345, 'www.profileimgurl2.com'),
+       (1, 5, 'gomungnam', 12345, NULL),
+       (3, 5, 'sol', 12345, 'www.profileimgurl3.com'),
+       (5, 6, 'wood', 12345, 'www.profileimgurl4.com');
 
 -- category 테이블 더미 데이터 추가
 INSERT INTO `second-hand`.`category` (`category_idx`, `name`, `image_url`)
@@ -245,7 +245,7 @@ VALUES (1, 1,
        (99, 99,
         'https://dnvefa72aowie.cloudfront.net/origin/article/202306/3712d04c7507170d95448c372a0ffe649d4d4398e5edae6f9994d8831e83494e.jpg?q=82&s=300x300&t=crop'),
        (100, 100,
-        'https://dnvefa72aowie.cloudfront.net/origin/article/202306/ef7420ad8c92655e136226b6488498f08f40c31b08d54b78d432d7678d472b94.jpg?q=82&s=300x300&t=crop')
+        'https://dnvefa72aowie.cloudfront.net/origin/article/202306/ef7420ad8c92655e136226b6488498f08f40c31b08d54b78d432d7678d472b94.jpg?q=82&s=300x300&t=crop');
 
 INSERT INTO `second-hand`.`item` (`seller_idx`, `category_idx`, `location_idx`, `main_image_idx`, `posted_at`, `name`,
                                   `description`, `price`, `view`, `status`)
