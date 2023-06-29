@@ -15,7 +15,7 @@ struct LoginResponseDTO: Codable {
     let data: ResponseData
 
     struct ResponseData: Codable {
-        let accessToken: String
+        let accessToken: String?
         let memeberInfo: MemberInfo?
     }
     

@@ -47,6 +47,7 @@ class LoginViewController: UIViewController {
         observeLogin()
         observeLoginByGithub()
         observeRegisterUser()
+        observeSceneDelegate()
     }
 }
 
@@ -120,15 +121,16 @@ extension LoginViewController {
         )
     }
     
-    @objc private func loginByGithub(_ notification: Notification) {
-        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03") else {
-            return
-        }
-        
-        if UIApplication.shared.canOpenURL(githubURL) {
-            UIApplication.shared.open(githubURL)
-        }
+    private func observeSceneDelegate() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(getAccessToken),
+            name: SceneDelegate.notification,
+            object: nil)
+    }
     
+    // TODO: - WKWebView 사용할지 말지 결정
+    @objc private func getAccessToken(_ notification: Notification) {
         Task {
             guard let response = await networkManager.request(type: .githubSignIn, data: "") else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
@@ -140,6 +142,16 @@ extension LoginViewController {
                 viewController,
                 animated: true
             )
+        }
+    }
+    
+    @objc private func loginByGithub(_ notification: Notification) {
+        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03") else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(githubURL) {
+            UIApplication.shared.open(githubURL)
         }
     }
     

@@ -43,8 +43,10 @@ struct LoginNetworkManager {
             return nil
         }
         
-        if let url = request.url,
-           url.absoluteString != RequestType.githubSignIn.rawValue {
+        switch type {
+        case .githubSignIn:
+            break
+        default:
             request.httpMethod = "POST"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             

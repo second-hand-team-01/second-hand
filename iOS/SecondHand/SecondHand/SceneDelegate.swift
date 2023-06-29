@@ -9,6 +9,8 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    static let notification = NSNotification.Name("DidGetAuthorizationCode")
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
@@ -28,6 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let code = String(url.absoluteString.split(separator: "=")[1])
             OAuth.code = code
             print(OAuth.code)
+            NotificationCenter.default.post(
+                name: SceneDelegate.notification,
+                object: nil
+            )
         }
     }
 }
