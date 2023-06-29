@@ -44,8 +44,10 @@ public class MemberController {
 
 	@PostMapping("/signup")
 	public ResponseDto<?> signUp(@ModelAttribute SignUpRequestDto signUpRequestDto) {
-		log.info("[MemberController] signup signUpRequestDto.getMainLocationIdx(): {}", signUpRequestDto.getMainLocationIdx());
-		log.info("[MemberController] signup signUpRequestDto.getSubLocationIdx(): {}", signUpRequestDto.getSubLocationIdx());
+		log.info("[MemberController] signup signUpRequestDto.getMainLocationIdx(): {}",
+			signUpRequestDto.getMainLocationIdx());
+		log.info("[MemberController] signup signUpRequestDto.getSubLocationIdx(): {}",
+			signUpRequestDto.getSubLocationIdx());
 		memberService.signUp(signUpRequestDto);
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
@@ -53,7 +55,8 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
 		MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
-		MemberIdxLoginIdImageDto memberIdxLoginIdImage = memberService.getMemberIdxLoginIdImage(memberIdxTokenDto.getMemberIdx());
+		MemberIdxLoginIdImageDto memberIdxLoginIdImage = memberService.getMemberIdxLoginIdImage(
+			memberIdxTokenDto.getMemberIdx());
 		String accessToken = memberIdxTokenDto.getToken();
 		return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginIdImage));
 	}
@@ -88,7 +91,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/members/items")
-	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam(required = true) String status,
+	public ResponseDto<ItemSliceDto> showSellingItems(@RequestParam String status,
 		@RequestParam(defaultValue = "0") int page,
 		HttpServletRequest request) {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
