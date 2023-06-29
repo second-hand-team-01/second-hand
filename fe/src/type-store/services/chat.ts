@@ -14,7 +14,7 @@ export interface MessageObj {
   type?: 'mine' | 'opponent';
 }
 
-export interface ChatListProps {
+export interface ChatRoom {
   itemIdx: number;
   user: { memberIdx: number; imgUrl: string; name: string };
   timestamp: Date;
@@ -26,5 +26,3 @@ export interface ChatListProps {
   };
   messages: MessageObj[];
 }
-
-export type ChatPostBody = ChatListProps[];

@@ -2,7 +2,7 @@ import { Profile } from '@components/commons';
 import * as S from './ChatListStyle';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { useNavigate } from 'react-router-dom';
-import { ChatListProps } from '@type-store/services/chat';
+import { ChatRoom } from '@type-store/services/chat';
 
 export const ChatList = ({
   itemIdx,
@@ -11,7 +11,7 @@ export const ChatList = ({
   timestamp,
   messages,
   salesInfo,
-}: ChatListProps) => {
+}: ChatRoom) => {
   const navigate = useNavigate();
   const hasChat = unreadChat !== 0;
   return (

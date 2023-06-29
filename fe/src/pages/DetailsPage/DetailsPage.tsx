@@ -69,7 +69,20 @@ export const DetailsPage = () => {
     if (isWriter) {
       return navigate(`/chat/${itemIdx}`);
     }
-    navigate(`/chat/${itemIdx}/0`);
+    navigate(`/chat/${itemIdx}/0`, {
+      state: {
+        user: {
+          memberIdx: details?.seller.memberId,
+          imgUrl: '',
+          name: details?.seller.memberId,
+        },
+        salesInfo: {
+          previewImg: details?.images[0],
+          price: details?.price,
+          title: details?.title,
+        },
+      },
+    });
   };
 
   const handleInterestBtn = async (e: React.MouseEvent) => {

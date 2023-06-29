@@ -4,10 +4,14 @@ import { ChatList } from './ChatList/ChatList';
 import { UserContext } from '@stores/UserContext';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { ChatListProps } from '@type-store/services/chat';
+import { ChatRoom } from '@type-store/services/chat';
 
 import { ERROR_MESSAGE } from '@constants/error';
-import { getItemChatFromStorage } from '@services/chats/chat';
+import {
+  getAllChatRooms,
+  getOneChatRoom,
+  getItemChatRooms,
+} from '@services/chats/chat';
 
 export const ChatPage = () => {
   // const chatList: ChatListProps[] = [
@@ -41,7 +45,7 @@ export const ChatPage = () => {
   //   },
   // ];
 
-  const [chatList, setChatList] = useState<ChatListProps[]>([]);
+  const [chatList, setChatList] = useState<ChatRoom[]>([]);
   const { itemIdx: itemIdxStr } = useParams();
   const { isLoggedIn, userInfo, loginId } = useContext(UserContext);
   const { memberIdx, imgUrl } = userInfo;
@@ -49,15 +53,14 @@ export const ChatPage = () => {
   useEffect(() => {
     let itemIdx: number | null = null;
     if (itemIdxStr && memberIdx) {
-      const { error, data } = getItemChatFromStorage(
+      const { error, data } = getItemChatRooms(
         (itemIdx = parseInt(itemIdxStr)),
         memberIdx
       );
-
       if (error && !data) {
         return;
       }
-      setChatList(data);
+      data && setChatList(data);
     }
   }, [itemIdxStr, userInfo]);
 

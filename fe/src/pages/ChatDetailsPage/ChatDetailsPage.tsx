@@ -2,10 +2,14 @@ import { Button, Layout, NavbarBtn, ChatBar, Menu } from '@components/commons';
 import * as S from './ChatDetailsPageStyle';
 import { convertNumToPrice } from '@utils/common/common';
 import { Bubble } from './Bubble/Bubble';
-import { Bubble as BubbleType, MessageObj } from '@type-store/services/chat';
+import {
+  Bubble as BubbleType,
+  ChatRoom,
+  MessageObj,
+} from '@type-store/services/chat';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { onChat } from '@hooks/useChat/useChat';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useChat } from '@hooks/useChat/useChat';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
@@ -21,13 +25,12 @@ const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
 export const ChatDetailsPage = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const { messages, setMessages, sendMessage } = onChat();
 
-  const salesInfo = {
-    previewImg: 'https://img-cf.kurly.com/shop/data/goods/1656498787170l0.jpg',
-    title: '화장품',
-    price: 1110101010101001,
-  };
+  const { messages, setMessages, sendMessage, chatroom, setChatroom } =
+    useChat();
+  const { state } = useLocation();
+
+  const salesInfo = state?.salesInfo;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +45,7 @@ export const ChatDetailsPage = () => {
       headerOption={{
         type: 'nav',
         navbarOptions: {
-          title: '스눕',
+          title: chatroom?.user?.name,
           leftBtn: <NavbarBtn path="back" text="뒤로"></NavbarBtn>,
           rightBtn: (
             <Button
@@ -59,10 +62,20 @@ export const ChatDetailsPage = () => {
         },
         bottomComp: (
           <S.HeaderBottomWrap>
-            <S.Preview src={salesInfo.previewImg}></S.Preview>
+            <S.Preview
+              src={
+                chatroom?.salesInfo?.previewImg ?? state?.salesInfo?.previewImg
+              }
+            ></S.Preview>
             <S.Contents>
-              <S.Title>{salesInfo.title}</S.Title>
-              <S.Price>{convertNumToPrice(salesInfo.price) + '원'}</S.Price>
+              <S.Title>
+                {chatroom?.salesInfo?.title ?? state?.salesInfo?.title}
+              </S.Title>
+              <S.Price>
+                {convertNumToPrice(
+                  chatroom?.salesInfo?.price ?? state?.salesInfo?.price ?? 0
+                ) + '원'}
+              </S.Price>
             </S.Contents>
           </S.HeaderBottomWrap>
         ),
@@ -74,6 +87,8 @@ export const ChatDetailsPage = () => {
             messages={messages}
             sendMessage={sendMessage}
             setMessages={setMessages}
+            chatroomState={[chatroom, setChatroom]}
+            user={state?.user}
           ></ChatBar>
         ),
       }}

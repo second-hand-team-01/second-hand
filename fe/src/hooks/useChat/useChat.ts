@@ -1,9 +1,14 @@
-import { MessageObj, SendMessage } from '@type-store/services/chat';
-import { useEffect, useState } from 'react';
+import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
+import React, { useEffect, useState } from 'react';
 
-export const onChat = () => {
+export const useChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<MessageObj[]>([]);
+  const [chatroom, setChatroom] = useState<ChatRoom | null>(null);
+
+  const isInternalError = (message: string) => {
+    return message === `Internal server error`;
+  };
 
   useEffect(() => {
     const webSocket = new WebSocket(
@@ -15,9 +20,9 @@ export const onChat = () => {
     };
 
     webSocket.onmessage = (ev) => {
-      const newMessage = JSON.parse(ev.data) as MessageObj;
-      if (newMessage.message === `Internal server error`) return;
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      const newMessageObj = JSON.parse(ev.data);
+      if (isInternalError(newMessageObj.message)) return;
+      setMessages((prevMessages) => [...prevMessages, newMessageObj]);
     };
 
     webSocket.onerror = (err) => {
@@ -41,5 +46,5 @@ export const onChat = () => {
     }
   };
 
-  return { messages, setMessages, sendMessage };
+  return { messages, setMessages, sendMessage, chatroom, setChatroom };
 };

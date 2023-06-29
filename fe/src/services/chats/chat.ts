@@ -1,78 +1,75 @@
 import { chatStorageKey } from '@constants/chat';
-import { ChatListProps, MessageObj } from '@type-store/services/chat';
+import { ChatRoom, MessageObj } from '@type-store/services/chat';
 
-export const getAllChatFromStorage = (): ChatListProps[] | null => {
+export const getAllChatRooms = (): {
+  error: Error | null;
+  data: ChatRoom[] | null;
+} => {
   const prevChatsStr = localStorage.getItem(chatStorageKey);
   let prevChats = {};
-  if (!prevChatsStr) return null;
+  if (!prevChatsStr)
+    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: [] };
   prevChats = JSON.parse(prevChatsStr);
-  return prevChats as ChatListProps[];
+  return { error: null, data: prevChats as ChatRoom[] };
 };
 
-export const getItemChatFromStorage = (
+export const getItemChatRooms = (
   itemIdx: number,
   memberIdx: number
-): { error: Error | null; data: ChatListProps[] } => {
-  const chatInfos = getAllChatFromStorage();
-  if (!chatInfos) {
-    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: [] };
+): { error: Error | null; data: ChatRoom[] | null } => {
+  const { data: chatRooms } = getAllChatRooms();
+  if (!chatRooms) {
+    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
   }
-  const filtered = chatInfos.filter((info) => {
-    return info.itemIdx === itemIdx && info.user.memberIdx === memberIdx;
+  const targetChatRoom = chatRooms.filter((chatroom) => {
+    return (
+      chatroom.itemIdx === itemIdx && chatroom.user.memberIdx === memberIdx
+    );
   });
-
-  return { error: null, data: filtered };
+  if (!targetChatRoom) {
+    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
+  }
+  return { error: null, data: targetChatRoom };
 };
 
-// export const getItemDetailFromStorage = (
-//   itemIdx: number,
-//   memberIdx: number
-// ): { error: Error | null; data: ChatDetailsProps | null } => {
-//   const chatInfos = getAllChatFromStorage();
-//   if (!chatInfos) {
-//     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
-//   }
-//   const targetInfoIdx = chatInfos.findIndex(
-//     (info) => info.itemIdx === itemIdx && info.memberIdx === memberIdx
-//   );
-//   return { error: null, data: chatInfos[targetInfoIdx] };
-// };
-
-// export const saveMessagesToStorage = (
-//   itemIdx: number,
-//   memberIdx: number,
-//   messageObj: MessageObj
-// ) => {
-//   const chatInfos = getAllChatFromStorage();
-//   if (!chatInfos) {
-//     return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
-//   }
-//   const targetInfoIdx = chatInfos.findIndex(
-//     (info) => info.itemIdx === itemIdx && info.memberIdx === memberIdx
-//   );
-//   const targetDetails = chatInfos[targetInfoIdx].details;
-//   const prevMessages = targetDetails.messages;
-//   chatInfos[targetInfoIdx].details.messages = [...prevMessages, messageObj];
-//   const chatInfosStr = String(chatInfos);
-//   localStorage.postItem(chatStorageKey, chatInfosStr);
-// };
-
-export const setChatInfo = (chatInfo: ChatListProps) => {
-  localStorage.setItem(chatStorageKey, JSON.stringify([chatInfo]));
+export const getOneChatRoom = (
+  itemIdx: number,
+  memberIdx: number
+): { error: Error | null; data: ChatRoom | null } => {
+  const { data: chatRooms } = getAllChatRooms();
+  if (!chatRooms) {
+    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
+  }
+  const targetChatRoom = chatRooms.find((chatroom) => {
+    return (
+      chatroom.itemIdx === itemIdx && chatroom.user.memberIdx === memberIdx
+    );
+  });
+  if (!targetChatRoom) {
+    return { error: new Error('채팅 목록이 존재하지 않습니다.'), data: null };
+  }
+  return { error: null, data: targetChatRoom };
 };
 
-// export const startNewChatsToStorage = (newChatInfo: ChatInfo) => {
-//   const prevChatInfos = getAllChatFromStorage();
-//   if (!prevChatInfos) {
-//     const newChatInfos = [newChatInfo];
-//     const newChatInfoStr = JSON.stringify(newChatInfos);
-//     localStorage.postItem(chatStorageKey, newChatInfoStr);
-//     return;
-//   }
-//   const hasChat = prevChatInfos.length !== 0;
-//   const newChatInfos = hasChat
-//     ? [...prevChatInfos, newChatInfo]
-//     : [newChatInfo];
-//   const newChatInfoStr = JSON.stringify(newChatInfos);
-//   localStorage.postItem(chatStorageKey, newChatInfoStr);
-// };
+export const saveMessagesToStorage = (
+  chatroom: ChatRoom,
+  messageObjs: MessageObj[]
+) => {
+  const newChatRoom = { ...chatroom };
+  newChatRoom.messages = messageObjs;
+  const prevChatRoomsStr = localStorage.getItem(chatStorageKey);
+  if (!prevChatRoomsStr) return;
+  const prevChatRooms = JSON.parse(prevChatRoomsStr);
+  const targetIdx = prevChatRooms.findIndex(
+    (prvChatroom: ChatRoom) =>
+      prvChatroom.itemIdx === chatroom.itemIdx &&
+      prvChatroom.user.memberIdx === chatroom.user.memberIdx
+  );
+  prevChatRooms[targetIdx] = newChatRoom;
+  const newChatRooms = JSON.stringify(prevChatRooms);
+  localStorage.setItem(chatStorageKey, newChatRooms);
+};
+
+export const initChatInfo = (chatroom: ChatRoom) => {
+  localStorage.setItem(chatStorageKey, JSON.stringify([chatroom]));
+};
