@@ -11,7 +11,7 @@ import {
   Dialog,
 } from '@components/commons';
 import * as S from './SignUpPageStyle';
-import { getLocationData } from '@services/locations/locations';
+import { getAllLocationData } from '@services/locations/locations';
 import { LocationDataType } from '@type-store/services/signUp';
 import { API_URL } from '@constants/apis';
 
@@ -140,8 +140,9 @@ export const SignUpPage = () => {
     formData.append('mainLocationIdx', mainLocation.locationIdx.toString());
     formData.append(
       'subLocationIdx',
-      subLocation.locationIdx ? subLocation.locationIdx.toString() : null
+      subLocation.locationIdx ? subLocation.locationIdx.toString() : ''
     );
+
     try {
       await signUpUser(formData);
       navigate('/profile');
@@ -170,22 +171,29 @@ export const SignUpPage = () => {
   const locationState = hasSelectedLocation(userInfo);
 
   useEffect(() => {
+    console.log(userInfo.imgFile);
     const identifier = setTimeout(() => {
       setFormIsValid(
         !!idIsValid &&
           !!passwordIsValid &&
-          userInfo.mainLocation.locationIdx !== null
+          userInfo.mainLocation.locationIdx !== null &&
+          userInfo.imgFile !== null
       );
     }, 500);
 
     return () => {
       clearTimeout(identifier);
     };
-  }, [idIsValid, passwordIsValid, userInfo.mainLocation.locationIdx]);
+  }, [
+    idIsValid,
+    passwordIsValid,
+    userInfo.mainLocation.locationIdx,
+    userInfo.imgFile,
+  ]);
 
   useEffect(() => {
     const fetchLocationData = async () => {
-      const locationData = await getLocationData();
+      const locationData = await getAllLocationData();
       setLocationDataState(locationData);
     };
 
@@ -253,7 +261,7 @@ export const SignUpPage = () => {
             {((!passwordIsValid && passwordFocus) ||
               (!passwordIsValid && passwordTouched)) && (
               <S.AlertText>
-                비밀번호는 6~12자의 영문, 숫자만 사용 가능합니다
+                비밀번호는 5~12자의 영문, 숫자만 사용 가능합니다
               </S.AlertText>
             )}
           </S.InputSection>
