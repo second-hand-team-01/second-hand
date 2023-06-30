@@ -78,7 +78,7 @@ export const postFavoriteItemAPI = async (body: PostFavoriteItemBody) => {
 
   try {
     const res = await customFetch<APIPostFavoriteItemBody, undefined>({
-      path: `/members/interest`,
+      path: `/items`,
       method: 'PUT',
       body: convertedBody,
       auth: true,
