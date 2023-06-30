@@ -1,0 +1,17 @@
+{
+  "member": {
+    "memberIdx": 0,
+    "memberId": "스눕"
+  },
+  "messages": [
+    {
+      "message": "안녕하세요",
+      "type": "mine"
+    }
+  ],
+  "salesInfo": {
+    "previewImg": "https://img-cf.kurly.com/shop/data/goods/1656498787170l0.jpg",
+    "title": "화장품",
+    "price": 1110101010101001
+  }
+}

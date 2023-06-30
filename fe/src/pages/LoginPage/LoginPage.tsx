@@ -9,7 +9,7 @@ import {
   Dialog,
 } from '@components/commons';
 import { UserContext } from '@stores/UserContext';
-import { OAUTH_CLIENT_ID } from '@constants/login';
+import { OAUTH_CLIENT_ID, USER_INFO_KEY } from '@constants/login';
 import { URL, API_URL } from '@constants/apis';
 
 const checkIdValidity = (id: string): boolean => {
@@ -142,6 +142,8 @@ export const LoginPage = () => {
     try {
       const data = await authenticateUser(enteredId, enteredPassword);
       loginHandler(data.token, data.memberInfo);
+
+      localStorage.setItem(USER_INFO_KEY, JSON.stringify(data.memberInfo));
       navigate('/');
     } catch (error) {
       setErrorMessage((error as Error).message);

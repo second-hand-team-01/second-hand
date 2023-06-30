@@ -63,13 +63,14 @@ export interface ConvertedGetItemsRes {
 
 export interface APIItemDetail {
   itemIdx: number;
-  title: string;
+  name: string;
   seller: {
-    memberIdx: number;
-    memberId: string;
+    sellerProfileImage: string;
+    sellerIdx: number;
+    sellerId: string;
   };
   status: Item['status'];
-  category: { categoryIdx: number; categoryName: string };
+  category: { idx: number; name: string };
   description: string;
   price: number;
   chat: number;
@@ -77,13 +78,14 @@ export interface APIItemDetail {
   view: number;
   interestChecked: boolean;
   postedAt: string;
-  images: string[];
+  imageUrl: string[];
 }
 
 export interface ItemDetail {
   itemIdx: number;
   title: string;
   seller: {
+    memberProfileImage: string;
     memberIdx: number;
     memberId: string;
   };
