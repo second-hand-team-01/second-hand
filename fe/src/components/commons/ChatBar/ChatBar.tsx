@@ -1,20 +1,86 @@
 import { Button, Dialog, TextInput } from '@commons/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormInput } from '@hooks/useInput/useInput';
 import * as S from './ChatBarStyle';
-import { MessageObj, SendMessage } from '@type-store/services/chat';
+import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
+import {
+  getOneChatRoom,
+  saveMessagesToStorage,
+  initChatRoomToLocalStorage,
+} from '@services/chats/chat';
+import { useLocation, useParams } from 'react-router-dom';
 
 interface ChatBarProps {
+  messages: MessageObj[];
   sendMessage: (message: SendMessage) => void;
   setMessages: React.Dispatch<React.SetStateAction<MessageObj[]>>;
+  salesInfo: ChatRoom['salesInfo'];
+  user: ChatRoom['user'];
+  chatroomState: [
+    ChatRoom | null,
+    React.Dispatch<React.SetStateAction<ChatRoom | null>>
+  ];
 }
 
-export const ChatBar = ({ sendMessage, setMessages }: ChatBarProps) => {
+export const ChatBar = ({
+  sendMessage,
+  setMessages,
+  messages,
+  chatroomState,
+}: ChatBarProps) => {
+  const { itemIdx: itemIdxStr, memberIdx: sellerIdxStr } = useParams();
+
+  const [chatroom, setChatroom] = chatroomState;
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (!itemIdxStr || !sellerIdxStr) return;
+    const { data: prevChatroom } = getOneChatRoom(
+      parseInt(itemIdxStr),
+      parseInt(sellerIdxStr)
+    );
+
+    if (!prevChatroom) {
+      return;
+    }
+    setChatroom(prevChatroom);
+  }, []);
+
+  const initChatRoom = (initialChatRoom: ChatRoom) => {
+    setChatroom(initialChatRoom);
+    initChatRoomToLocalStorage(initialChatRoom);
+  };
+
+  const saveMessageToChatRoom = (messages: MessageObj[]) => {
+    if (!chatroom) return;
+    chatroom.messages = messages;
+  };
+
   const uploadBubble = () => {
     if (value === '') return;
     sendMessage({ prompt: value, action: 'message' });
+    console.log(chatroom);
+
+    if (!chatroom) {
+      const initialChatRoom: ChatRoom = {
+        itemIdx: Number(itemIdxStr),
+        user: state.user,
+        timestamp: new Date(),
+        unreadChat: 0,
+        salesInfo: state.salesInfo,
+        messages: [],
+      };
+      initChatRoom(initialChatRoom);
+    }
     setValue('');
   };
+
+  useEffect(() => {
+    if (!chatroom) return;
+
+    saveMessageToChatRoom(messages);
+    saveMessagesToStorage(chatroom, messages);
+  }, [messages]);
 
   const [isErrorMessageOpen, setErrorMessageOpen] = useState(false);
 

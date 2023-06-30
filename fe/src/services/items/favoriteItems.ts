@@ -49,6 +49,7 @@ export const getFavoriteItemsAPI = async (categoryIdx?: number) => {
       path: `/members/interest`,
       method: 'GET',
       queries,
+      auth: true,
     })) as Response<FavoriteItemsRes>;
 
     if (!res || !res.data || res.error) {

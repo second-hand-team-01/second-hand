@@ -2,32 +2,30 @@ import { Profile } from '@components/commons';
 import * as S from './ChatListStyle';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { useNavigate } from 'react-router-dom';
-
-export interface ChatListProps {
-  chatIdx: number;
-  itemIdx: number;
-  chat: number;
-  user: { imgUrl: string; name: string };
-  timestamp: Date;
-  lastMessage: string;
-  previewImg: string;
-}
+import { ChatRoom } from '@type-store/services/chat';
 
 export const ChatList = ({
   itemIdx,
-  chatIdx,
-  chat,
+  unreadChat,
   user,
   timestamp,
-  lastMessage,
-  previewImg,
-}: ChatListProps) => {
+  messages,
+  salesInfo,
+}: ChatRoom) => {
   const navigate = useNavigate();
-  const hasChat = chat !== 0;
+  const hasChat = unreadChat !== 0;
+
   return (
     <S.ChatList
       hasChat={hasChat}
-      onClick={() => navigate(`/chat/${itemIdx}/${chatIdx}`)}
+      onClick={() =>
+        navigate(`/chat/${itemIdx}/${user.memberIdx}`, {
+          state: {
+            user,
+            salesInfo,
+          },
+        })
+      }
     >
       <Profile size={48} imgUrl={user.imgUrl}></Profile>
       <S.Contents>
@@ -35,10 +33,10 @@ export const ChatList = ({
           <S.User>{user.name}</S.User>
           <S.Timestamp>{convertDateToTimeStamp(timestamp)}</S.Timestamp>
         </S.ContentsHeader>
-        <S.Message>{lastMessage}</S.Message>
+        <S.Message>{messages[messages.length - 1].message}</S.Message>
       </S.Contents>
-      {hasChat && <S.ChatNum>{chat}</S.ChatNum>}
-      <S.Preview src={previewImg}></S.Preview>
+      {hasChat && <S.ChatNum>{unreadChat}</S.ChatNum>}
+      <S.Preview src={salesInfo.previewImg}></S.Preview>
     </S.ChatList>
   );
 };
