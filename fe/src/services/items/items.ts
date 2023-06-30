@@ -70,6 +70,7 @@ export const getItemsAPI = async (
       path: '/items',
       method: 'GET',
       queries,
+      auth: true,
     })) as Response<GetItemsRes>;
 
     if (!res || !res.data || res.error) {
