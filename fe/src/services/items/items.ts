@@ -57,16 +57,21 @@ export const getItemsAPI = async (
   categoryIdx?: number,
   locationIdx?: number
 ) => {
+  let path = '/items';
   const queries = removeEmptyKeyValues({
     page,
-    categoryIdx,
+    locationIdx,
   });
+
+  if (categoryIdx) {
+    path = path + `/category/${categoryIdx}`;
+  }
 
   queries['locationIdx'] = locationIdx ?? LOCATION_FALLBACK.locationIdx;
 
   try {
     const res = (await customFetch<null, GetItemsRes>({
-      path: '/items',
+      path,
       method: 'GET',
       queries,
     })) as Response<GetItemsRes>;

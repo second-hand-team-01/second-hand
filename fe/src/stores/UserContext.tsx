@@ -130,6 +130,7 @@ export const UserContextProvider = ({ children }) => {
 
   const logoutHandler = () => {
     localStorage.removeItem('loginToken');
+    localStorage.removeItem(USER_INFO_KEY);
     dispatch({
       type: 'LOGOUT',
     });
