@@ -11,6 +11,7 @@ export const AuthPage = () => {
   const navigate = useNavigate();
   const queryCode = new URLSearchParams(location.search).get('code');
 
+  // TODO: 에러 핸들링 필요
   const getGithubLoginToken = async (code: string | null) => {
     const response = await fetch(
       `https://www.guardiansofthecodesquad.site/login/oauth/github?code=${code}`
@@ -48,9 +49,9 @@ export const AuthPage = () => {
     const memberInfo = userInfo.data.memberInfo;
     loginHandler(token, memberInfo);
 
-    const locationInfo = await getUserLocationInfo();
-    const mainLocation = locationInfo.data.main;
-    const subLocation = locationInfo.data.sub;
+    const userLocationInfo = await getUserLocationInfo();
+    const mainLocation = userLocationInfo.data.main;
+    const subLocation = userLocationInfo.data.sub;
     setLocationHandler(mainLocation, subLocation);
     navigate('/');
   };

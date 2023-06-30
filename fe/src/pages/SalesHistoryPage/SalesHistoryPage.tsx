@@ -24,7 +24,7 @@ export const SalesHistoryPage = () => {
   }, [status, isLoggedIn]);
 
   const renderComps = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
     if (loading) {
