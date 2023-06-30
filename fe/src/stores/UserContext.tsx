@@ -7,10 +7,12 @@ interface UserInfo {
   main?: {
     locationIdx: number | null;
     locationName: string | null;
+    town: string | null;
   };
   sub?: {
     locationIdx: number | null;
     locationName: string | null;
+    town: string | null;
   };
 }
 
@@ -21,10 +23,12 @@ export const initialUserInfo = {
   main: {
     locationIdx: null,
     locationName: null,
+    town: null,
   },
   sub: {
     locationIdx: null,
     locationName: null,
+    town: null,
   },
 };
 
@@ -46,10 +50,12 @@ export const reducer = (state: UserInfo, { type, payload }: any) => {
         main: {
           locationIdx: payload?.main.locationIdx,
           locationName: payload?.main.locationName,
+          town: payload?.main.town,
         },
         sub: {
           locationIdx: payload?.sub.locationIdx,
           locationName: payload?.sub.locationName,
+          town: payload?.sub.town,
         },
       };
     case 'LOGOUT':
@@ -60,10 +66,12 @@ export const reducer = (state: UserInfo, { type, payload }: any) => {
         main: {
           locationIdx: null,
           locationName: null,
+          town: null,
         },
         sub: {
           locationIdx: null,
           locationName: null,
+          town: null,
         },
       };
     default:
@@ -76,9 +84,7 @@ export const UserContext = createContext<any>(initialUserInfo);
 
 export const UserContextProvider = ({ children }) => {
   const [userInfo, dispatch] = useReducer(reducer, initialUserInfo);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('loginToken');
 
@@ -122,10 +128,12 @@ export const UserContextProvider = ({ children }) => {
         main: {
           locationIdx: main.locationIdx,
           locationName: main.locationName,
+          town: main.town,
         },
         sub: {
           locationIdx: sub.locationIdx,
           locationName: sub.locationName,
+          town: sub.town,
         },
       },
     });
