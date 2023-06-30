@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import * as S from './LayoutStyle';
 import { TabBar, ToolBar } from '@commons/index';
 import { ReactNode } from 'react';
-import { ChatBar, FilterBar, InfoBar, NavBar } from '@commons/index';
+import { FilterBar, InfoBar, NavBar } from '@commons/index';
 import { HeaderProps, FooterProps, LayoutStyleProps } from './LayoutStyle';
 
 interface LayoutProps extends LayoutStyleProps {
