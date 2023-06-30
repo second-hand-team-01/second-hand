@@ -14,7 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	Slice<Item> findByLocationLocationIdx(Long locationIdx, Pageable pageable);
 
-	Slice<Item> findItemByCategoryCategoryIdx(Long categoryIdx, Pageable pageable);
+	Slice<Item> findItemByCategoryCategoryIdxAndLocationLocationIdx(Long categoryIdx, Long locationIdx, Pageable pageable);
 
 	@Query("SELECT i FROM Item i WHERE i.seller.memberIdx = :sellerIdx AND ("
 		+ "(i.status = '판매중' OR i.status = '예약중') AND :status = 'sell' "
