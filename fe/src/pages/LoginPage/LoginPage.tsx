@@ -68,8 +68,13 @@ const passwordReducer = (state: State, action: Action): State => {
 };
 
 export const LoginPage = () => {
-  const { isLoggedIn, userInfo, loginHandler, logoutHandler } =
-    useContext(UserContext);
+  const {
+    isLoggedIn,
+    userInfo,
+    loginHandler,
+    logoutHandler,
+    setLocationHandler,
+  } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -130,7 +135,7 @@ export const LoginPage = () => {
     });
 
     const userInfo = await response.json();
-
+    console.log(userInfo);
     if (!response.ok) {
       throw new Error(userInfo.message);
     }
@@ -138,10 +143,30 @@ export const LoginPage = () => {
     return userInfo.data;
   };
 
+  // TODO : 에러 핸들링 필요
+  const getUserLocationInfo = async () => {
+    const token = localStorage.getItem('loginToken');
+    const response = await fetch(`${API_URL}/location`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+
+    return data;
+  };
+
   const loginBtnHandler = async () => {
     try {
       const data = await authenticateUser(enteredId, enteredPassword);
       loginHandler(data.token, data.memberInfo);
+
+      const UserLocationInfo = await getUserLocationInfo();
+      const mainLocation = UserLocationInfo.data.main;
+      const subLocation = UserLocationInfo.data.sub;
+
+      setLocationHandler(mainLocation, subLocation);
       navigate('/');
     } catch (error) {
       setErrorMessage((error as Error).message);
