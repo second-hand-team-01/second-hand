@@ -59,7 +59,6 @@ export const ChatBar = ({
   const uploadBubble = () => {
     if (value === '') return;
     sendMessage({ prompt: value, action: 'message' });
-    console.log(chatroom);
 
     if (!chatroom) {
       const initialChatRoom: ChatRoom = {

@@ -46,7 +46,6 @@ export const SalesHistoryPage = () => {
         {...item}
         moreBtn={true}
         onClick={() => {
-          console.log('click');
           navigate(`/item/${item.itemIdx}`);
         }}
       ></ListItem>
