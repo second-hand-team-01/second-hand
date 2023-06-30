@@ -12,7 +12,7 @@ export const checkIdValidity = (id: string): boolean => {
 };
 
 export const checkPasswordValidity = (password: string): boolean => {
-  const regex = /^[a-zA-Z0-9]{6,12}$/;
+  const regex = /^[a-zA-Z0-9]{5,12}$/;
   return regex.test(password);
 };
 

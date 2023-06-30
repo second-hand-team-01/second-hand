@@ -1,8 +1,11 @@
 import * as S from './FilterBarStyle';
 import { Button, Dropdown } from '@commons/index';
 import { Category } from '@type-store/services/category';
+// import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 
 export interface FilterBarProps {
+  mainLocation?: string;
+  subLocation?: string;
   region?: string;
   handleRegionBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleFilterBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -17,10 +20,38 @@ export const FilterBar = ({
   selectedCategory,
   handleDeleteBtn,
   openState,
-}: FilterBarProps) => {
+}: // mainLocation,
+// subLocation,
+FilterBarProps) => {
   if (!openState) return <></>;
 
   const [isOpen, setOpen] = openState;
+
+  // const menuButtonPropsList = [
+  //   {
+  //     shape: 'small',
+  //     state: 'default',
+  //     name: mainLocation,
+  //     onClick: () => setOpen(false),
+  //   },
+  //   subLocation
+  //     ? [
+  //         {
+  //           shape: 'small',
+  //           state: 'default',
+  //           name: subLocation,
+  //           onClick: () => setOpen(false),
+  //         },
+  //       ]
+  //     : [],
+  //   {
+  //     shape: 'small',
+  //     state: 'default',
+  //     name: '내동네 설정하기',
+  //     onClick: () => setOpen(false),
+  //   },
+  // ];
+
   return (
     <S.FilterBar selectedCategory={selectedCategory}>
       <Dropdown
@@ -38,6 +69,7 @@ export const FilterBar = ({
             onClick: () => setOpen(false),
           },
         ]}
+        // menuButtonPropsList={menuButtonPropsList}
         openState={[isOpen, setOpen]}
         onClick={() => setOpen(true)}
       >

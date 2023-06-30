@@ -24,6 +24,8 @@ import { Portal } from './Portal/Portal';
 import { Menu } from './Menu/Menu';
 import { Error } from './Error/Error';
 import { Loading } from './Loading/Loading';
+import { LocationSelector } from './LocationSelector/LocationSelector';
+import { LocationPopup } from './LocationPopup/LocationPopup';
 
 export {
   Icon,
@@ -52,4 +54,6 @@ export {
   Menu,
   Error,
   Loading,
+  LocationSelector,
+  LocationPopup,
 };
