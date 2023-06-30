@@ -25,7 +25,7 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
   const { isLoggedIn } = useContext(UserContext);
 
   const renderComps = () => {
-    if (!isLoggedIn) {
+    if (isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
     if (loading) {
