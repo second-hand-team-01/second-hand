@@ -1,8 +1,7 @@
 import * as S from './FilterBarStyle';
 import { Button, Dropdown } from '@commons/index';
 import { Category } from '@type-store/services/category';
-import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
-
+// import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 
 export interface FilterBarProps {
   mainLocation?: string;
@@ -21,9 +20,9 @@ export const FilterBar = ({
   selectedCategory,
   handleDeleteBtn,
   openState,
-  mainLocation,
-  subLocation,
-}: FilterBarProps) => {
+}: // mainLocation,
+// subLocation,
+FilterBarProps) => {
   if (!openState) return <></>;
 
   const [isOpen, setOpen] = openState;
