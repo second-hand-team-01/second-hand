@@ -18,24 +18,10 @@ import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@stores/UserContext';
-import { DEV_USER } from '@constants/login';
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 
 export const DetailsPage = () => {
   const { userInfo, dispatch } = useContext(UserContext);
-
-  if (process.env.NODE_ENV === 'development') {
-    useEffect(() => {
-      dispatch({
-        type: 'SET_USER',
-        payload: {
-          memberIdx: DEV_USER.memberIdx,
-          loginId: DEV_USER.memberId,
-          imgUrl: null,
-        },
-      });
-    }, []);
-  }
 
   const param = useParams();
   const itemIdx = param.itemIdx;
@@ -64,6 +50,8 @@ export const DetailsPage = () => {
   }, []);
 
   const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
+
+  console.log(userInfo);
 
   const handleChatClicked = () => {
     if (isWriter) {
