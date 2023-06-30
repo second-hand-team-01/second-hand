@@ -18,6 +18,7 @@ import codesquad.secondhand.dto.location.MainSubDto;
 import codesquad.secondhand.dto.location.MainSubTownDto;
 import codesquad.secondhand.dto.member.LoginRequestDto;
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import codesquad.secondhand.dto.member.MemberIdxTokenDto;
 import codesquad.secondhand.dto.member.MemberImageDto;
 import codesquad.secondhand.dto.member.MemberInfoDto;
@@ -63,10 +64,20 @@ public class MemberService {
 		String[] memberProfileUrl = imageService.upload(signUpRequestDto.getImage(), signUpRequestDto.getLoginId())
 			.split("@");
 
-		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).orElseThrow();
-		Location sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
+		if (signUpRequestDto.getMainLocationIdx() == null) {
+			throw new RestApiException(MAIN_LOCATION_REQUIRED);
+		}
+
+		Location main = locationRepository.findById(signUpRequestDto.getMainLocationIdx()).get();
+		Location sub = null;
+		log.info("[MemberService] signUp signupRequestDto.getSubLocationIdx(): {}",
+			signUpRequestDto.getSubLocationIdx());
+		if (signUpRequestDto.getSubLocationIdx() != null) {
+			sub = locationRepository.findById(signUpRequestDto.getSubLocationIdx()).orElseThrow();
+		}
 		SaveMemberDto saveMemberDto = SaveMemberDto.of(signUpRequestDto, memberProfileUrl[MEMBER_IMAGE_PATH],
 			memberProfileUrl[MEMBER_IMAGE_URL], main, sub);
+		log.info("[MemberService] signUp saveMemberDto: {}", saveMemberDto.getSubLocation());
 		memberRepository.save(Member.of(saveMemberDto));
 	}
 
@@ -156,6 +167,12 @@ public class MemberService {
 		Member member = memberRepository.findById(memberIdx)
 			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 		return MemberIdxLoginIdDto.of(member);
+	}
+
+	public MemberIdxLoginIdImageDto getMemberIdxLoginIdImage(Long memberIdx) {
+		Member member = memberRepository.findById(memberIdx)
+			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+		return MemberIdxLoginIdImageDto.of(member);
 	}
 
 	public MemberInfoDto getMemberInfo(Long memberIdx) {

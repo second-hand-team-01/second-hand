@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import codesquad.secondhand.dto.member.MemberIdxLoginIdDto;
+import codesquad.secondhand.dto.member.MemberIdxLoginIdImageDto;
 import codesquad.secondhand.dto.oauth.MemberProfile;
 import codesquad.secondhand.dto.oauth.OauthLoginResponse;
 import codesquad.secondhand.dto.oauth.OauthTokenResponse;
@@ -50,7 +51,7 @@ public class OauthService {
 
 		String accessToken = jwtTokenProvider.createToken(MemberIdxLoginIdDto.of(member));
 
-		return OauthLoginResponse.of(accessToken, MemberIdxLoginIdDto.of(member));
+		return OauthLoginResponse.of(accessToken, MemberIdxLoginIdImageDto.of(member));
 	}
 
 	private Member saveOrFindMember(MemberProfile memberProfile) {
@@ -59,7 +60,9 @@ public class OauthService {
 			.orElseGet(() -> {
 				String randomId = createRandomLoginId();
 				String imageUrl = imageService.uploadFromUrl(memberProfile.getImageUrl(), randomId);
-				return memberRepository.save(memberProfile.toMember(randomId, imageUrl));
+				String[] memberProfileUrl = imageUrl.split("@");
+				return memberRepository.save(
+					memberProfile.toMember(randomId, memberProfileUrl[0], memberProfileUrl[1]));
 			});
 	}
 

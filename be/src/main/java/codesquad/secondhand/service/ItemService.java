@@ -1,22 +1,31 @@
 package codesquad.secondhand.service;
 
+import static codesquad.secondhand.exception.code.ItemErrorCode.*;
+import static codesquad.secondhand.exception.code.MemberErrorCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.dto.item.ItemDetailDto;
+import codesquad.secondhand.dto.item.ItemDetailReturnDto;
 import codesquad.secondhand.dto.item.ItemDto;
 import codesquad.secondhand.dto.item.ItemIdxDto;
 import codesquad.secondhand.dto.item.ItemSliceDto;
+import codesquad.secondhand.dto.item.SellerDto;
 import codesquad.secondhand.entity.Category;
 import codesquad.secondhand.entity.Item;
 import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.entity.Member;
+import codesquad.secondhand.exception.RestApiException;
 import codesquad.secondhand.repository.CategoryRepository;
 import codesquad.secondhand.repository.ChatRoomRepository;
 import codesquad.secondhand.repository.InterestRepository;
@@ -60,8 +69,9 @@ public class ItemService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemSliceDto filterItems(Long memberIdx, Long categoryIdx, Pageable pageable) {
-		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdx(categoryIdx, pageable);
+	public ItemSliceDto filterItems(Long locationIdx, Long memberIdx, Long categoryIdx, Pageable pageable) {
+		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdxAndLocationLocationIdx(categoryIdx,
+			locationIdx, pageable);
 		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
@@ -91,4 +101,80 @@ public class ItemService {
 		return new ItemIdxDto(item.getItemIdx());
 	}
 
+	public ItemIdxDto editItem(Long memberIdx, Long itemIdx, ItemDetailDto itemDetailDto) {
+		Member member = memberRepository.findById(memberIdx)
+			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+		Item itemToEdit = itemRepository.findById(itemIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_ITEM));
+		if (itemToEdit.getSeller().getMemberIdx() != memberIdx) {
+			log.info("itemDetailDto.getSellerIdx:{}", itemDetailDto.getSellerIdx());
+			throw new RestApiException(UNAUTHORIZED_EXCEPTION_EDIT);
+		}
+		Category category = null;
+		if (itemDetailDto.getCategoryIdx() != null) {
+			category = categoryRepository.findById(itemDetailDto.getCategoryIdx()).get();
+		}
+		Location location = null;
+		if (itemDetailDto.getLocationIdx() != null) {
+			location = locationRepository.findById(itemDetailDto.getLocationIdx()).get();
+		}
+		// TODO: 아이템 이미지 수정하기
+
+		itemToEdit.updateItem(member, category, location, itemDetailDto.getName(), itemDetailDto.getDescription(),
+			itemDetailDto.getPrice(),
+			itemDetailDto.getStatus());
+		return new ItemIdxDto(itemToEdit.getItemIdx());
+	}
+
+	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
+		Item item = itemRepository.findById(itemIdx)
+			.orElseThrow();
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
+
+		int view;
+		if (memberIdx.equals(-1L) || !memberIdx.equals(item.getSeller().getMemberIdx())) {
+			view = item.getView();
+			item.setView(++view);
+		}
+
+		int interest = interestRepository.countByItem(item);
+		int chatRooms = chatRoomRepository.countByItem(item);
+		boolean interestChecked = interestRepository.existsByItemAndMember_MemberIdx(item, memberIdx);
+
+		SellerDto sellerDto = SellerDto.to(memberRepository.findByMemberIdx(item.getSeller().getMemberIdx())
+			.orElseThrow());
+		CategoryWithoutImageDto categoryWithoutImageDto = CategoryWithoutImageDto.of(
+			categoryRepository.findById(item.getCategory().getCategoryIdx())
+				.orElseThrow());
+		List<String> imageUrl = itemImageRepository.findAllByItemItemIdx(itemIdx).stream()
+			.map(ItemImage::getImageUrl).collect(Collectors.toList());
+
+		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
+			imageUrl);
+	}
+
+	public void deleteItem(HttpServletRequest httpServletRequest, ItemIdxDto itemIdxDto) {
+		Item item = itemRepository.findById(itemIdxDto.getItemIdx())
+			.orElseThrow();
+
+		Long memberIdx;
+		if (httpServletRequest.getAttribute("memberIdx") == null) {
+			memberIdx = -1L;
+		} else {
+			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
+		}
+
+		//TODO: s3 이미지 삭제
+
+		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
+			itemRepository.delete(item);
+		} else {
+			throw new RestApiException(UNAUTHORIZED_EXCEPTION_DELETE);
+		}
+	}
 }

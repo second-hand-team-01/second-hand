@@ -33,9 +33,6 @@ public class ImageService {
 	@Value("${aws.s3.bucket}")
 	private String bucketName;
 
-	//TODO: 아이템 이미지 업로드, 삭제
-	//TODO: 이미지 URL DB에 저장
-
 	public String upload(MultipartFile multipartFile, String memberId) {
 
 		String originFileName;
