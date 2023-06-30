@@ -1,4 +1,3 @@
-import { useState, MutableRefObject, useEffect } from 'react';
 import * as S from './MenuStyle';
 import { MenuStyleProps, MenuButtonProps } from './MenuStyle';
 import { Portal } from '@components/commons';
