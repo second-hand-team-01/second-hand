@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '@stores/UserContext';
 import { useContext } from 'react';
 import { API_URL } from '@constants/apis';
+import { USER_INFO_KEY } from '@constants/login';
 
 export const AuthPage = () => {
   const { loginHandler, setLocationHandler } = useContext(UserContext);
@@ -37,7 +38,13 @@ export const AuthPage = () => {
 
   const runGetLoginUserInfoAPI = async () => {
     const userInfo = await getGithubLoginToken(queryCode);
-    console.log(userInfo);
+    if (!userInfo) {
+      return;
+    } // TODO: 에러처리
+    localStorage.setItem(
+      USER_INFO_KEY,
+      JSON.stringify(userInfo.data.memberInfo)
+    );
     const token = userInfo.data.token;
     const memberInfo = userInfo.data.memberInfo;
     loginHandler(token, memberInfo);

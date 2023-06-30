@@ -9,7 +9,6 @@ import {
   WriteItemDetails,
   ItemStatus,
   APISalesItem,
-  APIStatusReqBody,
 } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 
@@ -58,16 +57,21 @@ export const getItemsAPI = async (
   categoryIdx?: number,
   locationIdx?: number
 ) => {
+  let path = '/items';
   const queries = removeEmptyKeyValues({
     page,
-    categoryIdx,
+    locationIdx,
   });
+
+  if (categoryIdx) {
+    path = path + `/category/${categoryIdx}`;
+  }
 
   queries['locationIdx'] = locationIdx ?? LOCATION_FALLBACK.locationIdx;
 
   try {
     const res = (await customFetch<null, GetItemsRes>({
-      path: '/items',
+      path,
       method: 'GET',
       queries,
       auth: true,
@@ -111,7 +115,7 @@ const convertAPIItemDetailsToItemDetails = (
 ): ItemDetail => {
   const {
     itemIdx,
-    title,
+    name,
     seller,
     status,
     category,
@@ -122,15 +126,19 @@ const convertAPIItemDetailsToItemDetails = (
     view,
     interestChecked,
     postedAt,
-    images,
+    imageUrl,
   } = details;
 
   const newDetails = {
     itemIdx,
-    title,
-    seller,
+    title: name,
+    seller: {
+      memberIdx: seller.sellerIdx,
+      memberId: seller.sellerId,
+      memberProfileImage: seller.sellerProfileImage,
+    },
     status,
-    category: { idx: category.categoryIdx, text: category.categoryName },
+    category: { idx: category.idx, text: category.name },
     description,
     price,
     chat,
@@ -138,7 +146,7 @@ const convertAPIItemDetailsToItemDetails = (
     view,
     interestChecked,
     postedAt: new Date(postedAt),
-    images,
+    images: imageUrl,
   };
   return newDetails;
 };
@@ -197,7 +205,7 @@ export const postItemsAPI = async (body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images?.forEach((image, i) => {
+  convertedBody.images?.forEach((image) => {
     formData.append(`image`, image);
   });
 

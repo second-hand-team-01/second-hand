@@ -1,3 +1,4 @@
+import { USER_INFO_KEY } from '@constants/login';
 import { useState, useReducer, createContext, useEffect } from 'react';
 
 interface UserInfo {
@@ -58,6 +59,12 @@ export const reducer = (state: UserInfo, { type, payload }: any) => {
           town: payload?.sub.town,
         },
       };
+
+    case 'SET_USER_LOCATION':
+      return {
+        ...payload,
+      };
+
     case 'LOGOUT':
       return {
         memberIdx: null,
@@ -79,19 +86,34 @@ export const reducer = (state: UserInfo, { type, payload }: any) => {
   }
 };
 
-// TODO : any 타입 수정하기
 export const UserContext = createContext<any>(initialUserInfo);
 
 export const UserContextProvider = ({ children }) => {
   const [userInfo, dispatch] = useReducer(reducer, initialUserInfo);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('loginToken');
-
     if (storedUserLoggedInInformation !== null) {
       setIsLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    const isInitial =
+      JSON.stringify(userInfo) === JSON.stringify(initialUserInfo);
+    if (isInitial) {
+      const userInfo = localStorage.getItem(USER_INFO_KEY);
+      if (!userInfo) return;
+      if (userInfo === 'undefined') {
+        return localStorage.removeItem(USER_INFO_KEY);
+      }
+      if (!JSON.parse(userInfo)) {
+        return;
+      }
+
+      dispatch({ type: 'SET_USER', payload: JSON.parse(userInfo) });
+    }
+  }, [userInfo]);
 
   const loginHandler = (
     token: string,
@@ -115,6 +137,7 @@ export const UserContextProvider = ({ children }) => {
 
   const logoutHandler = () => {
     localStorage.removeItem('loginToken');
+    localStorage.removeItem(USER_INFO_KEY);
     dispatch({
       type: 'LOGOUT',
     });

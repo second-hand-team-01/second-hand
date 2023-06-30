@@ -1,4 +1,4 @@
-import { removeEmptyKeyValues, getType, Type } from '@utils/common/common';
+import { getType, Type } from '@utils/common/common';
 import { HOST, ACCESS_TOKEN } from '@constants/apis';
 import { getAccessToken } from '@services/login/login';
 import { ERROR_MESSAGE } from '@constants/error';

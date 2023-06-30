@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import * as S from './DetailsPageStyle';
 import {
@@ -13,33 +13,25 @@ import {
   Menu,
   Dialog,
 } from '@commons/index';
-import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
+import {
+  getItemDetailAPI,
+  deleteItemsAPI,
+  changeStatusItemsAPI,
+} from '@services/items/items';
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@stores/UserContext';
-import { DEV_USER } from '@constants/login';
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
+import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 
 export const DetailsPage = () => {
-  const { userInfo, dispatch } = useContext(UserContext);
-
-  if (process.env.NODE_ENV === 'development') {
-    useEffect(() => {
-      dispatch({
-        type: 'SET_USER',
-        payload: {
-          memberIdx: DEV_USER.memberIdx,
-          loginId: DEV_USER.memberId,
-          imgUrl: null,
-        },
-      });
-    }, []);
-  }
+  const { userInfo } = useContext(UserContext);
 
   const param = useParams();
-  const itemIdx = param.itemIdx;
+  const itemIdxStr = param.itemIdx;
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,11 +41,14 @@ export const DetailsPage = () => {
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
   const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const [isInterestChecked, setInterestChecked] = useState(false);
+  const [menuButtonPropsList, setMenuButtonPropsList] = useState<
+    MenuButtonProps[]
+  >([]);
 
   useEffect(() => {
     (async () => {
       !loading && setLoading(true);
-      const { data, error } = await getItemDetailAPI(Number(itemIdx));
+      const { data, error } = await getItemDetailAPI(Number(itemIdxStr));
       if (error) return setErrorMsg(error.message);
       if (data) {
         setDetails(data);
@@ -64,6 +59,26 @@ export const DetailsPage = () => {
   }, []);
 
   const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
+
+  const handleChatClicked = () => {
+    if (isWriter) {
+      return navigate(`/chat/${itemIdxStr}`);
+    }
+    navigate(`/chat/${itemIdxStr}/${details?.seller.memberIdx ?? 0}`, {
+      state: {
+        user: {
+          memberIdx: details?.seller.memberIdx,
+          imgUrl: details?.seller.memberProfileImage,
+          name: details?.seller.memberId,
+        },
+        salesInfo: {
+          previewImg: details?.images?.[0],
+          price: details?.price,
+          title: details?.title,
+        },
+      },
+    });
+  };
 
   const handleInterestBtn = async (e: React.MouseEvent) => {
     const targetElement = e.target as HTMLElement;
@@ -89,6 +104,55 @@ export const DetailsPage = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    const menuOptions: { [key: string]: MenuButtonProps } = {
+      ['판매중']: {
+        shape: 'small',
+        state: 'default',
+        color: 'neutralText',
+        name: '판매중 상태로 전환',
+        onClick: () => {
+          changeStatusItemsAPI(Number(itemIdxStr), '판매중');
+          setStatusDropdownOpen(false);
+          window.location.reload();
+        },
+      },
+      ['판매완료']: {
+        shape: 'small',
+        state: 'default',
+        color: 'neutralText',
+        name: '판매 완료 상태로 전환',
+        onClick: () => {
+          changeStatusItemsAPI(Number(itemIdxStr), '판매완료');
+          setStatusDropdownOpen(false);
+          navigate(pathname, { replace: true });
+          window.location.reload();
+        },
+      },
+      ['예약중']: {
+        shape: 'small',
+        state: 'default',
+        color: 'neutralText',
+        name: '예약중 상태로 전환',
+        onClick: () => {
+          changeStatusItemsAPI(Number(itemIdxStr), '예약중');
+          setStatusDropdownOpen(false);
+          window.location.reload();
+        },
+      },
+    };
+
+    const statusMenuList: MenuButtonProps[] = [];
+
+    Object.entries(menuOptions).forEach((option) => {
+      const [key, value] = option;
+      if (details?.status !== key) {
+        statusMenuList.push(value);
+      }
+    });
+    setMenuButtonPropsList(statusMenuList);
+  }, [details]);
 
   return (
     <Layout
@@ -125,11 +189,7 @@ export const DetailsPage = () => {
           isInterestedChecked: isInterestChecked,
           price: details?.price,
           handleInterestClicked: handleInterestBtn,
-          handleChatClicked: () => {
-            isWriter
-              ? navigate(`/chat/${itemIdx}`)
-              : navigate(`/chat/${itemIdx}/0`);
-          },
+          handleChatClicked: handleChatClicked,
           isWriter,
           chat: details?.chat,
         },
@@ -153,20 +213,7 @@ export const DetailsPage = () => {
             {isWriter && (
               <S.StatusSection>
                 <Dropdown
-                  menuButtonPropsList={[
-                    {
-                      shape: 'small',
-                      state: 'default',
-                      name: 'ddd',
-                      onClick: () => setStatusDropdownOpen(false),
-                    },
-                    {
-                      shape: 'small',
-                      state: 'default',
-                      name: 'ddd2',
-                      onClick: () => setStatusDropdownOpen(false),
-                    },
-                  ]}
+                  menuButtonPropsList={menuButtonPropsList}
                   openState={[isStatusDropdownOpen, setStatusDropdownOpen]}
                   onClick={() => setStatusDropdownOpen(true)}
                   hasBorder={true}
@@ -199,7 +246,7 @@ export const DetailsPage = () => {
             state: 'default',
             color: 'systemDefault',
             name: '게시글 수정',
-            onClick: () => navigate(`/edit/${itemIdx}`),
+            onClick: () => navigate(`/edit/${itemIdxStr}`),
           },
           {
             shape: 'large',
@@ -224,7 +271,7 @@ export const DetailsPage = () => {
           right: {
             text: '삭제',
             onClick: async () => {
-              const { error } = await deleteItemsAPI(Number(itemIdx));
+              const { error } = await deleteItemsAPI(Number(itemIdxStr));
               if (error) return setErrorDialogOpen(true);
               setMenuOpen(false);
               navigate('/');

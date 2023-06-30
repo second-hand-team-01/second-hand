@@ -1,14 +1,12 @@
 import * as S from './SalesHistoryPageStyle';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Layout, ListItem, Loading, Menu } from '@components/commons';
+import { useContext, useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Layout, ListItem, Loading } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { Error } from '@commons/index';
-import { ERROR_MESSAGE } from '@constants/error';
-import { items } from '@mocks/data/items/items';
 import { UserContext } from '@stores/UserContext';
 
 export const SalesHistoryPage = () => {
@@ -48,7 +46,6 @@ export const SalesHistoryPage = () => {
         {...item}
         moreBtn={true}
         onClick={() => {
-          console.log('click');
           navigate(`/item/${item.itemIdx}`);
         }}
       ></ListItem>

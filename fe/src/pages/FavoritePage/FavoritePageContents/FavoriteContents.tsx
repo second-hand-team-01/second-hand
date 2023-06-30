@@ -2,7 +2,7 @@ import { ListItem, Error, Loading } from '@commons/index';
 import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ERROR_MESSAGE } from '@constants/error';
 import { UserContext } from '@stores/UserContext';

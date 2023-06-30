@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import * as S from './ListItemStyle';
 import icons from '@assets/icons';
 import { Icon, Menu, Dialog } from '@components/commons';
@@ -10,9 +10,9 @@ import {
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 import { useNavigate } from 'react-router-dom';
 import { changeStatusItemsAPI } from '@services/items/items';
-import { ItemStatus } from '@type-store/services/items';
 import { MenuButtonProps } from '../Menu/MenuStyle';
-import { getItemDetailAPI, deleteItemsAPI } from '@services/items/items';
+import { deleteItemsAPI } from '@services/items/items';
+import { URL } from '@constants/apis';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -136,6 +136,7 @@ export const ListItem = ({
       onClick: () => {
         changeStatusItemsAPI(itemIdx, '판매중');
         setMenuOpen(false);
+        window.location.assign(URL + '/sales-history');
       },
     },
     ['판매완료']: {
@@ -146,6 +147,7 @@ export const ListItem = ({
       onClick: () => {
         changeStatusItemsAPI(itemIdx, '판매완료');
         setMenuOpen(false);
+        window.location.assign(URL + '/sales-history');
       },
     },
     ['예약중']: {
@@ -156,6 +158,7 @@ export const ListItem = ({
       onClick: () => {
         changeStatusItemsAPI(itemIdx, '예약중');
         setMenuOpen(false);
+        window.location.assign(URL + '/sales-history');
       },
     },
   };

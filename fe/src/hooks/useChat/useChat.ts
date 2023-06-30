@@ -1,9 +1,14 @@
-import { ReceivedMessage } from '@type-store/services/chat';
-import React, { useEffect, useState } from 'react';
+import { ChatRoom, MessageObj, SendMessage } from '@type-store/services/chat';
+import { useEffect, useState } from 'react';
 
-export const onChat = () => {
+export const useChat = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<ReceivedMessage[]>([]); // 상태 추가
+  const [messages, setMessages] = useState<MessageObj[]>([]);
+  const [chatroom, setChatroom] = useState<ChatRoom | null>(null);
+
+  const isInternalError = (message: string) => {
+    return message === `Internal server error`;
+  };
 
   useEffect(() => {
     const webSocket = new WebSocket(
@@ -15,7 +20,9 @@ export const onChat = () => {
     };
 
     webSocket.onmessage = (ev) => {
-      setMessages((prevMessages) => [...prevMessages, JSON.parse(ev.data)]); // 메시지 저장
+      const newMessageObj = JSON.parse(ev.data);
+      if (isInternalError(newMessageObj.message)) return;
+      setMessages((prevMessages) => [...prevMessages, newMessageObj]);
     };
 
     webSocket.onerror = (err) => {
@@ -33,11 +40,11 @@ export const onChat = () => {
     };
   }, []);
 
-  const sendMessage = (message: ReceivedMessage) => {
+  const sendMessage = (message: SendMessage) => {
     if (ws) {
       ws.send(JSON.stringify(message));
     }
   };
 
-  return { messages, setMessages, sendMessage };
+  return { messages, setMessages, sendMessage, chatroom, setChatroom };
 };

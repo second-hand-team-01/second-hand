@@ -3,6 +3,7 @@ import { Button, Dropdown } from '@commons/index';
 import { Category } from '@type-store/services/category';
 import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 
+
 export interface FilterBarProps {
   mainLocation?: string;
   subLocation?: string;
@@ -16,7 +17,6 @@ export interface FilterBarProps {
 
 export const FilterBar = ({
   region = '',
-  handleRegionBtnClick,
   handleFilterBtnClick,
   selectedCategory,
   handleDeleteBtn,
