@@ -53,10 +53,11 @@ public class ItemController {
 
 	@GetMapping("/category/{categoryIdx}")
 	public ResponseDto<ItemSliceDto> filterItems(HttpServletRequest request, @PathVariable Long categoryIdx,
+		@RequestParam Long locationIdx,
 		@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = PageRequest.of(page, END_PAGE, Sort.by("postedAt").descending());
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
-		ItemSliceDto itemSliceDto = itemService.filterItems(memberIdx, categoryIdx, pageable);
+		ItemSliceDto itemSliceDto = itemService.filterItems(locationIdx, memberIdx, categoryIdx, pageable);
 		return ResponseDto.of(RESPONSE_SUCCESS, itemSliceDto);
 	}
 
