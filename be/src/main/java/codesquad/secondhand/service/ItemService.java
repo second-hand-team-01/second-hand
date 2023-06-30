@@ -69,8 +69,9 @@ public class ItemService {
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
 
-	public ItemSliceDto filterItems(Long memberIdx, Long categoryIdx, Pageable pageable) {
-		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdx(categoryIdx, pageable);
+	public ItemSliceDto filterItems(Long locationIdx, Long memberIdx, Long categoryIdx, Pageable pageable) {
+		Slice<Item> itemSlice = itemRepository.findItemByCategoryCategoryIdxAndLocationLocationIdx(categoryIdx,
+			locationIdx, pageable);
 		List<ItemDto> itemDtos = getListItemDto(itemSlice, memberIdx);
 		return new ItemSliceDto(itemSlice.hasNext(), itemDtos);
 	}
