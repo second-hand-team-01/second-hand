@@ -30,12 +30,8 @@ class DetailContentView: UIView {
         layoutConstraint()
     }
 
-    // swiftlint:disable:force_try
     func configure(by data: ItemDetailDTO.Detail, image url: String) {
-        guard let url = URL(string: url) else { return }
-        productImageView.image = UIImage(data: try! Data(contentsOf: url))
         sellerInfo.configure(nameLabel: data.seller.sellerId)
-        
         productInfo.configure(
             name: data.name,
             annotation: "\(data.category.name) ・ 1분전",

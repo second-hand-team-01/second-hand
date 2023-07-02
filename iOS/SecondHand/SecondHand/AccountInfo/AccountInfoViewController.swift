@@ -55,6 +55,7 @@ class AccountInfoViewController: UIViewController {
     }
     
     @objc private func didTapSignOutButton() {
+        SecretKeys.accessToken = ""
         self.navigationController?.popViewController(animated: true)
     }
     

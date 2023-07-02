@@ -292,9 +292,9 @@
 				63F3EEB92A35D90500D81961 /* Detail */,
 				63129C9B2A4145B70049EC0C /* Login */,
 				633AC5B92A4881E400A34501 /* AccountInfo */,
-				632807292A305CED0033F9D7 /* Assets.xcassets */,
 				FF5464D12A42DD0C008519A9 /* SignUp */,
 				6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */,
+				632807292A305CED0033F9D7 /* Assets.xcassets */,
 			);
 			path = SecondHand;
 			sourceTree = "<group>";
