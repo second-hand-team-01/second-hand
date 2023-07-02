@@ -30,27 +30,21 @@ class DetailContentView: UIView {
         layoutConstraint()
     }
 
-    func configure() {
-        productImageView.image = UIImage(systemName: "carrot.fill")
-        sellerInfo.configure(nameLabel: "Wood")
+    // swiftlint:disable:force_try
+    func configure(by data: ItemDetailDTO.Detail, image url: String) {
+        guard let url = URL(string: url) else { return }
+        productImageView.image = UIImage(data: try! Data(contentsOf: url))
+        sellerInfo.configure(nameLabel: data.seller.sellerId)
         
-        let productName = "빈티지 롤러 스케이트"
-        let annotation = "가구/인테리어 ・ 1분전"
-        let description = """
-            어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다\n
-            촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다.
-            새 제품으로 보존된 제품으로 전용박스까지 보내드립니다.\n
-            사이즈는 235 입니다.\n fdjkgnsdfjkngsdfjknsgfkjnadfsgjnk
-        """
         productInfo.configure(
-            name: productName,
-            annotation: annotation,
-            description: description
+            name: data.name,
+            annotation: "\(data.category.name) ・ 1분전",
+            description: data.description
         )
         communicationInfo.configure(
-            chatCount: 0,
-            favoriteCount: 0,
-            viewsCount: 1
+            chatCount: data.chat,
+            favoriteCount: data.interest,
+            viewsCount: data.view
         )
     }
     
@@ -59,6 +53,7 @@ class DetailContentView: UIView {
         statusButton = makeStatusButton()
     }
     
+    // swiftlint:disable:next function_body_length
     private func makeStatusButton() -> UIButton {
         let button = UIButton(type: .system)
         
@@ -69,18 +64,44 @@ class DetailContentView: UIView {
         button.tintColor = .black
         button.layer.borderColor = UIColor.gray.cgColor
         button.layer.borderWidth = 0.2
+        button.layer.cornerRadius = 8
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 16,
+            bottom: 8,
+            trailing: 16
+        )
+        button.configuration = configuration
         
         let onReservation = UIAction(
             title: "예약중",
-            handler: { _ in return })
+            handler: { _ in
+                button.setTitle("예약중", for: .normal)
+                return
+            })
         let onSold = UIAction(
             title: "판매완료",
-            handler: { _ in return }
+            handler: { _ in
+                button.setTitle("판매완료", for: .normal)
+                return
+            }
         )
         
         button.menu = UIMenu(
             options: .displayInline,
             children: [onReservation, onSold])
+        
+        button.addAction(
+            UIAction(
+                handler: { _ in
+                    NotificationCenter.default.post(
+                        name: DetailContentView.notiName,
+                        object: button.titleLabel?.text
+                    )
+            }),
+            for: .touchUpInside)
         return button
     }
 }
@@ -155,4 +176,8 @@ extension DetailContentView {
             productInfo.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
+}
+
+extension DetailContentView {
+    static let notiName = Notification.Name("didChangeStatus")
 }

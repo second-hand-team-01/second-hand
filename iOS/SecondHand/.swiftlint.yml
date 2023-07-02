@@ -2,6 +2,7 @@ disabled_rules:
 - line_length
 - trailing_whitespace
 - file_length
+- force_try
 
 opt_in_rules:
 - force_unwrapping

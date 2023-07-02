@@ -6,6 +6,7 @@
 //
 import UIKit
 
+// TODO: - 로그인 페이지는 모달형식으로 어디서든지 띄워야 하기 때문에 탭바에 귀속되지 않는 독립적인 뷰컨트롤러로 변경 해야 함. - WWDC19
 class LoginViewController: UIViewController {
     private var loginView = LoginView()
     private var networkManager = LoginNetworkManager()

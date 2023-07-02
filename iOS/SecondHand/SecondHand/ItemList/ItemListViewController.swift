@@ -13,6 +13,19 @@ final class ItemListViewController: UIViewController {
     private var data: [Item] = Item.sampleData
     private var itemListTableView: UITableView = UITableView()
     private let network: Network = Network()
+    private var alertController: UIAlertController = {
+        let alertController = UIAlertController(
+            title: "로그인을 먼저 해주세요",
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +69,11 @@ extension ItemListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard SecretKeys.accessToken != "" else {
+            self.present(self.alertController, animated: true)
+            return
+        }
+        
         self.navigationController?.pushViewController(DetailViewController(), animated: true)
     }
 }

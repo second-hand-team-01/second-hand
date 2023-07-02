@@ -24,6 +24,8 @@
 		632807442A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */; };
 		632807512A316B790033F9D7 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 632807502A316B790033F9D7 /* .swiftlint.yml */; };
 		632CA6B42A4DA6FC00C0E639 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632CA6B32A4DA6FC00C0E639 /* ImageCacheManager.swift */; };
+		632CA6BC2A4E6DBD00C0E639 /* DetailNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632CA6BB2A4E6DBD00C0E639 /* DetailNetworkManager.swift */; };
+		632CA6C32A4E6EC700C0E639 /* ItemDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632CA6C22A4E6EC700C0E639 /* ItemDetailDTO.swift */; };
 		633AC5B12A480B3600A34501 /* LoginDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B02A480B3600A34501 /* LoginDTO.swift */; };
 		633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B22A480C6C00A34501 /* LogManager.swift */; };
 		633AC5B72A487B0300A34501 /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5B62A487B0300A34501 /* AccountInfoView.swift */; };
@@ -139,6 +141,8 @@
 		632807432A305CEE0033F9D7 /* SecondHandUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHandUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		632807502A316B790033F9D7 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = ../../iOS/SecondHand/.swiftlint.yml; sourceTree = "<group>"; };
 		632CA6B32A4DA6FC00C0E639 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		632CA6BB2A4E6DBD00C0E639 /* DetailNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNetworkManager.swift; sourceTree = "<group>"; };
+		632CA6C22A4E6EC700C0E639 /* ItemDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailDTO.swift; sourceTree = "<group>"; };
 		633AC5B02A480B3600A34501 /* LoginDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDTO.swift; sourceTree = "<group>"; };
 		633AC5B22A480C6C00A34501 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		633AC5B62A487B0300A34501 /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
@@ -414,6 +418,7 @@
 				FF3942C72A4C186200B9722F /* SignUpResponseDTO.swift */,
 				FF3942C02A4C184000B9722F /* SignUpDTO.swift */,
 				63E94CE92A4C9E2200B0376D /* MemberInfoDTO.swift */,
+				632CA6C22A4E6EC700C0E639 /* ItemDetailDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				63A3FCE82A3983C500361FAD /* DetailViewController.swift */,
+				632CA6BB2A4E6DBD00C0E639 /* DetailNetworkManager.swift */,
 				63608CCD2A40DD83006CD876 /* UI */,
 			);
 			path = Detail;
@@ -829,6 +835,7 @@
 				633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */,
 				63A3FCDE2A3740C800361FAD /* SellerInfo.swift in Sources */,
 				633AC5B72A487B0300A34501 /* AccountInfoView.swift in Sources */,
+				632CA6BC2A4E6DBD00C0E639 /* DetailNetworkManager.swift in Sources */,
 				632807212A305CED0033F9D7 /* AppDelegate.swift in Sources */,
 				63E94CEC2A4CA12F00B0376D /* NetworkError.swift in Sources */,
 				FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */,
@@ -837,6 +844,7 @@
 				FFD62C212A3C1BBF0014D2D4 /* CapsuleLabel.swift in Sources */,
 				632047602A42F28F0035880A /* AccountInputView.swift in Sources */,
 				632047732A4411AC0035880A /* AccountButtonUIFactory.swift in Sources */,
+				632CA6C32A4E6EC700C0E639 /* ItemDetailDTO.swift in Sources */,
 				FF54649B2A407512008519A9 /* Network.swift in Sources */,
 				FF3942CD2A4C199A00B9722F /* SignUpNetworkManager+Error.swift in Sources */,
 				63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */,

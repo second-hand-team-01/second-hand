@@ -32,6 +32,7 @@ class DetailToolbar: UIToolbar {
     }
     
     func configure(price: String) {
+        var price = price
         self.priceLabel.title = "\(price)"
     }
     

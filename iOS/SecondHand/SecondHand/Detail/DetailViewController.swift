@@ -8,22 +8,28 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    var scrollView: UIScrollView = {
+    private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentInsetAdjustmentBehavior = .never
         return scrollView
     }()
-    var detailContentView = DetailContentView(frame: .zero)
-    var toolbar = DetailToolbar(frame: .zero)
-    var favoriteButton = UIButton()
-    var priceLabel = UILabel()
+    private var detailContentView = DetailContentView(frame: .zero)
+    private var toolbar = DetailToolbar(frame: .zero)
+    private var priceLabel = UILabel()
+    private var networkManager = DetailNetworkManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        detailContentView.configure()
         toolbar.configure(price: "123,000")
         setTabBar(isHiding: true)
+        Task {
+            guard let data = await networkManager.request(idx: 107)?.data else {
+                return
+            }
+            self.detailContentView.configure(by: data, image: data.imageUrl[0])
+            self.toolbar.configure(price: "\(data.price)")
+        }
     }
 
     override func viewWillLayoutSubviews() {
