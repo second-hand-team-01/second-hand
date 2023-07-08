@@ -42,7 +42,7 @@ struct AccountButtonUIFactory {
             title = ButtonName.login
             tag = ButtonTag.login
         case .register:
-            backgroundColor = .lightGray
+            backgroundColor = .blue
             title = ButtonName.register
             tag = ButtonTag.register
         }

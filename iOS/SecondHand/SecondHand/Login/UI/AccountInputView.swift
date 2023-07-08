@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AccountInputView: UIView, UITextFieldDelegate {
+class AccountInputView: UIView {
     private var idLabel = UILabel()
     private var idInputTextField = UITextField()
     private var warningLabel: UILabel = {
@@ -21,25 +21,29 @@ class AccountInputView: UIView, UITextFieldDelegate {
     private var passwordLabel = UILabel()
     private var passwordInputTextField = UITextField()
     private var textfieldDelegate = AccountValidationDelegate()
+    var isSignInEnabledSender: ((Bool) -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setDeafultText()
         self.addSubviews()
+        self.addConstraints()
+        self.setDeafultText()
         self.setDelegateToTextField()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.setDeafultText()
         self.addSubviews()
+        self.addConstraints()
+        self.setDeafultText()
         self.setDelegateToTextField()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.addConstraints()
-    }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        self.addSubviews()
+//        self.addConstraints()
+//    }
     
     private func setDeafultText() {
         self.idLabel.text = DefaultText.id
@@ -53,8 +57,10 @@ class AccountInputView: UIView, UITextFieldDelegate {
         self.textfieldDelegate.isValidSender = { isValid in
             guard isValid else {
                 self.warningLabel.isHidden = false
+                self.isSignInEnabledSender?(false)
                 return
             }
+            self.isSignInEnabledSender?(true)
             self.warningLabel.isHidden = true
         }
     }

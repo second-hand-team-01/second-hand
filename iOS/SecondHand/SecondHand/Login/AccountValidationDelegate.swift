@@ -9,8 +9,8 @@ import UIKit
 import RegexBuilder
 
 class AccountValidationDelegate: NSObject, UITextFieldDelegate {
-    let inputLimitRange: ClosedRange = (3...12)
-    let regexPattern: String = "[^A-Z|a-z|0-9]"
+    private let inputLimitRange: ClosedRange = (3...12)
+    private let regexPattern: String = "[^A-Z|a-z|0-9]"
     var isValidSender: ((Bool) -> ())?
 
     // TODO: - 가독성을 고려하여 깔끔하게 짜기!!
