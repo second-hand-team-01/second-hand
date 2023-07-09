@@ -31,14 +31,19 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loginView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(loginView)
+        self.addLoginView()
         self.setViewControllerTitle(to: "내 계정")
-        addObservers()
+        self.observeDidTokenArrived()
+        self.didTapButton()
     }
     
     private func setViewControllerTitle(to title: String) {
         self.title = "\(title)"
+    }
+    
+    private func addLoginView() {
+        self.loginView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(loginView)
     }
     
     override func viewWillLayoutSubviews() {
@@ -46,16 +51,6 @@ class LoginViewController: UIViewController {
         self.addConstraintToLoginView()
     }
     
-    private func addObservers() {
-        observeLogin()
-        observeLoginByGithub()
-        observeRegisterUser()
-        observeSceneDelegate()
-    }
-}
-
-// MARK: - Constraint 설정 메소드 추가
-extension LoginViewController {
     private func addConstraintToLoginView() {
         guard let navigationBarBottomAnchor = self.navigationController?.navigationBar.bottomAnchor,
               let tabBarTopAnchor = self.tabBarController?.tabBar.topAnchor else { return }
@@ -79,49 +74,8 @@ extension LoginViewController {
             self.loginView.bottomAnchor.constraint(lessThanOrEqualTo: tabBarTopAnchor)
         ])
     }
-}
-
-// MARK: - Observer 적용 메소드
-extension LoginViewController {
-    private func observeLogin() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(login),
-            name: .account.login,
-            object: nil
-        )
-    }
     
-    @objc private func login(_ notification: Notification) {
-        let enteredLoginData = loginView.getEnteredInfo()
-        guard let id = enteredLoginData.0,
-              let password = enteredLoginData.1 else { return }
-        let loginInfo = LoginDTO(loginId: id, password: password)
-        
-        Task {
-            guard let response = await networkManager.request(type: .signIn, data: loginInfo) else {
-                self.present(self.loginAlertController, animated: true, completion: nil)
-                return
-            }
-            SecretKeys.accessToken = response.data.token
-            viewController.sendData(response.data.memberInfo)
-            self.navigationController?.pushViewController(
-                viewController,
-                animated: true
-            )
-        }
-    }
-    
-    private func observeLoginByGithub() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(loginByGithub),
-            name: .account.githubLogin,
-            object: nil
-        )
-    }
-    
-    private func observeSceneDelegate() {
+    private func observeDidTokenArrived() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(getAccessToken),
@@ -145,8 +99,24 @@ extension LoginViewController {
         }
     }
     
-    @objc private func loginByGithub(_ notification: Notification) {
-        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=3ac935cf627da08c8f03") else {
+    private func didTapButton() {
+        loginView.buttonTagSender = { buttonTag in
+            switch buttonTag {
+            case 0:
+                self.signInWithGitHub()
+            case 1:
+                self.signIn()
+            case 2:
+                self.signUp()
+            default:
+                LogManger.generate(level: Level.info, LogMessage.incorretButtonTag)
+            }
+            return
+        }
+    }
+    
+    private func signInWithGitHub() {
+        guard let githubURL = URL(string: "https://github.com/login/oauth/authorize?client_id=\(SecretKeys.clientID)") else {
             return
         }
         
@@ -155,17 +125,34 @@ extension LoginViewController {
         }
     }
     
-    private func observeRegisterUser() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(registerUser),
-            name: .account.register,
-            object: nil
-        )
+    private func signIn() {
+        let enteredLoginData = loginView.getEnteredInfo()
+        guard let id = enteredLoginData.0,
+              let password = enteredLoginData.1 else { return }
+        let loginInfo = LoginDTO(loginId: id, password: password)
+        
+        Task {
+            guard let response = await networkManager.request(type: .signIn, data: loginInfo) else {
+                self.present(self.loginAlertController, animated: true, completion: nil)
+                return
+            }
+            SecretKeys.accessToken = response.data.token
+            viewController.sendData(response.data.memberInfo)
+            self.navigationController?.pushViewController(
+                viewController,
+                animated: true
+            )
+        }
     }
     
-    @objc private func registerUser(_ notification: Notification) {
+    private func signUp() {
         let signUpNavigation = UINavigationController(rootViewController: SignUpViewController())
         self.present(signUpNavigation, animated: true)
+    }
+}
+
+extension LoginViewController {
+    enum LogMessage {
+        static let incorretButtonTag = "잘못된 버튼 정보가 전달되었습니다."
     }
 }

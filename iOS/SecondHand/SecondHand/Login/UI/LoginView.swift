@@ -22,6 +22,61 @@ class LoginView: UIView {
         self.addConstraints()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.setButtons()
+        self.setControlToSignInButton()
+        self.addSubviews()
+        self.addConstraints()
+    }
+    
+    /// 깃헙 로그인 / 서버 로그인 / 회원가입 버튼 생성
+    private func setButtons() {
+        typealias Factory = AccountButtonUIFactory
+        
+        self.gitHubSignInButton = Factory.make(type: .github)
+        self.addActionToGitHubSignInButton()
+        
+        self.signInButton = Factory.make(type: .login)
+        self.addActionToSignInButton()
+        
+        self.signUpButton = Factory.make(type: .register)
+        self.addActionToSignUpButton()
+    }
+    
+    private func addActionToGitHubSignInButton() {
+        let action = UIAction { _ in
+            self.buttonTagSender?(self.gitHubSignInButton.tag)
+            return
+        }
+        self.gitHubSignInButton.addAction(
+            action,
+            for: .touchUpInside
+        )
+    }
+    
+    private func addActionToSignInButton() {
+        let action = UIAction { _ in
+            self.buttonTagSender?(self.signInButton.tag)
+            return
+        }
+        self.signInButton.addAction(
+            action,
+            for: .touchUpInside
+        )
+    }
+    
+    private func addActionToSignUpButton() {
+        let action = UIAction { _ in
+            self.buttonTagSender?(self.signUpButton.tag)
+            return
+        }
+        self.signUpButton.addAction(
+            action,
+            for: .touchUpInside
+        )
+    }
+    
     private func addSubviews() {
         let subViews = [
             self.accountInputView,
@@ -36,44 +91,7 @@ class LoginView: UIView {
         }
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setButtons()
-        self.setControlToSignInButton()
-        self.addSubviews()
-        self.addConstraints()
-    }
-    
-    private func setButtons() {
-        typealias Factory = AccountButtonUIFactory
-
-        self.gitHubSignInButton = setAction(
-            to: Factory.make(type: .github)
-        )
-        self.signInButton = setAction(
-            to: Factory.make(type: .login)
-        )
-        self.signUpButton = setAction(
-            to: Factory.make(type: .register)
-        )
-    }
-    
-    private func setAction(to button: UIButton) -> UIButton {
-        let button = button
-        let action = UIAction { _ in
-            self.buttonTagSender?(button.tag)
-            return
-        }
-        button.addAction(action, for: .touchUpInside)
-        return button
-    }
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        self.addSubviews()
-//        self.addConstraints()
-//    }
-    
+    /// 오토 레이아웃 설정
     private func addConstraints() {
         self.addConstraintToAccountInputView()
         self.addConstraintToGitHubSignInButton()
@@ -81,26 +99,6 @@ class LoginView: UIView {
         self.addConstraintToSignUpButton()
     }
     
-    func getEnteredInfo() -> (String?, String?) {
-        return (self.accountInputView.getEnteredId(), self.accountInputView.getEnteredPassword())
-    }
-    
-    // TODO: - Naming - ID 입력 분기처리에 따라 로그인 버튼 On/Off 메소드
-    private func setControlToSignInButton() {
-        self.accountInputView.isSignInEnabledSender = { isEnable in
-            guard isEnable else {
-                self.signInButton.isUserInteractionEnabled = false
-                self.signInButton.backgroundColor = .lightGray
-                return
-            }
-            self.signInButton.isUserInteractionEnabled = true
-            self.signInButton.backgroundColor = .orange
-        }
-    }
-}
-
-// MARK: - 하위뷰 Constraint 부여
-extension LoginView {
     private func addConstraintToAccountInputView() {
         NSLayoutConstraint.activate([
             self.accountInputView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -145,6 +143,24 @@ extension LoginView {
             ),
             self.signUpButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+    }
+    
+    //
+    func getEnteredInfo() -> (String?, String?) {
+        return (self.accountInputView.getEnteredId(), self.accountInputView.getEnteredPassword())
+    }
+    
+    // TODO: - Naming - ID 입력 분기처리에 따라 로그인 버튼 On/Off 메소드
+    private func setControlToSignInButton() {
+        self.accountInputView.isSignInEnabledSender = { isEnable in
+            guard isEnable else {
+                self.signInButton.isUserInteractionEnabled = false
+                self.signInButton.backgroundColor = .lightGray
+                return
+            }
+            self.signInButton.isUserInteractionEnabled = true
+            self.signInButton.backgroundColor = .orange
+        }
     }
 }
 

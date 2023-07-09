@@ -29,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let url = URLContexts.first?.url {
             let code = String(url.absoluteString.split(separator: "=")[1])
             OAuth.code = code
-            print(OAuth.code)
             NotificationCenter.default.post(
                 name: SceneDelegate.notification,
                 object: nil

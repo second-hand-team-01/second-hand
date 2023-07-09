@@ -6,5 +6,6 @@
 //
 
 struct SecretKeys {
+    static var clientID = "3ac935cf627da08c8f03"
     static var accessToken = ""
 }
