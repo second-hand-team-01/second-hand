@@ -12,6 +12,7 @@ class AccountInputView: UIView {
     private var idInputTextField: UITextField = {
         var textfield = UITextField()
         textfield.autocapitalizationType = .none
+        textfield.clearButtonMode = .whileEditing
         return textfield
     }()
     private var warningLabel: UILabel = {
@@ -26,6 +27,7 @@ class AccountInputView: UIView {
     private var passwordInputTextField: UITextField = {
         var textfield = UITextField()
         textfield.autocapitalizationType = .none
+        textfield.clearButtonMode = .whileEditing
         return textfield
     }()
     private var textfieldDelegate = AccountValidationDelegate()
@@ -107,7 +109,7 @@ extension AccountInputView {
 
             self.idInputTextField.leadingAnchor.constraint(
                 equalTo: self.idLabel.trailingAnchor,
-                constant: 52.74
+                constant: 40
             ),
             self.idInputTextField.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
             self.idInputTextField.centerYAnchor.constraint(equalTo: self.idLabel.centerYAnchor)
