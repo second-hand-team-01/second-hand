@@ -40,6 +40,7 @@ class AccountValidationDelegate: NSObject, UITextFieldDelegate {
         return true
     }
     
+    /// 입력 ID 검증
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -64,6 +65,12 @@ class AccountValidationDelegate: NSObject, UITextFieldDelegate {
         }
         
         isValidSender?(true)
+        return true
+    }
+    
+    /// Return 버튼 클릭시 키보드 내려감
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

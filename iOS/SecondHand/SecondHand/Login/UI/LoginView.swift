@@ -145,7 +145,7 @@ class LoginView: UIView {
         ])
     }
     
-    //
+    /// 입력 ID / PW를 ViewController에 전달하는 메소드
     func getEnteredInfo() -> (String?, String?) {
         return (self.accountInputView.getEnteredId(), self.accountInputView.getEnteredPassword())
     }
@@ -161,6 +161,13 @@ class LoginView: UIView {
             self.signInButton.isUserInteractionEnabled = true
             self.signInButton.backgroundColor = .orange
         }
+    }
+    
+    override func touchesEnded(
+        _ touches: Set<UITouch>,
+        with event: UIEvent?
+    ) {
+        self.endEditing(true)
     }
 }
 
