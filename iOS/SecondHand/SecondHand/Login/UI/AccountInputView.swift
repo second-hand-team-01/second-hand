@@ -9,7 +9,11 @@ import UIKit
 
 class AccountInputView: UIView {
     private var idLabel = UILabel()
-    private var idInputTextField = UITextField()
+    private var idInputTextField: UITextField = {
+        var textfield = UITextField()
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
     private var warningLabel: UILabel = {
         var label = UILabel()
         label.text = DefaultText.warningMessage
@@ -19,7 +23,11 @@ class AccountInputView: UIView {
         return label
     }()
     private var passwordLabel = UILabel()
-    private var passwordInputTextField = UITextField()
+    private var passwordInputTextField: UITextField = {
+        var textfield = UITextField()
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
     private var textfieldDelegate = AccountValidationDelegate()
     var isSignInEnabledSender: ((Bool) -> ())?
     
@@ -38,12 +46,6 @@ class AccountInputView: UIView {
         self.setDeafultText()
         self.setDelegateToTextField()
     }
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        self.addSubviews()
-//        self.addConstraints()
-//    }
     
     private func setDeafultText() {
         self.idLabel.text = DefaultText.id
