@@ -32,6 +32,7 @@ import codesquad.secondhand.dto.member.MemberInfoDto;
 import codesquad.secondhand.dto.member.SignUpRequestDto;
 import codesquad.secondhand.dto.token.TokenResponse;
 import codesquad.secondhand.service.MemberService;
+import codesquad.secondhand.util.IpSearcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,11 +56,14 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto) {
+	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest) {
 		MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
 		MemberIdxLoginIdImageDto memberIdxLoginIdImage = memberService.getMemberIdxLoginIdImage(
 			memberIdxTokenDto.getMemberIdx());
 		String accessToken = memberIdxTokenDto.getToken();
+
+		IpSearcher.getClientIP(httpServletRequest);
+
 		return ResponseDto.of(RESPONSE_SUCCESS, TokenResponse.of(accessToken, memberIdxLoginIdImage));
 	}
 
