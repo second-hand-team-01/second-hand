@@ -15,9 +15,9 @@ class AccountInputView: UIView {
         textfield.clearButtonMode = .whileEditing
         return textfield
     }()
-    private var warningLabel: UILabel = {
+    private var idWarningLabel: UILabel = {
         var label = UILabel()
-        label.text = DefaultText.warningMessage
+        label.text = DefaultText.idWarningMessage
         label.textColor = .red
         label.font = .typo.footNote
         label.isHidden = true
@@ -28,9 +28,20 @@ class AccountInputView: UIView {
         var textfield = UITextField()
         textfield.autocapitalizationType = .none
         textfield.clearButtonMode = .whileEditing
+        textfield.isSecureTextEntry = true
         return textfield
     }()
-    private var textfieldDelegate = AccountValidationDelegate()
+    private var passwordWarningLabel: UILabel = {
+        var label = UILabel()
+        label.text = DefaultText.passwordWarningMessage
+        label.textColor = .red
+        label.font = .typo.footNote
+        label.isHidden = true
+        return label
+    }()
+    
+    private var idValidator = IdValidationDelegate()
+    private var passwordValidator = PasswordValidationDelegate()
     var isSignInEnabledSender: ((Bool) -> ())?
     
     override init(frame: CGRect) {
@@ -38,7 +49,8 @@ class AccountInputView: UIView {
         self.addSubviews()
         self.addConstraints()
         self.setDeafultText()
-        self.setDelegateToTextField()
+        self.setDelegateToIdInputTextField()
+        self.setDelegateToPasswordInputTextField()
     }
     
     required init?(coder: NSCoder) {
@@ -46,7 +58,8 @@ class AccountInputView: UIView {
         self.addSubviews()
         self.addConstraints()
         self.setDeafultText()
-        self.setDelegateToTextField()
+        self.setDelegateToIdInputTextField()
+        self.setDelegateToPasswordInputTextField()
     }
     
     private func setDeafultText() {
@@ -56,16 +69,29 @@ class AccountInputView: UIView {
         self.passwordInputTextField.placeholder = DefaultText.passwordInput
     }
     
-    private func setDelegateToTextField() {
-        self.idInputTextField.delegate = self.textfieldDelegate
-        self.textfieldDelegate.isValidSender = { isValid in
+    private func setDelegateToIdInputTextField() {
+        self.idInputTextField.delegate = self.idValidator
+        self.idValidator.isValidSender = { isValid in
             guard isValid else {
-                self.warningLabel.isHidden = false
+                self.idWarningLabel.isHidden = false
                 self.isSignInEnabledSender?(false)
                 return
             }
             self.isSignInEnabledSender?(true)
-            self.warningLabel.isHidden = true
+            self.idWarningLabel.isHidden = true
+        }
+    }
+    
+    private func setDelegateToPasswordInputTextField() {
+        self.passwordInputTextField.delegate = self.passwordValidator
+        self.passwordValidator.isValidSender = { isValid in
+            guard isValid else {
+                self.passwordWarningLabel.isHidden = false
+                self.isSignInEnabledSender?(false)
+                return
+            }
+            self.passwordWarningLabel.isHidden = true
+            self.isSignInEnabledSender?(true)
         }
     }
     
@@ -85,9 +111,10 @@ extension AccountInputView {
         let subViews = [
             self.idLabel,
             self.idInputTextField,
-            self.warningLabel,
+            self.idWarningLabel,
             self.passwordLabel,
-            self.passwordInputTextField
+            self.passwordInputTextField,
+            self.passwordWarningLabel
         ]
         
         subViews.forEach {
@@ -98,8 +125,9 @@ extension AccountInputView {
     
     private func addConstraints() {
         self.addConstraintToIdViews()
-        self.addConstraintToWarningLabel()
+        self.addConstraintToIdWarningLabel()
         self.addConstraintToPasswordViews()
+        self.addConstraintToPasswordWarningLabel()
     }
 
     private func addConstraintToIdViews() {
@@ -116,11 +144,11 @@ extension AccountInputView {
         ])
     }
     
-    private func addConstraintToWarningLabel() {
+    private func addConstraintToIdWarningLabel() {
         NSLayoutConstraint.activate([
-            self.warningLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
-            self.warningLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.warningLabel.topAnchor.constraint(
+            self.idWarningLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
+            self.idWarningLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.idWarningLabel.topAnchor.constraint(
                 equalTo: self.idInputTextField.bottomAnchor,
                 constant: 5
             )
@@ -131,14 +159,25 @@ extension AccountInputView {
         NSLayoutConstraint.activate([
             self.passwordLabel.leadingAnchor.constraint(equalTo: self.idLabel.leadingAnchor),
             self.passwordLabel.topAnchor.constraint(
-                equalTo: self.warningLabel.bottomAnchor,
+                equalTo: self.idWarningLabel.bottomAnchor,
                 constant: 10
             ),
-            self.passwordLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
 
             self.passwordInputTextField.leadingAnchor.constraint(equalTo: self.idInputTextField.leadingAnchor),
             self.passwordInputTextField.trailingAnchor.constraint(equalTo: self.idInputTextField.trailingAnchor),
             self.passwordInputTextField.centerYAnchor.constraint(equalTo: self.passwordLabel.centerYAnchor)
+        ])
+    }
+    
+    private func addConstraintToPasswordWarningLabel() {
+        NSLayoutConstraint.activate([
+            self.passwordWarningLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
+            self.passwordWarningLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.passwordWarningLabel.topAnchor.constraint(
+                equalTo: self.passwordInputTextField.bottomAnchor,
+                constant: 5
+            ),
+            self.passwordWarningLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }
@@ -150,6 +189,7 @@ extension AccountInputView {
         static let idInput = "아이디를 입력하세요"
         static let password = "비밀번호"
         static let passwordInput = "비밀번호를 입력하세요"
-        static let warningMessage = "아이디는 3~12 글자 혹은 영어 대/소문자나 숫자만 가능합니다."
+        static let idWarningMessage = "아이디는 3~12 글자 혹은 영어 대/소문자나 숫자만 가능합니다."
+        static let passwordWarningMessage = "비밀번호는 6~12 글자이어야 합니다."
     }
 }
