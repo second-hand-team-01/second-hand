@@ -8,6 +8,7 @@
 import UIKit
 import RegexBuilder
 
+// TODO: - 추상화 필요. -> 계정 생성 및 로그인에서도 공통적으로 필요
 class IdValidationDelegate: NSObject, UITextFieldDelegate {
     private let inputLimitRange: ClosedRange = (3...12)
     private let regexPattern: String = "[^A-Z|a-z|0-9]"

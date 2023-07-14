@@ -149,6 +149,11 @@ class LoginViewController: UIViewController {
         let signUpNavigation = UINavigationController(rootViewController: SignUpViewController())
         self.present(signUpNavigation, animated: true)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.loginView.clearTextFields()
+    }
 }
 
 extension LoginViewController {

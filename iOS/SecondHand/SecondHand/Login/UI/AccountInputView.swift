@@ -103,6 +103,13 @@ class AccountInputView: UIView {
     func getEnteredPassword() -> String? {
         return self.passwordInputTextField.text
     }
+    
+    func clearText() {
+        self.idInputTextField.text = ""
+        self.idInputTextField.endEditing(true)
+        self.passwordInputTextField.text = ""
+        self.passwordInputTextField.endEditing(true)
+    }
 }
 
 // MARK: - Constraint 설정

@@ -30,6 +30,10 @@ class LoginView: UIView {
         self.addConstraints()
     }
     
+    func clearTextFields() {
+        self.accountInputView.clearText()
+    }
+    
     /// 깃헙 로그인 / 서버 로그인 / 회원가입 버튼 생성
     private func setButtons() {
         typealias Factory = AccountButtonUIFactory
@@ -163,6 +167,7 @@ class LoginView: UIView {
         }
     }
     
+    /// TextField에 입력중 빈 공간 클릭시 키보드 내려가는 기능
     override func touchesEnded(
         _ touches: Set<UITouch>,
         with event: UIEvent?
