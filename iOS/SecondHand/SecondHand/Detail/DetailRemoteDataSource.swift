@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct DetailNetworkManager {
+struct DetailRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
     
-    func request(idx: Int) async -> ItemDetailDTO? {
-        guard let url = URL(string: ServerURL.base + "items/\(idx)") else {
+    func request(item index: Int) async -> ItemDetailDTO? {
+        guard let url = URL(string: ServerURL.base + "items/\(index)") else {
             return nil
         }
         var request = URLRequest(url: url)

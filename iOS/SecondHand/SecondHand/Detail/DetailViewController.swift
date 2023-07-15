@@ -16,20 +16,15 @@ class DetailViewController: UIViewController {
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
     private var priceLabel = UILabel()
-    private var networkManager = DetailNetworkManager()
+    
+    var index: Int = 0
+    private var detailUseCase: DetailUseCase?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        toolbar.configure(price: "123,000")
         setTabBar(isHiding: true)
-        Task {
-            guard let data = await networkManager.request(idx: 107)?.data else {
-                return
-            }
-            self.detailContentView.configure(by: data, image: data.imageUrl[0])
-            self.toolbar.configure(price: "\(data.price)")
-        }
+        detailUseCase?.fetchData(item: index)
     }
 
     override func viewWillLayoutSubviews() {
