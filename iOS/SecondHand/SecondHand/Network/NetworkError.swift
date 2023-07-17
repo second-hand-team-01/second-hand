@@ -10,6 +10,7 @@ import Foundation
 enum NetworkError: Error {
     case badResponse
     case badStatusCode(Int)
+    case badURL
     
     var message: String {
         switch self {
@@ -17,6 +18,8 @@ enum NetworkError: Error {
             return "Response가 올바르지 않습니다."
         case .badStatusCode(let code):
             return "응답코드가 올바르지 않습니다. 응답코드: \(code)"
+        case .badURL:
+            return "URL이 올바르지 않습니다."
         }
     }
 }

@@ -11,10 +11,26 @@ struct DetailRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
     
+    func validate(urlResponse: URLResponse) -> Bool {
+        guard let response = urlResponse as? HTTPURLResponse else {
+            LogManger.generate(level: .network, NetworkError.badResponse.message)
+            return false
+        }
+        
+        guard (200..<300).contains(response.statusCode) else {
+            LogManger.generate(level: .network, NetworkError.badStatusCode(response.statusCode).message)
+            return false
+        }
+        
+        return true
+    }
+    
     func request(item index: Int) async -> ItemDetailDTO? {
         guard let url = URL(string: ServerURL.base + "items/\(index)") else {
+            LogManger.generate(level: .network, NetworkError.badURL.message)
             return nil
         }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
@@ -24,15 +40,8 @@ struct DetailRemoteDataSource {
         do {
             let (data, urlResponse) = try await session.data(for: request)
 
-            guard let response = urlResponse as? HTTPURLResponse else {
-                LogManger.generate(level: .network, NetworkError.badResponse.message)
-                throw NetworkError.badResponse
-            }
-            
-            guard (200..<300).contains(response.statusCode) else {
-                let statusCode = response.statusCode
-                LogManger.generate(level: .network, NetworkError.badStatusCode(statusCode).message)
-                throw NetworkError.badStatusCode(response.statusCode)
+            guard validate(urlResponse: urlResponse) else {
+                return nil
             }
             
             return try decoder.decode(ItemDetailDTO.self, from: data)
@@ -40,6 +49,28 @@ struct DetailRemoteDataSource {
             if let decodingError = error as? DecodingError {
                 LogManger.generate(level: .network, "\(decodingError)")
             }
+            
+            LogManger.generate(level: .network, "\(error)")
+            return nil
+        }
+    }
+    
+    func downloadImage(from urlString: String) async -> URL? {
+        guard let downloadURL = URL(string: urlString) else {
+            LogManger.generate(level: .network, NetworkError.badURL.message)
+            return nil
+        }
+        
+        do {
+            let (dataURL, urlResponse) = try await session.download(from: downloadURL)
+
+            guard validate(urlResponse: urlResponse) else {
+                return nil
+            }
+
+            return dataURL
+        } catch let error {
+            LogManger.generate(level: .network, "\(error)")
             return nil
         }
     }
