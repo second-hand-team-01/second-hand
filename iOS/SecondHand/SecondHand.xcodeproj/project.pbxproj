@@ -36,6 +36,7 @@
 		63608CC62A407FB8006CD876 /* CommunicationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC52A407FB8006CD876 /* CommunicationInfo.swift */; };
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
 		63608CCA2A40DA46006CD876 /* UIFont+Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC92A40DA45006CD876 /* UIFont+Typography.swift */; };
+		6362335F2A65094500664C07 /* DetailModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6362335E2A65094500664C07 /* DetailModelMapper.swift */; };
 		63A3FCDE2A3740C800361FAD /* SellerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCDD2A3740C800361FAD /* SellerInfo.swift */; };
 		63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE22A3968AC00361FAD /* DetailContentView.swift */; };
 		63A3FCE92A3983C500361FAD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE82A3983C500361FAD /* DetailViewController.swift */; };
@@ -159,6 +160,7 @@
 		63608CC52A407FB8006CD876 /* CommunicationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationInfo.swift; sourceTree = "<group>"; };
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
 		63608CC92A40DA45006CD876 /* UIFont+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Typography.swift"; sourceTree = "<group>"; };
+		6362335E2A65094500664C07 /* DetailModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailModelMapper.swift; sourceTree = "<group>"; };
 		63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		63A3FCDD2A3740C800361FAD /* SellerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfo.swift; sourceTree = "<group>"; };
 		63A3FCE22A3968AC00361FAD /* DetailContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailContentView.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 				63A3FCE82A3983C500361FAD /* DetailViewController.swift */,
 				63E6B8A02A616964009357B6 /* DetailUseCase.swift */,
 				63E6B8A72A616AFD009357B6 /* DetailModel.swift */,
+				6362335E2A65094500664C07 /* DetailModelMapper.swift */,
 				63E6B8AB2A628BF9009357B6 /* DetailRepository.swift */,
 				632CA6BB2A4E6DBD00C0E639 /* DetailRemoteDataSource.swift */,
 				632CA6C22A4E6EC700C0E639 /* ItemDetailDTO.swift */,
@@ -841,6 +844,7 @@
 				FFD62C252A3C1BBF0014D2D4 /* PriceLabel.swift in Sources */,
 				63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */,
 				FFD62C262A3C1BBF0014D2D4 /* LeadingIconLabel.swift in Sources */,
+				6362335F2A65094500664C07 /* DetailModelMapper.swift in Sources */,
 				63E94CE02A4C929700B0376D /* AccountInfoUseCase.swift in Sources */,
 				63E94CEA2A4C9E2200B0376D /* MemberInfoDTO.swift in Sources */,
 				FF3942C82A4C186200B9722F /* SignUpResponseDTO.swift in Sources */,
