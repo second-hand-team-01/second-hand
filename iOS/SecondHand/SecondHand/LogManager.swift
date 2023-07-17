@@ -9,6 +9,7 @@ import OSLog
 
 enum Level: String {
     case network = "Network"
+    case repository = "Repository"
     case info = "Info"
 }
 
