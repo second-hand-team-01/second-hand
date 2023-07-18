@@ -23,7 +23,7 @@ public class ItemDetailReturnDto {
 	private final int interest;
 	private final int view;
 	private final boolean interestChecked;
-	private final LocalDateTime postedAt;
+	private final LocalDateTime lastModifiedAt;
 	private final List<String> imageUrl;
 
 	public static ItemDetailReturnDto of(Item item, SellerDto sellerDto,
@@ -31,7 +31,7 @@ public class ItemDetailReturnDto {
 		int chat, int interest, boolean interestChecked, List<String> itemImage) {
 		return new ItemDetailReturnDto(item.getItemIdx(), item.getName(), sellerDto, item.getStatus(),
 			categoryWithoutImageDto,
-			item.getDescription(), item.getPrice(), chat, interest, item.getView(), interestChecked, item.getPostedAt(),
+			item.getDescription(), item.getPrice(), chat, interest, item.getView(), interestChecked, item.getLastModifiedAt(),
 			itemImage);
 	}
 }
