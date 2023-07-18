@@ -109,7 +109,7 @@ public class ImageService {
 			} catch (IOException e) {
 				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
 			}
-			itemUrlList.add(amazonS3.getUrl(bucketName, fileName).toString());
+			itemUrlList.add(fileName + "@" + amazonS3.getUrl(bucketName, fileName).toString());
 			cnt++;
 		}
 		return itemUrlList;
