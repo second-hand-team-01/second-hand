@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item`
     `location_idx`   BIGINT(10)   NOT NULL,
     `main_image_idx` BIGINT(10)   NULL,
     `posted_at`      DATETIME     NOT NULL,
+    `last_modified_at` DATETIME NULL,
     `name`           VARCHAR(45)  NOT NULL,
     `description`    VARCHAR(300) NULL,
     `price`          INT          NOT NULL,
