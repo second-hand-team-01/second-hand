@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -57,9 +58,13 @@ public class Item {
 	@Setter
 	private ItemImage itemImage;
 
-	@LastModifiedDate
+	@CreatedDate
 	@Column(name = "posted_at")
 	private LocalDateTime postedAt;
+
+	@LastModifiedDate
+	@Column(name = "last_modified_at")
+	private LocalDateTime lastModifiedAt;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -122,7 +127,6 @@ public class Item {
 		}
 	}
 
-
 	@Override
 	public String toString() {
 		return "Item{" +
@@ -132,6 +136,7 @@ public class Item {
 			", location=" + location +
 			", itemImage=" + itemImage +
 			", postedAt=" + postedAt +
+			", lastModifiedAt=" + lastModifiedAt +
 			", name='" + name + '\'' +
 			", description='" + description + '\'' +
 			", price=" + price +
