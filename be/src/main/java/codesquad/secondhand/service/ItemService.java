@@ -91,12 +91,13 @@ public class ItemService {
 		Item save = itemRepository.save(item);
 		List<String> itemUrlList = imageService.upload(save.getItemIdx(), itemDetailDto);
 		for (int i = 0; i < itemUrlList.size(); i++) {
+			String[] imageSplit = itemUrlList.get(i).split("@");
 			if (i == 0) {
-				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, imageSplit[1], imageSplit[0]));
 				item.setItemImage(itemImage);
 				continue;
 			}
-			itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+			itemImageRepository.save(new ItemImage(save, imageSplit[1], imageSplit[0]));
 		}
 		return new ItemIdxDto(item.getItemIdx());
 	}
@@ -169,8 +170,10 @@ public class ItemService {
 			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		}
 
-		//TODO: s3 이미지 삭제
-
+		List<ItemImage> list = item.getItemImages();
+		for (ItemImage itemImage : list) {
+			imageService.delete(itemImage.getImagePath());
+		}
 		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
 			itemRepository.delete(item);
 		} else {

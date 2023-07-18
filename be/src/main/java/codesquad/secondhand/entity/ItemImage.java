@@ -31,9 +31,13 @@ public class ItemImage {
 	@Column(name = "image_url")
 	private String imageUrl;
 
-	public ItemImage(Item item, String imageUrl) {
+	@Column(name = "image_path")
+	private String imagePath;
+
+	public ItemImage(Item item, String imageUrl, String imagePath) {
 		this.item = item;
 		this.imageUrl = imageUrl;
+		this.imagePath = imagePath;
 	}
 
 	public ItemImage() {
