@@ -18,13 +18,13 @@ class DetailViewController: UIViewController {
     private var priceLabel = UILabel()
     
     var index: Int = 0
-    private var detailUseCase: DetailUseCase?
+    private var detailUseCase = DetailUseCase()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        setTabBar(isHiding: true)
-        detailUseCase?.fetchData(item: index)
+        self.setTabBar(isHiding: true)
+        self.detailUseCase.fetchData(item: 101)
     }
 
     override func viewWillLayoutSubviews() {

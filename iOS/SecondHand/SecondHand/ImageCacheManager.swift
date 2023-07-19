@@ -8,18 +8,23 @@
 import Foundation
 
 struct ImageCacheManager {
-    static let counter = NSCache<NSString, NSString>()
-    static let saver = NSCache<NSString, NSURL>()
+    static let shared = NSCache<NSString, NSURL>()
     private init() {}
     
-    static func check(key: String) -> Bool {
-        if let isExist = self.saver.object(
-            forKey: NSString(
-                string: key
-            )
-        ) {
+    static func cacheExists(key: NSString) -> Bool {
+        if let isExist = self.shared.object(forKey: key) {
             return true
         }
         return false
+    }
+    
+    static func getCachedCount(of image: Int) -> Int {
+        (0..<10).filter { (index: Int) in
+            return self.cacheExists(
+                key: NSString(
+                    string: "\(image)/\(index)"
+                )
+            )
+        }.count
     }
 }

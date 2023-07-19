@@ -8,16 +8,16 @@
 import Foundation
 
 final class DetailUseCase {
-    private var detail: DetailModel
-    private var detailRepository: DetailRepository?
-    
-    init(detail: DetailModel) {
+    private var detail: DetailModel?
+    private var detailRepository = DetailRepository()
+
+    init(detail: DetailModel? = nil) {
         self.detail = detail
     }
-    
+
     func fetchData(item index: Int) {
         Task {
-            guard let detailModel = await self.detailRepository?.fetchData(item: index) else {
+            guard let detailModel = await self.detailRepository.fetchData(item: index) else {
                 return
             }
             
