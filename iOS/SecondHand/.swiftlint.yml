@@ -4,10 +4,10 @@ disabled_rules:
 - file_length
 - void_return
 - nesting
+- function_body_length
 
 opt_in_rules:
 - force_unwrapping
-- function_body_length
 
 excluded:
 - Pods

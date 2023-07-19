@@ -15,7 +15,7 @@ struct DetailModelMapper {
         let productInfo = DetailModel.ProductInfo(
             title: data.name,
             category: data.category.name,
-            postedTime: data.postedAt,
+            postedTime: data.lastModifiedAt,
             description: data.description
         )
 

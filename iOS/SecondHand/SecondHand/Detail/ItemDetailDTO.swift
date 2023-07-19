@@ -30,7 +30,7 @@ struct ItemDetailDTO: DTO {
         let interest: Int
         let view: Int
         let interestChecked: Bool
-        let postedAt: String
+        let lastModifiedAt: String
         let imageUrl: [String]
     }
     
