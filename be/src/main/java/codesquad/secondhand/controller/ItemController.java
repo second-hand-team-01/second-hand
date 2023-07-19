@@ -104,7 +104,6 @@ public class ItemController {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		log.info("memberIdx: {}", memberIdx);
 		itemService.editItem(memberIdx, itemIdx, itemDetailDto);
-
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 }

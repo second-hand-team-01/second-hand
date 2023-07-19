@@ -92,38 +92,74 @@ public class ItemService {
 		Item save = itemRepository.save(item);
 		List<String> itemUrlList = imageService.upload(save.getItemIdx(), itemDetailDto);
 		for (int i = 0; i < itemUrlList.size(); i++) {
+			String[] imageSplit = itemUrlList.get(i).split("@");
 			if (i == 0) {
-				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+				ItemImage itemImage = itemImageRepository.save(new ItemImage(save, imageSplit[1], imageSplit[0]));
 				item.setItemImage(itemImage);
 				continue;
 			}
-			itemImageRepository.save(new ItemImage(save, itemUrlList.get(i)));
+			itemImageRepository.save(new ItemImage(save, imageSplit[1], imageSplit[0]));
 		}
 		return new ItemIdxDto(item.getItemIdx());
 	}
 
-	public ItemIdxDto editItem(Long memberIdx, Long itemIdx, ItemDetailDto itemDetailDto) {
+	public void editItem(Long memberIdx, Long itemIdx, ItemDetailDto itemDetailDto) {
 		Member member = memberRepository.findById(memberIdx)
 			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
+
 		Item itemToEdit = itemRepository.findById(itemIdx).orElseThrow(() -> new RestApiException(NO_EXISTING_ITEM));
-		if (itemToEdit.getSeller().getMemberIdx() != memberIdx) {
+
+		if (!itemToEdit.getSeller().getMemberIdx().equals(memberIdx)) {
 			log.info("itemDetailDto.getSellerIdx:{}", itemDetailDto.getSellerIdx());
 			throw new RestApiException(UNAUTHORIZED_EXCEPTION_EDIT);
 		}
+
 		Category category = null;
 		if (itemDetailDto.getCategoryIdx() != null) {
-			category = categoryRepository.findById(itemDetailDto.getCategoryIdx()).get();
+			category = categoryRepository.findById(itemDetailDto.getCategoryIdx())
+				.orElseThrow();
 		}
+
 		Location location = null;
 		if (itemDetailDto.getLocationIdx() != null) {
-			location = locationRepository.findById(itemDetailDto.getLocationIdx()).get();
+			location = locationRepository.findById(itemDetailDto.getLocationIdx())
+				.orElseThrow();
 		}
-		// TODO: 아이템 이미지 수정하기
+
+		// 기존 이미지 삭제
+		List<ItemImage> list = itemToEdit.getItemImages();
+		List<ItemImage> imagesToDelete = new ArrayList<>();
+		for (ItemImage itemImage : list) {
+			imageService.delete(itemImage.getImagePath());
+
+			if (memberIdx.equals(itemToEdit.getSeller().getMemberIdx())) {
+				imagesToDelete.add(itemImage);
+			} else {
+				throw new RestApiException(UNAUTHORIZED_EXCEPTION_DELETE);
+			}
+		}
+
+		imagesToDelete.forEach(itemImage -> {
+			itemImageRepository.delete(itemImage);
+			itemToEdit.getItemImages().remove(itemImage);
+		});
+
+		// 수정 이미지 등록
+		List<String> itemUrlList = imageService.upload(itemIdx, itemDetailDto);
+		for (int i = 0; i < itemUrlList.size(); i++) {
+			String[] imageSplit = itemUrlList.get(i).split("@");
+			if (i == 0) {
+				ItemImage itemImage = itemImageRepository.save(new ItemImage(itemToEdit, imageSplit[1], imageSplit[0]));
+				itemToEdit.setItemImage(itemImage);
+				continue;
+			}
+			itemImageRepository.save(new ItemImage(itemToEdit, imageSplit[1], imageSplit[0]));
+		}
 
 		itemToEdit.updateItem(member, category, location, itemDetailDto.getName(), itemDetailDto.getDescription(),
 			itemDetailDto.getPrice(),
 			itemDetailDto.getStatus());
-		return new ItemIdxDto(itemToEdit.getItemIdx());
+		// new ItemIdxDto(itemToEdit.getItemIdx());
 	}
 
 	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
@@ -170,8 +206,10 @@ public class ItemService {
 			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		}
 
-		//TODO: s3 이미지 삭제
-
+		List<ItemImage> list = item.getItemImages();
+		for (ItemImage itemImage : list) {
+			imageService.delete(itemImage.getImagePath());
+		}
 		if (memberIdx.equals(item.getSeller().getMemberIdx())) {
 			itemRepository.delete(item);
 		} else {

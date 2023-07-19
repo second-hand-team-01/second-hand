@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item`
     `location_idx`   BIGINT(10)   NOT NULL,
     `main_image_idx` BIGINT(10)   NULL,
     `posted_at`      DATETIME     NOT NULL,
+    `last_modified_at` DATETIME NULL,
     `name`           VARCHAR(45)  NOT NULL,
     `description`    VARCHAR(300) NULL,
     `price`          INT          NOT NULL,
@@ -109,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`item_image`
 (
     `item_image_idx` BIGINT(10)   NOT NULL AUTO_INCREMENT,
     `item_idx`       BIGINT(10)   NOT NULL,
+    `image_path`     VARCHAR(500) NULL,
     `image_url`      VARCHAR(500) NOT NULL,
     PRIMARY KEY (`item_image_idx`),
     INDEX `fk_item_image_item2_idx` (`item_idx` ASC) VISIBLE,
