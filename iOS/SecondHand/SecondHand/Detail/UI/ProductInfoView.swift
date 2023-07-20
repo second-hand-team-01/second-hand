@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductInfo: UIView {
+class ProductInfoView: UIView {
     private var nameLabel = UILabel()
     private var annotationLabel = UILabel()
     private var descriptionLabel: UILabel = {
@@ -15,7 +15,6 @@ class ProductInfo: UIView {
         label.numberOfLines = 0
         return label
     }()
-    private var communicationInfo = CommunicationInfo(frame: .zero)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,16 +27,13 @@ class ProductInfo: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layoutConstraints()
+        self.layoutConstraints()
     }
     
-    func configure(name: String,
-                   annotation: String,
-                   description: String
-    ) {
-        self.nameLabel.text = "\(name)"
-        self.annotationLabel.text = "\(annotation)"
-        self.descriptionLabel.text = "\(description)"
+    func update(by productInfo: DetailModel.ProductInfo) {
+        self.nameLabel.text = "\(productInfo.title)"
+        self.annotationLabel.text = "\(productInfo.category) ・ \(productInfo.postedTime)"
+        self.descriptionLabel.text = "\(productInfo.description)"
     }
     
     private func setFont() {
@@ -49,13 +45,12 @@ class ProductInfo: UIView {
 }
 
 // MARK: - Constraint 설정
-extension ProductInfo {
+extension ProductInfoView {
     private func addSubviews() {
         let subViews = [
             nameLabel,
             annotationLabel,
             descriptionLabel,
-            communicationInfo
         ]
         
         subViews.forEach {
@@ -65,11 +60,10 @@ extension ProductInfo {
     }
     
     private func layoutConstraints() {
-        addSubviews()
-        layoutNameLabel()
-        layoutAnnotationLabel()
-        layoutDescriptionLabel()
-        layoutCommunicationLabel()
+        self.addSubviews()
+        self.layoutNameLabel()
+        self.layoutAnnotationLabel()
+        self.layoutDescriptionLabel()
     }
     
     private func layoutNameLabel() {
@@ -93,15 +87,6 @@ extension ProductInfo {
             descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16)
-        ])
-    }
-    
-    func layoutCommunicationLabel() {
-        NSLayoutConstraint.activate([
-            communicationInfo.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            communicationInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            communicationInfo.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-            communicationInfo.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

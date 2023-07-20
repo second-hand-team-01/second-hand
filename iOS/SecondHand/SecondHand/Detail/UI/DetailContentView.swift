@@ -10,43 +10,33 @@ import UIKit
 class DetailContentView: UIView {
     var productImageView = UIImageView()
     var pageControl = UIPageControl()
-    var sellerInfo = SellerInfo()
+    var sellerInfoView = SellerInfoView()
     var statusButton = UIButton()
-    var productInfo = ProductInfo()
-    var communicationInfo = CommunicationInfo()
+    var productInfoView = ProductInfoView()
+    var communicationInfoView = CommunicationInfoView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        statusButton = makeStatusButton()
-        setUI()
+        self.addSubviews()
+        self.addConstraints()
+        self.setUI()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layoutConstraint()
-    }
-
-    func configure(by data: ItemDetailDTO.Detail, image url: String) {
-        sellerInfo.configure(nameLabel: data.seller.sellerId)
-        productInfo.configure(
-            name: data.name,
-            annotation: "\(data.category.name) ・ 1분전",
-            description: data.description
-        )
-        communicationInfo.configure(
-            chatCount: data.chat,
-            favoriteCount: data.interest,
-            viewsCount: data.view
-        )
+    func update(by data: DetailModel) {
+        DispatchQueue.main.async {
+            self.sellerInfoView.update(by: data.sellerName)
+            self.productInfoView.update(by: data.productInfo)
+            self.communicationInfoView.update(by: data.userInteractionCount)
+        }
     }
     
     private func setUI() {
-        productImageView.tintColor = .orange
-        statusButton = makeStatusButton()
+        self.productImageView.tintColor = .orange
+        self.statusButton = self.makeStatusButton()
     }
     
     // swiftlint:disable:next function_body_length
@@ -100,17 +90,14 @@ class DetailContentView: UIView {
             for: .touchUpInside)
         return button
     }
-}
-
-// MARK: - Constraint 설정
-extension DetailContentView {
+    
     private func addSubviews() {
         let subViews = [
-            productImageView,
-            pageControl,
-            sellerInfo,
-            statusButton,
-            productInfo
+            self.productImageView,
+            self.pageControl,
+            self.sellerInfoView,
+            self.statusButton,
+            self.productInfoView
         ]
         
         subViews.forEach {
@@ -118,58 +105,62 @@ extension DetailContentView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
-    
-    private func layoutConstraint() {
-        addSubviews()
-        layoutProductImageView()
-        layoutPageControl()
-        layoutSellerInfo()
-        layoutStatusButton()
-        layoutProductInfo()
+}
+
+// MARK: - Constraint 설정
+extension DetailContentView {
+    private func addConstraints() {
+        self.addConstraintsToProductImageView()
+        self.addConstraintsToPageControl()
+        self.addConstraintsToSellerInfo()
+        self.addConstraintsToStatusButton()
+        self.addConstraintsToProductInfo()
     }
     
-    private func layoutProductImageView() {
+    private func addConstraintsToProductImageView() {
         let heightRatio: CGFloat = 5 / 4
         NSLayoutConstraint.activate([
-            productImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            productImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor,
-                                                     multiplier: heightRatio)
+            self.productImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.productImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.productImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.productImageView.heightAnchor.constraint(
+                equalTo: productImageView.widthAnchor,
+                multiplier: heightRatio
+            )
         ])
     }
     
-    private func layoutPageControl() {
+    private func addConstraintsToPageControl() {
         NSLayoutConstraint.activate([
-            pageControl.leadingAnchor.constraint(equalTo: self.productImageView.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: self.productImageView.trailingAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: productImageView.bottomAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: 20)
+            self.pageControl.leadingAnchor.constraint(equalTo: self.productImageView.leadingAnchor),
+            self.pageControl.trailingAnchor.constraint(equalTo: self.productImageView.trailingAnchor),
+            self.pageControl.bottomAnchor.constraint(equalTo: productImageView.bottomAnchor),
+            self.pageControl.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
-    private func layoutSellerInfo() {
+    private func addConstraintsToSellerInfo() {
         NSLayoutConstraint.activate([
-            sellerInfo.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor, constant: 16),
-            sellerInfo.trailingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: -16),
-            sellerInfo.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 16),
-            sellerInfo.heightAnchor.constraint(equalToConstant: 60)
+            self.sellerInfoView.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor, constant: 16),
+            self.sellerInfoView.trailingAnchor.constraint(equalTo: productImageView.trailingAnchor, constant: -16),
+            self.sellerInfoView.topAnchor.constraint(equalTo: self.pageControl.bottomAnchor, constant: 16),
+            self.sellerInfoView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
-    private func layoutStatusButton() {
+    private func addConstraintsToStatusButton() {
         NSLayoutConstraint.activate([
-            statusButton.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            statusButton.topAnchor.constraint(equalTo: sellerInfo.bottomAnchor, constant: 16)
+            self.statusButton.leadingAnchor.constraint(equalTo: sellerInfoView.leadingAnchor),
+            self.statusButton.topAnchor.constraint(equalTo: sellerInfoView.bottomAnchor, constant: 16)
         ])
     }
     
-    private func layoutProductInfo() {
+    private func addConstraintsToProductInfo() {
         NSLayoutConstraint.activate([
-            productInfo.leadingAnchor.constraint(equalTo: sellerInfo.leadingAnchor),
-            productInfo.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfo.trailingAnchor),
-            productInfo.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
-            productInfo.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            self.productInfoView.leadingAnchor.constraint(equalTo: sellerInfoView.leadingAnchor),
+            self.productInfoView.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfoView.trailingAnchor),
+            self.productInfoView.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
+            self.productInfoView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

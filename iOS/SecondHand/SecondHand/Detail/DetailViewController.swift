@@ -15,7 +15,6 @@ class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
-    private var priceLabel = UILabel()
     
     var index: Int = 0
     private var detailUseCase = DetailUseCase()
@@ -25,21 +24,29 @@ class DetailViewController: UIViewController {
         self.view.backgroundColor = .white
         self.setTabBar(isHiding: true)
         self.detailUseCase.fetchData(item: 101)
+        self.setDataSender()
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        addSubViews()
-        layoutConstraint()
+        self.addSubViews()
+        self.layoutConstraint()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        setTabBar(isHiding: false)
+        self.setTabBar(isHiding: false)
     }
 
-    func setTabBar(isHiding: Bool) {
+    private func setTabBar(isHiding: Bool) {
         self.tabBarController?.tabBar.isHidden = isHiding
+    }
+    
+    private func setDataSender() {
+        self.detailUseCase.dataSender = { (data) in
+            self.toolbar.configure(price: data.price)
+            self.detailContentView.update(by: data)
+        }
     }
 }
 
@@ -57,7 +64,7 @@ extension DetailViewController {
         }
         
         self.scrollView.addSubview(detailContentView)
-        detailContentView.translatesAutoresizingMaskIntoConstraints = false
+        self.detailContentView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func layoutConstraint() {

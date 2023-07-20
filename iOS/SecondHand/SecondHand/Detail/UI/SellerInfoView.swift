@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SellerInfo: UIView {
+class SellerInfoView: UIView {
     private var indicatorLabel = UILabel()
     private var nameLabel = UILabel()
     
@@ -25,16 +25,16 @@ class SellerInfo: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layoutConstraint()
+        self.layoutConstraint()
     }
     
-    func configure(nameLabel: String) {
-        self.nameLabel.text = nameLabel
+    func update(by name: String) {
+        self.nameLabel.text = name
     }
 }
 
 // MARK: - Constraint 설정
-extension SellerInfo {
+extension SellerInfoView {
     private func addSubviews() {
         let subViews = [
             indicatorLabel,
