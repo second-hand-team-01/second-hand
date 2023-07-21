@@ -32,7 +32,8 @@ class ProductInfoView: UIView {
     
     func update(by productInfo: DetailModel.ProductInfo) {
         self.nameLabel.text = "\(productInfo.title)"
-        self.annotationLabel.text = "\(productInfo.category) ・ \(productInfo.postedTime)"
+        let annotation = productInfo.category + " ・ " + PassedTimeGenerator.calculate(from: productInfo.postedTime)
+        self.annotationLabel.text = annotation
         self.descriptionLabel.text = "\(productInfo.description)"
     }
     
