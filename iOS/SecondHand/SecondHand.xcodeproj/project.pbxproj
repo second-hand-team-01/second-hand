@@ -10,6 +10,7 @@
 		20CDE5D6BAC315408A7274A6 /* Pods_SecondHand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */; };
 		6308CAA92A518E6300E38437 /* IdValidationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6308CAA82A518E6300E38437 /* IdValidationDelegate.swift */; };
 		63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63129C992A4145B00049EC0C /* LoginViewController.swift */; };
+		6313CAE02A6AD5BD00704845 /* PassedTimeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */; };
 		632047602A42F28F0035880A /* AccountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320475F2A42F28F0035880A /* AccountInputView.swift */; };
 		6320476C2A440B290035880A /* LoginButtonGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320476B2A440B290035880A /* LoginButtonGroupView.swift */; };
 		632047732A4411AC0035880A /* AccountButtonUIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632047722A4411AC0035880A /* AccountButtonUIFactory.swift */; };
@@ -130,6 +131,7 @@
 		5C080CDDECA0178F002D21F4 /* Pods-SecondHand-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHand-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHand-SecondHandTests/Pods-SecondHand-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
 		6308CAA82A518E6300E38437 /* IdValidationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdValidationDelegate.swift; sourceTree = "<group>"; };
 		63129C992A4145B00049EC0C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassedTimeGenerator.swift; sourceTree = "<group>"; };
 		6320475F2A42F28F0035880A /* AccountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInputView.swift; sourceTree = "<group>"; };
 		6320476B2A440B290035880A /* LoginButtonGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonGroupView.swift; sourceTree = "<group>"; };
 		632047722A4411AC0035880A /* AccountButtonUIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonUIFactory.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */,
 				63E94CE32A4C949900B0376D /* SecretKeys.swift */,
 				63E6B8AF2A629E03009357B6 /* ImageCacheManager.swift */,
+				6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */,
 				63D98E892A4546C600DF467A /* Network */,
 				63D98E882A45462D00DF467A /* Factory */,
 				FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */,
@@ -884,6 +887,7 @@
 				FF61AD602A3BE4D9006AE167 /* ColorPalette.swift in Sources */,
 				63608CBF2A4061E0006CD876 /* ProductInfoView.swift in Sources */,
 				633AC5BD2A49224F00A34501 /* LoginView.swift in Sources */,
+				6313CAE02A6AD5BD00704845 /* PassedTimeGenerator.swift in Sources */,
 				63E6B89A2A61126A009357B6 /* PasswordValidationDelegate.swift in Sources */,
 				633AC5B12A480B3600A34501 /* LoginDTO.swift in Sources */,
 				63E94CE82A4C9A8700B0376D /* DTO.swift in Sources */,
