@@ -14,7 +14,7 @@ enum Level: String {
     case local = "Local"
 }
 
-struct LogManger {
+struct LogManager {
     static let subsystem = "team01.SecondHand"
     
     static func generate(level: Level, _ logMessage: String) {

@@ -446,9 +446,9 @@
 				63E6B8A72A616AFD009357B6 /* DetailModel.swift */,
 				6362335E2A65094500664C07 /* DetailModelMapper.swift */,
 				63E6B8AB2A628BF9009357B6 /* DetailRepository.swift */,
+				63E6B8AD2A628D9A009357B6 /* DetailLocalDataSource.swift */,
 				632CA6BB2A4E6DBD00C0E639 /* DetailRemoteDataSource.swift */,
 				632CA6C22A4E6EC700C0E639 /* ItemDetailDTO.swift */,
-				63E6B8AD2A628D9A009357B6 /* DetailLocalDataSource.swift */,
 				63608CCD2A40DD83006CD876 /* UI */,
 			);
 			path = Detail;

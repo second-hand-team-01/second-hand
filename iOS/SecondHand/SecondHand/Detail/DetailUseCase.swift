@@ -17,11 +17,11 @@ final class DetailUseCase {
     }
 
     func fetchData(item index: Int) {
-        let task = Task {
+        Task {
             guard let detailModel = await self.detailRepository.fetchData(item: index) else {
                 return
             }
-            
+
             self.detail = detailModel
             self.dataSender?(detailModel)
         }

@@ -13,12 +13,12 @@ struct DetailRemoteDataSource {
     
     func validate(urlResponse: URLResponse) -> Bool {
         guard let response = urlResponse as? HTTPURLResponse else {
-            LogManger.generate(level: .network, NetworkError.badResponse.message)
+            LogManager.generate(level: .network, NetworkError.badResponse.message)
             return false
         }
         
         guard (200..<300).contains(response.statusCode) else {
-            LogManger.generate(level: .network, NetworkError.badStatusCode(response.statusCode).message)
+            LogManager.generate(level: .network, NetworkError.badStatusCode(response.statusCode).message)
             return false
         }
         
@@ -27,7 +27,7 @@ struct DetailRemoteDataSource {
     
     func request(item index: Int) async -> ItemDetailDTO? {
         guard let url = URL(string: ServerURL.base + "items/\(index)") else {
-            LogManger.generate(level: .network, NetworkError.badURL.message)
+            LogManager.generate(level: .network, NetworkError.badURL.message)
             return nil
         }
         
@@ -47,17 +47,17 @@ struct DetailRemoteDataSource {
             return try decoder.decode(ItemDetailDTO.self, from: data)
         } catch let error {
             if let decodingError = error as? DecodingError {
-                LogManger.generate(level: .network, "\(decodingError)")
+                LogManager.generate(level: .network, "\(decodingError)")
             }
             
-            LogManger.generate(level: .network, "\(error)")
+            LogManager.generate(level: .network, "\(error)")
             return nil
         }
     }
     
     func downloadImage(from urlString: String) async -> URL? {
         guard let downloadURL = URL(string: urlString) else {
-            LogManger.generate(level: .network, NetworkError.badURL.message)
+            LogManager.generate(level: .network, NetworkError.badURL.message)
             return nil
         }
         
@@ -70,7 +70,7 @@ struct DetailRemoteDataSource {
 
             return dataURL
         } catch let error {
-            LogManger.generate(level: .network, "\(error)")
+            LogManager.generate(level: .network, "\(error)")
             return nil
         }
     }

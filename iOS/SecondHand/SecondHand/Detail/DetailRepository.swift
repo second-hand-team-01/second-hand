@@ -15,13 +15,12 @@ struct DetailRepository {
     func fetchData(item index: Int) async -> DetailModel? {
         // 1. Network로부터 데이터를 가져온다.
         guard let fetchedData = await remoteDataSource.request(item: index)?.data else {
-            LogManger.generate(level: .repository, LogMessage.failToLoadData)
+            LogManager.generate(level: .repository, LogMessage.failToLoadData)
             return nil
         }
         // 서버에 이미지가 없는지 확인
-        let imageKey = NSString(string: "\(index)")
         guard !fetchedData.imageUrl.isEmpty else {
-            LogManger.generate(level: .repository, LogMessage.imageDidNotExisted)
+            LogManager.generate(level: .repository, LogMessage.imageDidNotExisted)
             return detailModelMapper.convert(by: fetchedData, with: [])
         }
         
@@ -33,17 +32,27 @@ struct DetailRepository {
         // 로드한 이미지 수가 캐싱된 이미지 수와 동일하다면, 매핑한 모델 반환
         let cachedImagesCount = ImageCacheManager.getCachedCount(of: index)
         guard loadedImagesCount != cachedImagesCount else {
-            return detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
+            return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
         }
 
         // 3. 메모리 캐시에 존재하는지 확인
         // 메모리 캐시에 존재하지 않는 이미지URL들만 추출한 배열 생성
-        let nonCachedImages = imageMemoryCacheKeys.enumerated().filter { (index: Int, key: NSString) in
-            return ImageCacheManager.cacheExists(key: key)
+        let nonMemoryCachedImages = imageMemoryCacheKeys.filter { (key: NSString) in
+            return !ImageCacheManager.cacheExists(key: key)
         }
-        // 모두 디스크 캐시에 존재한다면, 메모리 캐시에 저장
-        guard !nonCachedImages.isEmpty else {
-            imageMemoryCacheKeys.forEach { (key: NSString) in
+        // 모두 메모리 캐시에 존재하는 경우에는 바로 모델을 리턴
+        guard !nonMemoryCachedImages.isEmpty else {
+            return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
+        }
+        
+        // 4. 디스크 캐시에 존재하는 이미지들은 가져와서 메모리 캐시에 저장.
+        // 디스크 캐시에 존재하는 파일들만 추출
+        let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, key: NSString) in
+            return !self.localDataSource.checkFileExists(name: "\(index)/\(imageNumber)")
+        }
+        // 모두 디스크 캐시에 이미 존재한다면, 메모리 캐시에 저장 후 모델 리턴
+        guard nonDiskCachedImages.count > 0 else {
+            nonMemoryCachedImages.forEach { (key: NSString) in
                 if let imageFilePath = localDataSource.fetchImageURL(name: key) {
                     ImageCacheManager.shared.setObject(
                         imageFilePath,
@@ -52,21 +61,22 @@ struct DetailRepository {
                 }
             }
             
-            return detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
+            return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
         }
         
         // 4. 존재하지 않는 이미지 서버로 부터 다운로드 후 디스크 캐시에 저장
-        for (imaegIndex, _) in nonCachedImages {
-            let downloadURLString = fetchedData.imageUrl[imaegIndex]
+        for (imageIndex, _) in nonDiskCachedImages {
+            let downloadURLString = fetchedData.imageUrl[imageIndex]
             guard let downloadedImageURL = await remoteDataSource.downloadImage(from: downloadURLString) else {
                 continue
             }
             
-            let fileName = "\(index)/\(imaegIndex)"
-            if localDataSource.storeImage(
+            if localDataSource.storeImageToDiskCache(
                 in: downloadedImageURL,
-                by: fileName
+                item: index,
+                image: imageIndex
             ) {
+                let fileName = "\(index)/\(imageIndex)"
                 if let urlKey = NSURL(string: fileName) {
                     ImageCacheManager.shared.setObject(
                         urlKey,

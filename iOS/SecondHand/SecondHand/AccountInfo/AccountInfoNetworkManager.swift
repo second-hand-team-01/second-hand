@@ -22,20 +22,20 @@ struct AccountInfoNetworkManager {
             let (data, urlResponse) = try await session.data(for: request)
 
             guard let response = urlResponse as? HTTPURLResponse else {
-                LogManger.generate(level: .info, NetworkError.badResponse.message)
+                LogManager.generate(level: .info, NetworkError.badResponse.message)
                 throw NetworkError.badResponse
             }
             
             guard (200..<300).contains(response.statusCode) else {
                 let statusCode = response.statusCode
-                LogManger.generate(level: .info, NetworkError.badStatusCode(statusCode).message)
+                LogManager.generate(level: .info, NetworkError.badStatusCode(statusCode).message)
                 throw NetworkError.badStatusCode(response.statusCode)
             }
             
             return try decoder.decode(MemberInfoDTO.self, from: data)
         } catch let error {
             if let decodingError = error as? DecodingError {
-                LogManger.generate(level: .info, "\(decodingError)")
+                LogManager.generate(level: .info, "\(decodingError)")
             }
             return nil
         }

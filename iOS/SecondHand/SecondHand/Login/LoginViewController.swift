@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
             case 2:
                 self.signUp()
             default:
-                LogManger.generate(level: Level.info, LogMessage.incorretButtonTag)
+                LogManager.generate(level: Level.info, LogMessage.incorretButtonTag)
             }
             return
         }

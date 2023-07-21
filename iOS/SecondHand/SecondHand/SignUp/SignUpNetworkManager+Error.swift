@@ -22,7 +22,7 @@ struct SignUpNetworkManager: DecodeManager {
     
     func request(signUpInfo: SignUpDTO) async -> DTO? {
         guard let signUpUrl = URL(string: ServerURL.base + "signup") else {
-            LogManger.generate(level: .network, "badURL")
+            LogManager.generate(level: .network, "badURL")
             return nil
         }
         
@@ -46,24 +46,24 @@ struct SignUpNetworkManager: DecodeManager {
             let (data, urlResponse) = try await session.data(for: request)
 
             guard let response = urlResponse as? HTTPURLResponse else {
-                LogManger.generate(level: .network, SignUpError.badResponse.message)
+                LogManager.generate(level: .network, SignUpError.badResponse.message)
                 throw SignUpError.badResponse
             }
             
             guard (200..<300).contains(response.statusCode) else {
                 let statusCode = response.statusCode
                 if statusCode == 400 {
-                    LogManger.generate(level: .network, SignUpError.badDuplicatedId.message)
+                    LogManager.generate(level: .network, SignUpError.badDuplicatedId.message)
                     throw SignUpError.badDuplicatedId
                 }
-                LogManger.generate(level: .network, SignUpError.badStatusCode(statusCode).message)
+                LogManager.generate(level: .network, SignUpError.badStatusCode(statusCode).message)
                 throw SignUpError.badStatusCode(response.statusCode)
             }
 
             return try decode(using: data)
         } catch let error {
             if let decodingError = error as? DecodingError {
-                LogManger.generate(level: .network, "\(decodingError)")
+                LogManager.generate(level: .network, "\(decodingError)")
             }
             return nil
         }
