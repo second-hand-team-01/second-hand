@@ -32,7 +32,7 @@ class DetailToolbar: UIToolbar {
     }
     
     func configure(price: Int) {
-        self.priceLabel.title = "\(price)"
+        self.priceLabel.title = "\(price)원"
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
