@@ -1,7 +1,10 @@
 package codesquad.secondhand.dto.item;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.entity.Item;
