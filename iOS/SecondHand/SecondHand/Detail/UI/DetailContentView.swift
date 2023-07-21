@@ -17,9 +17,9 @@ class DetailContentView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.setUI()
         self.addSubviews()
         self.addConstraints()
-        self.setUI()
     }
     
     required init?(coder: NSCoder) {
@@ -36,7 +36,6 @@ class DetailContentView: UIView {
             self.productImageView.image = UIImage(contentsOfFile: productImageURLString)
             self.sellerInfoView.update(by: data.sellerName)
             self.productInfoView.update(by: data.productInfo)
-            self.communicationInfoView.update(by: data.userInteractionCount)
         }
     }
     
@@ -57,7 +56,7 @@ class DetailContentView: UIView {
         button.layer.borderColor = UIColor.gray.cgColor
         button.layer.borderWidth = 0.2
         button.layer.cornerRadius = 8
-        
+
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(
             top: 8,
@@ -66,7 +65,7 @@ class DetailContentView: UIView {
             trailing: 16
         )
         button.configuration = configuration
-        
+
         let onReservation = UIAction(
             title: "예약중",
             handler: { _ in
@@ -80,7 +79,7 @@ class DetailContentView: UIView {
                 return
             }
         )
-        
+
         button.menu = UIMenu(
             options: .displayInline,
             children: [onReservation, onSold])
@@ -163,9 +162,9 @@ extension DetailContentView {
     
     private func addConstraintsToProductInfo() {
         NSLayoutConstraint.activate([
-            self.productInfoView.leadingAnchor.constraint(equalTo: sellerInfoView.leadingAnchor),
-            self.productInfoView.trailingAnchor.constraint(lessThanOrEqualTo: sellerInfoView.trailingAnchor),
-            self.productInfoView.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 16),
+            self.productInfoView.leadingAnchor.constraint(equalTo: self.sellerInfoView.leadingAnchor),
+            self.productInfoView.trailingAnchor.constraint(lessThanOrEqualTo: self.sellerInfoView.trailingAnchor),
+            self.productInfoView.topAnchor.constraint(equalTo: self.statusButton.bottomAnchor, constant: 16),
             self.productInfoView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
