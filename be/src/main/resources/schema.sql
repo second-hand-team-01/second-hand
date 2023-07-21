@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS `second-hand`.`location`;
 CREATE TABLE IF NOT EXISTS `second-hand`.`location`
 (
     `location_idx` BIGINT(10)  NOT NULL AUTO_INCREMENT,
+    `location_id` BIGINT(100) NOT NULL,
     `city`         VARCHAR(45) NOT NULL,
     `district`     VARCHAR(45) NOT NULL,
     `town`         VARCHAR(45) NOT NULL,
