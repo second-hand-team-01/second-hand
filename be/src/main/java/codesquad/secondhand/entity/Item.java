@@ -63,6 +63,7 @@ public class Item {
 	private LocalDateTime postedAt;
 
 	@LastModifiedDate
+	@Setter
 	@Column(name = "last_modified_at")
 	private LocalDateTime lastModifiedAt;
 
