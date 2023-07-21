@@ -27,7 +27,13 @@ class DetailContentView: UIView {
     }
 
     func update(by data: DetailModel) {
+        guard let productImageURLString = ImageCacheManager.shared.object(forKey: NSString(string: "98/0"))?.path else {
+            print("키 못찾음")
+            return
+        }
+        
         DispatchQueue.main.async {
+            self.productImageView.image = UIImage(contentsOfFile: productImageURLString)
             self.sellerInfoView.update(by: data.sellerName)
             self.productInfoView.update(by: data.productInfo)
             self.communicationInfoView.update(by: data.userInteractionCount)
