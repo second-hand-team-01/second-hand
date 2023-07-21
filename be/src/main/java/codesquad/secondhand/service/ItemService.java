@@ -3,6 +3,7 @@ package codesquad.secondhand.service;
 import static codesquad.secondhand.exception.code.ItemErrorCode.*;
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -166,6 +167,8 @@ public class ItemService {
 		Item item = itemRepository.findById(itemIdx)
 			.orElseThrow();
 
+		LocalDateTime localDateTime = item.getLastModifiedAt();
+
 		Long memberIdx;
 		if (httpServletRequest.getAttribute("memberIdx") == null) {
 			memberIdx = -1L;
@@ -191,6 +194,7 @@ public class ItemService {
 		List<String> imageUrl = itemImageRepository.findAllByItemItemIdx(itemIdx).stream()
 			.map(ItemImage::getImageUrl).collect(Collectors.toList());
 
+		item.setLastModifiedAt(localDateTime);
 		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
 			imageUrl);
 	}
