@@ -11,6 +11,7 @@
 		6308CAA92A518E6300E38437 /* IdValidationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6308CAA82A518E6300E38437 /* IdValidationDelegate.swift */; };
 		63129C9A2A4145B00049EC0C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63129C992A4145B00049EC0C /* LoginViewController.swift */; };
 		6313CAE02A6AD5BD00704845 /* PassedTimeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */; };
+		6313CAE72A6AE3FB00704845 /* FormatPriceGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6313CAE62A6AE3FB00704845 /* FormatPriceGenerator.swift */; };
 		632047602A42F28F0035880A /* AccountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320475F2A42F28F0035880A /* AccountInputView.swift */; };
 		6320476C2A440B290035880A /* LoginButtonGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320476B2A440B290035880A /* LoginButtonGroupView.swift */; };
 		632047732A4411AC0035880A /* AccountButtonUIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632047722A4411AC0035880A /* AccountButtonUIFactory.swift */; };
@@ -132,6 +133,7 @@
 		6308CAA82A518E6300E38437 /* IdValidationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdValidationDelegate.swift; sourceTree = "<group>"; };
 		63129C992A4145B00049EC0C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassedTimeGenerator.swift; sourceTree = "<group>"; };
+		6313CAE62A6AE3FB00704845 /* FormatPriceGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPriceGenerator.swift; sourceTree = "<group>"; };
 		6320475F2A42F28F0035880A /* AccountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInputView.swift; sourceTree = "<group>"; };
 		6320476B2A440B290035880A /* LoginButtonGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonGroupView.swift; sourceTree = "<group>"; };
 		632047722A4411AC0035880A /* AccountButtonUIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonUIFactory.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				63E94CE32A4C949900B0376D /* SecretKeys.swift */,
 				63E6B8AF2A629E03009357B6 /* ImageCacheManager.swift */,
 				6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */,
+				6313CAE62A6AE3FB00704845 /* FormatPriceGenerator.swift */,
 				63D98E892A4546C600DF467A /* Network */,
 				63D98E882A45462D00DF467A /* Factory */,
 				FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */,
@@ -873,6 +876,7 @@
 				632047732A4411AC0035880A /* AccountButtonUIFactory.swift in Sources */,
 				632CA6C32A4E6EC700C0E639 /* ItemDetailDTO.swift in Sources */,
 				FF54649B2A407512008519A9 /* Network.swift in Sources */,
+				6313CAE72A6AE3FB00704845 /* FormatPriceGenerator.swift in Sources */,
 				FF3942CD2A4C199A00B9722F /* SignUpNetworkManager+Error.swift in Sources */,
 				63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */,
 				63E94CE42A4C949900B0376D /* SecretKeys.swift in Sources */,

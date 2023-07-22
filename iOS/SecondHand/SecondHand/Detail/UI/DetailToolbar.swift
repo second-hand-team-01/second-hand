@@ -31,8 +31,8 @@ class DetailToolbar: UIToolbar {
         addItems()
     }
     
-    func configure(price: Int) {
-        self.priceLabel.title = "\(price)원"
+    func update(price: Int) {
+        self.priceLabel.title = FormatPriceGenerator.generate(from: price)
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
