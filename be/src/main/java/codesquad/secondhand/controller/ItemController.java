@@ -77,6 +77,7 @@ public class ItemController {
 		ItemIdxDto itemIdxDto) {
 		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest,
 			itemIdxDto.getItemIdx());
+		log.info("DTO 날짜값 : " + itemDetailReturnDto.getLastModifiedAt());
 		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
 	}
 
@@ -104,7 +105,6 @@ public class ItemController {
 		Long memberIdx = (Long)request.getAttribute("memberIdx");
 		log.info("memberIdx: {}", memberIdx);
 		itemService.editItem(memberIdx, itemIdx, itemDetailDto);
-
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 }
