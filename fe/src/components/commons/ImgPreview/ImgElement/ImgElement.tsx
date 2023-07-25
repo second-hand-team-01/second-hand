@@ -14,7 +14,7 @@ export const ImgElement = ({
 }: ImgElementProps) => {
   return (
     <S.ImgWrap>
-      <S.Img src={`${file}`} key={`${file}`} width="80px" height="80px"></S.Img>
+      <S.Img src={file} key={file} width="80px" height="80px" />
       {isFirst ? (
         <>
           <S.CloseBtn onClick={handleDelete}>

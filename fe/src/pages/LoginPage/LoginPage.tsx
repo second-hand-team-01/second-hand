@@ -135,7 +135,6 @@ export const LoginPage = () => {
     });
 
     const userInfo = await response.json();
-    console.log(userInfo);
     if (!response.ok) {
       throw new Error(userInfo.message);
     }
@@ -162,9 +161,9 @@ export const LoginPage = () => {
       const data = await authenticateUser(enteredId, enteredPassword);
       loginHandler(data.token, data.memberInfo);
 
-      const UserLocationInfo = await getUserLocationInfo();
-      const mainLocation = UserLocationInfo.data.main;
-      const subLocation = UserLocationInfo.data.sub;
+      const userLocationInfo = await getUserLocationInfo();
+      const mainLocation = userLocationInfo.data.main;
+      const subLocation = userLocationInfo.data.sub;
 
       setLocationHandler(mainLocation, subLocation);
 

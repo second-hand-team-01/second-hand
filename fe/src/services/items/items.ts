@@ -125,10 +125,11 @@ const convertAPIItemDetailsToItemDetails = (
     interest,
     view,
     interestChecked,
-    postedAt,
+    lastModifiedAt,
     imageUrl,
   } = details;
 
+  console.log(lastModifiedAt);
   const newDetails = {
     itemIdx,
     title: name,
@@ -145,7 +146,7 @@ const convertAPIItemDetailsToItemDetails = (
     interest,
     view,
     interestChecked,
-    postedAt: new Date(postedAt),
+    postedAt: new Date(lastModifiedAt),
     images: imageUrl,
   };
   return newDetails;
@@ -241,8 +242,8 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
-  convertedBody.images?.forEach((image, i) => {
-    formData.append(`image${i}`, image);
+  convertedBody.images?.forEach((image) => {
+    formData.append(`image`, image);
   });
 
   try {
