@@ -182,7 +182,8 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
         type: 'nav',
         navbarOptions: {
           title: '내 물건 팔기',
-          leftBtn: <NavbarBtn text="닫기" path="back"></NavbarBtn>,
+          leftBtn: <NavbarBtn text="닫기" path="back" />,
+          /* path 수정하기 기존 유입 경로 넣기 */
           rightBtn: (
             <Button
               title="완료"
