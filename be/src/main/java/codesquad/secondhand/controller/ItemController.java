@@ -77,7 +77,6 @@ public class ItemController {
 		ItemIdxDto itemIdxDto) {
 		ItemDetailReturnDto itemDetailReturnDto = itemService.showItemDetail(httpServletRequest,
 			itemIdxDto.getItemIdx());
-		log.info("DTO 날짜값 : " + itemDetailReturnDto.getLastModifiedAt());
 		return ResponseDto.of(RESPONSE_SUCCESS, itemDetailReturnDto);
 	}
 
