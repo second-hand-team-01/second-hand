@@ -47,7 +47,7 @@ struct DetailRepository {
         
         // 4. 디스크 캐시에 존재하는 이미지들은 가져와서 메모리 캐시에 저장.
         // 디스크 캐시에 존재하는 파일들만 추출
-        let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, key: NSString) in
+        let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, _) in
             return !self.localDataSource.checkFileExists(name: "\(index)/\(imageNumber)")
         }
         // 모두 디스크 캐시에 이미 존재한다면, 메모리 캐시에 저장 후 모델 리턴

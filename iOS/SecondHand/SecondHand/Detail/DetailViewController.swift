@@ -23,7 +23,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.setTabBar(isHiding: true)
-        self.detailUseCase.fetchData(item: 98)
+        self.detailUseCase.fetchData(item: 101)
         self.setDataSender()
     }
 

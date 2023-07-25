@@ -23,6 +23,7 @@ final class DetailUseCase {
             }
 
             self.detail = detailModel
+            print(detailModel.imageKeys)
             self.dataSender?(detailModel)
         }
     }

@@ -20,7 +20,6 @@ struct PassedTimeGenerator {
     private init() {}
     
     static func generate(from: String) -> String {
-        print(from)
         guard let formattedInputTime = formatter.date(from: from) else {
             return ""
         }
