@@ -77,6 +77,7 @@ export interface APIItemDetail {
   interest: number;
   view: number;
   interestChecked: boolean;
+  lastModifiedAt: string;
   postedAt: string;
   imageUrl: string[];
 }
