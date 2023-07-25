@@ -40,6 +40,7 @@ export const HomePage = () => {
   });
   const { page, categoryIdx } = categoryAndPage;
   const { isLoggedIn, userInfo } = useContext(UserContext);
+
   const { userMainLocationIdx, userMainTown } = userInfo.main;
   const { userSubTown } = userInfo.sub;
 
@@ -67,6 +68,7 @@ export const HomePage = () => {
       page,
       categoryIdx,
       userMainLocationIdx
+      // userInfo.main.locationIdx
     );
     if (error) return setErrorMsg(error.message);
     if (data) {
@@ -177,6 +179,10 @@ export const HomePage = () => {
     });
   };
 
+  const locationPopupHandler = () => {
+    setLocationPopupOpen(true);
+  };
+
   const handleDeleteBtn = () => {
     setCategoryAndPage({
       page: 0,
@@ -192,14 +198,13 @@ export const HomePage = () => {
         headerOption={{
           type: 'filter',
           filterBarOptions: {
+            locationPopupHandler: () => locationPopupHandler(),
             openState: [isLocationDropdownOpen, setLocationDropdownOpen],
             mainLocation: isLoggedIn
               ? userMainTown
               : LOCATION_FALLBACK.locationName,
             subLocation: userSubTown ? userSubTown : null,
-            // region: isLoggedIn
-            //   ? locationName ?? LOCATION_FALLBACK.locationName
-            //   : LOCATION_FALLBACK.locationName,
+            region: isLoggedIn ? userMainTown : LOCATION_FALLBACK.locationName,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
               !categoryState.data && categoryFetch();
@@ -254,7 +259,7 @@ export const HomePage = () => {
               page: 0,
             })
           }
-        ></CategoryPopup>
+        />
       )}
       {isLocationPopupOpen && (
         <LocationPopup
@@ -288,3 +293,5 @@ export const HomePage = () => {
 // popup에는 removehandler 내려주고
 
 // post를 보내고 selecotor를 닫자
+
+// 이미 로그인을 해서 지역정보를 가지고 있음

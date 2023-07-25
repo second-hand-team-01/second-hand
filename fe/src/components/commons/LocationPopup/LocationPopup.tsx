@@ -33,19 +33,21 @@ export const LocationPopup = ({
         </S.AlertTextSection>
         <S.LocationButtonSection>
           <Button
-            title={userInfo.mainLocation.town}
+            title={userInfo.mainLocation.locationName}
             shape="large"
             state="default"
             textAlign="center"
             color="neutralTextStrong"
             icon="plus"
             hasBorder={true}
-            onClick={() => removeLocationHandler(userInfo.mainLocation.town)}
+            onClick={() =>
+              removeLocationHandler(userInfo.mainLocation.locationName)
+            }
           />
           <Button
             title={
-              userInfo.subLocation.town
-                ? userInfo.subLocation.town
+              userInfo.subLocation.locationName
+                ? userInfo.subLocation.locationName
                 : '위치 추가'
             }
             shape="large"
