@@ -48,6 +48,10 @@ class DetailViewController: UIViewController {
             self.detailContentView.update(by: data)
         }
     }
+
+    private func addItemToFavioriteList() {
+        
+    }
 }
 
 // MARK: - Constraint 설정

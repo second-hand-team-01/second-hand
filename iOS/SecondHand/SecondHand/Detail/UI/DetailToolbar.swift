@@ -12,27 +12,30 @@ class DetailToolbar: UIToolbar {
     private var priceLabel = UIBarButtonItem()
     private var chatButton = UIBarButtonItem()
     private var isFavoriteButtonSelected = false
+    var favoriteButtonTapSender: ((Bool) -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        favoriteButton = makeFavoriteButton()
-        chatButton = makeChatButton()
+        self.favoriteButton = self.makeFavoriteButton()
+        self.chatButton = self.makeChatButton()
         self.priceLabel.setTitleTextAttributes([
             NSAttributedString.Key.font: UIFont.typo.footNote
         ], for: .normal)
+        self.addBarButtonItems()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addItems()
-    }
-    
-    func update(price: Int) {
-        self.priceLabel.title = FormatPriceGenerator.generate(from: price)
+    @objc func addFavorite(_ sender: UIBarButtonItem) {
+        guard self.isFavoriteButtonSelected else {
+            sender.image = UIImage(systemName: "heart.fill")
+            self.isFavoriteButtonSelected = true
+            return
+        }
+        sender.image = UIImage(systemName: "heart")
+        self.isFavoriteButtonSelected = false
     }
     
     private func makeFavoriteButton() -> UIBarButtonItem {
@@ -40,7 +43,7 @@ class DetailToolbar: UIToolbar {
             image: UIImage(systemName: "heart"),
             style: .plain,
             target: self,
-            action: #selector(addFavorite)
+            action: #selector(self.addFavorite)
         )
         item.tintColor = UIColor.red
         item.customView?.frame.size = CGSize(width: 28, height: 28)
@@ -48,14 +51,8 @@ class DetailToolbar: UIToolbar {
         return item
     }
     
-    @objc func addFavorite(_ sender: UIBarButtonItem) {
-        guard isFavoriteButtonSelected else {
-            sender.image = UIImage(systemName: "heart.fill")
-            isFavoriteButtonSelected = true
-            return
-        }
-        sender.image = UIImage(systemName: "heart")
-        isFavoriteButtonSelected = false
+    @objc private func moveToChat(_ sender: UIBarButtonItem) {
+        
     }
     
     private func makeChatButton() -> UIBarButtonItem {
@@ -73,25 +70,10 @@ class DetailToolbar: UIToolbar {
         button.backgroundColor = UIColor.orange
         button.setTitle("대화중인 채팅방", for: .normal)
         button.addTarget(self,
-                         action: #selector(moveToChat),
+                         action: #selector(self.moveToChat),
                          for: .touchUpInside)
         
         return UIBarButtonItem(customView: button)
-    }
-    
-    @objc func moveToChat(_ sender: UIBarButtonItem) {
-        
-    }
-    
-    private func addItems() {
-        let toolbarItems: [UIBarButtonItem] = [
-            self.favoriteButton,
-            self.priceLabel,
-            addFlexibleSpace(),
-            self.chatButton
-        ]
-        
-        self.setItems(toolbarItems, animated: true)
     }
     
     private func addFlexibleSpace() -> UIBarButtonItem {
@@ -100,5 +82,20 @@ class DetailToolbar: UIToolbar {
             target: self,
             action: nil)
         return space
+    }
+    
+    private func addBarButtonItems() {
+        let toolbarItems: [UIBarButtonItem] = [
+            self.favoriteButton,
+            self.priceLabel,
+            self.addFlexibleSpace(),
+            self.chatButton
+        ]
+        
+        self.setItems(toolbarItems, animated: true)
+    }
+    
+    func update(price: Int) {
+        self.priceLabel.title = FormatPriceGenerator.generate(from: price)
     }
 }
