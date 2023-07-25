@@ -4,6 +4,7 @@ import { Category } from '@type-store/services/category';
 import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 import { useState, useEffect } from 'react';
 
+
 export interface FilterBarProps {
   mainLocation?: string;
   subLocation?: string;
