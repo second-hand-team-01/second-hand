@@ -18,8 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AccessLevel;
@@ -31,6 +31,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "item")
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -62,8 +63,6 @@ public class Item {
 	@Column(name = "posted_at")
 	private LocalDateTime postedAt;
 
-	@LastModifiedDate
-	@Setter
 	@Column(name = "last_modified_at")
 	private LocalDateTime lastModifiedAt;
 
@@ -83,11 +82,9 @@ public class Item {
 	@Column(name = "status", nullable = false)
 	private String status;
 
-	// Item과 ItemImage는 OneToMany 관계
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ItemImage> itemImages = new ArrayList<>();
 
-	// Item과 Interest는 OneToMany 관계
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Interest> interests = new ArrayList<>();
 
@@ -103,9 +100,9 @@ public class Item {
 		this.price = price;
 		this.view = view;
 		this.status = status;
+		this.lastModifiedAt = LocalDateTime.now();
 	}
 
-	// Item 클래스
 	public void updateItem(Member seller, Category category, Location location, String name, String description, Integer price, String status) {
 		this.seller = seller;
 		if (category != null) {
@@ -127,6 +124,10 @@ public class Item {
 			this.status = status;
 		}
 	}
+	public void updateView(Integer view) {
+		this.view = view;
+	}
+
 
 	@Override
 	public String toString() {
