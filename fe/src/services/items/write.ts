@@ -86,18 +86,68 @@ export const uploadPostItems = async ({
   return result as Response<PostItemRes>;
 };
 
+export const requiresImageConversion = (images) => {
+  images.some((image) => (image?.file === null ? true : false));
+};
+
+const fetchImageAsData = async (imageUrl) => {
+  const imageData = await fetch(imageUrl);
+
+  if (!imageData.ok) {
+    throw new Error('이미지를 불러오는데 실패했습니다.');
+
+    // TODO: dialog에 에러 전달
+  }
+
+  const blob = await imageData.blob();
+  return blob;
+};
+
 export const uploadEditItems = async (
   itemIdx: number,
   { title, description, images, price, categoryIdx, locationIdx }
 ) => {
-  const body = convertDataToBody(
-    title,
-    description,
-    images,
-    price,
-    categoryIdx as number,
-    locationIdx
-  );
-  const result = await editItemsAPI(itemIdx, body);
-  return result as Response<null>;
+  try {
+    const convertedImages = await Promise.all(
+      images.map(async (image) => {
+        if (!image.file) {
+          const blob = await fetchImageAsData(image.fileString);
+          const urlParts = image.fileString.split('/');
+          const fileName = urlParts[urlParts.length - 1].split('?')[0];
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(blob);
+          const fileString = await new Promise((resolve) => {
+            fileReader.onloadend = () => {
+              resolve(fileReader.result);
+            };
+          });
+          const file = {
+            file: new File([blob], fileName, { type: blob.type }),
+            fileString: fileString,
+            name: fileName,
+            size: blob.size,
+          };
+
+          return file;
+        }
+        return image;
+      })
+    );
+
+    const body = convertDataToBody(
+      title,
+      description,
+      convertedImages,
+      price,
+      categoryIdx as number,
+      locationIdx
+    );
+
+    const result = await editItemsAPI(itemIdx, body);
+    return result as Response<null>;
+  } catch (error) {
+    // TODO: error 메시지 처리
+    console.error(error);
+    throw error;
+  }
 };

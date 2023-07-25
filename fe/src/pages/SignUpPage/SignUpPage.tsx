@@ -143,6 +143,8 @@ export const SignUpPage = () => {
       subLocation.locationIdx ? subLocation.locationIdx.toString() : ''
     );
 
+    // 이미 등록된 이미지 중복 체크 및 dialog 띄우기
+
     try {
       await signUpUser(formData);
       navigate('/profile');
@@ -171,7 +173,6 @@ export const SignUpPage = () => {
   const locationState = hasSelectedLocation(userInfo);
 
   useEffect(() => {
-    console.log(userInfo.imgFile);
     const identifier = setTimeout(() => {
       setFormIsValid(
         !!idIsValid &&

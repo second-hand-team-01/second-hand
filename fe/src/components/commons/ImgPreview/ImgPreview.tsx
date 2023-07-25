@@ -66,18 +66,18 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         ></S.FileInput>
         {images.map((image, i) => (
           <ImgElement
-            key={`${image.file}`}
+            key={image.name}
             file={image.fileString}
             isFirst={i === 0 ? true : false}
             handleDelete={({ currentTarget }) => {
               const btn = currentTarget as HTMLButtonElement;
               const img = btn.previousElementSibling as HTMLImageElement;
               const newFiles = images.filter(
-                (file) => `${file.file}` !== img.src
+                (file) => `${file.fileString}` !== img.src
               );
               setImages(newFiles);
             }}
-          ></ImgElement>
+          />
         ))}
       </S.ImgContainer>
       <Dialog
