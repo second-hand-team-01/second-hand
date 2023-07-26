@@ -10,8 +10,13 @@ import Foundation
 struct DetailRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
+    private let baseURLString: String
     
-    func validate(urlResponse: URLResponse) -> Bool {
+    init(item index: Int = 0) {
+        self.baseURLString = ServerURL.base + "items/\(index)"
+    }
+    
+    private func validate(urlResponse: URLResponse) -> Bool {
         guard let response = urlResponse as? HTTPURLResponse else {
             LogManager.generate(level: .network, NetworkError.badResponse.message)
             return false

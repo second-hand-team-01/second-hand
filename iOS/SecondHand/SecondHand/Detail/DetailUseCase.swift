@@ -12,8 +12,12 @@ final class DetailUseCase {
     private var detailRepository = DetailRepository()
     var dataSender: ((DetailModel) -> ())?
 
-    init(detail: DetailModel? = nil) {
+    init(
+        detail: DetailModel? = nil,
+        detailRepository: DetailRepository = DetailRepository()
+    ) {
         self.detail = detail
+        self.detailRepository = detailRepository
     }
 
     func fetchData(item index: Int) {

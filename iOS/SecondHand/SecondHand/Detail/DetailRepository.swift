@@ -8,13 +8,26 @@
 import Foundation
 
 struct DetailRepository {
-    private var remoteDataSource = DetailRemoteDataSource()
-    private var localDataSource = DetailLocalDataSource()
+    private var detailRemoteDataSource = DetailRemoteDataSource()
+    private var detailLocalDataSource = DetailLocalDataSource()
     private var detailModelMapper = DetailModelMapper()
+    private let itemIndex: Int
+    
+    init(
+        detailRemoteDataSource: DetailRemoteDataSource = DetailRemoteDataSource(),
+        detailLocalDataSource: DetailLocalDataSource = DetailLocalDataSource(),
+        detailModelMapper: DetailModelMapper = DetailModelMapper(),
+        item index: Int = 0
+    ) {
+        self.detailRemoteDataSource = detailRemoteDataSource
+        self.detailLocalDataSource = detailLocalDataSource
+        self.detailModelMapper = detailModelMapper
+        self.itemIndex = index
+    }
     
     func fetchData(item index: Int) async -> DetailModel? {
         // 1. Network로부터 데이터를 가져온다.
-        guard let fetchedData = await remoteDataSource.request(item: index)?.data else {
+        guard let fetchedData = await detailRemoteDataSource.request(item: index)?.data else {
             LogManager.generate(level: .repository, LogMessage.failToLoadData)
             return nil
         }
@@ -48,12 +61,12 @@ struct DetailRepository {
         // 4. 디스크 캐시에 존재하는 이미지들은 가져와서 메모리 캐시에 저장.
         // 디스크 캐시에 존재하는 파일들만 추출
         let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, _) in
-            return !self.localDataSource.checkFileExists(name: "\(index)/\(imageNumber)")
+            return !self.detailLocalDataSource.checkFileExists(name: "\(index)/\(imageNumber)")
         }
         // 모두 디스크 캐시에 이미 존재한다면, 메모리 캐시에 저장 후 모델 리턴
         guard nonDiskCachedImages.count > 0 else {
             nonMemoryCachedImages.forEach { (key: NSString) in
-                if let imageFilePath = localDataSource.fetchImageURL(name: key) {
+                if let imageFilePath = detailLocalDataSource.fetchImageURL(name: key) {
                     ImageCacheManager.shared.setObject(
                         imageFilePath,
                         forKey: key
@@ -67,11 +80,11 @@ struct DetailRepository {
         // 4. 존재하지 않는 이미지 서버로 부터 다운로드 후 디스크 캐시에 저장
         for (imageIndex, _) in nonDiskCachedImages {
             let downloadURLString = fetchedData.imageUrl[imageIndex]
-            guard let downloadedImageURL = await remoteDataSource.downloadImage(from: downloadURLString) else {
+            guard let downloadedImageURL = await detailRemoteDataSource.downloadImage(from: downloadURLString) else {
                 continue
             }
             
-            if localDataSource.storeImageToDiskCache(
+            if detailLocalDataSource.storeImageToDiskCache(
                 in: downloadedImageURL,
                 item: index,
                 image: imageIndex
