@@ -52,7 +52,7 @@ export const DetailsPage = () => {
       if (error) return setErrorMsg(error.message);
       if (data) {
         setDetails(data);
-        details && setInterestChecked(details.interestChecked);
+        setInterestChecked(data.interestChecked);
       }
       setLoading(false);
     })();
