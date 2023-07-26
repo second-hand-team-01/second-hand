@@ -43,30 +43,12 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(customView: chatButton)
     }()
     private var isItemInFavorites = false
+    var favoriteButtonTapSender: ((Bool) -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addActionToFavoriteButton()
         self.addBarButtonItems()
-    }
-    
-    private func addActionToFavoriteButton() {
-        let buttonTapAction = UIAction { _ in
-            guard self.isItemInFavorites else {
-                self.favoriteButton.image = UIImage(systemName: "heart.fill")
-                self.isItemInFavorites = true
-                return
-            }
-            
-            self.favoriteButton.image = UIImage(systemName: "heart")
-            self.isItemInFavorites = false
-        }
-        
-        self.favoriteButton.primaryAction = buttonTapAction
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        self.addActionToFavoriteButton()
     }
     
     private func addBarButtonItems() {
@@ -85,7 +67,45 @@ class DetailToolbar: UIToolbar {
         self.setItems(toolbarItems, animated: true)
     }
     
-    func update(price: Int) {
-        self.priceIndicator.title = FormatPriceGenerator.generate(from: price)
+    private func addActionToFavoriteButton() {
+        let buttonTapAction = UIAction { _ in
+            self.favoriteButtonTapSender?(self.isItemInFavorites)
+        }
+        
+        self.favoriteButton.primaryAction = buttonTapAction
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func update(
+        price: Int,
+        isItemInFavorites: Bool
+    ) {
+        self.isItemInFavorites = isItemInFavorites
+        
+        DispatchQueue.main.async {
+            self.priceIndicator.title = FormatPriceGenerator.generate(from: price)
+            if isItemInFavorites {
+                self.favoriteButton.image = Components.inFavoritesImage
+            } else {
+                self.favoriteButton.image = Components.notInFavoritesImage
+            }
+        }
+    }
+
+    func configureFavoriteButton(isAdding: Bool) {
+        let image = isAdding ? Components.inFavoritesImage : Components.notInFavoritesImage
+        DispatchQueue.main.async {
+            self.favoriteButton.image = image
+        }
+        
+        self.isItemInFavorites = isAdding
+    }
+    
+    enum Components {
+        static let inFavoritesImage = UIImage(systemName: "heart.fill")
+        static let notInFavoritesImage = UIImage(systemName: "heart")
     }
 }

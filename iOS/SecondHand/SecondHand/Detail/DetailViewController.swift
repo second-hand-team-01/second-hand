@@ -44,13 +44,15 @@ class DetailViewController: UIViewController {
     
     private func setDataSender() {
         self.detailUseCase.dataSender = { (data) in
-            self.toolbar.update(price: data.price)
+            self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
             self.detailContentView.update(by: data)
         }
     }
 
-    private func addItemToFavioriteList() {
-        
+    private func setFavoriteEventHandler() {
+        self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
+            self.detailUseCase.requestFavorites(isAdding: isItemInFavorites)
+        }
     }
 }
 

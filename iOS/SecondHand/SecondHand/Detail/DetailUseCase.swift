@@ -26,4 +26,8 @@ final class DetailUseCase {
             self.dataSender?(detailModel)
         }
     }
+    
+    func requestFavorites(isAdding: Bool) -> Bool? {
+        
+    }
 }

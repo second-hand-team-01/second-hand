@@ -135,15 +135,6 @@ extension DetailContentView {
             self.productImageViewer.topAnchor.constraint(equalTo: self.topAnchor)
         ])
     }
-//
-//    private func addConstraintsToPageControl() {
-//        NSLayoutConstraint.activate([
-//            self.pageControl.leadingAnchor.constraint(equalTo: self.productImageView.leadingAnchor),
-//            self.pageControl.trailingAnchor.constraint(equalTo: self.productImageView.trailingAnchor),
-//            self.pageControl.bottomAnchor.constraint(equalTo: self.productImageView.bottomAnchor),
-//            self.pageControl.heightAnchor.constraint(equalToConstant: 20)
-//        ])
-//    }
     
     private func addConstraintsToSellerInfoView() {
         NSLayoutConstraint.activate([
