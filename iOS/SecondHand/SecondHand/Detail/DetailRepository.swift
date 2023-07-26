@@ -81,27 +81,20 @@ struct DetailRepository {
             guard let downloadedImageURL = await detailRemoteDataSource.downloadImage(from: downloadURLString) else {
                 continue
             }
-            
-            if detailLocalDataSource.storeImageToDiskCache(
+
+            detailLocalDataSource.storeImageToDiskCache(
                 in: downloadedImageURL,
                 item: self.itemIndex,
                 image: imageIndex
-            ) {
-                let fileName = "\(self.itemIndex)/\(imageIndex)"
-                if let urlKey = NSURL(string: fileName) {
-                    ImageCacheManager.shared.setObject(
-                        urlKey,
-                        forKey: NSString(string: fileName)
-                    )
-                }
-            }
+            )
         }
         
-        return detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
+        return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
     }
     
-    func requestFavorites(isAdding: Bool) -> Bool? {
-        
+    func fetchFavorites(isAdding: Bool) -> Bool? {
+//        self.detailRemoteDataSource.
+        return nil
     }
     
     enum LogMessage {
