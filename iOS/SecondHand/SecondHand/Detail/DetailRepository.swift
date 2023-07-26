@@ -8,26 +8,24 @@
 import Foundation
 
 struct DetailRepository {
-    private var detailRemoteDataSource = DetailRemoteDataSource()
-    private var detailLocalDataSource = DetailLocalDataSource()
+    private var detailRemoteDataSource: DetailRemoteDataSource
+    private var detailLocalDataSource: DetailLocalDataSource
     private var detailModelMapper = DetailModelMapper()
     private let itemIndex: Int
     
     init(
-        detailRemoteDataSource: DetailRemoteDataSource = DetailRemoteDataSource(),
-        detailLocalDataSource: DetailLocalDataSource = DetailLocalDataSource(),
-        detailModelMapper: DetailModelMapper = DetailModelMapper(),
-        item index: Int = 0
+        itemIndex: Int = 0,
+        detailModelMapper: DetailModelMapper = DetailModelMapper()
     ) {
-        self.detailRemoteDataSource = detailRemoteDataSource
-        self.detailLocalDataSource = detailLocalDataSource
+        self.itemIndex = itemIndex
+        self.detailRemoteDataSource = DetailRemoteDataSource(itemIndex: itemIndex)
+        self.detailLocalDataSource = DetailLocalDataSource(itemIndex: itemIndex)
         self.detailModelMapper = detailModelMapper
-        self.itemIndex = index
     }
     
-    func fetchData(item index: Int) async -> DetailModel? {
+    func fetchData() async -> DetailModel? {
         // 1. Network로부터 데이터를 가져온다.
-        guard let fetchedData = await detailRemoteDataSource.request(item: index)?.data else {
+        guard let fetchedData = await detailRemoteDataSource.requestData()?.data else {
             LogManager.generate(level: .repository, LogMessage.failToLoadData)
             return nil
         }
@@ -40,10 +38,10 @@ struct DetailRepository {
         // 2. 캐싱된 이미지 수와 동일한지 확인
         let loadedImagesCount = fetchedData.imageUrl.count
         let imageMemoryCacheKeys = (0..<loadedImagesCount).map { (imageIndex: Int) in
-            return NSString(string: "\(index)/\(imageIndex)")
+            return NSString(string: "\(self.itemIndex)/\(imageIndex)")
         }
         // 로드한 이미지 수가 캐싱된 이미지 수와 동일하다면, 매핑한 모델 반환
-        let cachedImagesCount = ImageCacheManager.getCachedCount(of: index)
+        let cachedImagesCount = ImageCacheManager.getCachedCount(of: self.itemIndex)
         guard loadedImagesCount != cachedImagesCount else {
             return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
         }
@@ -61,7 +59,7 @@ struct DetailRepository {
         // 4. 디스크 캐시에 존재하는 이미지들은 가져와서 메모리 캐시에 저장.
         // 디스크 캐시에 존재하는 파일들만 추출
         let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, _) in
-            return !self.detailLocalDataSource.checkFileExists(name: "\(index)/\(imageNumber)")
+            return !self.detailLocalDataSource.checkFileExists(name: "\(self.itemIndex)/\(imageNumber)")
         }
         // 모두 디스크 캐시에 이미 존재한다면, 메모리 캐시에 저장 후 모델 리턴
         guard nonDiskCachedImages.count > 0 else {
@@ -86,10 +84,10 @@ struct DetailRepository {
             
             if detailLocalDataSource.storeImageToDiskCache(
                 in: downloadedImageURL,
-                item: index,
+                item: self.itemIndex,
                 image: imageIndex
             ) {
-                let fileName = "\(index)/\(imageIndex)"
+                let fileName = "\(self.itemIndex)/\(imageIndex)"
                 if let urlKey = NSURL(string: fileName) {
                     ImageCacheManager.shared.setObject(
                         urlKey,

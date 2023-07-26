@@ -16,6 +16,11 @@ struct DetailLocalDataSource {
         )[0]
         return cacheDirectoryURL.path()
     }()
+    private let itemIndex: Int
+    
+    init(itemIndex: Int) {
+        self.itemIndex = itemIndex
+    }
     
     func fetchImageURL(name: NSString) -> NSURL? {
         guard let imageName = name as? String else {

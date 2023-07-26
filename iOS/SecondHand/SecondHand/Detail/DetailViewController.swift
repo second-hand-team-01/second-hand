@@ -29,14 +29,22 @@ class DetailViewController: UIViewController {
         return alertController
     }()
     
-    var index: Int = 0
-    private var detailUseCase = DetailUseCase()
-
+    private var detailUseCase: DetailUseCase
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(itemIndex: Int) {
+        self.detailUseCase = DetailUseCase(itemIndex: itemIndex)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.setTabBar(isHiding: true)
-        self.detailUseCase.fetchData(item: 101)
+        self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
     }

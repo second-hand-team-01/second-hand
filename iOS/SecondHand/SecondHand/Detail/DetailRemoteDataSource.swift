@@ -12,8 +12,8 @@ struct DetailRemoteDataSource {
     private var decoder = JSONDecoder()
     private let baseURLString: String
     
-    init(item index: Int = 0) {
-        self.baseURLString = ServerURL.base + "items/\(index)"
+    init(itemIndex: Int = 0) {
+        self.baseURLString = ServerURL.base + "items/\(itemIndex)"
     }
     
     private func validate(urlResponse: URLResponse) -> Bool {
@@ -30,8 +30,8 @@ struct DetailRemoteDataSource {
         return true
     }
     
-    func request(item index: Int) async -> ItemDetailDTO? {
-        guard let url = URL(string: ServerURL.base + "items/\(index)") else {
+    func requestData() async -> ItemDetailDTO? {
+        guard let url = URL(string: baseURLString) else {
             LogManager.generate(level: .network, NetworkError.badURL.message)
             return nil
         }

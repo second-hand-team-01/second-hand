@@ -9,20 +9,20 @@ import Foundation
 
 final class DetailUseCase {
     private var detail: DetailModel?
-    private var detailRepository = DetailRepository()
+    private var detailRepository: DetailRepository
     var dataSender: ((DetailModel) -> ())?
 
     init(
         detail: DetailModel? = nil,
-        detailRepository: DetailRepository = DetailRepository()
+        itemIndex: Int
     ) {
         self.detail = detail
-        self.detailRepository = detailRepository
+        self.detailRepository = DetailRepository(itemIndex: itemIndex)
     }
 
-    func fetchData(item index: Int) {
+    func loadData() {
         Task {
-            guard let detailModel = await self.detailRepository.fetchData(item: index) else {
+            guard let detailModel = await self.detailRepository.fetchData() else {
                 return
             }
 

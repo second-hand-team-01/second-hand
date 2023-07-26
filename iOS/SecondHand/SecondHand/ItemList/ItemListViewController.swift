@@ -74,7 +74,8 @@ extension ItemListViewController: UITableViewDelegate {
             return
         }
         
-        self.navigationController?.pushViewController(DetailViewController(), animated: true)
+        let viewController = DetailViewController(itemIndex: 20)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
