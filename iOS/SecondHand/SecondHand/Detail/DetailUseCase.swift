@@ -27,7 +27,17 @@ final class DetailUseCase {
         }
     }
     
-    func requestFavorites(isAdding: Bool) -> Bool? {
+    func configureFavorites(isAdding: Bool) -> Bool? {
+        guard let isAdding = self.detailRepository.requestFavorites(isAdding: isAdding) else {
+            return nil
+        }
         
+        if isAdding {
+            self.detail?.isUserInterested = true
+        } else {
+            self.detail?.isUserInterested = false
+        }
+        
+        return isAdding
     }
 }

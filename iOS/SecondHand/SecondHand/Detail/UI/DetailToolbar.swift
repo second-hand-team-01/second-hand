@@ -69,7 +69,7 @@ class DetailToolbar: UIToolbar {
     
     private func addActionToFavoriteButton() {
         let buttonTapAction = UIAction { _ in
-            self.favoriteButtonTapSender?(self.isItemInFavorites)
+            self.favoriteButtonTapSender?(!self.isItemInFavorites)
         }
         
         self.favoriteButton.primaryAction = buttonTapAction

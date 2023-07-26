@@ -15,6 +15,19 @@ class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
+    private var alertController: UIAlertController = {
+        let alertController = UIAlertController(
+            title: Components.alertMessage,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
     
     var index: Int = 0
     private var detailUseCase = DetailUseCase()
@@ -25,6 +38,7 @@ class DetailViewController: UIViewController {
         self.setTabBar(isHiding: true)
         self.detailUseCase.fetchData(item: 101)
         self.setDataSender()
+        self.setFavoriteEventHandler()
     }
 
     override func viewWillLayoutSubviews() {
@@ -51,7 +65,12 @@ class DetailViewController: UIViewController {
 
     private func setFavoriteEventHandler() {
         self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
-            self.detailUseCase.requestFavorites(isAdding: isItemInFavorites)
+            guard let isAdding = self.detailUseCase.configureFavorites(isAdding: isItemInFavorites) else {
+                self.present(self.alertController, animated: true)
+                return
+            }
+            
+            self.toolbar.configureFavoriteButton(isAdding: isAdding)
         }
     }
 }
@@ -113,5 +132,9 @@ extension DetailViewController {
             toolbar.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
             toolbar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    enum Components {
+        static let alertMessage: String = "요청이 실패했습니다."
     }
 }
