@@ -92,9 +92,11 @@ struct DetailRepository {
         return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)
     }
     
-    func fetchFavorites(isAdding: Bool) -> Bool? {
-//        self.detailRemoteDataSource.
-        return nil
+    func fetchFavorites(isAdding: Bool) async -> Bool? {
+        guard let result = await self.detailRemoteDataSource.requestFavorites(isAdding: isAdding) else {
+            return nil
+        }
+        return result
     }
     
     enum LogMessage {

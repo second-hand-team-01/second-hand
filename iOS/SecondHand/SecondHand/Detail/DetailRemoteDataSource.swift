@@ -10,10 +10,12 @@ import Foundation
 struct DetailRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
+    private let itemIndex: Int
     private let baseURLString: String
-    
+
     init(itemIndex: Int = 0) {
-        self.baseURLString = ServerURL.base + "items/\(itemIndex)"
+        self.itemIndex = itemIndex
+        self.baseURLString = "\(ServerURL.base)items/\(itemIndex)"
     }
     
     private func validate(urlResponse: URLResponse) -> Bool {
@@ -21,7 +23,7 @@ struct DetailRemoteDataSource {
             LogManager.generate(level: .network, NetworkError.badResponse.message)
             return false
         }
-        
+
         guard (200..<300).contains(response.statusCode) else {
             LogManager.generate(level: .network, NetworkError.badStatusCode(response.statusCode).message)
             return false
@@ -38,9 +40,7 @@ struct DetailRemoteDataSource {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [
-            "token": "Bearer \(SecretKeys.accessToken)"
-        ]
+        request.allHTTPHeaderFields = ["token": "Bearer \(SecretKeys.accessToken)"]
         
         do {
             let (data, urlResponse) = try await session.data(for: request)
@@ -65,7 +65,7 @@ struct DetailRemoteDataSource {
             LogManager.generate(level: .network, NetworkError.badURL.message)
             return nil
         }
-        
+
         do {
             let (dataURL, urlResponse) = try await session.download(from: downloadURL)
 
@@ -75,6 +75,47 @@ struct DetailRemoteDataSource {
 
             return dataURL
         } catch let error {
+            LogManager.generate(level: .network, "\(error)")
+            return nil
+        }
+    }
+    
+    struct FavoriteRequestBody: Encodable {
+        let itemIdx: Int
+        let interestChecked: Bool
+    }
+    
+    func requestFavorites(isAdding: Bool) async -> Bool? {
+        guard let favoriteRequestURL = URL(string: ServerURL.base + "items/") else {
+            LogManager.generate(level: .network, NetworkError.badURL.message)
+            return nil
+        }
+        
+        var request = URLRequest(url: favoriteRequestURL)
+        request.httpMethod = "PUT"
+        request.allHTTPHeaderFields = ["token": "Bearer \(SecretKeys.accessToken)"]
+        
+        let bodyStruct = FavoriteRequestBody(itemIdx: self.itemIndex, interestChecked: isAdding)
+        guard let httpBody = try? JSONEncoder().encode(bodyStruct) else {
+            LogManager.generate(level: .network, NetworkError.badEncode.message)
+            return nil
+        }
+        
+        do {
+            let (data, urlResponse) = try await session.data(from: favoriteRequestURL)
+            
+            guard validate(urlResponse: urlResponse) else {
+                return nil
+            }
+            
+            let decodedData = try decoder.decode(FavoriteResponseDTO.self, from: data)
+            print(decodedData)
+            return decodedData.success
+        } catch let error {
+            if let decodingError = error as? DecodingError {
+                LogManager.generate(level: .network, "\(decodingError)")
+            }
+            
             LogManager.generate(level: .network, "\(error)")
             return nil
         }
