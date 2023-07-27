@@ -36,4 +36,14 @@ public class Location {
 		this.district = district;
 		this.town = town;
 	}
+
+	@Override
+	public String toString() {
+		return "Location{" +
+			"locationIdx=" + locationIdx +
+			", city='" + city + '\'' +
+			", district='" + district + '\'' +
+			", town='" + town + '\'' +
+			'}';
+	}
 }
