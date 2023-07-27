@@ -8,57 +8,24 @@
 import UIKit
 
 class DetailToolbar: UIToolbar {
-    private var favoriteButton = UIBarButtonItem()
-    private var priceLabel = UIBarButtonItem()
-    private var chatButton = UIBarButtonItem()
-    private var isFavoriteButtonSelected = false
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        favoriteButton = makeFavoriteButton()
-        chatButton = makeChatButton()
-        self.priceLabel.setTitleTextAttributes([
-            NSAttributedString.Key.font: UIFont.typo.footNote
-        ], for: .normal)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addItems()
-    }
-    
-    func update(price: Int) {
-        self.priceLabel.title = FormatPriceGenerator.generate(from: price)
-    }
-    
-    private func makeFavoriteButton() -> UIBarButtonItem {
-        let item = UIBarButtonItem(
-            image: UIImage(systemName: "heart"),
-            style: .plain,
-            target: self,
-            action: #selector(addFavorite)
+    private let favoriteButton: UIBarButtonItem = {
+        let favoriteButton = UIBarButtonItem()
+        favoriteButton.image = UIImage(systemName: "heart")
+        favoriteButton.style = .plain
+        favoriteButton.tintColor = .red
+        favoriteButton.customView?.frame.size = CGSize(width: 28, height: 28)
+        return favoriteButton
+    }()
+    private let priceIndicator: UIBarButtonItem = {
+        let priceIndicator = UIBarButtonItem()
+        priceIndicator.setTitleTextAttributes(
+            [NSAttributedString.Key.font: UIFont.typo.footNote],
+            for: .normal
         )
-        item.tintColor = UIColor.red
-        item.customView?.frame.size = CGSize(width: 28, height: 28)
-        
-        return item
-    }
-    
-    @objc func addFavorite(_ sender: UIBarButtonItem) {
-        guard isFavoriteButtonSelected else {
-            sender.image = UIImage(systemName: "heart.fill")
-            isFavoriteButtonSelected = true
-            return
-        }
-        sender.image = UIImage(systemName: "heart")
-        isFavoriteButtonSelected = false
-    }
-    
-    private func makeChatButton() -> UIBarButtonItem {
+        priceIndicator.isEnabled = false
+        return priceIndicator
+    }()
+    private let chatButton: UIBarButtonItem = {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(
             top: 8,
@@ -66,39 +33,74 @@ class DetailToolbar: UIToolbar {
             bottom: 8,
             trailing: 16
         )
+
+        let chatButton = UIButton(configuration: configuration)
+        chatButton.layer.cornerRadius = 8
+        chatButton.tintColor = .white
+        chatButton.backgroundColor = UIColor.orange
+        chatButton.setTitle("대화중인 채팅방", for: .normal)
         
-        let button = UIButton(configuration: configuration)
-        button.layer.cornerRadius = 8
-        button.tintColor = .white
-        button.backgroundColor = UIColor.orange
-        button.setTitle("대화중인 채팅방", for: .normal)
-        button.addTarget(self,
-                         action: #selector(moveToChat),
-                         for: .touchUpInside)
-        
-        return UIBarButtonItem(customView: button)
+        return UIBarButtonItem(customView: chatButton)
+    }()
+    private var isItemInFavorites = false
+    var favoriteButtonTapSender: ((Bool) -> ())?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addBarButtonItems()
+        self.addActionToFavoriteButton()
     }
     
-    @objc func moveToChat(_ sender: UIBarButtonItem) {
+    private func addBarButtonItems() {
+        let flexibleSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: self,
+            action: nil)
         
-    }
-    
-    private func addItems() {
         let toolbarItems: [UIBarButtonItem] = [
             self.favoriteButton,
-            self.priceLabel,
-            addFlexibleSpace(),
+            self.priceIndicator,
+            flexibleSpace,
             self.chatButton
         ]
         
         self.setItems(toolbarItems, animated: true)
     }
     
-    private func addFlexibleSpace() -> UIBarButtonItem {
-        let space = UIBarButtonItem(
-            barButtonSystemItem: .flexibleSpace,
-            target: self,
-            action: nil)
-        return space
+    private func addActionToFavoriteButton() {
+        let buttonTapAction = UIAction { _ in
+            self.favoriteButtonTapSender?(self.isItemInFavorites)
+        }
+        
+        self.favoriteButton.primaryAction = buttonTapAction
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    func update(
+        price: Int,
+        isItemInFavorites: Bool
+    ) {
+        self.isItemInFavorites = isItemInFavorites
+
+        DispatchQueue.main.async {
+            self.priceIndicator.title = FormatPriceGenerator.generate(from: price)
+            self.favoriteButton.image = self.isItemInFavorites ? Components.inFavoritesImage : Components.notInFavoritesImage
+        }
+    }
+
+    func configureFavoriteButton(isAdding: Bool) {
+        let image = isAdding ? Components.inFavoritesImage : Components.notInFavoritesImage
+        DispatchQueue.main.async {
+            self.favoriteButton.image = image
+        }
+        self.isItemInFavorites = isAdding
+    }
+    
+    enum Components {
+        static let inFavoritesImage = UIImage(systemName: "heart.fill")
+        static let notInFavoritesImage = UIImage(systemName: "heart")
     }
 }

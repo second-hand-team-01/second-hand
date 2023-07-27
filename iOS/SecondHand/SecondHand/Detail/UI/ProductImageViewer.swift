@@ -59,7 +59,6 @@ class ProductImageViewer: UIView {
     
     func update(by imageKeys: [NSString?]) {
         self.productImages = self.loadImagesFrom(keys: imageKeys)
-        print(productImages)
         self.pageControl.numberOfPages = self.productImages.count
         self.pageControl.currentPage = 0
         self.imageView.image = self.productImages[0]

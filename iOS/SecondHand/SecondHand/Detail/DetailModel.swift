@@ -20,7 +20,7 @@ class DetailModel {
         let favorite: Int
         let view: Int
     }
-
+    
     let imageKeys: [NSString?]
     let sellerName: String
     let productInfo: ProductInfo

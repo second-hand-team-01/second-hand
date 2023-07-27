@@ -16,6 +16,11 @@ struct DetailLocalDataSource {
         )[0]
         return cacheDirectoryURL.path()
     }()
+    private let itemIndex: Int
+    
+    init(itemIndex: Int) {
+        self.itemIndex = itemIndex
+    }
     
     func fetchImageURL(name: NSString) -> NSURL? {
         guard let imageName = name as? String else {
@@ -69,10 +74,10 @@ struct DetailLocalDataSource {
             atPath: path,
             contents: image
         ) {
-            LogManager.generate(level: .local, LogMessage.failToCreateFile)
-            return false
+            return true
         }
         
+        LogManager.generate(level: .local, LogMessage.failToCreateFile)
         return true
     }
     
@@ -103,7 +108,17 @@ struct DetailLocalDataSource {
         }
         
         // 4. 디렉토리 생성 후, 이미지 파일을 디스크 캐시에 생성하고 결과를 리턴한다.
-        return self.createImageFile(in: imageFilePath, image: imageFile)
+        guard self.createImageFile(in: imageFilePath, image: imageFile) else {
+            return false
+        }
+        
+        if let fileURL = NSURL(string: imageFilePath) {
+            ImageCacheManager.shared.setObject(
+                fileURL,
+                forKey: NSString(string: "\(self.itemIndex)/\(index)")
+            )
+        }
+        return true
     }
     
     enum LogMessage {

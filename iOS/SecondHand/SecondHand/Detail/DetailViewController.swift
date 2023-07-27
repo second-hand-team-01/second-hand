@@ -15,38 +15,107 @@ class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
+    private var alertController: UIAlertController = {
+        let alertController = UIAlertController(
+            title: Components.alertMessage,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
     
-    var index: Int = 0
-    private var detailUseCase = DetailUseCase()
-
+    private var detailUseCase: DetailUseCase
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(itemIndex: Int) {
+        self.detailUseCase = DetailUseCase(itemIndex: itemIndex)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.setTabBar(isHiding: true)
-        self.detailUseCase.fetchData(item: 101)
+        self.detailUseCase.loadData()
         self.setDataSender()
+        self.setFavoriteEventHandler()
+        self.addObservers()
     }
-
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.addSubViews()
         self.layoutConstraint()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.setTabBar(isHiding: false)
     }
-
+    
     private func setTabBar(isHiding: Bool) {
         self.tabBarController?.tabBar.isHidden = isHiding
     }
     
     private func setDataSender() {
         self.detailUseCase.dataSender = { (data) in
-            self.toolbar.update(price: data.price)
+            self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
             self.detailContentView.update(by: data)
         }
+    }
+    
+    private func setFavoriteEventHandler() {
+        self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
+            let isAdding = !isItemInFavorites
+            self.detailUseCase.configureFavorites(isAdding: isAdding)
+        }
+        
+        self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
+            if isFail {
+                DispatchQueue.main.async {
+                    self.present(self.alertController, animated: true)
+                }
+            }
+        }
+    }
+    
+    private func addObservers() {
+        self.addObserverItemAddedToFavorites()
+        self.addObserverItemDeletedFromFavorites()
+    }
+    
+    @objc private func addItemToFavorites(_ : Notification) {
+        self.toolbar.configureFavoriteButton(isAdding: true)
+    }
+    
+    private func addObserverItemAddedToFavorites() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(addItemToFavorites),
+            name: Notification.itemAddedToFavorites,
+            object: nil
+        )
+    }
+
+    @objc private func deleteItemFromFavorites() {
+        self.toolbar.configureFavoriteButton(isAdding: false)
+    }
+
+    private func addObserverItemDeletedFromFavorites() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deleteItemFromFavorites),
+            name: Notification.itemDeletedFromFavorites,
+            object: nil
+        )
     }
 }
 
@@ -107,5 +176,9 @@ extension DetailViewController {
             toolbar.topAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
             toolbar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    enum Components {
+        static let alertMessage: String = "요청이 실패했습니다."
     }
 }
