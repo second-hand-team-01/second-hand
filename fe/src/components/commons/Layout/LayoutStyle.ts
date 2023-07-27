@@ -41,7 +41,6 @@ export const Layout = styled.div<LayoutStyleProps>`
   display: grid;
   grid-template-rows: ${({ footerOption }) => getTemplateRows(footerOption)};
   height: 100dvh;
-  height: 100dvh;
   outline: 1px solid ${({ theme }) => theme.colors.neutralBorder};
   overflow: hidden;
 `;
