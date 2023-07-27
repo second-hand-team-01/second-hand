@@ -32,7 +32,8 @@ class ProductInfoView: UIView {
     
     func update(by productInfo: DetailModel.ProductInfo) {
         self.nameLabel.text = "\(productInfo.title)"
-        self.annotationLabel.text = "\(productInfo.category) ・ \(productInfo.postedTime)"
+        let annotation = productInfo.category + " ・ " + PassedTimeGenerator.generate(from: productInfo.postedTime)
+        self.annotationLabel.text = annotation
         self.descriptionLabel.text = "\(productInfo.description)"
     }
     
@@ -50,7 +51,7 @@ extension ProductInfoView {
         let subViews = [
             nameLabel,
             annotationLabel,
-            descriptionLabel,
+            descriptionLabel
         ]
         
         subViews.forEach {
@@ -86,7 +87,8 @@ extension ProductInfoView {
         NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16)
+            descriptionLabel.topAnchor.constraint(equalTo: annotationLabel.bottomAnchor, constant: 16),
+            descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

@@ -14,17 +14,13 @@ class CommunicationInfoView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubviews()
         self.setFont()
+        self.addSubviews()
+        self.addConstraints()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.addConstraints()
     }
     
     func update(by userInteractionCount: DetailModel.UserInteractionCount) {
@@ -71,21 +67,25 @@ extension CommunicationInfoView {
     private func addConstraintsToChatCountLabel() {
         NSLayoutConstraint.activate([
             self.chatCountLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.chatCountLabel.topAnchor.constraint(equalTo: self.topAnchor)
+            self.chatCountLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            self.chatCountLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
     private func addConstraintsToFavoriteCountLabel() {
         NSLayoutConstraint.activate([
             self.favoriteCountLabel.leadingAnchor.constraint(equalTo: self.chatCountLabel.trailingAnchor, constant: 8),
-            self.favoriteCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor)
+            self.favoriteCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor),
+            self.favoriteCountLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
     private func addConstraintsToViewsCountLabel() {
         NSLayoutConstraint.activate([
             self.viewsCountLabel.leadingAnchor.constraint(equalTo: self.favoriteCountLabel.trailingAnchor, constant: 8),
-            self.viewsCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor)
+            self.viewsCountLabel.topAnchor.constraint(equalTo: chatCountLabel.topAnchor),
+            self.viewsCountLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor),
+            self.viewsCountLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }

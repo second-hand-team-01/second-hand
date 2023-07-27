@@ -23,7 +23,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.setTabBar(isHiding: true)
-        self.detailUseCase.fetchData(item: 98)
+        self.detailUseCase.fetchData(item: 101)
         self.setDataSender()
     }
 
@@ -44,7 +44,7 @@ class DetailViewController: UIViewController {
     
     private func setDataSender() {
         self.detailUseCase.dataSender = { (data) in
-            self.toolbar.configure(price: data.price)
+            self.toolbar.update(price: data.price)
             self.detailContentView.update(by: data)
         }
     }
