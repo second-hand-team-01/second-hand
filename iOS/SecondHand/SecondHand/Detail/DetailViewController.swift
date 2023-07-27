@@ -47,19 +47,20 @@ class DetailViewController: UIViewController {
         self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
+        self.addObservers()
     }
-
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.addSubViews()
         self.layoutConstraint()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.setTabBar(isHiding: false)
     }
-
+    
     private func setTabBar(isHiding: Bool) {
         self.tabBarController?.tabBar.isHidden = isHiding
     }
@@ -70,16 +71,51 @@ class DetailViewController: UIViewController {
             self.detailContentView.update(by: data)
         }
     }
-
+    
     private func setFavoriteEventHandler() {
         self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
-            guard let isAdding = self.detailUseCase.configureFavorites(isAdding: isItemInFavorites) else {
-                self.present(self.alertController, animated: true)
-                return
-            }
-            
-            self.toolbar.configureFavoriteButton(isAdding: isAdding)
+            let isAdding = !isItemInFavorites
+            self.detailUseCase.configureFavorites(isAdding: isAdding)
         }
+        
+        self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
+            if isFail {
+                DispatchQueue.main.async {
+                    self.present(self.alertController, animated: true)
+                }
+            }
+        }
+    }
+    
+    private func addObservers() {
+        self.addObserverItemAddedToFavorites()
+        self.addObserverItemDeletedFromFavorites()
+    }
+    
+    @objc private func addItemToFavorites(_ : Notification) {
+        self.toolbar.configureFavoriteButton(isAdding: true)
+    }
+    
+    private func addObserverItemAddedToFavorites() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(addItemToFavorites),
+            name: Notification.itemAddedToFavorites,
+            object: nil
+        )
+    }
+
+    @objc private func deleteItemFromFavorites() {
+        self.toolbar.configureFavoriteButton(isAdding: false)
+    }
+
+    private func addObserverItemDeletedFromFavorites() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deleteItemFromFavorites),
+            name: Notification.itemDeletedFromFavorites,
+            object: nil
+        )
     }
 }
 

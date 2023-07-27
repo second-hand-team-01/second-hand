@@ -69,7 +69,7 @@ class DetailToolbar: UIToolbar {
     
     private func addActionToFavoriteButton() {
         let buttonTapAction = UIAction { _ in
-            self.favoriteButtonTapSender?(!self.isItemInFavorites)
+            self.favoriteButtonTapSender?(self.isItemInFavorites)
         }
         
         self.favoriteButton.primaryAction = buttonTapAction
@@ -78,20 +78,16 @@ class DetailToolbar: UIToolbar {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     func update(
         price: Int,
         isItemInFavorites: Bool
     ) {
         self.isItemInFavorites = isItemInFavorites
-        
+
         DispatchQueue.main.async {
             self.priceIndicator.title = FormatPriceGenerator.generate(from: price)
-            if isItemInFavorites {
-                self.favoriteButton.image = Components.inFavoritesImage
-            } else {
-                self.favoriteButton.image = Components.notInFavoritesImage
-            }
+            self.favoriteButton.image = self.isItemInFavorites ? Components.inFavoritesImage : Components.notInFavoritesImage
         }
     }
 
@@ -100,7 +96,6 @@ class DetailToolbar: UIToolbar {
         DispatchQueue.main.async {
             self.favoriteButton.image = image
         }
-        
         self.isItemInFavorites = isAdding
     }
     

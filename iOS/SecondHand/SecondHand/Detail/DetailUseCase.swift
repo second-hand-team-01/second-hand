@@ -11,6 +11,7 @@ final class DetailUseCase {
     private var detail: DetailModel?
     private var detailRepository: DetailRepository
     var dataSender: ((DetailModel) -> ())?
+    var favoriteEventFailSender: ((Bool) -> ())?
 
     init(
         detail: DetailModel? = nil,
@@ -30,18 +31,18 @@ final class DetailUseCase {
             self.dataSender?(detailModel)
         }
     }
-    
-    func configureFavorites(isAdding: Bool) -> Bool? {
-        guard let isAdding = self.detailRepository.requestFavorites(isAdding: isAdding) else {
-            return nil
+
+    func configureFavorites(isAdding: Bool) {
+        Task {
+            guard let isAdded = await self.detailRepository.fetchFavorites(isAdding: isAdding) else {
+                self.favoriteEventFailSender?(true)
+                return
+            }
+
+            self.detail?.isUserInterested = isAdded
+            typealias Noti = Notification
+            let notificationName = isAdded ? Noti.itemAddedToFavorites : Noti.itemDeletedFromFavorites
+            NotificationCenter.default.post(name: notificationName, object: nil)
         }
-        
-        if isAdding {
-            self.detail?.isUserInterested = true
-        } else {
-            self.detail?.isUserInterested = false
-        }
-        
-        return isAdding
     }
 }
