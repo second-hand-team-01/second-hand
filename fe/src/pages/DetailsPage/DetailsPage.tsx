@@ -92,6 +92,13 @@ export const DetailsPage = () => {
       });
       if (error) return;
       setInterestChecked(true);
+      setDetails((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          interest: prev.interest + 1,
+        };
+      });
       return;
     }
     if (icon?.id === 'heartFill') {
@@ -101,6 +108,13 @@ export const DetailsPage = () => {
       });
       if (error) return;
       setInterestChecked(false);
+      setDetails((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          interest: prev.interest - 1,
+        };
+      });
       return;
     }
   };
