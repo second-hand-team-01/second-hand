@@ -21,6 +21,9 @@ public class Location {
 	@Column(name = "location_idx")
 	private Long locationIdx;
 
+	@Column(name = "location_Id")
+	private Long locationId;
+
 	@Column(name = "city", nullable = false)
 	private String city;
 
@@ -35,5 +38,24 @@ public class Location {
 		this.city = city;
 		this.district = district;
 		this.town = town;
+	}
+
+	public Location(Long locationIdx, Long locationId, String city, String district, String town) {
+		this.locationIdx = locationIdx;
+		this.locationId = locationId;
+		this.city = city;
+		this.district = district;
+		this.town = town;
+	}
+
+	@Override
+	public String toString() {
+		return "Location{" +
+			"locationIdx=" + locationIdx +
+			", locationId=" + locationId +
+			", city='" + city + '\'' +
+			", district='" + district + '\'' +
+			", town='" + town + '\'' +
+			'}';
 	}
 }
