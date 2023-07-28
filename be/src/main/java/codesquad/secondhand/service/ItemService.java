@@ -3,7 +3,6 @@ package codesquad.secondhand.service;
 import static codesquad.secondhand.exception.code.ItemErrorCode.*;
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

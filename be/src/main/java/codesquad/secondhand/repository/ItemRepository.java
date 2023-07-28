@@ -14,7 +14,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	Slice<Item> findByLocationLocationIdx(Long locationIdx, Pageable pageable);
 
-	Slice<Item> findItemByCategoryCategoryIdxAndLocationLocationIdx(Long categoryIdx, Long locationIdx, Pageable pageable);
+	Slice<Item> findItemByCategoryCategoryIdxAndLocationLocationIdx(Long categoryIdx, Long locationIdx,
+		Pageable pageable);
 
 	@Query("SELECT i FROM Item i WHERE i.seller.memberIdx = :sellerIdx AND ("
 		+ "(i.status = '판매중' OR i.status = '예약중') AND :status = 'sell' "
@@ -33,6 +34,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	// 	@Param("categoryIdx") Long categoryIdx, Pageable pageable);
 
 	@Query("SELECT i FROM Item i JOIN i.interests interest WHERE interest.member.memberIdx = :memberIdx AND i.category.categoryIdx = :categoryIdx")
-	Slice<Item> findItemAndCategoryByMemberAndCategory(@Param("memberIdx") Long memberIdx, @Param("categoryIdx") Long categoryIdx, Pageable pageable);
+	Slice<Item> findItemAndCategoryByMemberAndCategory(@Param("memberIdx") Long memberIdx,
+		@Param("categoryIdx") Long categoryIdx, Pageable pageable);
 
 }
