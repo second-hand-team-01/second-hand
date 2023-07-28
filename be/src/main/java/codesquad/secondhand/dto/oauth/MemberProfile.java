@@ -12,7 +12,6 @@ public class MemberProfile {
 	private final String name;
 	private final String imageUrl;
 
-
 	@Builder
 	public MemberProfile(String oauthId, String email, String name, String imageUrl) {
 		this.oauthId = oauthId;

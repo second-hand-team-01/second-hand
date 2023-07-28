@@ -30,9 +30,9 @@ public class IpSearcher {
 		}
 		if (ip == null) {
 			ip = request.getRemoteAddr();
-			log.info("> getRemoteAddr : "+ip);
+			log.info("> getRemoteAddr : " + ip);
 		}
-		log.info("> Result : IP Address : "+ip);
+		log.info("> Result : IP Address : " + ip);
 
 		return ip;
 	}
