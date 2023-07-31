@@ -56,7 +56,8 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest) {
+	public ResponseDto<TokenResponse> login(@RequestBody LoginRequestDto loginRequestDto,
+		HttpServletRequest httpServletRequest) {
 		MemberIdxTokenDto memberIdxTokenDto = memberService.login(loginRequestDto);
 		MemberIdxLoginIdImageDto memberIdxLoginIdImage = memberService.getMemberIdxLoginIdImage(
 			memberIdxTokenDto.getMemberIdx());

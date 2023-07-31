@@ -103,7 +103,8 @@ public class Item {
 		this.lastModifiedAt = LocalDateTime.now();
 	}
 
-	public void updateItem(Member seller, Category category, Location location, String name, String description, Integer price, String status) {
+	public void updateItem(Member seller, Category category, Location location, String name, String description,
+		Integer price, String status) {
 		this.seller = seller;
 		if (category != null) {
 			this.category = category;
@@ -124,10 +125,10 @@ public class Item {
 			this.status = status;
 		}
 	}
+
 	public void updateView(Integer view) {
 		this.view = view;
 	}
-
 
 	@Override
 	public String toString() {

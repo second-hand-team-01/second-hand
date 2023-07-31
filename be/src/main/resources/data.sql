@@ -1,5 +1,5 @@
 SET
-foreign_key_checks = 0;
+    foreign_key_checks = 0;
 -- location 테이블 더미 데이터 추가
 INSERT INTO `location` (`location_id`, `city`, `district`, `town`)
 VALUES ('1111010100', '서울특별시', '종로구', '청운동'),
@@ -9085,4 +9085,4 @@ VALUES (1, 54, 1),
 
 -- chat_room 테이블 더미 데이터 추가
 SET
-foreign_key_checks = 1;
+    foreign_key_checks = 1;
