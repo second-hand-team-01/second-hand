@@ -1,5 +1,4 @@
 # Guardians Of The Codesquad
-
 <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F45f72635-ec50-4c3f-8be9-ebfe78077611%2Fdd5575acbb594d63a8d8713b026d74e5.png?table=block&id=628ace3d-ad5a-4479-9924-4a7a648a821e&spaceId=5b5162e1-fb28-420c-acae-78efb764f3c3&width=2000&userId=fc9aa8fc-2f03-4a29-91a8-ae872fb91f04&cache=v2" width="300" height="300"/>
 
 
@@ -24,10 +23,6 @@
 |:-----------------------------------------------------------:|:------------------------------------------------------------:|:--------------------------------------------------------------:|:-----------------------------------------------------------:|-------------------------------------------------------------------|-------------------------------------------------------------|
 |        [**로이(BE)**](https://github.com/lvalentine6)         |          [**고뭉남(BE)**](https://github.com/KOKEONHO)          |           [**POCO(FE)**](https://github.com/poco111)           |        [**스눕(FE)**](https://github.com/realsnoopso)         | [**SOL(iOS)**](https://github.com/HansolWorld)                    | [**우드(iOS)**](https://github.com/dpfdlalfm)                 |
 
-## 그라운드룰
-
-[링크](https://puzzle-roarer-58b.notion.site/11df920ce16c4c218db80ecc8ccf27c5?pvs=4)
-
 ## 📚 TechStacks
 
 ### ✔️ FrontEnd
@@ -47,3 +42,7 @@
 <img src="https://img.shields.io/badge/spring Rest Docs-6DB33F?style=for-the-badge&logo=spring&logoColor=white">&nbsp;&nbsp;&nbsp;
 <img src="https://img.shields.io/badge/linear-5E6AD2?style=for-the-badge&logo=linear&logoColor=white">&nbsp;&nbsp;&nbsp;
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+
+## 그라운드룰
+
+[링크](https://puzzle-roarer-58b.notion.site/11df920ce16c4c218db80ecc8ccf27c5?pvs=4)
