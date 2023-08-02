@@ -6,12 +6,13 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseListDto;
 import codesquad.secondhand.dto.location.LocationDto;
-import codesquad.secondhand.dto.location.LocationListDto;
+import codesquad.secondhand.dto.location.LocationIdDto;
 import codesquad.secondhand.entity.Location;
 import codesquad.secondhand.service.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class LocationController {
 	}
 
 	@PostMapping
-	public ResponseListDto<Location> searchLocationId(LocationListDto locationListDto) {
-		List<Location> list = locationService.findLocationId(locationListDto);
+	public ResponseListDto<Location> searchLocationId(@RequestBody List<LocationIdDto> locationIdDtoList) {
+		List<Location> list = locationService.findLocationId(locationIdDtoList);
 		return ResponseListDto.of(RESPONSE_SUCCESS, list);
 	}
 
