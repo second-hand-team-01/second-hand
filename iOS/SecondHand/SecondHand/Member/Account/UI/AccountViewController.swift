@@ -28,7 +28,7 @@ class AccountInfoViewController: UIViewController {
         return button
     }()
     private var useCase = AccountInfoUseCase()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addSubviews()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension LoginButtonGroupView {
+extension SignInButtonGroupView {
     func addAction(to button: UIButton) -> UIButton {
         let button = button
         button.addTarget(
@@ -45,7 +45,7 @@ extension LoginButtonGroupView {
 }
 
 // MARK: - 버튼 Action 설정에 필요한 Tag 값
-extension LoginButtonGroupView {
+extension SignInButtonGroupView {
     enum ButtonTag {
         static let githubLogin = 0
         static let login = 1
@@ -54,7 +54,7 @@ extension LoginButtonGroupView {
 }
 
 // MARK: - 내 계정 화면 Notification 이름
-extension LoginButtonGroupView {
+extension SignInButtonGroupView {
     struct NotiName {
         let githubLogin = Notification.Name("didTapGithubLoginButton")
         let login = Notification.Name("didTapLoginButton")
@@ -64,5 +64,5 @@ extension LoginButtonGroupView {
 
 // MARK: - Notification 이름에 편리한 접근을 하기 위해 변수 선언
 extension Notification.Name {
-    static let account = LoginButtonGroupView.NotiName()
+    static let account = SignInButtonGroupView.NotiName()
 }

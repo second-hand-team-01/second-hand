@@ -9,7 +9,7 @@ import UIKit
 
 final class TabBarViewController: UITabBarController {
     private let itemListView = UINavigationController(rootViewController: ItemListViewController())
-    private let accountView = UINavigationController(rootViewController: LoginViewController())
+    private let accountView = UINavigationController(rootViewController: SignInViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()

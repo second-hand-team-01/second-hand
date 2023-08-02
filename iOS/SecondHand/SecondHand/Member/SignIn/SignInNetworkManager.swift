@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct LoginNetworkManager {
+struct SignInNetworkManager {
     enum RequestType: String {
         case githubSignIn = "https://guardiansofthecodesquad.site/login/oauth/github-ios?code="
         case signIn = "login"
