@@ -1,18 +1,26 @@
 package codesquad.secondhand.config;
 
+import static codesquad.secondhand.service.ImageService.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.javafaker.Faker;
 
+import codesquad.secondhand.entity.Category;
+import codesquad.secondhand.entity.Item;
+import codesquad.secondhand.entity.ItemImage;
 import codesquad.secondhand.entity.Location;
+import codesquad.secondhand.entity.Member;
 import codesquad.secondhand.repository.CategoryRepository;
-import codesquad.secondhand.repository.ChatRoomRepository;
-import codesquad.secondhand.repository.InterestRepository;
 import codesquad.secondhand.repository.ItemImageRepository;
 import codesquad.secondhand.repository.ItemRepository;
 import codesquad.secondhand.repository.LocationRepository;
@@ -23,8 +31,6 @@ import codesquad.secondhand.service.ImageService;
 public class TestDummyData {
 
 	private final ItemRepository itemRepository;
-	private final ChatRoomRepository chatRoomRepository;
-	private final InterestRepository interestRepository;
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
 	private final LocationRepository locationRepository;
@@ -32,12 +38,10 @@ public class TestDummyData {
 	private final ImageService imageService;
 
 	@Autowired
-	public TestDummyData(ItemRepository itemRepository, ChatRoomRepository chatRoomRepository,
-		InterestRepository interestRepository, CategoryRepository categoryRepository, MemberRepository memberRepository,
-		LocationRepository locationRepository, ItemImageRepository itemImageRepository, ImageService imageService) {
+	public TestDummyData(ItemRepository itemRepository,
+		CategoryRepository categoryRepository, MemberRepository memberRepository, LocationRepository locationRepository,
+		ItemImageRepository itemImageRepository, ImageService imageService) {
 		this.itemRepository = itemRepository;
-		this.chatRoomRepository = chatRoomRepository;
-		this.interestRepository = interestRepository;
 		this.categoryRepository = categoryRepository;
 		this.memberRepository = memberRepository;
 		this.locationRepository = locationRepository;
@@ -46,29 +50,59 @@ public class TestDummyData {
 	}
 
 	@Test
-	public void createDummyData() {
+	public void createDummyData() throws IOException {
 		Faker faker = new Faker(new Locale("ko"));
 
-		// 지역 정보 리스트
 		List<Location> locations = locationRepository.findAll();
-		System.out.println(locations);
+		List<Category> categories = categoryRepository.findAll();
+		List<MultipartFile> multipartFileList = new ArrayList<>();
+		MultipartFile multipartFileProfile = createMultipartFileFromPath("D:/A/BG/" + 0 + ".png");
 
-		// for (Location location : locations) {
-		// 	// 사용자 생성
-		// 	Member user = new User();
-		// 	user.setName(faker.name().fullName()); // 랜덤한 이름
-		// 	user.setLocation(location); // 지역 설정
-		// 	// ... 사용자의 다른 필드 설정
-		//
-		// 	// 상품 생성
-		// 	Item item = new Item();
-		// 	item.setName(faker.commerce().productName()); // 랜덤한 상품 이름
-		// 	item.setLocation(location); // 지역 설정
-		// 	// ... 상품의 다른 필드 설정
-		//
-		// 	// 저장소에 저장
-		// 	userRepository.save(user);
-		// 	itemRepository.save(item);
-		// }
+
+		for (int i = 1; i <= 4; i++) {
+			String filePath = "D:/A/BG/" + i + ".png";
+			MultipartFile file = createMultipartFileFromPath(filePath);
+			multipartFileList.add(file);
+		}
+
+		for (int i = 0; i < locations.size(); i++) {
+			String memberId = UUID.randomUUID().toString().substring(0, 10);
+			String password = faker.internet().password();
+			String[] profileUrl = imageService.upload(multipartFileProfile, memberId).split("@");
+			String imagePath = profileUrl[1];
+			String imageUrl = profileUrl[0];
+			Location mainLocation = locations.get(i);
+			Location subLocation = locations.get((i + 1) % locations.size());
+
+			Member member = new Member(memberId, password, imagePath, imageUrl, mainLocation, subLocation);
+			member.updateLocations(mainLocation, subLocation);
+
+			memberRepository.save(member);
+
+			for (int j = 0; j < 6; j++) {
+				Category randomCategory = categories.get(faker.random().nextInt(categories.size()));
+				String name = faker.commerce().productName();
+				String description = faker.lorem().sentence();
+				Integer price = faker.number().randomDigitNotZero() * 1000;
+				Integer view = faker.number().numberBetween(0, 100);
+				String status = "판매중";
+
+				Item item = new Item(member, randomCategory, member.getMainLocation(), null, name, description, price,
+					view, status);
+				itemRepository.save(item);
+
+				List<String> url = imageService.upload(item.getItemIdx(), multipartFileList);
+				for (int k = 0; k < url.size(); k++) {
+					String[] temp = url.get(k).split("@");
+					if (k == 0) {
+						ItemImage itemImage = itemImageRepository.save(new ItemImage(item, temp[1], temp[0]));
+						item.setItemImage(itemImage);
+						itemRepository.save(item);
+						continue;
+					}
+					itemImageRepository.save(new ItemImage(item, temp[1], temp[0]));
+				}
+			}
+		}
 	}
 }

@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `second-hand`.`member`
     `sub_location_idx`  BIGINT(10)   NULL,
     `login_id`          VARCHAR(45)  NOT NULL,
     `password`          VARCHAR(45)  NULL,
-    `image_path`        VARCHAR(100) NULL,
+    `image_path`        VARCHAR(500) NULL,
     `image_url`         VARCHAR(500) NULL,
     `oauth_id`          VARCHAR(45)  NULL DEFAULT NULL,
     PRIMARY KEY (`member_idx`),

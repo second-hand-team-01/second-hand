@@ -8,9 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +48,9 @@ public class ImageService {
 		}
 
 		String fileName = memberProfileFileNameConvert(originFileName, memberId);
+
+		long fileSize = multipartFile.getSize();
+		objectMetadata.setContentLength(fileSize);
 
 		objectMetadata.setContentType(multipartFile.getContentType());
 
@@ -115,6 +121,37 @@ public class ImageService {
 		return itemUrlList;
 	}
 
+	public List<String> upload(Long imageIdx, List<MultipartFile> multipartFileList) {
+		List<String> itemUrlList = new ArrayList<>();
+		Random random = new Random();
+		int cnt = 1;
+
+		for (int i = 0; i < 2; i++) {
+			int rand = random.nextInt(3) + 1;
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			String originFileName = multipartFileList.get(rand).getOriginalFilename();
+
+			if (originFileName == null) {
+				originFileName = UUID.randomUUID().toString();
+			}
+
+			String fileName = itemFileNameConvert(originFileName, imageIdx, cnt);
+
+			objectMetadata.setContentType(multipartFileList.get(rand).getContentType());
+			objectMetadata.setContentLength(multipartFileList.get(rand).getSize());
+
+			try (InputStream inputStream = multipartFileList.get(rand).getInputStream()) {
+				amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+			} catch (IOException e) {
+				throw new FileUploadFailedException(ImageErrorCode.FileUploadFailedException);
+			}
+			itemUrlList.add(fileName + "@" + amazonS3.getUrl(bucketName, fileName).toString());
+			cnt++;
+		}
+		return itemUrlList;
+	}
+
 	private String memberProfileFileNameConvert(String originalFileName, String memberId, String fileExtension) {
 		StringBuilder sb = new StringBuilder();
 		int lastDot = originalFileName.lastIndexOf(FILE_EXTENSION_DOT);
@@ -171,5 +208,14 @@ public class ImageService {
 			.append(".")
 			.append(fileName);
 		return sb.toString();
+	}
+
+	public static MultipartFile createMultipartFileFromPath(String imagePath) throws IOException {
+		FileSystemResource fileSystemResource = new FileSystemResource(imagePath);
+		return new MockMultipartFile(
+			fileSystemResource.getFilename(),
+			fileSystemResource.getFilename(),
+			null,
+			fileSystemResource.getInputStream());
 	}
 }

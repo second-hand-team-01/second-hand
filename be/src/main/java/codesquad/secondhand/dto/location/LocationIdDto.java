@@ -1,15 +1,15 @@
 package codesquad.secondhand.dto.location;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class LocationListDto {
+@NoArgsConstructor
+public class LocationIdDto {
 
-	private List<String> locationString;
+	private String locationString;
 
 	@Override
 	public String toString() {

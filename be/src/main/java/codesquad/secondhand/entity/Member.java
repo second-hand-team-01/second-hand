@@ -85,4 +85,18 @@ public class Member {
 		this.mainLocation = newMainLocation;
 		this.subLocation = newSubLocation;
 	}
+
+	@Override
+	public String toString() {
+		return "Member{" +
+			"memberIdx=" + memberIdx +
+			", loginId='" + loginId + '\'' +
+			", password='" + password + '\'' +
+			", imagePath='" + imagePath + '\'' +
+			", imageUrl='" + imageUrl + '\'' +
+			", mainLocation=" + mainLocation +
+			", subLocation=" + subLocation +
+			", oauthId='" + oauthId + '\'' +
+			'}';
+	}
 }
