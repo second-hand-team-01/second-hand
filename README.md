@@ -23,24 +23,26 @@
 |:-----------------------------------------------------------:|:------------------------------------------------------------:|:--------------------------------------------------------------:|:-----------------------------------------------------------:|-------------------------------------------------------------------|-------------------------------------------------------------|
 |        [**로이(BE)**](https://github.com/lvalentine6)         |          [**고뭉남(BE)**](https://github.com/KOKEONHO)          |           [**POCO(FE)**](https://github.com/poco111)           |        [**스눕(FE)**](https://github.com/realsnoopso)         | [**SOL(iOS)**](https://github.com/HansolWorld)                    | [**우드(iOS)**](https://github.com/dpfdlalfm)                 |
 
-## 📚 TechStacks
+## 📚 기술 스택
 
 ### ✔️ FrontEnd
 
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white">&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> 
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 
 
 ### ✔️ BackEnd
 
-<img src="https://img.shields.io/badge/java 8-007396?style=for-the-badge&logo=openjdk&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/spring boot 2.7-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/mysql 8-4479A1?style=for-the-badge&logo=mysql&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white">&nbsp;&nbsp;&nbsp;
+
+<img src="https://img.shields.io/badge/java 8-007396?style=for-the-badge&logo=openjdk&logoColor=white"> <img src="https://img.shields.io/badge/spring boot 2.7-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/mysql 8-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white">
 <br>
-<img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/spring Rest Docs-6DB33F?style=for-the-badge&logo=spring&logoColor=white">&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/badge/linear-5E6AD2?style=for-the-badge&logo=linear&logoColor=white">&nbsp;&nbsp;&nbsp;
+<br>
+<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
+<img src="https://img.shields.io/badge/spring Rest Docs-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/linear-5E6AD2?style=for-the-badge&logo=linear&logoColor=white">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
 
 ## 📘기능 목록
