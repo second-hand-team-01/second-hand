@@ -36,6 +36,15 @@ public class ImageService {
 	@Value("${aws.s3.bucket}")
 	private String bucketName;
 
+	public static MultipartFile createMultipartFileFromPath(String imagePath) throws IOException {
+		FileSystemResource fileSystemResource = new FileSystemResource(imagePath);
+		return new MockMultipartFile(
+			fileSystemResource.getFilename(),
+			fileSystemResource.getFilename(),
+			null,
+			fileSystemResource.getInputStream());
+	}
+
 	public String upload(MultipartFile multipartFile, String memberId) {
 
 		String originFileName;
@@ -208,14 +217,5 @@ public class ImageService {
 			.append(".")
 			.append(fileName);
 		return sb.toString();
-	}
-
-	public static MultipartFile createMultipartFileFromPath(String imagePath) throws IOException {
-		FileSystemResource fileSystemResource = new FileSystemResource(imagePath);
-		return new MockMultipartFile(
-			fileSystemResource.getFilename(),
-			fileSystemResource.getFilename(),
-			null,
-			fileSystemResource.getInputStream());
 	}
 }

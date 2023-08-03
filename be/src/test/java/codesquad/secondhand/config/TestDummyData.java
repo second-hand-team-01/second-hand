@@ -58,7 +58,6 @@ public class TestDummyData {
 		List<MultipartFile> multipartFileList = new ArrayList<>();
 		MultipartFile multipartFileProfile = createMultipartFileFromPath("D:/A/BG/" + 0 + ".png");
 
-
 		for (int i = 1; i <= 4; i++) {
 			String filePath = "D:/A/BG/" + i + ".png";
 			MultipartFile file = createMultipartFileFromPath(filePath);
