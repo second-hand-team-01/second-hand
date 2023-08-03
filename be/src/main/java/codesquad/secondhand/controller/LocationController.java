@@ -3,6 +3,7 @@ package codesquad.secondhand.controller;
 import static codesquad.secondhand.exception.code.CommonResponseCode.*;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import codesquad.secondhand.dto.ResponseListDto;
+import codesquad.secondhand.dto.ResponseSetDto;
 import codesquad.secondhand.dto.location.LocationDto;
 import codesquad.secondhand.dto.location.LocationIdDto;
 import codesquad.secondhand.entity.Location;
@@ -34,9 +36,9 @@ public class LocationController {
 	}
 
 	@PostMapping
-	public ResponseListDto<Location> searchLocationId(@RequestBody List<LocationIdDto> locationIdDtoList) {
-		List<Location> list = locationService.findLocationId(locationIdDtoList);
-		return ResponseListDto.of(RESPONSE_SUCCESS, list);
+	public ResponseSetDto<Location> searchLocationId(@RequestBody List<LocationIdDto> locationIdDtoList) {
+		Set<Location> set = locationService.findLocationId(locationIdDtoList);
+		return ResponseSetDto.of(RESPONSE_SUCCESS, set);
 	}
 
 }
