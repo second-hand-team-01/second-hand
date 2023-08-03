@@ -1,6 +1,5 @@
 package codesquad.secondhand.service;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,11 +32,10 @@ public class LocationService {
 	}
 
 	public Set<Location> findLocationId(List<LocationIdDto> locationIdDtoList) {
-		Set<Location> list = new HashSet<>();
+		Set<Location> set = new HashSet<>();
 
 		for (LocationIdDto l : locationIdDtoList) {
 			String[] locationString = l.getLocationString().split(" ");
-			log.info(Arrays.toString(locationString));
 			String townQuery = locationString[2];
 			for (int i = 0; i < townQuery.length(); i++) {
 				if (Character.isDigit(townQuery.charAt(i))) {
@@ -48,8 +46,8 @@ public class LocationService {
 			log.info(townQuery);
 			Location location = locationRepository.findLocationByCityAndDistrictAndTownLike(locationString[0],
 				locationString[1], townQuery).orElseThrow();
-			list.add(location);
+			set.add(location);
 		}
-		return list;
+		return set;
 	}
 }
