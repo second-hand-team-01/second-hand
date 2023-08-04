@@ -34,7 +34,7 @@ struct SignInNetworkManager {
         guard type != .githubSignIn else {
             return URLRequest(url: url)
         }
-        
+
         return URLRequest(url: url)
     }
     

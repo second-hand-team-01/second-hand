@@ -124,17 +124,40 @@ class SignInViewController: UIViewController {
         }
     }
     
+    private func storeLastSignInInfo(
+        id: String,
+        password: String
+    ) {
+        UserDefaults.standard.set(id, forKey: "Last SignIn ID")
+        print(UserDefaults.standard.object(forKey: "Last SignIn ID"))
+        
+        if let encodedPassword = password.data(using: String.Encoding.utf8) {
+            let query: [CFString: Any] = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrAccount: id,
+                kSecValueData: encodedPassword
+            ]
+            
+            let result = SecItemAdd(query as CFDictionary, nil)
+            if result != errSecSuccess {
+                LogManager.generate(level: .local, LogMessage.failToStoreDataInKeyChain)
+                return
+            }
+        }
+    }
+    
     private func signIn() {
         let enteredLoginData = signInView.getEnteredInfo()
         guard let id = enteredLoginData.0,
               let password = enteredLoginData.1 else { return }
         let signInInfo = LoginDTO(loginId: id, password: password)
-        
+
         Task {
             guard let response = await networkManager.request(type: .signIn, data: signInInfo) else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
+            self.storeLastSignInInfo(id: id, password: password)
             SecretKeys.accessToken = response.data.token
             self.accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
@@ -159,12 +182,12 @@ class SignInViewController: UIViewController {
             return
         }
         
-        let query: [CFString : Any] =
+        let query: [CFString: Any] =
         [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: lastSignInId,
             kSecMatchLimit: kSecMatchLimitOne,
-            kSecReturnAttributes: false,
+            kSecReturnAttributes: true,
             kSecReturnData: true
         ]
         
@@ -178,7 +201,7 @@ class SignInViewController: UIViewController {
         guard let loadedItem = item as? [String: Any],
               let data = loadedItem[kSecValueData as String] as? Data,
               let password = String(data: data, encoding: .utf8) else {
-            LogManager.generate(level: .local, LogMessage.failToLoadDataFromKeyChain)
+            LogManager.generate(level: .local, LogMessage.failToExtractDataFromKeyChain)
             return
         }
         
@@ -202,6 +225,7 @@ extension SignInViewController {
     enum LogMessage {
         static let incorretButtonTag = "잘못된 버튼 정보가 전달되었습니다."
         static let failToLoadKeyChain = "키체인으로 부터 정보를 가져오는데 실패했습니다."
-        static let failToLoadDataFromKeyChain = "키체인으로 부터 받은 데이터를 변환하는데 실패했습니다."
+        static let failToExtractDataFromKeyChain = "키체인으로 부터 받은 데이터를 변환하는데 실패했습니다."
+        static let failToStoreDataInKeyChain = "키체인에 데이터를 저장하는데 실패했습니다."
     }
 }
