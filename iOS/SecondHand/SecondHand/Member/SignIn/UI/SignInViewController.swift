@@ -34,7 +34,8 @@ class SignInViewController: UIViewController {
         self.addLoginView()
         self.setTitle("내 계정")
         self.observeDidTokenArrived()
-        self.didTapButton()
+        self.setButtonTagSender()
+        self.signInWithLastLoginId()
     }
 
     private func addLoginView() {
@@ -94,14 +95,10 @@ class SignInViewController: UIViewController {
                 accountInfoViewController,
                 animated: true
             )
-
-            // UserDefaults에 마지막 로그인 아이디를 저장.
-            
-            // Key-Chain에 로그인 아이디 : 패스워드 저장.
         }
     }
     
-    private func didTapButton() {
+    private func setButtonTagSender() {
         signInView.buttonTagSender = { buttonTag in
             switch buttonTag {
             case 0:
@@ -131,17 +128,17 @@ class SignInViewController: UIViewController {
         let enteredLoginData = signInView.getEnteredInfo()
         guard let id = enteredLoginData.0,
               let password = enteredLoginData.1 else { return }
-        let loginInfo = LoginDTO(loginId: id, password: password)
+        let signInInfo = LoginDTO(loginId: id, password: password)
         
         Task {
-            guard let response = await networkManager.request(type: .signIn, data: loginInfo) else {
+            guard let response = await networkManager.request(type: .signIn, data: signInInfo) else {
                 self.present(self.loginAlertController, animated: true, completion: nil)
                 return
             }
             SecretKeys.accessToken = response.data.token
-            accountInfoViewController.sendData(response.data.memberInfo)
+            self.accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
-                accountInfoViewController,
+                self.accountInfoViewController,
                 animated: true
             )
         }
@@ -156,10 +153,41 @@ class SignInViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.signInView.clearTextFields()
     }
+
+    private func signInWithLastLoginId() {
+        guard let lastSignInId = UserDefaults.standard.string(forKey: "Last SignIn ID") else {
+            return
+        }
+        
+        let query: [CFString : Any] =
+        [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: lastSignInId,
+            kSecMatchLimit: kSecMatchLimitOne,
+            kSecReturnAttributes: false,
+            kSecReturnData: true
+        ]
+        
+        var item: CFTypeRef?
+        let result = SecItemCopyMatching(query as CFDictionary, &item)
+        if result != errSecSuccess {
+            LogManager.generate(level: .local, LogMessage.failToLoadKeyChain)
+            return
+        }
+        
+        guard let loadedItem = item as? [String: Any],
+              let data = loadedItem[kSecValueData as String] as? Data,
+              let password = String(data: data, encoding: .utf8) else {
+            LogManager.generate(level: .local, LogMessage.failToLoadDataFromKeyChain)
+            return
+        }
+    }
 }
 
 extension SignInViewController {
     enum LogMessage {
         static let incorretButtonTag = "잘못된 버튼 정보가 전달되었습니다."
+        static let failToLoadKeyChain = "키체인으로 부터 정보를 가져오는데 실패했습니다."
+        static let failToLoadDataFromKeyChain = "키체인으로 부터 받은 데이터를 변환하는데 실패했습니다."
     }
 }
