@@ -43,7 +43,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.setTabBar(isHiding: true)
+        setTabBar(isHiding: true)
         self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
@@ -58,13 +58,9 @@ class DetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.setTabBar(isHiding: false)
+        setTabBar(isHiding: false)
     }
 
-    private func setTabBar(isHiding: Bool) {
-        self.tabBarController?.tabBar.isHidden = isHiding
-    }
-    
     private func setDataSender() {
         self.detailUseCase.dataSender = { (data) in
             self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
