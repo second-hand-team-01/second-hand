@@ -181,6 +181,20 @@ class SignInViewController: UIViewController {
             LogManager.generate(level: .local, LogMessage.failToLoadDataFromKeyChain)
             return
         }
+        
+        let signInInfo = LoginDTO(loginId: lastSignInId, password: password)
+        Task {
+            guard let response = await networkManager.request(type: .signIn, data: signInInfo) else {
+                self.present(self.loginAlertController, animated: true, completion: nil)
+                return
+            }
+            SecretKeys.accessToken = response.data.token
+            self.accountInfoViewController.sendData(response.data.memberInfo)
+            self.navigationController?.pushViewController(
+                self.accountInfoViewController,
+                animated: true
+            )
+        }
     }
 }
 
