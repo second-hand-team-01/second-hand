@@ -8,7 +8,7 @@
 import UIKit
 
 final class PasswordValidationDelegate: NSObject, UITextFieldDelegate {
-    private let inputLimitRange: ClosedRange = (6...12)
+    private let inputLimitRange: ClosedRange = (5...12)
     var isValidSender: ((Bool) -> ())?
     
     private func isUserTypingDelete(length: Int) -> Bool {
