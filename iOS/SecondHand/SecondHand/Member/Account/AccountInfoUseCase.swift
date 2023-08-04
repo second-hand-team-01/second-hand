@@ -21,8 +21,8 @@ class AccountInfoUseCase {
         self.networkManager = AccountInfoNetworkManager()
     }
     
-    func loadData(_ data: LoginResponseDTO.MemberInfo) {
-        self.accountInfo.imageUrl = data.imgUrl
+    func loadData(_ data: SignInResponseDTO.MemberInfo) {
+        self.accountInfo.imageUrl = data.imgUrl ?? ""
         self.accountInfo.userName = data.loginId
     }
     

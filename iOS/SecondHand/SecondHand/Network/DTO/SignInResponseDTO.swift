@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LoginResponseDTO: Codable {
+struct SignInResponseDTO: Codable {
     let success: Bool
     let status: Int
     let code: Int
@@ -22,6 +22,6 @@ struct LoginResponseDTO: Codable {
     struct MemberInfo: Codable {
         let memberIdx: Int
         let loginId: String
-        let imgUrl: String
+        let imgUrl: String?
     }
 }

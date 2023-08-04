@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginView: UIView {
+class SignInView: UIView {
     private var accountInputView = AccountInputView(frame: CGRect.zero)
     private var gitHubSignInButton = UIButton()
     private var signInButton = UIButton()
@@ -176,7 +176,7 @@ class LoginView: UIView {
     }
 }
 
-extension LoginView {
+extension SignInView {
     enum Constant {
         struct Button {
             static let gitHubSignInTop: CGFloat = 200
