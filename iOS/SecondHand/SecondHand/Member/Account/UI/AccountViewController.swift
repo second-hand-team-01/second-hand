@@ -51,7 +51,7 @@ class AccountInfoViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        addConstraints()
+        self.addConstraints()
     }
     
     @objc private func didTapSignOutButton() {
