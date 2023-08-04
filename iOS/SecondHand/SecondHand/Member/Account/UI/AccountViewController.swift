@@ -45,7 +45,7 @@ class AccountInfoViewController: UIViewController {
         self.accountInfoView.configure(accountInfo: self.useCase.sendAccountInfo())
     }
     
-    func sendData(_ data: LoginResponseDTO.MemberInfo) {
+    func sendData(_ data: SignInResponseDTO.MemberInfo) {
         self.useCase.loadData(data)
     }
     

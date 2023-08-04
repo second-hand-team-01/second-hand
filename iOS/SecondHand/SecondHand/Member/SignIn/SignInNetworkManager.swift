@@ -38,7 +38,7 @@ struct SignInNetworkManager {
         return URLRequest(url: url)
     }
     
-    func request<T: Encodable>(type: RequestType, data: T) async -> LoginResponseDTO? {
+    func request<T: Encodable>(type: RequestType, data: T) async -> SignInResponseDTO? {
         guard var request = makeRequest(type) else {
             return nil
         }
@@ -72,7 +72,7 @@ struct SignInNetworkManager {
                 throw NetworkError.badStatusCode(response.statusCode)
             }
             
-            return try decoder.decode(LoginResponseDTO.self, from: data)
+            return try decoder.decode(SignInResponseDTO.self, from: data)
         } catch let error {
             if let decodingError = error as? DecodingError {
                 LogManager.generate(level: .network, "\(decodingError)")

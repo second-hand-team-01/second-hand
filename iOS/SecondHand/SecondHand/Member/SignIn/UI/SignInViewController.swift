@@ -129,7 +129,6 @@ class SignInViewController: UIViewController {
         password: String
     ) {
         UserDefaults.standard.set(id, forKey: "Last SignIn ID")
-        print(UserDefaults.standard.object(forKey: "Last SignIn ID"))
         
         if let encodedPassword = password.data(using: String.Encoding.utf8) {
             let query: [CFString: Any] = [
