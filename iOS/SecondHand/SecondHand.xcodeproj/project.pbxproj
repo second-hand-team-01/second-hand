@@ -39,6 +39,7 @@
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
 		63608CCA2A40DA46006CD876 /* UIFont+Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC92A40DA45006CD876 /* UIFont+Typography.swift */; };
 		6362335F2A65094500664C07 /* DetailModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6362335E2A65094500664C07 /* DetailModelMapper.swift */; };
+		637F70412A7CDE6800622FB2 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637F70402A7CDE6800622FB2 /* EditViewController.swift */; };
 		639B2BAA2A6CF15900D0C1DF /* ProductImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B2BA92A6CF15900D0C1DF /* ProductImageViewer.swift */; };
 		63A3FCDE2A3740C800361FAD /* SellerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCDD2A3740C800361FAD /* SellerInfoView.swift */; };
 		63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE22A3968AC00361FAD /* DetailContentView.swift */; };
@@ -168,6 +169,7 @@
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
 		63608CC92A40DA45006CD876 /* UIFont+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Typography.swift"; sourceTree = "<group>"; };
 		6362335E2A65094500664C07 /* DetailModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailModelMapper.swift; sourceTree = "<group>"; };
+		637F70402A7CDE6800622FB2 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		639B2BA92A6CF15900D0C1DF /* ProductImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageViewer.swift; sourceTree = "<group>"; };
 		63A3FCC42A3709AA00361FAD /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		63A3FCDD2A3740C800361FAD /* SellerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfoView.swift; sourceTree = "<group>"; };
@@ -317,7 +319,6 @@
 				632807202A305CED0033F9D7 /* AppDelegate.swift */,
 				632807222A305CED0033F9D7 /* SceneDelegate.swift */,
 				633AC5B22A480C6C00A34501 /* LogManager.swift */,
-				633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */,
 				63E94CE32A4C949900B0376D /* SecretKeys.swift */,
 				63E6B8AF2A629E03009357B6 /* ImageCacheManager.swift */,
 				6313CADF2A6AD5BD00704845 /* PassedTimeGenerator.swift */,
@@ -329,6 +330,7 @@
 				FF61AD2C2A36F956006AE167 /* Tabbar */,
 				FF61AD312A36FC72006AE167 /* ItemList */,
 				63F3EEB92A35D90500D81961 /* Detail */,
+				637F70472A7CDE7800622FB2 /* Edit */,
 				631AD23B2A7387B70073C490 /* Member */,
 				6328072B2A305CED0033F9D7 /* LaunchScreen.storyboard */,
 				632807292A305CED0033F9D7 /* Assets.xcassets */,
@@ -375,6 +377,7 @@
 		63608CCD2A40DD83006CD876 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				63A3FCE82A3983C500361FAD /* DetailViewController.swift */,
 				63A3FCE22A3968AC00361FAD /* DetailContentView.swift */,
 				639B2BA92A6CF15900D0C1DF /* ProductImageViewer.swift */,
 				63A3FCDD2A3740C800361FAD /* SellerInfoView.swift */,
@@ -383,6 +386,14 @@
 				63608CC72A40D273006CD876 /* DetailToolbar.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		637F70472A7CDE7800622FB2 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				637F70402A7CDE6800622FB2 /* EditViewController.swift */,
+			);
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		63A3FCC32A3709AA00361FAD /* Pods */ = {
@@ -463,7 +474,6 @@
 		63F3EEB92A35D90500D81961 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				63A3FCE82A3983C500361FAD /* DetailViewController.swift */,
 				63E6B8A02A616964009357B6 /* DetailUseCase.swift */,
 				63E6B8A72A616AFD009357B6 /* DetailModel.swift */,
 				6362335E2A65094500664C07 /* DetailModelMapper.swift */,
@@ -480,6 +490,7 @@
 		63FF0BA22A713C6F00F1CC79 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */,
 				63FF0BA02A713C6800F1CC79 /* Notification+Name.swift */,
 			);
 			path = Extension;
@@ -865,6 +876,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				637F70412A7CDE6800622FB2 /* EditViewController.swift in Sources */,
 				63E94CE22A4C942900B0376D /* AccountInfoNetworkManager.swift in Sources */,
 				633AC5CA2A499FC700A34501 /* UIViewController+setTitle.swift in Sources */,
 				63E6B8A12A616964009357B6 /* DetailUseCase.swift in Sources */,

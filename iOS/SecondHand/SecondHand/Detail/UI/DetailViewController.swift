@@ -55,12 +55,12 @@ class DetailViewController: UIViewController {
         self.addSubViews()
         self.layoutConstraint()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.setTabBar(isHiding: false)
     }
-    
+
     private func setTabBar(isHiding: Bool) {
         self.tabBarController?.tabBar.isHidden = isHiding
     }
