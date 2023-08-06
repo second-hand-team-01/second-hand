@@ -44,12 +44,12 @@
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
 
 ## 📘기능 목록
-- 회원 기능
+- **회원 기능**
   - Github Oauth 회원가입, 로그인 기능
   - 일반 회원가입, 로그인 기능
   - 맴버가 자신의 지역을 등록, 수정, 삭제 기능
   - 맴버 프로필 이미지 등록, 수정
-- 아이템 기능
+- **아이템 기능**
   -  맴버가 설정한 동네를 기준으로 중고물품 필터링 가능
   -  카테고리를 기준으로 중고물품 필터링 기능
   -  관심목록
