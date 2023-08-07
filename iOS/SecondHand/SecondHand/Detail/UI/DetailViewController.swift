@@ -8,6 +8,13 @@
 import UIKit
 
 class DetailViewController: UIViewController {
+    private var menuBarButtonItem: UIBarButtonItem = {
+        let barbuttonItem = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis"),
+            primaryAction: nil
+        )
+        return barbuttonItem
+    }()
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentInsetAdjustmentBehavior = .never
@@ -15,7 +22,7 @@ class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
-    private var alertController: UIAlertController = {
+    private var signInFailAlert: UIAlertController = {
         let alertController = UIAlertController(
             title: Components.alertMessage,
             message: nil,
@@ -44,6 +51,8 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setTabBar(isHiding: true)
+        self.addMenuBarButtonItemToNavigationBar()
+        self.addSubViews()
         self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
@@ -52,13 +61,60 @@ class DetailViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.addSubViews()
         self.layoutConstraint()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setTabBar(isHiding: false)
+    }
+    
+    private func makeMenuAlert() -> UIAlertController {
+        let alertController = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+
+        let editAction = UIAlertAction(
+            title: "게시글 수정",
+            style: .default,
+            handler: { _ in
+                self.present(EditViewController(), animated: true)
+            }
+        )
+        alertController.addAction(editAction)
+        
+        let deleteAction = UIAlertAction(
+            title: "삭제",
+            style: .destructive,
+            handler: { _ in
+                return
+            }
+        )
+        alertController.addAction(deleteAction)
+        
+        let cancleAction = UIAlertAction(
+            title: "취소",
+            style: .cancel
+        )
+        alertController.addAction(cancleAction)
+        
+        return alertController
+    }
+    
+    private func addMenuBarButtonItemToNavigationBar() {
+        var button = UIButton(type: .custom)
+        button.frame.size = CGSize(width: 24, height: 24)
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.addAction(
+            UIAction(handler: { _ in
+                self.present(self.makeMenuAlert(), animated: true)
+            }),
+            for: .touchUpInside
+        )
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
 
     private func setDataSender() {
@@ -77,7 +133,7 @@ class DetailViewController: UIViewController {
         self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
             if isFail {
                 DispatchQueue.main.async {
-                    self.present(self.alertController, animated: true)
+                    self.present(self.signInFailAlert, animated: true)
                 }
             }
         }
