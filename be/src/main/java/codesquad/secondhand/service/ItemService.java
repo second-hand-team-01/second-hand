@@ -3,7 +3,6 @@ package codesquad.secondhand.service;
 import static codesquad.secondhand.exception.code.ItemErrorCode.*;
 import static codesquad.secondhand.exception.code.MemberErrorCode.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -160,14 +159,11 @@ public class ItemService {
 		itemToEdit.updateItem(member, category, location, itemDetailDto.getName(), itemDetailDto.getDescription(),
 			itemDetailDto.getPrice(),
 			itemDetailDto.getStatus());
-		// new ItemIdxDto(itemToEdit.getItemIdx());
 	}
 
 	public ItemDetailReturnDto showItemDetail(HttpServletRequest httpServletRequest, Long itemIdx) {
 		Item item = itemRepository.findById(itemIdx)
 			.orElseThrow();
-
-		LocalDateTime localDateTime = item.getLastModifiedAt();
 
 		Long memberIdx;
 		if (httpServletRequest.getAttribute("memberIdx") == null) {
@@ -176,10 +172,9 @@ public class ItemService {
 			memberIdx = (Long)httpServletRequest.getAttribute("memberIdx");
 		}
 
-		int view;
 		if (memberIdx.equals(-1L) || !memberIdx.equals(item.getSeller().getMemberIdx())) {
-			view = item.getView();
-			item.setView(++view);
+			incrementView(item);
+			itemRepository.save(item);
 		}
 
 		int interest = interestRepository.countByItem(item);
@@ -194,9 +189,14 @@ public class ItemService {
 		List<String> imageUrl = itemImageRepository.findAllByItemItemIdx(itemIdx).stream()
 			.map(ItemImage::getImageUrl).collect(Collectors.toList());
 
-		item.setLastModifiedAt(localDateTime);
 		return ItemDetailReturnDto.of(item, sellerDto, categoryWithoutImageDto, chatRooms, interest, interestChecked,
 			imageUrl);
+	}
+
+	public void incrementView(Item item) {
+		Integer currentView = item.getView();
+		item.updateView(currentView + 1);
+		itemRepository.save(item);
 	}
 
 	public void deleteItem(HttpServletRequest httpServletRequest, ItemIdxDto itemIdxDto) {

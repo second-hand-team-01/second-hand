@@ -1,10 +1,7 @@
 package codesquad.secondhand.dto.item;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.joda.time.DateTime;
 
 import codesquad.secondhand.dto.category.CategoryWithoutImageDto;
 import codesquad.secondhand.entity.Item;
@@ -34,7 +31,8 @@ public class ItemDetailReturnDto {
 		int chat, int interest, boolean interestChecked, List<String> itemImage) {
 		return new ItemDetailReturnDto(item.getItemIdx(), item.getName(), sellerDto, item.getStatus(),
 			categoryWithoutImageDto,
-			item.getDescription(), item.getPrice(), chat, interest, item.getView(), interestChecked, item.getLastModifiedAt(),
+			item.getDescription(), item.getPrice(), chat, interest, item.getView(), interestChecked,
+			item.getLastModifiedAt(),
 			itemImage);
 	}
 }
