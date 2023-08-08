@@ -80,7 +80,9 @@ class DetailViewController: UIViewController {
             title: "게시글 수정",
             style: .default,
             handler: { _ in
-                self.present(EditViewController(), animated: true)
+                let editViewController = UINavigationController(rootViewController: EditViewController())
+                editViewController.modalPresentationStyle = .fullScreen
+                self.present(editViewController, animated: true)
             }
         )
         alertController.addAction(editAction)
