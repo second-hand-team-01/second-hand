@@ -37,16 +37,16 @@ class DetailViewController: UIViewController {
     }()
     
     private var detailUseCase: DetailUseCase
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     init(itemIndex: Int) {
         self.detailUseCase = DetailUseCase(itemIndex: itemIndex)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -58,7 +58,7 @@ class DetailViewController: UIViewController {
         self.setFavoriteEventHandler()
         self.addObservers()
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.layoutConstraint()
@@ -68,7 +68,7 @@ class DetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         setTabBar(isHiding: false)
     }
-    
+
     private func makeMenuAlert() -> UIAlertController {
         let alertController = UIAlertController(
             title: nil,
@@ -84,7 +84,7 @@ class DetailViewController: UIViewController {
             }
         )
         alertController.addAction(editAction)
-        
+
         let deleteAction = UIAlertAction(
             title: "삭제",
             style: .destructive,
@@ -93,7 +93,7 @@ class DetailViewController: UIViewController {
             }
         )
         alertController.addAction(deleteAction)
-        
+
         let cancleAction = UIAlertAction(
             title: "취소",
             style: .cancel
@@ -123,13 +123,13 @@ class DetailViewController: UIViewController {
             self.detailContentView.update(by: data)
         }
     }
-    
+
     private func setFavoriteEventHandler() {
         self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
             let isAdding = !isItemInFavorites
             self.detailUseCase.configureFavorites(isAdding: isAdding)
         }
-        
+
         self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
             if isFail {
                 DispatchQueue.main.async {
@@ -138,16 +138,16 @@ class DetailViewController: UIViewController {
             }
         }
     }
-    
+
     private func addObservers() {
         self.addObserverItemAddedToFavorites()
         self.addObserverItemDeletedFromFavorites()
     }
-    
+
     @objc private func addItemToFavorites(_ : Notification) {
         self.toolbar.configureFavoriteButton(isAdding: true)
     }
-    
+
     private func addObserverItemAddedToFavorites() {
         NotificationCenter.default.addObserver(
             self,
@@ -178,12 +178,12 @@ extension DetailViewController {
             scrollView,
             toolbar
         ]
-        
+
         subViews.forEach {
             self.view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
+
         self.scrollView.addSubview(detailContentView)
         self.detailContentView.translatesAutoresizingMaskIntoConstraints = false
     }
