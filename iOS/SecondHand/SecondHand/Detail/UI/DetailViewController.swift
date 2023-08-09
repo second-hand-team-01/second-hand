@@ -81,7 +81,6 @@ class DetailViewController: UIViewController {
             style: .default,
             handler: { _ in
                 let editViewController = UINavigationController(rootViewController: EditViewController())
-                editViewController.modalPresentationStyle = .fullScreen
                 self.present(editViewController, animated: true)
             }
         )

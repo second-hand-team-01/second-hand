@@ -32,15 +32,17 @@ final class EditViewController: UIViewController {
     }
     
     private func addConstraintToImageUploadView() {
-        guard let navigationBarBottom = self.navigationController?.navigationBar.bottomAnchor else {
-            return
-        }
-        
         NSLayoutConstraint.activate([
-            self.imageUploadView.topAnchor.constraint(equalTo: navigationBarBottom),
-            self.imageUploadView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.imageUploadView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.imageUploadView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.bottomAnchor)
+            self.imageUploadView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.imageUploadView.leadingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 15
+            ),
+            self.imageUploadView.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -15
+            ),
+            self.imageUploadView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
