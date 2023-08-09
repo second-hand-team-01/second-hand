@@ -8,7 +8,12 @@
 import UIKit
 
 final class ImageUploadView: UIView {
-    private var scrollView = UIScrollView()
+    private var scrollView: UIScrollView = {
+        var scrolllView = UIScrollView()
+        scrolllView.showsVerticalScrollIndicator = false
+        scrolllView.showsHorizontalScrollIndicator = false
+        return scrolllView
+    }()
     private var imageStackView: UIStackView = {
         var stackView = UIStackView()
         stackView.spacing = 14
@@ -26,18 +31,21 @@ final class ImageUploadView: UIView {
     }
 
     private func addSubviews() {
+        self.addImages()
+
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.scrollView)
 
         self.imageStackView.translatesAutoresizingMaskIntoConstraints = false
         self.scrollView.addSubview(imageStackView)
-
-        self.addImages()
     }
     
     private func addImages() {
         for _ in 0..<9 {
             let imageView = UIImageView(image: UIImage(systemName: "carrot"))
+            imageView.tintColor = .orange
+            imageView.layer.borderWidth = 0.5
+            imageView.layer.cornerRadius = 15
             imageView.translatesAutoresizingMaskIntoConstraints = false
             self.imageStackView.addArrangedSubview(imageView)
             imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -46,8 +54,8 @@ final class ImageUploadView: UIView {
     }
     
     private func addConstraints() {
-        self.addConstraintToScrollView()
         self.addConstraintToImageStackView()
+        self.addConstraintToScrollView()
     }
     
     private func addConstraintToScrollView() {
@@ -61,7 +69,10 @@ final class ImageUploadView: UIView {
     
     private func addConstraintToImageStackView() {
         NSLayoutConstraint.activate([
-            self.imageStackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
+            self.imageStackView.topAnchor.constraint(
+                equalTo: self.scrollView.topAnchor,
+                constant: 15
+            ),
             self.imageStackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
             self.imageStackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
             self.imageStackView.bottomAnchor.constraint(
@@ -70,8 +81,7 @@ final class ImageUploadView: UIView {
             ),
             self.imageStackView.heightAnchor.constraint(
                 equalTo: self.scrollView.heightAnchor,
-                multiplier: 1,
-                constant: -15
+                constant: -30
             )
         ])
     }
