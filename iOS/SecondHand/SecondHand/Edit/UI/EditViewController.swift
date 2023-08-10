@@ -8,7 +8,7 @@
 import PhotosUI
 
 final class EditViewController: UIViewController, PHPickerViewControllerDelegate {
-    private var imageUploadView = AlbumImageViewer()
+    private var albumImageViewer = AlbumImageViewer()
     private var imageUploadButton: UIButton = {
         var button = UIButton()
         var configuration = UIButton.Configuration.plain()
@@ -43,8 +43,8 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     }
     
     private func addSubviews() {
-        self.imageUploadView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.imageUploadView)
+        self.albumImageViewer.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.albumImageViewer)
         
         self.imageUploadButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.imageUploadButton)
@@ -67,7 +67,6 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         
-        var selectedImages: [UIImage] = []
         results.forEach { (result: PHPickerResult) in
             let itemProvider = result.itemProvider
             guard itemProvider.canLoadObject(ofClass: UIImage.self) else {
@@ -85,8 +84,13 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
                     LogManager.generate(level: .presentation, LogMessage.failToCastingUIImage)
                     return
                 }
+
+                self.albumImageViewer.add(image: image)
                 
-                selectedImages.append(image)
+                DispatchQueue.main.async {
+                    let imageCount = self.albumImageViewer.getCountOfImages()
+                    self.imageUploadButton.titleLabel?.attributedText = NSAttributedString(string: "\(imageCount)/10")
+                }
             }
         }
     }
@@ -123,16 +127,16 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     
     private func addConstraintToImageUploadView() {
         NSLayoutConstraint.activate([
-            self.imageUploadView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.imageUploadView.leadingAnchor.constraint(
+            self.albumImageViewer.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.albumImageViewer.leadingAnchor.constraint(
                 equalTo: self.imageUploadButton.trailingAnchor,
                 constant: 15
             ),
-            self.imageUploadView.trailingAnchor.constraint(
+            self.albumImageViewer.trailingAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -15
             ),
-            self.imageUploadView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            self.albumImageViewer.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     

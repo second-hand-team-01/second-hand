@@ -19,12 +19,11 @@ final class AlbumImageViewer: UIView {
         stackView.spacing = 14
         return stackView
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubviews()
         self.addConstraints()
-        self.addImages()
     }
 
     required init?(coder: NSCoder) {
@@ -39,17 +38,23 @@ final class AlbumImageViewer: UIView {
         self.scrollView.addSubview(imageStackView)
     }
     
-    private func addImages() {
-        for _ in 0..<9 {
-            let imageView = UIImageView(image: UIImage(systemName: "carrot"))
-            imageView.tintColor = .orange
+    func add(image: UIImage) {
+        DispatchQueue.main.async {
+            let imageView = UIImageView(image: image)
             imageView.layer.borderWidth = 0.5
             imageView.layer.cornerRadius = 15
+            imageView.clipsToBounds = true
+
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            self.imageStackView.addArrangedSubview(imageView)
             imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+            
+            self.imageStackView.addArrangedSubview(imageView)
         }
+    }
+    
+    func getCountOfImages() -> Int {
+        return imageStackView.subviews.count
     }
     
     private func addConstraints() {
