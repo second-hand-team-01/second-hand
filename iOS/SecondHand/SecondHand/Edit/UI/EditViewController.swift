@@ -20,6 +20,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         title.font = .systemFont(ofSize: 13)
         configuration.attributedTitle = title
         
+        button.tintColor = .black
         button.configuration = configuration
         button.layer.cornerRadius = 15
         button.layer.borderWidth = 0.5
@@ -40,6 +41,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         self.pickerViewController.delegate = self
         self.addSubviews()
         self.addActionToImageUploadButton()
+        self.addBottomLine()
     }
     
     private func addSubviews() {
@@ -137,6 +139,22 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
                 constant: -15
             ),
             self.albumImageViewer.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func addBottomLine() {
+        let bottomLineView = UIView()
+        bottomLineView.backgroundColor = .lightGray
+        bottomLineView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bottomLineView)
+        NSLayoutConstraint.activate([
+            bottomLineView.topAnchor.constraint(
+                equalTo: self.imageUploadButton.bottomAnchor,
+                constant: 15
+            ),
+            bottomLineView.leadingAnchor.constraint(equalTo: self.imageUploadButton.leadingAnchor),
+            bottomLineView.trailingAnchor.constraint(equalTo: self.albumImageViewer.trailingAnchor),
+            bottomLineView.heightAnchor.constraint(equalToConstant: 1.0)
         ])
     }
     

@@ -41,6 +41,7 @@ final class AlbumImageViewer: UIView {
     func add(image: UIImage) {
         DispatchQueue.main.async {
             let imageView = UIImageView(image: image)
+            imageView.tintColor = .black
             imageView.layer.borderWidth = 0.5
             imageView.layer.cornerRadius = 15
             imageView.clipsToBounds = true
@@ -56,6 +57,8 @@ final class AlbumImageViewer: UIView {
     func getCountOfImages() -> Int {
         return imageStackView.subviews.count
     }
+    
+    // MARK: - AutoLayout 설정
     
     private func addConstraints() {
         self.addConstraintToImageStackView()
