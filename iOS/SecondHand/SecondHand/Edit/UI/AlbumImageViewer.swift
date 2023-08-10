@@ -5,9 +5,9 @@
 //  Created by Wood on 2023/08/08.
 //
 
-import UIKit
+import PhotosUI
 
-final class ImageUploadView: UIView {
+final class AlbumImageViewer: UIView {
     private var scrollView: UIScrollView = {
         var scrolllView = UIScrollView()
         scrolllView.showsVerticalScrollIndicator = false
@@ -24,6 +24,7 @@ final class ImageUploadView: UIView {
         super.init(frame: frame)
         self.addSubviews()
         self.addConstraints()
+        self.addImages()
     }
 
     required init?(coder: NSCoder) {
@@ -31,8 +32,6 @@ final class ImageUploadView: UIView {
     }
 
     private func addSubviews() {
-        self.addImages()
-
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.scrollView)
 
@@ -81,6 +80,7 @@ final class ImageUploadView: UIView {
             ),
             self.imageStackView.heightAnchor.constraint(
                 equalTo: self.scrollView.heightAnchor,
+                multiplier: 1,
                 constant: -30
             )
         ])
