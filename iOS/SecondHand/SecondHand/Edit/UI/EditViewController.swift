@@ -54,12 +54,44 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         let presentPickerViewController = UIAction { _ in
             self.present(self.pickerViewController, animated: true)
         }
-        
+
         self.imageUploadButton.addAction(presentPickerViewController, for: .touchUpInside)
+    }
+
+    private func addCancelButtonToPickerViewController() {
+        self.pickerViewController.navigationItem.leftBarButtonItem?.primaryAction = UIAction(handler: { _ in
+            self.pickerViewController.dismiss(animated: true)
+        })
     }
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        var selectedImages: [UIImage] = []
+        results.forEach { (result: PHPickerResult) in
+            let itemProvider = result.itemProvider
+            guard itemProvider.canLoadObject(ofClass: UIImage.self) else {
+                LogManager.generate(level: .presentation, LogMessage.failToLoadImage)
+                return
+            }
+            
+            itemProvider.loadObject(ofClass: UIImage.self) { (image: NSItemProviderReading?, error: Error?) in
+                if let errorMessage = error?.localizedDescription {
+                    LogManager.generate(level: .presentation, errorMessage)
+                    return
+                }
+                
+                guard let image = image as? UIImage else {
+                    LogManager.generate(level: .presentation, LogMessage.failToCastingUIImage)
+                    return
+                }
+                
+                selectedImages.append(image)
+            }
+        }
     }
+    
+    // MARK: - AutoLayout 설정
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -102,5 +134,10 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
             ),
             self.imageUploadView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    enum LogMessage {
+        static let failToLoadImage = "선택한 이미지를 로드 할 수 없습니다."
+        static let failToCastingUIImage = "선택한 이미지를 캐스팅 할 수 없습니다."
     }
 }
