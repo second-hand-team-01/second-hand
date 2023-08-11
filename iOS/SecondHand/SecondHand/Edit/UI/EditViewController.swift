@@ -27,6 +27,12 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         
         return button
     }()
+    private let bottomLine: UIView = {
+        var view = UIView()
+        view.backgroundColor = UIColor.lightGray
+        return view
+    }()
+    private let productInputView = ProductInputView()
     private let pickerViewController: PHPickerViewController = {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 10
@@ -41,15 +47,20 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         self.pickerViewController.delegate = self
         self.addSubviews()
         self.addActionToImageUploadButton()
-        self.addBottomLine()
     }
     
     private func addSubviews() {
-        self.albumImageViewer.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.albumImageViewer)
+        let subViews = [
+            self.imageUploadButton,
+            self.albumImageViewer,
+            self.bottomLine,
+            self.productInputView
+        ]
         
-        self.imageUploadButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.imageUploadButton)
+        subViews.forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview($0)
+        }
     }
     
     private func addActionToImageUploadButton() {
@@ -106,7 +117,9 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
 
     private func addConstraints() {
         self.addConstraintToImageUploadButton()
-        self.addConstraintToImageUploadView()
+        self.addConstraintToAlbumImageViewer()
+        self.addConstraintToBottomLine()
+        self.addConstraintToProductInputView()
     }
     
     private func addConstraintToImageUploadButton() {
@@ -127,9 +140,9 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         ])
     }
     
-    private func addConstraintToImageUploadView() {
+    private func addConstraintToAlbumImageViewer() {
         NSLayoutConstraint.activate([
-            self.albumImageViewer.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.albumImageViewer.topAnchor.constraint(equalTo: self.imageUploadButton.topAnchor),
             self.albumImageViewer.leadingAnchor.constraint(
                 equalTo: self.imageUploadButton.trailingAnchor,
                 constant: 15
@@ -138,26 +151,34 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
                 equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -15
             ),
-            self.albumImageViewer.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            self.albumImageViewer.bottomAnchor.constraint(equalTo: self.imageUploadButton.bottomAnchor)
         ])
     }
     
-    private func addBottomLine() {
-        let bottomLineView = UIView()
-        bottomLineView.backgroundColor = .lightGray
-        bottomLineView.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(bottomLineView)
+    private func addConstraintToBottomLine() {
         NSLayoutConstraint.activate([
-            bottomLineView.topAnchor.constraint(
+            self.bottomLine.topAnchor.constraint(
                 equalTo: self.imageUploadButton.bottomAnchor,
                 constant: 15
             ),
-            bottomLineView.leadingAnchor.constraint(equalTo: self.imageUploadButton.leadingAnchor),
-            bottomLineView.trailingAnchor.constraint(equalTo: self.albumImageViewer.trailingAnchor),
-            bottomLineView.heightAnchor.constraint(equalToConstant: 1.0)
+            self.bottomLine.leadingAnchor.constraint(equalTo: self.imageUploadButton.leadingAnchor),
+            self.bottomLine.trailingAnchor.constraint(equalTo: self.albumImageViewer.trailingAnchor),
+            self.bottomLine.heightAnchor.constraint(equalToConstant: 1.0)
         ])
     }
     
+    private func addConstraintToProductInputView() {
+        NSLayoutConstraint.activate([
+            self.productInputView.topAnchor.constraint(
+                equalTo: self.bottomLine.bottomAnchor,
+                constant: 15
+            ),
+            self.productInputView.leadingAnchor.constraint(equalTo: self.bottomLine.leadingAnchor),
+            self.productInputView.trailingAnchor.constraint(equalTo: self.bottomLine.trailingAnchor),
+            self.productInputView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+
     enum LogMessage {
         static let failToLoadImage = "선택한 이미지를 로드 할 수 없습니다."
         static let failToCastingUIImage = "선택한 이미지를 캐스팅 할 수 없습니다."

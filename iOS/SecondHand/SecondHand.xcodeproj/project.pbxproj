@@ -46,6 +46,7 @@
 		63A3FCE32A3968AC00361FAD /* DetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE22A3968AC00361FAD /* DetailContentView.swift */; };
 		63A3FCE92A3983C500361FAD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3FCE82A3983C500361FAD /* DetailViewController.swift */; };
 		63B66C292A81EED40005509B /* AlbumImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B66C282A81EED40005509B /* AlbumImageViewer.swift */; };
+		63BD19B12A864761001A9903 /* ProductInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BD19B02A864761001A9903 /* ProductInputView.swift */; };
 		63D98E8C2A45471C00DF467A /* BaseURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D98E8B2A45471C00DF467A /* BaseURL.swift */; };
 		63E6B89A2A61126A009357B6 /* PasswordValidationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E6B8992A61126A009357B6 /* PasswordValidationDelegate.swift */; };
 		63E6B8A12A616964009357B6 /* DetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E6B8A02A616964009357B6 /* DetailUseCase.swift */; };
@@ -178,6 +179,7 @@
 		63A3FCE22A3968AC00361FAD /* DetailContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailContentView.swift; sourceTree = "<group>"; };
 		63A3FCE82A3983C500361FAD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		63B66C282A81EED40005509B /* AlbumImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumImageViewer.swift; sourceTree = "<group>"; };
+		63BD19B02A864761001A9903 /* ProductInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInputView.swift; sourceTree = "<group>"; };
 		63D98E8B2A45471C00DF467A /* BaseURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURL.swift; sourceTree = "<group>"; };
 		63E6B8992A61126A009357B6 /* PasswordValidationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationDelegate.swift; sourceTree = "<group>"; };
 		63E6B8A02A616964009357B6 /* DetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailUseCase.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 			children = (
 				637F70402A7CDE6800622FB2 /* EditViewController.swift */,
 				63B66C282A81EED40005509B /* AlbumImageViewer.swift */,
+				63BD19B02A864761001A9903 /* ProductInputView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -892,6 +895,7 @@
 				633AC5CA2A499FC700A34501 /* UIViewController+setTitle.swift in Sources */,
 				63E6B8A12A616964009357B6 /* DetailUseCase.swift in Sources */,
 				633AC5BF2A495B4400A34501 /* AccountViewController.swift in Sources */,
+				63BD19B12A864761001A9903 /* ProductInputView.swift in Sources */,
 				FF3942C12A4C184000B9722F /* SignUpDTO.swift in Sources */,
 				63FF0BA12A713C6800F1CC79 /* Notification+Name.swift in Sources */,
 				6308CAA92A518E6300E38437 /* IdValidationDelegate.swift in Sources */,

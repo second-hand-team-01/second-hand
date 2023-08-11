@@ -76,20 +76,13 @@ final class AlbumImageViewer: UIView {
     
     private func addConstraintToImageStackView() {
         NSLayoutConstraint.activate([
-            self.imageStackView.topAnchor.constraint(
-                equalTo: self.scrollView.topAnchor,
-                constant: 15
-            ),
+            self.imageStackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
             self.imageStackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
             self.imageStackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
-            self.imageStackView.bottomAnchor.constraint(
-                equalTo: self.scrollView.bottomAnchor,
-                constant: -15
-            ),
+            self.imageStackView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
             self.imageStackView.heightAnchor.constraint(
                 equalTo: self.scrollView.heightAnchor,
-                multiplier: 1,
-                constant: -30
+                multiplier: 1
             )
         ])
     }
