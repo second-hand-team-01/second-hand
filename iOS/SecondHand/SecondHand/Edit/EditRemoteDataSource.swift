@@ -70,6 +70,7 @@ final class EditRemoteDataSource {
             }
             imagesData.append(imageData.base64EncodedData())
         }
+        DataCacheManager.shared.removeAllObjects()
         return imagesData
     }
     
