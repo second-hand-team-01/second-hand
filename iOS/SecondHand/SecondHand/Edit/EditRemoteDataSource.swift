@@ -17,10 +17,6 @@ final class EditRemoteDataSource {
     private var shared = URLSession.shared
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    private let uuid = UUID()
-    private var boundary: Data {
-        return "--\(self.uuid.uuid)\r\n".data(using: .utf8) ?? Data()
-    }
     var itemIndex: Int
     private let baseURLString: String
     
@@ -57,7 +53,7 @@ final class EditRemoteDataSource {
     private func createBody(with parameters: [String: Any]) -> Data {
         var body = Data()
         for (key, value) in parameters {
-            body.append(self.boundary)
+            body.append("--\(UUID().uuidString)\r\n".data(using: .utf8) ?? Data())
             let contentDisposition = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8) ?? Data()
             body.append(contentDisposition)
             body.append("\(value)\r\n".data(using: .utf8) ?? Data())
@@ -80,14 +76,13 @@ final class EditRemoteDataSource {
     private func add(imagesData: [Data], to body: Data) -> Data {
         var body = body
         imagesData.enumerated().forEach { (index: Int, imageData: Data) in
-            body.append(self.boundary)
-            print(self.boundary)
-            body.append("Content-Disposition: form-data; name=\"image\(index)\"; filename=\"image\(index)\"\r\n".data(using: .utf8) ?? Data())
+            body.append("--\(UUID().uuidString)\r\n".data(using: .utf8) ?? Data())
+            body.append("Content-Disposition: form-data; name=\"image\(index)\"; filename=\"image\(index).jpeg\"\r\n".data(using: .utf8) ?? Data())
             body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8) ?? Data())
             body.append(imageData)
             body.append("\r\n".data(using: .utf8) ?? Data())
         }
-        body.append(self.boundary)
+        body.append("--\(UUID().uuidString)--\r\n".data(using: .utf8) ?? Data())
         
         return body
     }
@@ -98,7 +93,6 @@ final class EditRemoteDataSource {
 
         if isEdit == false {
             let imagesData = self.createImageToString(from: editModel.imageKeys)
-            print(imagesData)
             body = self.add(imagesData: imagesData, to: body)
         }
 
@@ -136,7 +130,6 @@ final class EditRemoteDataSource {
             }
             
             let createResponse = try self.decoder.decode(CreateResponseDTO.self, from: data)
-            print(createResponse.data.itemIdx)
             return true
 
         } catch let error {

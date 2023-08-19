@@ -7,7 +7,6 @@ target 'SecondHand' do
 
   pod 'Toaster'
   pod 'SwiftLint'
-  pod 'Bagel', '~>  1.4.0'
 
   target 'SecondHandTests' do
     # Pods for testing
