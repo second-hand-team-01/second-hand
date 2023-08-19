@@ -56,7 +56,7 @@ struct PassedTimeGenerator {
 }
 
 // calculate 메소드 코드라인 줄이는데 사용할 예정.
-//enum TimeScale {
+// enum TimeScale {
 //    case second
 //    case minute
 //    case hour

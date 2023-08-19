@@ -26,23 +26,64 @@ final class ItemListViewController: UIViewController {
         alertController.addAction(alertAction)
         return alertController
     }()
+    private var createButton: UIButton = {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = .orange
+        configuration.cornerStyle = .capsule
+        configuration.image = Components.createButtonImage
+        
+        return UIButton(configuration: configuration)
+    }()
+    
+    private func addActionToCreateButton() {
+        let action = UIAction { _ in
+            let editViewController = EditViewController(editUseCase: EditUseCase())
+            self.present(UINavigationController(rootViewController: editViewController), animated: true)
+        }
+        
+        self.createButton.addAction(action, for: .touchUpInside)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(self.itemListTableView)
+        self.addActionToCreateButton()
+        self.view.addSubview(self.createButton)
         self.itemListTableView.delegate = self
         self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.layoutItemListUITableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     private func layoutItemListUITableView() {
         itemListTableView.frame = view.bounds
     }
     
+    private func addConstraintToCreateButton() {
+        self.createButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.createButton.topAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.createButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.createButton.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -24
+            ),
+            self.createButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -24
+            )
+        ])
+    }
+    
     override func viewWillLayoutSubviews() {
         self.configureDataSource()
         self.configureSnapshot(with: data)
         self.configureNavigationItem()
+        self.addConstraintToCreateButton()
     }
 }
 
@@ -126,5 +167,14 @@ extension ItemListViewController: UIScrollViewDelegate {
                 }
             })
         }
+    }
+    
+    enum Components {
+        static let createButtonImage = UIImage(systemName: "plus")?.withConfiguration(
+            UIImage.SymbolConfiguration(
+                pointSize: 20,
+                weight: .medium
+            )
+        )
     }
 }

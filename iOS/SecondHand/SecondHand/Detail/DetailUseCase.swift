@@ -8,7 +8,8 @@
 import Foundation
 
 final class DetailUseCase {
-    private var detail: DetailModel?
+    var detail: DetailModel?
+    var itemIndex: Int
     private var detailRepository: DetailRepository
     var dataSender: ((DetailModel) -> ())?
     var favoriteEventFailSender: ((Bool) -> ())?
@@ -18,6 +19,7 @@ final class DetailUseCase {
         itemIndex: Int
     ) {
         self.detail = detail
+        self.itemIndex = itemIndex
         self.detailRepository = DetailRepository(itemIndex: itemIndex)
     }
 

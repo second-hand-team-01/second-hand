@@ -24,7 +24,7 @@ class DetailViewController: UIViewController {
     private var toolbar = DetailToolbar(frame: .zero)
     private var signInFailAlert: UIAlertController = {
         let alertController = UIAlertController(
-            title: Components.alertMessage,
+            title: Components.AlertMessage.failToAddFavorite,
             message: nil,
             preferredStyle: .alert
         )
@@ -53,10 +53,14 @@ class DetailViewController: UIViewController {
         setTabBar(isHiding: true)
         self.addMenuBarButtonItemToNavigationBar()
         self.addSubViews()
-        self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
         self.addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.detailUseCase.loadData()
     }
 
     override func viewWillLayoutSubviews() {
@@ -80,8 +84,18 @@ class DetailViewController: UIViewController {
             title: "게시글 수정",
             style: .default,
             handler: { _ in
-                let editViewController = UINavigationController(rootViewController: EditViewController())
-                self.present(editViewController, animated: true)
+                if let detail = self.detailUseCase.detail {
+                    let detailToEdit = EditModelMapper.convertFrom(detail, itemIndex: self.detailUseCase.itemIndex)
+                    let editUseCase = EditUseCase(
+                        detailToEdit: detailToEdit,
+                        editRemoteDataSource: EditRemoteDataSource(itemIndex: detailToEdit.itemIndex)
+                    )
+                    let editViewController = EditViewController(editUseCase: editUseCase)
+                    self.present(
+                        UINavigationController(rootViewController: editViewController),
+                        animated: true
+                    )
+                }
             }
         )
         alertController.addAction(editAction)
@@ -232,6 +246,8 @@ extension DetailViewController {
     }
     
     enum Components {
-        static let alertMessage: String = "요청이 실패했습니다."
+        enum AlertMessage {
+            static let failToAddFavorite: String = "관심상품 요청이 실패했습니다."
+        }
     }
 }

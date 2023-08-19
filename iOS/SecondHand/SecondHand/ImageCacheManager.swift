@@ -28,3 +28,22 @@ struct ImageCacheManager {
         }.count
     }
 }
+
+struct DataCacheManager {
+    static let shared = NSCache<NSString, NSData>()
+    private init() {}
+    
+    static func find(by key: NSString) -> Data? {
+        let objectForKey = shared.object(forKey: key) as? Data
+        return objectForKey
+    }
+    
+    static func store(
+        key: NSString,
+        object: Data
+    ) {
+        let key = key
+        let object = NSData(data: object)
+        shared.setObject(object, forKey: key)
+    }
+}
