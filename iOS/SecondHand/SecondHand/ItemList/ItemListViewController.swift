@@ -16,14 +16,9 @@ final class ItemListViewController: UIViewController {
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
-            message: nil,
+            message: "로그인 화면으로 이동하시겠습니까?",
             preferredStyle: .alert
         )
-        let alertAction = UIAlertAction(
-            title: "확인",
-            style: .default
-        )
-        alertController.addAction(alertAction)
         return alertController
     }()
     private var createButton: UIButton = {
@@ -37,11 +32,47 @@ final class ItemListViewController: UIViewController {
     
     private func addActionToCreateButton() {
         let action = UIAction { _ in
-            let editViewController = EditViewController(editUseCase: EditUseCase())
-            self.present(UINavigationController(rootViewController: editViewController), animated: true)
+            if !SecretKeys.accessToken.isEmpty {
+                let editViewController = EditViewController(editUseCase: EditUseCase())
+                self.present(UINavigationController(rootViewController: editViewController), animated: true)
+            } else {
+                self.present(self.alertController, animated: true)
+            }
         }
         
         self.createButton.addAction(action, for: .touchUpInside)
+    }
+    
+    private func makeCancelAlertAction() -> UIAlertAction {
+        let cancelHandler: ((UIAlertAction) -> ())? = { _ in }
+        let cancelAlertAction = UIAlertAction(
+            title: "취소",
+            style: .destructive,
+            handler: cancelHandler
+        )
+        
+        return cancelAlertAction
+    }
+    
+    private func makeConfirmAlertAction() -> UIAlertAction {
+        let confirmHandler: ((UIAlertAction) -> ())? = { _ in
+            self.moveToTab(to: TabIndex.account)
+        }
+        let confirmAlertAction = UIAlertAction(
+            title: "확인",
+            style: .default,
+            handler: confirmHandler
+        )
+        
+        return confirmAlertAction
+    }
+    
+    private func addActionToAlertController() {
+        let cancelAlertAction = self.makeCancelAlertAction()
+        self.alertController.addAction(cancelAlertAction)
+        
+        let confirmAlertAction = self.makeConfirmAlertAction()
+        self.alertController.addAction(confirmAlertAction)
     }
     
     override func viewDidLoad() {
@@ -49,6 +80,7 @@ final class ItemListViewController: UIViewController {
         self.view.addSubview(self.itemListTableView)
         self.addActionToCreateButton()
         self.view.addSubview(self.createButton)
+        self.addActionToAlertController()
         self.itemListTableView.delegate = self
         self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.layoutItemListUITableView()

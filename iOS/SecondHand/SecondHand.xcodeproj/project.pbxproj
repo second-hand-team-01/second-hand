@@ -75,6 +75,7 @@
 		63F101102A8F6ACA0094B580 /* GeneralDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1010F2A8F6ACA0094B580 /* GeneralDTO.swift */; };
 		63F101182A907DC70094B580 /* URLResponse+validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F101172A907DC70094B580 /* URLResponse+validate.swift */; };
 		63F1011F2A90984A0094B580 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1011E2A90984A0094B580 /* CategoryButton.swift */; };
+		63F101352A90E43F0094B580 /* UIViewController+moveToTabBarUITabBarController+moveToTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F101342A90E43F0094B580 /* UIViewController+moveToTabBarUITabBarController+moveToTab.swift */; };
 		63FF0BA12A713C6800F1CC79 /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FF0BA02A713C6800F1CC79 /* Notification+Name.swift */; };
 		7E128F9628D9493610694937 /* Pods_SecondHand_SecondHandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FDD217DC55DCA3F4388260 /* Pods_SecondHand_SecondHandUITests.framework */; };
 		95090E599FA61BCD7BC40DFC /* Pods_SecondHand_SecondHandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 451958860C49C12C9BFA0461 /* Pods_SecondHand_SecondHandTests.framework */; };
@@ -222,6 +223,7 @@
 		63F1010F2A8F6ACA0094B580 /* GeneralDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralDTO.swift; sourceTree = "<group>"; };
 		63F101172A907DC70094B580 /* URLResponse+validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+validate.swift"; sourceTree = "<group>"; };
 		63F1011E2A90984A0094B580 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
+		63F101342A90E43F0094B580 /* UIViewController+moveToTabBarUITabBarController+moveToTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+moveToTabBarUITabBarController+moveToTab.swift"; sourceTree = "<group>"; };
 		63FF0BA02A713C6800F1CC79 /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 		6AD8568FDDCC422CE5C5678E /* Pods_SecondHand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SecondHand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7567B6A7854E9963539F795F /* Pods-SecondHandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SecondHandTests.release.xcconfig"; path = "Target Support Files/Pods-SecondHandTests/Pods-SecondHandTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -556,6 +558,7 @@
 				633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */,
 				63FF0BA02A713C6800F1CC79 /* Notification+Name.swift */,
 				63F101172A907DC70094B580 /* URLResponse+validate.swift */,
+				63F101342A90E43F0094B580 /* UIViewController+moveToTabBarUITabBarController+moveToTab.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -961,6 +964,7 @@
 				63B66C292A81EED40005509B /* AlbumImageViewer.swift in Sources */,
 				FF3942C82A4C186200B9722F /* SignUpResponseDTO.swift in Sources */,
 				63B91A0C2A8B7A910098483D /* CategoryCell.swift in Sources */,
+				63F101352A90E43F0094B580 /* UIViewController+moveToTabBarUITabBarController+moveToTab.swift in Sources */,
 				6320476C2A440B290035880A /* SignInButtonGroupView.swift in Sources */,
 				63F101062A8F25AA0094B580 /* EditItemDTO.swift in Sources */,
 				FFD62C242A3C1BBF0014D2D4 /* LocationLabel.swift in Sources */,
