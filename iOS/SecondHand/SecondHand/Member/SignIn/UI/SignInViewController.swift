@@ -211,6 +211,7 @@ class SignInViewController: UIViewController {
                 return
             }
             SecretKeys.accessToken = response.data.token
+            print(SecretKeys.accessToken)
             self.accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
                 self.accountInfoViewController,

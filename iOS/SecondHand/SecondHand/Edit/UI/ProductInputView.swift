@@ -13,11 +13,9 @@ final class ProductInputView: UIView, UITextViewDelegate {
         textField.placeholder = Content.Placeholder.title
         return textField
     }()
-    private var categoryStackView: UIStackView = {
-        var stackView = UIStackView()
-        stackView.spacing = 4
-        return stackView
-    }()
+    private var firstCategoryButton = CategoryButtonFactory.make()
+    private var secondCategoryButton = CategoryButtonFactory.make()
+    private var thirdCategoryButton = CategoryButtonFactory.make()
     private var categoryListButton: UIButton = {
         var button = UIButton()
         button.setImage(
@@ -45,15 +43,19 @@ final class ProductInputView: UIView, UITextViewDelegate {
     private var descriptionTextView: UITextView = {
         var textView = UITextView()
         textView.textColor = .lightGray
+        textView.font = .systemFont(ofSize: 17)
         textView.text = Content.Placeholder.description
         return textView
     }()
+    var categoryListButtonTapSender: ((Bool) -> ())?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setDelegateToDescriptionTextView()
-        self.addSubviews()
-        self.addConstraints()
+    func update(detailToEdit: EditModel) {
+        self.descriptionTextView.textColor = .black
+        DispatchQueue.main.async {
+            self.titleTextField.text = "\(detailToEdit.name)"
+            self.priceTextField.text = "₩ \(detailToEdit.price)"
+            self.descriptionTextView.text = "\(detailToEdit.description)"
+        }
     }
     
     // MARK: - Description TextView
@@ -74,6 +76,39 @@ final class ProductInputView: UIView, UITextViewDelegate {
         }
     }
     
+    private func addActionToCategoryListButton() {
+        let action = UIAction { _ in
+            self.categoryListButtonTapSender?(true)
+        }
+
+        self.categoryListButton.addAction(action, for: .touchUpInside)
+    }
+
+    func getEnteredProductInfo() -> [String] {
+        let title = self.titleTextField.text ?? ""
+        let price = self.priceTextField.text ?? "0"
+        let description = self.descriptionTextView.text ?? ""
+        return [title, price, description]
+    }
+
+    private func showRandomCateogrys() {
+        let title1 = Content.Category.title1
+        self.firstCategoryButton.setAttributedTitle(title1, for: .normal)
+        let title2 = Content.Category.title2
+        self.secondCategoryButton.setAttributedTitle(title2, for: .normal)
+        let title3 = Content.Category.title3
+        self.thirdCategoryButton.setAttributedTitle(title3, for: .normal)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setDelegateToDescriptionTextView()
+        self.addActionToCategoryListButton()
+        self.showRandomCateogrys()
+        self.addSubviews()
+        self.addConstraints()
+    }
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -81,7 +116,9 @@ final class ProductInputView: UIView, UITextViewDelegate {
     private func addSubviews() {
         let subViews = [
             self.titleTextField,
-            self.categoryStackView,
+            self.firstCategoryButton,
+            self.secondCategoryButton,
+            self.thirdCategoryButton,
             self.categoryListButton,
             self.firstBottomLine,
             self.priceTextField,
@@ -98,7 +135,9 @@ final class ProductInputView: UIView, UITextViewDelegate {
     // MARK: - Auto Layout 설정
     private func addConstraints() {
         self.addConstraintToTitleTextField()
-        self.addConstraintToCategoryStackView()
+        self.addConstraintToFirstCategoryButton()
+        self.addConstraintToSecondCategoryButton()
+        self.addConstraintToThirdCategoryButton()
         self.addConstraintToCategoryListButton()
         self.addConstraintToFirstBottomLine()
         self.addConstraintToPriceTextField()
@@ -114,35 +153,50 @@ final class ProductInputView: UIView, UITextViewDelegate {
         ])
     }
     
-    private func addConstraintToCategoryStackView() {
+    private func addConstraintToFirstCategoryButton() {
         NSLayoutConstraint.activate([
-            self.categoryStackView.topAnchor.constraint(
+            self.firstCategoryButton.topAnchor.constraint(
                 equalTo: self.titleTextField.bottomAnchor,
                 constant: 8
             ),
-            self.categoryStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.categoryStackView.heightAnchor.constraint(equalToConstant: 32)
+            self.firstCategoryButton.leadingAnchor.constraint(equalTo: self.titleTextField.leadingAnchor)
+        ])
+    }
+    
+    private func addConstraintToSecondCategoryButton() {
+        NSLayoutConstraint.activate([
+            self.secondCategoryButton.topAnchor.constraint(equalTo: self.firstCategoryButton.topAnchor),
+            self.secondCategoryButton.leadingAnchor.constraint(
+                equalTo: self.firstCategoryButton.trailingAnchor,
+                constant: 4
+            )
+        ])
+    }
+    
+    private func addConstraintToThirdCategoryButton() {
+        NSLayoutConstraint.activate([
+            self.thirdCategoryButton.topAnchor.constraint(equalTo: self.firstCategoryButton.topAnchor),
+            self.thirdCategoryButton.leadingAnchor.constraint(
+                equalTo: self.secondCategoryButton.trailingAnchor,
+                constant: 4
+            )
         ])
     }
     
     private func addConstraintToCategoryListButton() {
         NSLayoutConstraint.activate([
-            self.categoryListButton.topAnchor.constraint(equalTo: self.categoryStackView.topAnchor),
-            self.categoryListButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.categoryStackView.trailingAnchor),
+            self.categoryListButton.topAnchor.constraint(equalTo: self.firstCategoryButton.topAnchor),
+            self.categoryListButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.thirdCategoryButton.trailingAnchor),
             self.categoryListButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.categoryListButton.bottomAnchor.constraint(equalTo: self.categoryStackView.bottomAnchor),
-            self.categoryListButton.widthAnchor.constraint(equalToConstant: 11),
-            self.categoryListButton.heightAnchor.constraint(
-                equalTo: self.categoryListButton.widthAnchor,
-                multiplier: 2.0
-            )
+            self.categoryListButton.bottomAnchor.constraint(equalTo: self.firstCategoryButton.bottomAnchor),
+            self.categoryListButton.widthAnchor.constraint(equalToConstant: 11)
         ])
     }
     
     private func addConstraintToFirstBottomLine() {
         NSLayoutConstraint.activate([
             self.firstBottomLine.topAnchor.constraint(
-                equalTo: self.categoryStackView.bottomAnchor,
+                equalTo: self.firstCategoryButton.bottomAnchor,
                 constant: 15
             ),
             self.firstBottomLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -194,6 +248,20 @@ final class ProductInputView: UIView, UITextViewDelegate {
         }
         struct ImageName {
             static let categoryButton = "chevron.right"
+        }
+        struct Category {
+            static let title1 = NSAttributedString(
+                string: "여성패션",
+                attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+            )
+            static let title2 = NSAttributedString(
+                string: "여성잡화",
+                attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+            )
+            static let title3 = NSAttributedString(
+                string: "기타중고물품",
+                attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+            )
         }
     }
 }

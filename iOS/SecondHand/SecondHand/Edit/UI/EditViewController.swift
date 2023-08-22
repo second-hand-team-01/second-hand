@@ -15,16 +15,16 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         configuration.image = UIImage(systemName: "camera")
         configuration.imagePlacement = .top
         configuration.buttonSize = .medium
-        
+
         var title = AttributedString("0/10")
         title.font = .systemFont(ofSize: 13)
         configuration.attributedTitle = title
-        
+
         button.tintColor = .black
         button.configuration = configuration
         button.layer.cornerRadius = 15
         button.layer.borderWidth = 0.5
-        
+
         return button
     }()
     private let bottomLine: UIView = {
@@ -40,28 +40,27 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         return PHPickerViewController(configuration: configuration)
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .white
-        self.setTitle("내 물건 팔기")
-        self.pickerViewController.delegate = self
-        self.addSubviews()
-        self.addActionToImageUploadButton()
+    // MARK: - UseCase
+    
+    private var editUseCase: EditUseCase
+    
+    required init?(coder: NSCoder) {
+        fatalError("Fail To initialize EditViewController")
     }
     
-    private func addSubviews() {
-        let subViews = [
-            self.imageUploadButton,
-            self.albumImageViewer,
-            self.bottomLine,
-            self.productInputView
-        ]
-        
-        subViews.forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview($0)
+    init(editUseCase: EditUseCase) {
+        self.editUseCase = editUseCase
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    private func loadData() {
+        if let detailToEdit = self.editUseCase.detailToEdit {
+            self.albumImageViewer.loadImagesFrom(keys: detailToEdit.imageKeys)
+            self.productInputView.update(detailToEdit: detailToEdit)
         }
     }
+    
+    // MARK: PHPickerViewController
     
     private func addActionToImageUploadButton() {
         let presentPickerViewController = UIAction { _ in
@@ -100,12 +99,191 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
 
                 self.albumImageViewer.add(image: image)
                 
+                let imageCount = self.albumImageViewer.getCountOfImages()
                 DispatchQueue.main.async {
-                    let imageCount = self.albumImageViewer.getCountOfImages()
                     self.imageUploadButton.titleLabel?.attributedText = NSAttributedString(string: "\(imageCount)/10")
                 }
             }
         }
+    }
+    
+    // MARK: - BarButtonItem
+    
+    private var cancelButton = UIBarButtonItem(systemItem: .cancel)
+    private var doneButton = UIBarButtonItem(systemItem: .done)
+    
+    private func configureCancelButton() {
+        let action = UIAction { _ in
+            self.dismiss(animated: true)
+        }
+
+        self.cancelButton.primaryAction = action
+        self.navigationItem.leftBarButtonItem = self.cancelButton
+    }
+    
+    private func getImageCacheKeys() -> [NSString] {
+        let images = self.albumImageViewer.images
+        var imageCacheKeys: [NSString] = []
+        images.enumerated().forEach { (index: Int, image: UIImage) in
+            if let object = image.jpegData(compressionQuality: 0.5) {
+                if let itemIndex = self.editUseCase.detailToEdit?.itemIndex {
+                    let key = NSString(string: "\(self.editUseCase.itemIndex)/\(index)")
+                    DataCacheManager.store(key: key, object: object)
+                    imageCacheKeys.append(key)
+                } else {
+                    let key = NSString(string: "new/\(index)")
+                    DataCacheManager.store(key: key, object: object)
+                    imageCacheKeys.append(key)
+                }
+            }
+        }
+        
+        return imageCacheKeys
+    }
+    
+    private func makeDetailFromEnteredInfo() -> DetailViewModel {
+        let imageKeys = getImageCacheKeys()
+        let productInfo = self.productInputView.getEnteredProductInfo()
+        let title = productInfo[0]
+        let price = Int(productInfo[1]) ?? 0
+        let description = productInfo[2]
+        let categoryIndex = self.categoryIndex ?? 0
+        
+        return DetailViewModel(
+            imageKeys: imageKeys,
+            title: title,
+            price: price,
+            description: description,
+            categoryIndex: categoryIndex
+        )
+    }
+    
+    // MARK: - Create Product
+    private var failToCreateAlert: UIAlertController = {
+        let alertController = UIAlertController(
+            title: Components.AlertMessage.failToCreate,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
+    
+    private func setCreateResultSender() {
+        self.editUseCase.createResultSender = { (result: Bool) in
+            DispatchQueue.main.async {
+                if result {
+                    self.dismiss(animated: true)
+                } else {
+                    self.present(self.failToCreateAlert, animated: true)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Edit Product
+    
+    private func didTapDoneButton() {
+        let enteredDetail = self.makeDetailFromEnteredInfo()
+        if let detailToEdit = self.editUseCase.detailToEdit {
+            self.editUseCase.editDetail(detailViewModel: enteredDetail)
+        } else {
+            self.editUseCase.createProduct(detailViewModel: enteredDetail)
+        }
+    }
+    
+    private func configureDoneButton() {
+        let action = UIAction { _ in
+            self.didTapDoneButton()
+        }
+        
+        self.doneButton.primaryAction = action
+        self.navigationItem.rightBarButtonItem = self.doneButton
+    }
+    
+    private var failToEditAlert: UIAlertController = {
+        let alertController = UIAlertController(
+            title: Components.AlertMessage.failToEditDetail,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
+    
+    private func setEditResultSender() {
+        self.editUseCase.editResultSender = { (result: Bool) in
+            DispatchQueue.main.async {
+                if result {
+                    self.dismiss(animated: true)
+                } else {
+                    self.present(self.failToEditAlert, animated: true)
+                }
+            }
+        }
+    }
+    
+    private func configureBarButtonItems() {
+        self.configureCancelButton()
+        self.configureDoneButton()
+    }
+    
+    private func showCategoryDidCateogryListButtonTapped() {
+        self.productInputView.categoryListButtonTapSender = { _ in
+            self.navigationController?.pushViewController(CategoryTableViewController(), animated: true)
+        }
+    }
+    
+    // MARK: - Category TableViewController
+    
+    private var categoryTableViewController = CategoryTableViewController()
+    private var categoryIndex: Int?
+    
+    private func getIndexWhenCategorySelected() {
+        self.categoryTableViewController.categoryIndexSender = { (index: Int) in
+            self.categoryIndex = index
+        }
+    }
+    
+    private func addSubviews() {
+        let subViews = [
+            self.imageUploadButton,
+            self.albumImageViewer,
+            self.bottomLine,
+            self.productInputView
+        ]
+        
+        subViews.forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview($0)
+        }
+    }
+    
+    private func setUp() {
+        self.view.backgroundColor = .white
+        self.setTitle("내 물건 팔기")
+        self.pickerViewController.delegate = self
+        self.addActionToImageUploadButton()
+        self.configureBarButtonItems()
+        self.showCategoryDidCateogryListButtonTapped()
+        self.getIndexWhenCategorySelected()
+        self.setCreateResultSender()
+        self.setEditResultSender()
+        self.addSubviews()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setUp()
+        self.loadData()
     }
     
     // MARK: - AutoLayout 설정
@@ -175,12 +353,19 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
             ),
             self.productInputView.leadingAnchor.constraint(equalTo: self.bottomLine.leadingAnchor),
             self.productInputView.trailingAnchor.constraint(equalTo: self.bottomLine.trailingAnchor),
-            self.productInputView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            self.productInputView.heightAnchor.constraint(equalToConstant: 700)
         ])
     }
 
     enum LogMessage {
         static let failToLoadImage = "선택한 이미지를 로드 할 수 없습니다."
         static let failToCastingUIImage = "선택한 이미지를 캐스팅 할 수 없습니다."
+    }
+    
+    enum Components {
+        enum AlertMessage {
+            static let failToEditDetail: String  = "상품 수정에 실패했습니다."
+            static let failToCreate: String = "상품 생성에 실패했습니다."
+        }
     }
 }

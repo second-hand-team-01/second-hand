@@ -33,7 +33,7 @@ class ProductImageViewer: UIView {
             for: .valueChanged
         )
     }
-    
+
     private func loadImagesFrom(keys: [NSString?]) -> [UIImage] {
         var images: [UIImage] = []
         keys.forEach { (imageKey: NSString?) in
@@ -63,13 +63,13 @@ class ProductImageViewer: UIView {
         self.pageControl.currentPage = 0
         self.imageView.image = self.productImages[0]
     }
-    
+
     private func addSubviews() {
         let subViews = [
             self.imageView,
             self.pageControl
         ]
-        
+
         subViews.forEach { (subView: UIView) in
             subView.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(subView)

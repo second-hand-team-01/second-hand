@@ -16,33 +16,106 @@ final class ItemListViewController: UIViewController {
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
-            message: nil,
+            message: "로그인 화면으로 이동하시겠습니까?",
             preferredStyle: .alert
         )
-        let alertAction = UIAlertAction(
-            title: "확인",
-            style: .default
-        )
-        alertController.addAction(alertAction)
         return alertController
     }()
+    private var createButton: UIButton = {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = .orange
+        configuration.cornerStyle = .capsule
+        configuration.image = Components.createButtonImage
+        
+        return UIButton(configuration: configuration)
+    }()
+    
+    private func addActionToCreateButton() {
+        let action = UIAction { _ in
+            if !SecretKeys.accessToken.isEmpty {
+                let editViewController = EditViewController(editUseCase: EditUseCase())
+                self.present(UINavigationController(rootViewController: editViewController), animated: true)
+            } else {
+                self.present(self.alertController, animated: true)
+            }
+        }
+        
+        self.createButton.addAction(action, for: .touchUpInside)
+    }
+    
+    private func makeCancelAlertAction() -> UIAlertAction {
+        let cancelHandler: ((UIAlertAction) -> ())? = { _ in }
+        let cancelAlertAction = UIAlertAction(
+            title: "취소",
+            style: .destructive,
+            handler: cancelHandler
+        )
+        
+        return cancelAlertAction
+    }
+    
+    private func makeConfirmAlertAction() -> UIAlertAction {
+        let confirmHandler: ((UIAlertAction) -> ())? = { _ in
+            self.moveToTab(to: TabIndex.account)
+        }
+        let confirmAlertAction = UIAlertAction(
+            title: "확인",
+            style: .default,
+            handler: confirmHandler
+        )
+        
+        return confirmAlertAction
+    }
+    
+    private func addActionToAlertController() {
+        let cancelAlertAction = self.makeCancelAlertAction()
+        self.alertController.addAction(cancelAlertAction)
+        
+        let confirmAlertAction = self.makeConfirmAlertAction()
+        self.alertController.addAction(confirmAlertAction)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(self.itemListTableView)
+        self.addActionToCreateButton()
+        self.view.addSubview(self.createButton)
+        self.addActionToAlertController()
         self.itemListTableView.delegate = self
         self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.layoutItemListUITableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     private func layoutItemListUITableView() {
         itemListTableView.frame = view.bounds
     }
     
+    private func addConstraintToCreateButton() {
+        self.createButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.createButton.topAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.createButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.createButton.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -24
+            ),
+            self.createButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -24
+            )
+        ])
+    }
+    
     override func viewWillLayoutSubviews() {
         self.configureDataSource()
         self.configureSnapshot(with: data)
         self.configureNavigationItem()
+        self.addConstraintToCreateButton()
     }
 }
 
@@ -126,5 +199,14 @@ extension ItemListViewController: UIScrollViewDelegate {
                 }
             })
         }
+    }
+    
+    enum Components {
+        static let createButtonImage = UIImage(systemName: "plus")?.withConfiguration(
+            UIImage.SymbolConfiguration(
+                pointSize: 20,
+                weight: .medium
+            )
+        )
     }
 }

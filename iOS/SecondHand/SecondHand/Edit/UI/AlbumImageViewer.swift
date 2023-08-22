@@ -19,6 +19,7 @@ final class AlbumImageViewer: UIView {
         stackView.spacing = 14
         return stackView
     }()
+    var images: [UIImage] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,13 +40,14 @@ final class AlbumImageViewer: UIView {
     }
     
     func add(image: UIImage) {
+        self.images.append(image)
+        
         DispatchQueue.main.async {
             let imageView = UIImageView(image: image)
             imageView.tintColor = .black
             imageView.layer.borderWidth = 0.5
             imageView.layer.cornerRadius = 15
             imageView.clipsToBounds = true
-
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
@@ -54,8 +56,31 @@ final class AlbumImageViewer: UIView {
         }
     }
     
+    func loadImagesFrom(keys: [NSString?]) {
+        keys.forEach { (imageKey: NSString?) in
+            guard let key = imageKey else {
+                print("키값이 캐시에 존재하지 않습니다.")
+                return
+            }
+            
+            guard let productImageURLString = ImageCacheManager.shared.object(forKey: key)?.path else {
+                print("이미지에 해당하는 키를 찾지 못했습니다.")
+                return
+            }
+
+            guard let image = UIImage(contentsOfFile: productImageURLString) else {
+                print("키에 해당하는 이미지를 불러오지 못했습니다.")
+                return
+            }
+        
+            DispatchQueue.main.async {
+                self.add(image: image)
+            }
+        }
+    }
+    
     func getCountOfImages() -> Int {
-        return imageStackView.subviews.count
+        return self.images.count
     }
     
     // MARK: - AutoLayout 설정
