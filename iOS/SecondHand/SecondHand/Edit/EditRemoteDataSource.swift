@@ -22,7 +22,7 @@ final class EditRemoteDataSource {
     
     init(itemIndex: Int) {
         self.itemIndex = itemIndex
-        self.baseURLString = ServerURL.base + String(itemIndex)
+        self.baseURLString = ServerURL.base + "items"
     }
     
     private func createRequest(url: URL, isEdit: Bool) -> URLRequest {
@@ -37,7 +37,7 @@ final class EditRemoteDataSource {
 
         return request
     }
-    
+
     private func createParameters(from editModel: EditModel) -> [String: Any] {
         var parameters: [String: Any] = [:]
         parameters["name"]          = editModel.name
@@ -114,7 +114,7 @@ final class EditRemoteDataSource {
     }
     
     func createProduct(editModel: EditModel) async -> Bool {
-        guard let url = URL(string: ServerURL.base) else {
+        guard let url = URL(string: self.baseURLString) else {
             LogManager.generate(level: .network, NetworkError.badURL.message)
             return false
         }
@@ -145,15 +145,15 @@ final class EditRemoteDataSource {
     // MARK: - Edit
     
     func editProduct(editModel: EditModel) async -> Bool {
-        guard let url = URL(string: self.baseURLString) else {
+        guard let url = URL(string: self.baseURLString + "/\(self.itemIndex)") else {
             LogManager.generate(level: .network, NetworkError.badURL.message)
             return false
         }
-        
+
         var request = self.createRequest(url: url, isEdit: false)
         let body = self.createBody(with: editModel, isEdit: true)
         request.httpBody = body
-        
+
         do {
             let (data, urlResponse) = try await shared.data(for: request)
             
