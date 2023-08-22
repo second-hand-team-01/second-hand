@@ -125,10 +125,16 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         let images = self.albumImageViewer.images
         var imageCacheKeys: [NSString] = []
         images.enumerated().forEach { (index: Int, image: UIImage) in
-            if let object = image.jpegData(compressionQuality: 1.0) {
-                let key = NSString(string: "\(self.editUseCase.itemIndex)/index")
-                DataCacheManager.store(key: key, object: object)
-                imageCacheKeys.append(key)
+            if let object = image.jpegData(compressionQuality: 0.5) {
+                if let itemIndex = self.editUseCase.detailToEdit?.itemIndex {
+                    let key = NSString(string: "\(self.editUseCase.itemIndex)/\(index)")
+                    DataCacheManager.store(key: key, object: object)
+                    imageCacheKeys.append(key)
+                } else {
+                    let key = NSString(string: "new/\(index)")
+                    DataCacheManager.store(key: key, object: object)
+                    imageCacheKeys.append(key)
+                }
             }
         }
         
@@ -168,7 +174,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     }()
     
     private func setCreateResultSender() {
-        self.editUseCase.editResultSender = { (result: Bool) in
+        self.editUseCase.createResultSender = { (result: Bool) in
             DispatchQueue.main.async {
                 if result {
                     self.dismiss(animated: true)
@@ -182,7 +188,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     // MARK: - Edit Product
     
     private func didTapDoneButton() {
-        let enteredDetail = makeDetailFromEnteredInfo()
+        let enteredDetail = self.makeDetailFromEnteredInfo()
         if let detailToEdit = self.editUseCase.detailToEdit {
             self.editUseCase.editDetail(detailViewModel: enteredDetail)
         } else {
@@ -269,6 +275,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         self.configureBarButtonItems()
         self.showCategoryDidCateogryListButtonTapped()
         self.getIndexWhenCategorySelected()
+        self.setCreateResultSender()
         self.setEditResultSender()
         self.addSubviews()
     }

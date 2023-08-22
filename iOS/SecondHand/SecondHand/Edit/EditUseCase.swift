@@ -56,8 +56,9 @@ class EditUseCase {
         Task {
             if await self.editRemoteDataSource?.createProduct(editModel: detailToCreate) != nil {
                 self.createResultSender?(true)
+            } else {
+                self.createResultSender?(false)
             }
-            self.createResultSender?(false)
         }
     }
     

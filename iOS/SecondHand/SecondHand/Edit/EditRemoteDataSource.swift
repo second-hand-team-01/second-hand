@@ -19,19 +19,19 @@ final class EditRemoteDataSource {
     private let decoder = JSONDecoder()
     var itemIndex: Int
     private let baseURLString: String
+    private let boundary = "Boundary-\(UUID().uuidString)"
     
     init(itemIndex: Int) {
         self.itemIndex = itemIndex
         self.baseURLString = ServerURL.base + "items"
     }
-    
+
     private func createRequest(url: URL, isEdit: Bool) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("Bearer \(SecretKeys.accessToken)", forHTTPHeaderField: "Authorization")
         request.httpMethod = isEdit ? "PUT" : "POST"
-        let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue(
-            "multipart/form-data; boundary=\(boundary)",
+            "multipart/form-data; boundary=\(self.boundary)",
             forHTTPHeaderField: "Content-Type"
         )
 
@@ -45,7 +45,6 @@ final class EditRemoteDataSource {
         parameters["description"]   = editModel.description
         parameters["locationIdx"]   = editModel.locationIndex
         parameters["categoryIdx"]   = editModel.categoryIndex
-        parameters["status"]        = editModel.status
         
         return parameters
     }
@@ -53,7 +52,7 @@ final class EditRemoteDataSource {
     private func createBody(with parameters: [String: Any]) -> Data {
         var body = Data()
         for (key, value) in parameters {
-            body.append("--\(UUID().uuidString)\r\n".data(using: .utf8) ?? Data())
+            body.append("--\(self.boundary)\r\n".data(using: .utf8) ?? Data())
             let contentDisposition = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8) ?? Data()
             body.append(contentDisposition)
             body.append("\(value)\r\n".data(using: .utf8) ?? Data())
@@ -68,7 +67,7 @@ final class EditRemoteDataSource {
             guard let imageData = DataCacheManager.find(by: key) else {
                 return
             }
-            imagesData.append(imageData.base64EncodedData())
+            imagesData.append(imageData)
         }
         DataCacheManager.shared.removeAllObjects()
         return imagesData
@@ -77,17 +76,19 @@ final class EditRemoteDataSource {
     private func add(imagesData: [Data], to body: Data) -> Data {
         var body = body
         imagesData.enumerated().forEach { (index: Int, imageData: Data) in
-            body.append("--\(UUID().uuidString)\r\n".data(using: .utf8) ?? Data())
-            body.append("Content-Disposition: form-data; name=\"image\(index)\"; filename=\"image\(index).jpeg\"\r\n".data(using: .utf8) ?? Data())
-            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8) ?? Data())
-            body.append(imageData)
+            body.append("--\(self.boundary)\r\n".data(using: .utf8) ?? Data())
+            let contentDisposition = "Content-Disposition: form-data; name=\"image\"; filename=\"image\(index).jpeg\"\r\n"
+            body.append(contentDisposition.data(using: .utf8) ?? Data())
+            let contentType = "Content-Type: image/jpeg\r\n\r\n"
+            body.append(contentType.data(using: .utf8) ?? Data())
+            body.append(imageData.base64EncodedData())
             body.append("\r\n".data(using: .utf8) ?? Data())
         }
-        body.append("--\(UUID().uuidString)--\r\n".data(using: .utf8) ?? Data())
+        body.append("--\(self.boundary)--".data(using: .utf8) ?? Data())
         
         return body
     }
-    
+
     private func createBody(with editModel: EditModel, isEdit: Bool) -> Data {
         let parameters = self.createParameters(from: editModel)
         var body = self.createBody(with: parameters)
