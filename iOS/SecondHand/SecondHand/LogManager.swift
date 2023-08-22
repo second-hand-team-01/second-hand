@@ -12,6 +12,7 @@ enum Level: String {
     case repository = "Repository"
     case info = "Info"
     case local = "Local"
+    case presentation = "Presentation"
 }
 
 struct LogManager {

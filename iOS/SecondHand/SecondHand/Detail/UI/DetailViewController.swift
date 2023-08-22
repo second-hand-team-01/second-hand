@@ -8,6 +8,13 @@
 import UIKit
 
 class DetailViewController: UIViewController {
+    private var menuBarButtonItem: UIBarButtonItem = {
+        let barbuttonItem = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis"),
+            primaryAction: nil
+        )
+        return barbuttonItem
+    }()
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentInsetAdjustmentBehavior = .never
@@ -15,7 +22,7 @@ class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView(frame: .zero)
     private var toolbar = DetailToolbar(frame: .zero)
-    private var alertController: UIAlertController = {
+    private var signInFailAlert: UIAlertController = {
         let alertController = UIAlertController(
             title: Components.alertMessage,
             message: nil,
@@ -30,72 +37,118 @@ class DetailViewController: UIViewController {
     }()
     
     private var detailUseCase: DetailUseCase
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     init(itemIndex: Int) {
         self.detailUseCase = DetailUseCase(itemIndex: itemIndex)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.setTabBar(isHiding: true)
+        setTabBar(isHiding: true)
+        self.addMenuBarButtonItemToNavigationBar()
+        self.addSubViews()
         self.detailUseCase.loadData()
         self.setDataSender()
         self.setFavoriteEventHandler()
         self.addObservers()
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.addSubViews()
         self.layoutConstraint()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.setTabBar(isHiding: false)
+        setTabBar(isHiding: false)
+    }
+
+    private func makeMenuAlert() -> UIAlertController {
+        let alertController = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+
+        let editAction = UIAlertAction(
+            title: "게시글 수정",
+            style: .default,
+            handler: { _ in
+                let editViewController = UINavigationController(rootViewController: EditViewController())
+                self.present(editViewController, animated: true)
+            }
+        )
+        alertController.addAction(editAction)
+
+        let deleteAction = UIAlertAction(
+            title: "삭제",
+            style: .destructive,
+            handler: { _ in
+                return
+            }
+        )
+        alertController.addAction(deleteAction)
+
+        let cancleAction = UIAlertAction(
+            title: "취소",
+            style: .cancel
+        )
+        alertController.addAction(cancleAction)
+        
+        return alertController
     }
     
-    private func setTabBar(isHiding: Bool) {
-        self.tabBarController?.tabBar.isHidden = isHiding
+    private func addMenuBarButtonItemToNavigationBar() {
+        var button = UIButton(type: .custom)
+        button.frame.size = CGSize(width: 24, height: 24)
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.addAction(
+            UIAction(handler: { _ in
+                self.present(self.makeMenuAlert(), animated: true)
+            }),
+            for: .touchUpInside
+        )
+
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
-    
+
     private func setDataSender() {
         self.detailUseCase.dataSender = { (data) in
             self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
             self.detailContentView.update(by: data)
         }
     }
-    
+
     private func setFavoriteEventHandler() {
         self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
             let isAdding = !isItemInFavorites
             self.detailUseCase.configureFavorites(isAdding: isAdding)
         }
-        
+
         self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
             if isFail {
                 DispatchQueue.main.async {
-                    self.present(self.alertController, animated: true)
+                    self.present(self.signInFailAlert, animated: true)
                 }
             }
         }
     }
-    
+
     private func addObservers() {
         self.addObserverItemAddedToFavorites()
         self.addObserverItemDeletedFromFavorites()
     }
-    
+
     @objc private func addItemToFavorites(_ : Notification) {
         self.toolbar.configureFavoriteButton(isAdding: true)
     }
-    
+
     private func addObserverItemAddedToFavorites() {
         NotificationCenter.default.addObserver(
             self,
@@ -126,12 +179,12 @@ extension DetailViewController {
             scrollView,
             toolbar
         ]
-        
+
         subViews.forEach {
             self.view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
+
         self.scrollView.addSubview(detailContentView)
         self.detailContentView.translatesAutoresizingMaskIntoConstraints = false
     }
