@@ -5,11 +5,12 @@
 //  Created by Wood on 2023/08/23.
 //
 
-import Foundation
+import UIKit.UIImage
 
 protocol ListLocalDataSource {
     func checkFileExists(itemIndex: Int) -> Bool
-    func fetchImageKeys(itemIndex: Int, imageUrl: String) -> NSString
+    func fetchImageFilePath(itemIndex: Int) -> NSURL?
+    func cacheImage(in url: URL, itemIndex: Int) -> NSString?
 }
 
 struct ItemListLocalDataSource: ListLocalDataSource {
@@ -21,17 +22,121 @@ struct ItemListLocalDataSource: ListLocalDataSource {
         )[0]
         return cacheDirectoryURL.path()
     }()
+    private var basePathString: String {
+        return "\(self.cacheDirectoryPath)/ItemList"
+    }
     
     func checkFileExists(itemIndex: Int) -> Bool {
-        let path = "\(self.cacheDirectoryPath)/ItemList/\(itemIndex).jpeg"
-
+        let path = "\(self.basePathString)/\(itemIndex).jpeg"
         if self.fileManager.fileExists(atPath: path) {
             return true
         }
+
         return false
     }
     
-    func fetchImageKeys(itemIndex: Int, imageUrl: String) -> NSString {
+    func fetchImageFilePath(itemIndex: Int) -> NSURL? {
+        let imageFilePath = "\(self.basePathString)/\(itemIndex).jpeg"
+        guard self.checkFileExists(itemIndex: itemIndex) else {
+            return nil
+        }
         
+        return NSURL(string: imageFilePath)
+    }
+    
+    private func checkDirectoryExists(in path: String) -> Bool {
+        var isDirectory: ObjCBool = true
+        if self.fileManager.fileExists(
+            atPath: path,
+            isDirectory: &isDirectory
+        ) {
+            return true
+        }
+        
+        return false
+    }
+    
+    private func createImageFile(
+        in path: String,
+        image: Data?
+    ) -> Bool {
+        if self.fileManager.createFile(
+            atPath: path,
+            contents: image
+        ) {
+            return true
+        }
+        
+        LogManager.generate(
+            level: .local,
+            "\(self.description): " + LogMessage.failToCreateImageFile.message
+        )
+        return false
+    }
+    
+    private func createDirectory() -> Bool {
+        if let _ = try? self.fileManager.createDirectory(
+            atPath: self.basePathString,
+            withIntermediateDirectories: true
+        ) {
+           return true
+        }
+        
+        LogManager.generate(
+            level: .local,
+            "\(self.description): " + LogMessage.failToCreateDirectory.message)
+        return false
+    }
+    
+    func cacheImage(
+        in url: URL,
+        itemIndex: Int
+    ) -> NSString? {
+        guard let imageData = try? Data(contentsOf: url) else {
+            LogManager.generate(
+                level: .local,
+                "\(self.description): " + LogMessage.failToLoadImage.message
+            )
+            return nil
+        }
+
+        let imageDirectoryPath = self.basePathString
+        let imageFilePath = imageDirectoryPath + "/\(itemIndex).jpeg"
+        let imageToStore = UIImage(data: imageData)?.jpegData(compressionQuality: 1.0)
+
+        // 디렉토리 존재하지 않으면 생성 -> 생성 실패시 nil 반환
+        if self.checkDirectoryExists(in: imageFilePath) == false {
+            if self.createDirectory() { return nil }
+        }
+
+        // 디렉토리에 이미지 파일 생성 -> 생성 실패시 nil 반환
+        guard self.createImageFile(in: imageFilePath, image: imageToStore) else {
+            return nil
+        }
+
+        return NSString(string: imageFilePath)
+    }
+
+    enum LogMessage {
+        case failToLoadImage
+        case failToCreateDirectory
+        case failToCreateImageFile
+        
+        var message: String {
+            switch self {
+            case .failToLoadImage:
+                return "failToLoadImage"
+            case .failToCreateDirectory:
+                return "failToCreateDirectory"
+            case .failToCreateImageFile:
+                return "failToCreateImageFile"
+            }
+        }
+    }
+}
+
+extension ItemListLocalDataSource: CustomStringConvertible {
+    var description: String {
+        return "ItemListLocalDataSource"
     }
 }
