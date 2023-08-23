@@ -11,7 +11,7 @@ protocol ListRemoteDataSource {
     var locationIndex: Int { get set }
     var page: Int { get set }
     
-    func fetchData(index: Int, pagination: Bool) async -> [Item]
+    func requestData(index: Int, pagination: Bool) async -> [ItemListDTO.Item]
 }
 
 final class ItemListRemoteDataSource: ListRemoteDataSource {
@@ -25,11 +25,11 @@ final class ItemListRemoteDataSource: ListRemoteDataSource {
         return "\(ServerURL.base)items?locationIdx=\(self.locationIndex)&page=\(self.page)"
     }
 
-    func fetchData(index: Int, pagination: Bool = false) async -> [Item] {
+    func requestData(index: Int, pagination: Bool = false) async -> [ItemListDTO.Item] {
         self.ispagination = true
         
         guard let url = URL(string: self.baseURLString) else {
-            LogManager.generate(level: .network, self.debugDescription + NetworkError.badURL.message)
+            LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
             return []
         }
 
@@ -41,15 +41,16 @@ final class ItemListRemoteDataSource: ListRemoteDataSource {
             }
             
             let decodedData = try self.decoder.decode(ItemListDTO.self, from: data)
-            
+            let itemsDTO = decodedData.data.items
+            return itemsDTO
             
         } catch let error {
             guard let decodingError = error as? DecodingError else {
-                LogManager.generate(level: .network, "\(error)")
+                LogManager.generate(level: .network, "\(self.debugDescription): \(error)")
                 return []
             }
             
-            LogManager.generate(level: .network, self.debugDescription + "\(error)")
+            LogManager.generate(level: .network, "\(self.debugDescription): \(error)")
             return []
         }
     }
