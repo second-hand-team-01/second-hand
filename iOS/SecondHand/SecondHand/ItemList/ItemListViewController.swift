@@ -12,7 +12,7 @@ final class ItemListViewController: UIViewController {
     private var currentSnapShot: NSDiffableDataSourceSnapshot<Section, Item>!
     private var data: [Item] = Item.sampleData
     private var itemListTableView: UITableView = UITableView()
-    private let network: Network = Network()
+    private let itemListRemoteDataSource = ItemListRemoteDataSource()
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
@@ -184,9 +184,9 @@ extension ItemListViewController: UIScrollViewDelegate {
         let position = scrollView.contentOffset.y
 
         if position > itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
-            guard !self.network.ispagination else { return }
+            guard !self.itemListRemoteDataSource.ispagination else { return }
             
-            self.network.fetchData(index: self.data.count, pagination: false, complete: { [weak self] result in
+            self.itemListRemoteDataSource.fetchData(index: self.data.count, pagination: false, complete: { [weak self] result in
                 switch result {
                 case .success(let data):
                     self?.data += data

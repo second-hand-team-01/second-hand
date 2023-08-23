@@ -151,7 +151,7 @@ class ItemListTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             likeCountLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -21),
-            likeCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
+            likeCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
         ])
 
         NSLayoutConstraint.activate([
