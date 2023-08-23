@@ -22,24 +22,23 @@ struct DetailLocalDataSource {
         self.itemIndex = itemIndex
     }
     
-    func fetchImageURL(name: NSString) -> NSURL? {
-        guard let imageName = name as? String else {
-            return nil
-        }
-
-        let imageFilePath = "\(self.cacheDirectoryPath)\(imageName).jpeg"
-        guard self.fileManager.fileExists(atPath: imageFilePath) else {
-            return nil
-        }
-        return NSURL(string: imageFilePath)
-    }
-    
     func checkFileExists(name: String) -> Bool {
         let path = "\(cacheDirectoryPath)\(name).jpeg"
         if self.fileManager.fileExists(atPath: path) {
             return true
         }
         return false
+    }
+    
+    func fetchImageURL(name: NSString) -> NSURL? {
+        let imageName = name as String
+        let imageFilePath = "\(self.cacheDirectoryPath)\(imageName).jpeg"
+
+        guard self.fileManager.fileExists(atPath: imageFilePath) else {
+            return nil
+        }
+        
+        return NSURL(string: imageFilePath)
     }
     
     private func checkDirectoryExists(in path: String) -> Bool {
