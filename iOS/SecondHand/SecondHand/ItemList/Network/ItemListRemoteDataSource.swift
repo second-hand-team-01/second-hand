@@ -7,26 +7,27 @@
 
 import Foundation
 
-protocol ListRemoteDataSource {
+protocol ItemListRemoteDataSource {
     var locationIndex: Int { get set }
     var page: Int { get set }
     
-    func requestData(index: Int, pagination: Bool) async -> [ItemListDTO.Item]
+    func requestData() async -> [ItemListDTO.Item]
+    func download(imageUrl: String) async -> URL?
 }
 
-final class ItemListRemoteDataSource: ListRemoteDataSource {
+final class ItemListRemoteDataService: ItemListRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
 
-    private var ispagination = false
+    private var hasNextPage = false
     var locationIndex = 1041
     var page = 0
     private var baseURLString: String {
         return "\(ServerURL.base)items?locationIdx=\(self.locationIndex)&page=\(self.page)"
     }
 
-    func requestData(index: Int, pagination: Bool = false) async -> [ItemListDTO.Item] {
-        self.ispagination = true
+    func requestData() async -> [ItemListDTO.Item] {
+        self.hasNextPage = true
         
         guard let url = URL(string: self.baseURLString) else {
             LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
@@ -42,6 +43,8 @@ final class ItemListRemoteDataSource: ListRemoteDataSource {
             
             let decodedData = try self.decoder.decode(ItemListDTO.self, from: data)
             let itemsDTO = decodedData.data.items
+            self.hasNextPage = decodedData.data.hasNext
+            
             return itemsDTO
             
         } catch let error {
@@ -50,13 +53,40 @@ final class ItemListRemoteDataSource: ListRemoteDataSource {
                 return []
             }
             
-            LogManager.generate(level: .network, "\(self.debugDescription): \(error)")
+            LogManager.generate(
+                level: .network,
+                "\(self.debugDescription): \(error)"
+            )
             return []
+        }
+    }
+    
+    func download(imageUrl: String) async -> URL? {
+        guard let url = URL(string: imageUrl) else {
+            LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
+            return nil
+        }
+        
+        do {
+            let (DownloadedImageUrl, response) = try await self.session.download(from: url)
+            
+            guard URLResponse.validate(response) else {
+                return nil
+            }
+            
+            return DownloadedImageUrl
+            
+        } catch let error {
+            LogManager.generate(
+                level: .network,
+                "\(self.debugDescription): \(error)"
+            )
+            return nil
         }
     }
 }
 
-extension ItemListRemoteDataSource: CustomDebugStringConvertible {
+extension ItemListRemoteDataService: CustomDebugStringConvertible {
     var debugDescription: String {
         return "ItemListRemoteDataSource"
     }
