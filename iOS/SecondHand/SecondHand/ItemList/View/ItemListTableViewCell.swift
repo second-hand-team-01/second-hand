@@ -11,7 +11,7 @@ class ItemListTableViewCell: UITableViewCell {
     static let identifier = "ItemListCell"
     
     var thumbnailImage: UIImageView = {
-        var image = UIImageView(image: UIImage(systemName: "circle"))
+        var image = UIImageView(image: UIImage(systemName: "carrot"))
         image.backgroundColor = .systemGray
         image.layer.cornerRadius = 8
         image.clipsToBounds = true
@@ -52,20 +52,54 @@ class ItemListTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    private func updateThumbnail(imageKey: ImageKey) {
+        guard let thumbnailImageURLString = ImageCacheManager.sharedForItemList.object(forKey: imageKey)?.path else {
+            print("키에 해당하는 이미지를 찾지 못했습니다.")
+            return
+        }
+        
+        guard let image = UIImage(contentsOfFile: thumbnailImageURLString) else {
+            print("이미지를 불러오는데 실패했습니다.")
+            return
+        }
+        
+        self.thumbnailImage.image = image
+    }
+    
+    func update(itemViewModel: ItemViewModel) {
+        let imageKey = itemViewModel.imageKey
+        let title = itemViewModel.title
+        let location = itemViewModel.location
+        let passedTime = itemViewModel.passedTime
+        let price = itemViewModel.price
+        let chatCount = itemViewModel.chatCount
+        let interestCount = itemViewModel.interestCount
+        
+        DispatchQueue.main.async {
+            self.updateThumbnail(imageKey: imageKey)
+            self.titleLabel.updateText(to: title)
+            self.locationLabel.updateText(to: location)
+            self.writeTimeLabel.updateText(to: passedTime)
+            self.priceLabel.updateText(to: price)
+            self.commentCountLabel.text = chatCount
+            self.likeCountLabel.text = interestCount
+        }
+    }
 
     private func configureItemListTableViewCell() {
         self.contentView.backgroundColor = .white
         [
-            thumbnailImage,
-            titleLabel,
-            locationLabel,
-            writeTimeLabel,
-            stateLabel,
-            priceLabel,
-            commentSymbolLabel,
-            commentCountLabel,
-            likeSymbolLabel,
-            likeCountLabel
+            self.thumbnailImage,
+            self.titleLabel,
+            self.locationLabel,
+            self.writeTimeLabel,
+            self.stateLabel,
+            self.priceLabel,
+            self.commentSymbolLabel,
+            self.commentCountLabel,
+            self.likeSymbolLabel,
+            self.likeCountLabel
         ].forEach {
             self.contentView.addSubview($0)
         }
