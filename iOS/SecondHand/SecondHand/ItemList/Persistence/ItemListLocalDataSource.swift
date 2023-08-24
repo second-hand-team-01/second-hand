@@ -7,13 +7,13 @@
 
 import UIKit.UIImage
 
-protocol ListLocalDataSource {
+protocol ItemListLocalDataSource {
     func checkFileExists(itemIndex: Int) -> Bool
     func fetchImageFilePath(itemIndex: Int) -> NSURL?
-    func cacheImage(in url: URL, itemIndex: Int) -> NSString?
+    func cacheImage(in url: URL, itemIndex: Int) -> NSURL?
 }
 
-struct ItemListLocalDataSource: ListLocalDataSource {
+struct ItemListLocalDataService: ItemListLocalDataSource {
     private var fileManager = FileManager.default
     private let cacheDirectoryPath: String = {
         let cacheDirectoryURL = FileManager.default.urls(
@@ -91,7 +91,7 @@ struct ItemListLocalDataSource: ListLocalDataSource {
     func cacheImage(
         in url: URL,
         itemIndex: Int
-    ) -> NSString? {
+    ) -> NSURL? {
         guard let imageData = try? Data(contentsOf: url) else {
             LogManager.generate(
                 level: .local,
@@ -114,7 +114,7 @@ struct ItemListLocalDataSource: ListLocalDataSource {
             return nil
         }
 
-        return NSString(string: imageFilePath)
+        return NSURL(string: imageFilePath)
     }
 
     enum LogMessage {
@@ -135,7 +135,7 @@ struct ItemListLocalDataSource: ListLocalDataSource {
     }
 }
 
-extension ItemListLocalDataSource: CustomStringConvertible {
+extension ItemListLocalDataService: CustomStringConvertible {
     var description: String {
         return "ItemListLocalDataSource"
     }

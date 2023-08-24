@@ -43,7 +43,9 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             
             let decodedData = try self.decoder.decode(ItemListDTO.self, from: data)
             let itemsDTO = decodedData.data.items
-            self.hasNextPage = decodedData.data.hasNext
+            if decodedData.data.hasNext {
+                self.page += 1
+            }
             
             return itemsDTO
             
@@ -68,13 +70,13 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
         }
         
         do {
-            let (DownloadedImageUrl, response) = try await self.session.download(from: url)
+            let (downloadedImageUrl, response) = try await self.session.download(from: url)
             
             guard URLResponse.validate(response) else {
                 return nil
             }
             
-            return DownloadedImageUrl
+            return downloadedImageUrl
             
         } catch let error {
             LogManager.generate(
