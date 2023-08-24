@@ -8,12 +8,9 @@
 import Foundation
 
 struct ItemModelMapper {
-    static func convert(
-        by data: ItemListDTO.Item,
-        with key: NSString
-    ) -> ItemModel? {
+    static func convert(from data: ItemListDTO.Item) -> ItemModel {
         let itemIndex = data.itemIdx
-        let imageKey = key
+        let imageKey = "ItemList/\(data.itemIdx)"
         let name = data.name
         let location = data.location
         let postedAt = data.postedAt
@@ -24,7 +21,7 @@ struct ItemModelMapper {
         let interestChecked = data.interestChecked
         
         let itemModel = ItemModel(
-            itemIdx: itemIndex,
+            itemIndex: itemIndex,
             imageKey: imageKey,
             name: name,
             location: location,

@@ -8,8 +8,8 @@
 import Foundation
 
 struct ItemModel {
-    let itemIdx: Int
-    var imageKey: NSString
+    let itemIndex: Int
+    var imageKey: String
     var name: String
     var location: String
     var postedAt: String
