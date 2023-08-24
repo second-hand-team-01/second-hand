@@ -8,11 +8,16 @@
 import UIKit
 
 final class ItemListViewController: UIViewController {
-    private var datasource: UITableViewDiffableDataSource<Section, Item>!
-    private var currentSnapShot: NSDiffableDataSourceSnapshot<Section, Item>!
+    private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
+    private var currentSnapShot: NSDiffableDataSourceSnapshot<Section, ItemViewModel>!
     private var data: [Item] = Item.sampleData
+    private var locationIndex = 1041
     private var itemListTableView: UITableView = UITableView()
-    private let itemListRemoteDataSource = ItemListRemoteDataSource()
+    private var itemListPresenter: ItemListPresenter = ItemListPresentService()
+    private let itemListRepository = ItemListRepositoryService(
+        remoteDataSource: ItemListRemoteDataService(),
+        localDataSource: ItemListLocalDataService()
+    )
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
@@ -113,16 +118,21 @@ final class ItemListViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         self.configureDataSource()
-        self.configureSnapshot(with: data)
+        self.configureSnapshot(with: <#T##[ItemViewModel]#>)
         self.configureNavigationItem()
         self.addConstraintToCreateButton()
     }
-}
 
-extension ItemListViewController {
+    private var locationButton: UIBarButtonItem = {
+        var barButtonItem = UIBarButtonItem()
+        barButtonItem.title = "역삼1동"
+        barButtonItem.style = .plain
+        return barButtonItem
+    }()
+    
     private func configureNavigationItem() {
-        let locationButton = UIBarButtonItem(title: "역삼1동", style: .plain, target: self, action: #selector(locationButtonTapped))
-        self.navigationItem.leftBarButtonItem = locationButton
+        self.locationButton.target = self
+        self.navigationItem.leftBarButtonItem = self.locationButton
         
         let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
         self.navigationItem.rightBarButtonItem = categoryButton
@@ -154,26 +164,20 @@ extension ItemListViewController: UITableViewDelegate {
 
 extension ItemListViewController {
     private func configureDataSource() {
-        self.datasource = UITableViewDiffableDataSource<Section, Item>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, item in
+        self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
             
-            cell.titleLabel.updateText(to: item.itemTitle)
-            cell.locationLabel.updateText(to: item.location)
-            cell.priceLabel.updateText(to: item.price)
-            cell.writeTimeLabel.updateText(to: item.writeDate)
-            cell.likeCountLabel.text = "\(item.likeCount)"
-            cell.commentCountLabel.text = "\(item.chatCount)"
-
+            cell.update(itemViewModel: itemViewModel)
             return cell
         })
-        
+
         self.itemListTableView.dataSource = self.datasource
     }
     
-    private func configureSnapshot(with data: [Item]) {
-        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, Item>()
+    private func configureSnapshot(with items: [ItemViewModel]) {
+        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
         self.currentSnapShot.appendSections([.item])
-        self.currentSnapShot.appendItems(data, toSection: .item)
+        self.currentSnapShot.appendItems(items, toSection: .item)
         
         self.datasource.apply(self.currentSnapShot)
     }
@@ -182,22 +186,12 @@ extension ItemListViewController {
 extension ItemListViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-
         if position > itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
-            guard !self.itemListRemoteDataSource.ispagination else { return }
-            
-            self.itemListRemoteDataSource.fetchData(index: self.data.count, pagination: false, complete: { [weak self] result in
-                switch result {
-                case .success(let data):
-                    self?.data += data
-                    DispatchQueue.main.async {
-                        guard let currentData = self?.data else { return }
-                        self?.configureSnapshot(with: currentData)
-                    }
-                case .failure(_):
-                    break
-                }
-            })
+            Task {
+                let itemModels = await self.itemListRepository.fetchData(locationIndex: self.locationIndex)
+                let itemViewModels = self.itemListPresenter.convert(from: itemModels)
+                self.configureSnapshot(with: itemViewModels)
+            }
         }
     }
     
