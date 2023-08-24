@@ -32,7 +32,7 @@ struct DetailLocalDataSource {
     
     func fetchImageURL(name: NSString) -> NSURL? {
         let imageName = name as String
-        let imageFilePath = "\(self.cacheDirectoryPath)\(imageName).jpeg"
+        let imageFilePath = "\(self.cacheDirectoryPath)ItemDetail/\(imageName).jpeg"
 
         guard self.fileManager.fileExists(atPath: imageFilePath) else {
             return nil
@@ -92,7 +92,7 @@ struct DetailLocalDataSource {
             LogManager.generate(level: .local, LogMessage.failToLoadDownloadedImage)
             return false
         }
-        let imageDirectoryPath = "\(self.cacheDirectoryPath)\(index)"
+        let imageDirectoryPath = "\(self.cacheDirectoryPath)ItemDetail/\(index)"
         let imageFilePath = imageDirectoryPath + "/\(number).jpeg"
         let imageFile = UIImage(data: imageData)?.jpegData(compressionQuality: 1.0)
 
@@ -114,7 +114,7 @@ struct DetailLocalDataSource {
         if let fileURL = NSURL(string: imageFilePath) {
             ImageCacheManager.shared.setObject(
                 fileURL,
-                forKey: NSString(string: "\(self.itemIndex)/\(index)")
+                forKey: NSString(string: "\(self.itemIndex)/\(number)")
             )
         }
         return true

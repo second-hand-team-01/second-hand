@@ -49,7 +49,7 @@ struct DetailRepository {
         // 3. 메모리 캐시에 존재하는지 확인
         // 메모리 캐시에 존재하지 않는 이미지URL들만 추출한 배열 생성
         let nonMemoryCachedImages = imageMemoryCacheKeys.filter { (key: NSString) in
-            return !ImageCacheManager.cacheExists(key: key)
+            return ImageCacheManager.cacheExists(key: key) == false
         }
         // 모두 메모리 캐시에 존재하는 경우에는 바로 모델을 리턴
         guard !nonMemoryCachedImages.isEmpty else {
@@ -59,7 +59,7 @@ struct DetailRepository {
         // 4. 디스크 캐시에 존재하는 이미지들은 가져와서 메모리 캐시에 저장.
         // 디스크 캐시에 존재하는 파일들만 추출
         let nonDiskCachedImages = nonMemoryCachedImages.enumerated().filter { (imageNumber: Int, _) in
-            return !self.detailLocalDataSource.checkFileExists(name: "\(self.itemIndex)/\(imageNumber)")
+            return !self.detailLocalDataSource.checkFileExists(name: "ItemDetail/\(self.itemIndex)/\(imageNumber)")
         }
         // 모두 디스크 캐시에 이미 존재한다면, 메모리 캐시에 저장 후 모델 리턴
         guard nonDiskCachedImages.count > 0 else {
@@ -82,11 +82,13 @@ struct DetailRepository {
                 continue
             }
 
-            self.detailLocalDataSource.storeImageToDiskCache(
+            guard self.detailLocalDataSource.storeImageToDiskCache(
                 in: downloadedImageURL,
                 item: self.itemIndex,
                 image: imageIndex
-            )
+            ) else {
+                continue
+            }
         }
         
         return self.detailModelMapper.convert(by: fetchedData, with: imageMemoryCacheKeys)

@@ -74,6 +74,7 @@ struct DetailRemoteDataSource {
             }
 
             return dataURL
+
         } catch let error {
             LogManager.generate(level: .network, "\(error)")
             return nil
