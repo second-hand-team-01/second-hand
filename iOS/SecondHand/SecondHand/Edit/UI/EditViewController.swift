@@ -126,7 +126,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         var imageCacheKeys: [NSString] = []
         images.enumerated().forEach { (index: Int, image: UIImage) in
             if let object = image.jpegData(compressionQuality: 0.5) {
-                if let itemIndex = self.editUseCase.detailToEdit?.itemIndex {
+                if (self.editUseCase.detailToEdit?.itemIndex) != nil {
                     let key = NSString(string: "\(self.editUseCase.itemIndex)/\(index)")
                     DataCacheManager.store(key: key, object: object)
                     imageCacheKeys.append(key)
@@ -189,7 +189,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     
     private func didTapDoneButton() {
         let enteredDetail = self.makeDetailFromEnteredInfo()
-        if let detailToEdit = self.editUseCase.detailToEdit {
+        if self.editUseCase.detailToEdit != nil {
             self.editUseCase.editDetail(detailViewModel: enteredDetail)
         } else {
             self.editUseCase.createProduct(detailViewModel: enteredDetail)

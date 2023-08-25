@@ -20,7 +20,7 @@ struct ItemListPresentService: ItemListPresenter {
             var location = model.location
             var passedTime = PassedTimeGenerator.generate(from: model.postedAt)
             var price = model.price
-            var status = model.status
+            var status = StatusLabel.Status(rawValue: model.status) ?? StatusLabel.Status.forSale
             var interestCount = "\(model.interestCount)"
             var chatCount = "\(model.chatCount)"
             

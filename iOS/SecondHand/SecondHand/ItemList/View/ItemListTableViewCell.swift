@@ -10,33 +10,38 @@ import UIKit
 class ItemListTableViewCell: UITableViewCell {
     static let identifier = "ItemListCell"
     
-    var thumbnailImage: UIImageView = {
+    private var thumbnailImage: UIImageView = {
         var image = UIImageView(image: UIImage(systemName: "carrot"))
         image.backgroundColor = .systemGray
         image.layer.cornerRadius = 8
         image.clipsToBounds = true
         return image
     }()
-    var titleLabel = TitleLabel()
-    var locationLabel = LocationLabel()
-    var writeTimeLabel = TimeLabel()
-    var stateLabel = CapsuleLabel()
-    var priceLabel = PriceLabel()
-    var commentSymbolLabel: UIImageView = {
+    private var titleLabel = TitleLabel()
+    private var locationLabel = LocationLabel()
+    private var writeTimeLabel = TimeLabel()
+    private var statusAndPriceStackView: UIStackView = {
+        var stackView = UIStackView()
+        stackView.spacing = 4
+        return stackView
+    }()
+    private var statusLabel = StatusLabel()
+    private var priceLabel = PriceLabel()
+    private var commentSymbolLabel: UIImageView = {
         var image = UIImageView(image: UIImage(systemName: "message"))
         return image
     }()
-    var commentCountLabel: UILabel = {
+    private var commentCountLabel: UILabel = {
         var label = UILabel()
         label.text = "\(1)"
         label.font = .systemFont(ofSize: 13, weight: .regular)
         return label
     }()
-    var likeSymbolLabel: UIImageView = {
+    private var likeSymbolLabel: UIImageView = {
         var image = UIImageView(image: UIImage(systemName: "heart"))
         return image
     }()
-    var likeCountLabel: UILabel = {
+    private var likeCountLabel: UILabel = {
         var label = UILabel()
         label.text = "\(5)"
         label.font = .systemFont(ofSize: 13, weight: .regular)
@@ -72,6 +77,7 @@ class ItemListTableViewCell: UITableViewCell {
         let title = itemViewModel.title
         let location = itemViewModel.location
         let passedTime = itemViewModel.passedTime
+        let status = itemViewModel.status
         let price = itemViewModel.price
         let chatCount = itemViewModel.chatCount
         let interestCount = itemViewModel.interestCount
@@ -81,6 +87,7 @@ class ItemListTableViewCell: UITableViewCell {
             self.titleLabel.updateText(to: title)
             self.locationLabel.updateText(to: location)
             self.writeTimeLabel.updateText(to: passedTime)
+            self.statusLabel.change(to: status)
             self.priceLabel.updateText(to: price)
             self.commentCountLabel.text = chatCount
             self.likeCountLabel.text = interestCount
@@ -94,8 +101,7 @@ class ItemListTableViewCell: UITableViewCell {
             self.titleLabel,
             self.locationLabel,
             self.writeTimeLabel,
-            self.stateLabel,
-            self.priceLabel,
+            self.statusAndPriceStackView,
             self.commentSymbolLabel,
             self.commentCountLabel,
             self.likeSymbolLabel,
@@ -109,8 +115,7 @@ class ItemListTableViewCell: UITableViewCell {
         self.layoutTitleLabel()
         self.layoutLocationLabel()
         self.layoutWriteTimeLabel()
-        self.layoutStateLabel()
-        self.layoutPriceLabel()
+        self.addConstraintToStatusAndPriceStackView()
         self.layoutThumbnailImage()
         self.layoutTrailingLabel()
     }
@@ -146,23 +151,18 @@ class ItemListTableViewCell: UITableViewCell {
         ])
     }
     
-    private func layoutStateLabel() {
-        stateLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func addConstraintToStatusAndPriceStackView() {
+        self.statusAndPriceStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.statusAndPriceStackView.addArrangedSubview(self.statusLabel)
+        self.statusAndPriceStackView.addArrangedSubview(self.priceLabel)
         
         NSLayoutConstraint.activate([
-            stateLabel.topAnchor.constraint(equalTo: self.locationLabel.bottomAnchor, constant: 4),
-            stateLabel.leadingAnchor.constraint(equalTo: self.thumbnailImage.trailingAnchor, constant: 15),
-            stateLabel.heightAnchor.constraint(equalToConstant: 22)
-        ])
-    }
-    
-    private func layoutPriceLabel() {
-        priceLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            priceLabel.topAnchor.constraint(equalTo: self.locationLabel.bottomAnchor, constant: 4),
-            priceLabel.leadingAnchor.constraint(equalTo: self.stateLabel.trailingAnchor, constant: 4),
-            priceLabel.heightAnchor.constraint(equalToConstant: 22)
+            self.statusAndPriceStackView.topAnchor.constraint(
+                equalTo: self.locationLabel.bottomAnchor,
+                constant: 4
+            ),
+            self.statusAndPriceStackView.leadingAnchor.constraint(equalTo: self.locationLabel.leadingAnchor),
+            self.statusAndPriceStackView.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
     

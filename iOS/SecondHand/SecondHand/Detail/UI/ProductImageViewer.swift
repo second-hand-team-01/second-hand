@@ -61,7 +61,7 @@ class ProductImageViewer: UIView {
         self.productImages = self.loadImagesFrom(keys: imageKeys)
         self.pageControl.numberOfPages = self.productImages.count
         self.pageControl.currentPage = 0
-        self.imageView.image = self.productImages[0]
+        self.imageView.image = self.productImages.isEmpty ? Components.defaultImage : self.productImages[0]
     }
 
     private func addSubviews() {
@@ -101,5 +101,9 @@ class ProductImageViewer: UIView {
             self.pageControl.topAnchor.constraint(equalTo: self.imageView.bottomAnchor),
             self.pageControl.heightAnchor.constraint(equalToConstant: 30)
         ])
+    }
+    
+    enum Components {
+        static let defaultImage = UIImage(systemName: "carrot.fill")
     }
 }

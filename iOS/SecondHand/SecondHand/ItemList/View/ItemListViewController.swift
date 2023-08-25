@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ItemListViewController: UIViewController {
+final class ItemListViewController: UIViewController, UITableViewDelegate {
     private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
     private var currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
     private var items: [ItemViewModel] = []
@@ -100,7 +100,7 @@ final class ItemListViewController: UIViewController {
             let userLocation = await self.itemListRepository.fetchUserLocation()
             self.locationIndex = userLocation.main.locationIdx
 
-            if self.currentSnapShot.numberOfItems > 0 {
+            if self.datasource.snapshot().numberOfItems > 0 {
                 var emptySnapshot = self.datasource.snapshot()
                 emptySnapshot.deleteAllItems()
                 await self.datasource.apply(emptySnapshot)
@@ -126,7 +126,7 @@ final class ItemListViewController: UIViewController {
         self.itemListTableView.delegate = self
         self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.configureDataSource()
-        self.configureSnapshot(with: self.items)
+        self.loadItemList()
         self.configureNavigationItem()
     }
     
@@ -195,9 +195,7 @@ final class ItemListViewController: UIViewController {
     
     @objc private func categoryButtonTapped() {
     }
-}
-
-extension ItemListViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
@@ -216,9 +214,7 @@ extension ItemListViewController: UITableViewDelegate {
         let viewController = DetailViewController(itemIndex: itemIndex)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-}
 
-extension ItemListViewController {
     private func configureDataSource() {
         self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
@@ -235,21 +231,26 @@ extension ItemListViewController {
             return
         }
         
-        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
-        self.currentSnapShot.appendSections([.item])
-        self.currentSnapShot.appendItems(items, toSection: .item)
-        self.datasource.apply(self.currentSnapShot)
+        var snapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
+        snapShot.appendSections([.item])
+        snapShot.appendItems(items, toSection: .item)
+        self.datasource.apply(snapShot)
+        
+//        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
+//        self.currentSnapShot.appendSections([.item])
+//        self.currentSnapShot.appendItems(items, toSection: .item)
+//        self.datasource.apply(self.currentSnapShot)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > self.itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
+            self.loadItemList()
+        }
     }
 }
 
 extension ItemListViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if position > itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
-            self.loadItemList()
-        }
-    }
-    
     enum Components {
         static let createButtonImage = UIImage(systemName: "plus")?.withConfiguration(
             UIImage.SymbolConfiguration(
