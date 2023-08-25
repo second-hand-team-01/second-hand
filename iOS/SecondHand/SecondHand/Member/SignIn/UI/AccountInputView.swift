@@ -95,7 +95,6 @@ class AccountInputView: UIView {
         }
     }
     
-    // TODO: - 델리게이트를 이용해서 가져올 수 있을까? 생각해보자.
     func getEnteredId() -> String? {
         return self.idInputTextField.text
     }

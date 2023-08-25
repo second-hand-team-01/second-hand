@@ -14,7 +14,7 @@ struct ImageCacheManager {
     private init() {}
     
     static func cacheExists(key: NSString) -> Bool {
-        if let isExist = self.shared.object(forKey: key) {
+        if self.shared.object(forKey: key) != nil {
             return true
         }
         return false

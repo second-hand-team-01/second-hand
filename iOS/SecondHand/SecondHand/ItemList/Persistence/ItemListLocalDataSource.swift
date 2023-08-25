@@ -5,7 +5,7 @@
 //  Created by Wood on 2023/08/23.
 //
 
-import UIKit.UIImage
+import UIKit
 
 protocol ItemListLocalDataSource {
     func checkFileExists(itemIndex: Int) -> Bool
@@ -23,7 +23,7 @@ struct ItemListLocalDataService: ItemListLocalDataSource {
         return cacheDirectoryURL.path()
     }()
     private var basePathString: String {
-        return "\(self.cacheDirectoryPath)/ItemList"
+        return "\(self.cacheDirectoryPath)ItemList"
     }
     
     func checkFileExists(itemIndex: Int) -> Bool {
@@ -99,14 +99,14 @@ struct ItemListLocalDataService: ItemListLocalDataSource {
             )
             return nil
         }
-
         let imageDirectoryPath = self.basePathString
         let imageFilePath = imageDirectoryPath + "/\(itemIndex).jpeg"
-        let imageToStore = UIImage(data: imageData)?.jpegData(compressionQuality: 1.0)
+        let image = UIImage(data: imageData)
+        let imageToStore = image?.jpegData(compressionQuality: 1.0)
 
         // 디렉토리 존재하지 않으면 생성 -> 생성 실패시 nil 반환
         if self.checkDirectoryExists(in: imageFilePath) == false {
-            if self.createDirectory() { return nil }
+            guard self.createDirectory() else { return nil }
         }
 
         // 디렉토리에 이미지 파일 생성 -> 생성 실패시 nil 반환

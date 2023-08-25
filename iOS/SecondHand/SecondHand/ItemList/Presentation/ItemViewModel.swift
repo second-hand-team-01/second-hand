@@ -14,6 +14,18 @@ final class ImageKey: NSObject, Sendable {
     init(value: String) {
         self.value = value
     }
+
+    override var hash: Int {
+        return self.value.hashValue
+    }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let imageKey = object as? ImageKey else {
+            return false
+        }
+
+        return imageKey.value == self.value
+    }
 }
 
 struct ItemViewModel: Hashable, Sendable {

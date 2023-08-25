@@ -35,6 +35,7 @@
 		633AC5BF2A495B4400A34501 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5BE2A495B4400A34501 /* AccountViewController.swift */; };
 		633AC5CA2A499FC700A34501 /* UIViewController+setTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */; };
 		633BDC892A812223009BF333 /* FavoriteResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633BDC882A812223009BF333 /* FavoriteResponseDTO.swift */; };
+		635BDBA32A985DB500E925CA /* LocationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635BDBA22A985DB500E925CA /* LocationDTO.swift */; };
 		63608CBF2A4061E0006CD876 /* ProductInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CBE2A4061E0006CD876 /* ProductInfoView.swift */; };
 		63608CC62A407FB8006CD876 /* CommunicationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC52A407FB8006CD876 /* CommunicationInfoView.swift */; };
 		63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63608CC72A40D273006CD876 /* DetailToolbar.swift */; };
@@ -189,6 +190,7 @@
 		633AC5BE2A495B4400A34501 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		633AC5C42A499FC700A34501 /* UIViewController+setTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+setTitle.swift"; sourceTree = "<group>"; };
 		633BDC882A812223009BF333 /* FavoriteResponseDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteResponseDTO.swift; sourceTree = "<group>"; };
+		635BDBA22A985DB500E925CA /* LocationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDTO.swift; sourceTree = "<group>"; };
 		63608CBE2A4061E0006CD876 /* ProductInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoView.swift; sourceTree = "<group>"; };
 		63608CC52A407FB8006CD876 /* CommunicationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationInfoView.swift; sourceTree = "<group>"; };
 		63608CC72A40D273006CD876 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 			children = (
 				63732BD42A95B1A10012D4A6 /* ItemListRemoteDataSource.swift */,
 				63732BD72A95BC570012D4A6 /* ItemListDTO.swift */,
+				635BDBA22A985DB500E925CA /* LocationDTO.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				63B91A002A8A52190098483D /* CategoryTableViewController.swift in Sources */,
 				63A3FCE92A3983C500361FAD /* DetailViewController.swift in Sources */,
 				63608CC82A40D273006CD876 /* DetailToolbar.swift in Sources */,
+				635BDBA32A985DB500E925CA /* LocationDTO.swift in Sources */,
 				FF61AD602A3BE4D9006AE167 /* ColorPalette.swift in Sources */,
 				63608CBF2A4061E0006CD876 /* ProductInfoView.swift in Sources */,
 				63732BEE2A95EC7E0012D4A6 /* ItemListRepository.swift in Sources */,
@@ -1238,6 +1242,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

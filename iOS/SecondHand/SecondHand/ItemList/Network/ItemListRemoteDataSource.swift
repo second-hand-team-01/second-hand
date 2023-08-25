@@ -8,10 +8,8 @@
 import Foundation
 
 protocol ItemListRemoteDataSource {
-    var locationIndex: Int { get set }
-    var page: Int { get set }
-    
-    func requestData() async -> [ItemListDTO.Item]
+    func requestUserLocation() async -> UserLocationDTO.UserLocation
+    func requestData(locationIndex: Int) async -> [ItemListDTO.Item]
     func download(imageUrl: String) async -> URL?
 }
 
@@ -19,15 +17,30 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
     private var session = URLSession.shared
     private var decoder = JSONDecoder()
 
-    private var hasNextPage = false
-    var locationIndex = 1041
-    var page = 0
+    private var hasNextPage = true
+    private lazy var locationIndex: Int = 0
+    private var page = 0
     private var baseURLString: String {
         return "\(ServerURL.base)items?locationIdx=\(self.locationIndex)&page=\(self.page)"
     }
+    
+    //TODO: 사용자 지역 정보 조회 구현
+    func requestUserLocation() async -> UserLocationDTO.UserLocation {
+        let main = UserLocationDTO.Location(locationIdx: 5, locationName: "창성동")
+        let sub = UserLocationDTO.Location(locationIdx: 6, locationName: "통의동")
+        
+        return UserLocationDTO.UserLocation(main: main, sub: sub)
+    }
 
-    func requestData() async -> [ItemListDTO.Item] {
-        self.hasNextPage = true
+    func requestData(locationIndex: Int) async -> [ItemListDTO.Item] {
+        guard self.hasNextPage else {
+            return []
+        }
+        
+        if self.locationIndex != locationIndex {
+            self.locationIndex = locationIndex
+            self.page = 0
+        }
         
         guard let url = URL(string: self.baseURLString) else {
             LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
@@ -45,6 +58,9 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             let itemsDTO = decodedData.data.items
             if decodedData.data.hasNext {
                 self.page += 1
+                self.hasNextPage = true
+            } else {
+                self.hasNextPage = false
             }
             
             return itemsDTO
