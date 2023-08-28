@@ -24,7 +24,112 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         return alertController
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setUpTableView()
+        self.configureNavigationItem()
+        self.setUpUI()
+    }
+    
+    // MARK: Table View
+    
+    private var itemListTableView: UITableView = UITableView()
+    private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
+    
+    private func setUpTableView() {
+        self.view.addSubview(self.itemListTableView)
+        self.itemListTableView.delegate = self
+        self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
+        self.configureDataSource()
+        self.loadItemList(isFirst: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard SecretKeys.accessToken != "" else {
+            self.present(self.alertController, animated: true)
+            return
+        }
+        
+        let indexPath = self.datasource.itemIdentifier(for: indexPath)
+        guard let itemIndex = indexPath?.itemIndex else {
+            print("아이템 인덱스 가져오는데 실패")
+            return
+        }
+        let viewController = DetailViewController(itemIndex: itemIndex)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func configureDataSource() {
+        self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else {
+                return UITableViewCell()
+            }
+
+            cell.update(itemViewModel: itemViewModel)
+            return cell
+        })
+
+        self.itemListTableView.dataSource = self.datasource
+    }
+    
+    private func configureSnapshot(with items: [ItemViewModel], isFirst: Bool = false) {
+        guard items.isEmpty == false else {
+            return
+        }
+        
+        var snapShot = datasource.snapshot()
+        if isFirst { snapShot.appendSections([.item]) }
+        snapShot.appendItems(items, toSection: .item)
+        self.datasource.apply(snapShot)
+    }
+    
+    private func loadItemList(isFirst: Bool = false) {
+        Task {
+            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex)
+            let itemViewModels = self.itemListPresenter.convert(from: itemModels)
+            self.configureSnapshot(with: itemViewModels, isFirst: isFirst)
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
+            self.loadItemList()
+        }
+    }
+    
+    // MARK: Navigation Bar
+
+    private var locationButton: UIBarButtonItem = {
+        var barButtonItem = UIBarButtonItem()
+        barButtonItem.title = "역삼1동"
+        barButtonItem.style = .plain
+        return barButtonItem
+    }()
+    
+    private func configureNavigationItem() {
+        self.locationButton.target = self
+        self.navigationItem.leftBarButtonItem = self.locationButton
+        
+        let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
+        self.navigationItem.rightBarButtonItem = categoryButton
+    }
+    
+    @objc private func locationButtonTapped() { }
+    
+    @objc private func categoryButtonTapped() { }
+    
     // MARK: Create Product
+    
+    private func setUpUI() {
+        self.view.addSubview(self.createButton)
+        self.addActionToCreateButton()
+        self.addActionToAlertController()
+    }
     
     private var createButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
@@ -102,108 +207,6 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             name: Notification.userHasBeenSigned,
             object: nil
         )
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.addActionToCreateButton()
-        self.view.addSubview(self.createButton)
-        self.addActionToAlertController()
-        self.configureNavigationItem()
-        self.setUpTableView()
-    }
-    
-    // MARK: Navigation Bar
-
-    private var locationButton: UIBarButtonItem = {
-        var barButtonItem = UIBarButtonItem()
-        barButtonItem.title = "역삼1동"
-        barButtonItem.style = .plain
-        return barButtonItem
-    }()
-    
-    private func configureNavigationItem() {
-        self.locationButton.target = self
-        self.navigationItem.leftBarButtonItem = self.locationButton
-        
-        let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
-        self.navigationItem.rightBarButtonItem = categoryButton
-    }
-    
-    @objc private func locationButtonTapped() { }
-    
-    @objc private func categoryButtonTapped() {
-    }
-    
-    // MARK: Table View
-    
-    private var itemListTableView: UITableView = UITableView()
-    private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
-    
-    private func setUpTableView() {
-        self.view.addSubview(self.itemListTableView)
-        self.itemListTableView.delegate = self
-        self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
-        self.configureDataSource()
-        self.loadItemList(isFirst: true)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard SecretKeys.accessToken != "" else {
-            self.present(self.alertController, animated: true)
-            return
-        }
-        
-        let indexPath = self.datasource.itemIdentifier(for: indexPath)
-        guard let itemIndex = indexPath?.itemIndex else {
-            print("아이템 인덱스 가져오는데 실패")
-            return
-        }
-        let viewController = DetailViewController(itemIndex: itemIndex)
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    private func configureDataSource() {
-        self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else {
-                return UITableViewCell()
-            }
-
-            cell.update(itemViewModel: itemViewModel)
-            return cell
-        })
-
-        self.itemListTableView.dataSource = self.datasource
-    }
-    
-    private func configureSnapshot(with items: [ItemViewModel], isFirst: Bool = false) {
-        guard items.isEmpty == false else {
-            return
-        }
-        
-        var snapShot = datasource.snapshot()
-        if isFirst { snapShot.appendSections([.item]) }
-        snapShot.appendItems(items, toSection: .item)
-        self.datasource.apply(snapShot)
-    }
-    
-    private func loadItemList(isFirst: Bool = false) {
-        Task {
-            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex)
-            let itemViewModels = self.itemListPresenter.convert(from: itemModels)
-            self.configureSnapshot(with: itemViewModels, isFirst: isFirst)
-        }
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
-            self.loadItemList()
-        }
     }
     
     // MARK: Auto Layout
