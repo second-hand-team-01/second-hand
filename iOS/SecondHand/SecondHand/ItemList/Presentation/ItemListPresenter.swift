@@ -16,13 +16,13 @@ struct ItemListPresentService: ItemListPresenter {
         let viewModels = models.map { (model: ItemModel) in
             let itemIndex = model.itemIndex
             let imageKey = ImageKey(value: model.imageKey)
-            var title = model.name
-            var location = model.location
-            var passedTime = PassedTimeGenerator.generate(from: model.postedAt)
-            var price = model.price
-            var status = StatusLabel.Status(rawValue: model.status) ?? StatusLabel.Status.forSale
-            var interestCount = "\(model.interestCount)"
-            var chatCount = "\(model.chatCount)"
+            let title = model.name
+            let location = model.location
+            let passedTime = PassedTimeGenerator.generate(from: model.postedAt)
+            let price = model.price
+            let status = StatusLabel.Status(rawValue: model.status) ?? StatusLabel.Status.forSale
+            let interestCount = "\(model.interestCount)"
+            let chatCount = "\(model.chatCount)"
             
             return ItemViewModel(
                 itemIndex: itemIndex,

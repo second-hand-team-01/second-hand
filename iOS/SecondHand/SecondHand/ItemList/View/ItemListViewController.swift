@@ -8,17 +8,13 @@
 import UIKit
 
 final class ItemListViewController: UIViewController, UITableViewDelegate {
-    private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
-    private var currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
-    private var items: [ItemViewModel] = []
-    private let defaultLocationIndex = 1041
-    private lazy var locationIndex = self.defaultLocationIndex
-    private var itemListTableView: UITableView = UITableView()
     private var itemListPresenter: ItemListPresenter = ItemListPresentService()
     private let itemListRepository = ItemListRepositoryService(
         remoteDataSource: ItemListRemoteDataService(),
         localDataSource: ItemListLocalDataService()
     )
+    private let defaultLocationIndex = 1041
+    private lazy var locationIndex = self.defaultLocationIndex
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
@@ -27,6 +23,9 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         )
         return alertController
     }()
+    
+    // MARK: Create Product
+    
     private var createButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = .orange
@@ -81,19 +80,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.alertController.addAction(confirmAlertAction)
     }
     
-    private func loadItemList() {
-        Task {
-            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex)
-            let itemViewModels = self.itemListPresenter.convert(from: itemModels)
-            self.configureSnapshot(with: itemViewModels)
-        }
-    }
-    
-    private var itemNotExistView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .darkGray
-        return view
-    }()
+    // MARK: Observer
     
     @objc private func loadUserLocation(_ notification: Notification) {
         Task {
@@ -103,7 +90,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             if self.datasource.snapshot().numberOfItems > 0 {
                 var emptySnapshot = self.datasource.snapshot()
                 emptySnapshot.deleteAllItems()
-                await self.datasource.apply(emptySnapshot)
+                await self.datasource.applySnapshotUsingReloadData(emptySnapshot)
             }
         }
     }
@@ -119,60 +106,14 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.itemListTableView)
         self.addActionToCreateButton()
         self.view.addSubview(self.createButton)
         self.addActionToAlertController()
-        self.itemListTableView.delegate = self
-        self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
-        self.configureDataSource()
-        self.loadItemList()
         self.configureNavigationItem()
+        self.setUpTableView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.loadItemList()
-    }
-
-    private func layoutItemListUITableView() {
-        self.itemListTableView.frame = view.bounds
-    }
-    
-    private func addConstraintToCreateButton() {
-        self.createButton.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            self.createButton.topAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.createButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.createButton.trailingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-                constant: -24
-            ),
-            self.createButton.bottomAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -24
-            )
-        ])
-    }
-    
-//    private func addConstraintToItemNotExistView() {
-//        self.itemNotExistView.isHidden = true
-//        self.itemNotExistView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            self.itemNotExistView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//            self.itemNotExistView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-//            self.itemNotExistView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-//            self.itemNotExistView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-//        ])
-//    }
-    
-    override func viewWillLayoutSubviews() {
-        self.layoutItemListUITableView()
-        self.addConstraintToCreateButton()
-//        self.addConstraintToItemNotExistView()
-    }
+    // MARK: Navigation Bar
 
     private var locationButton: UIBarButtonItem = {
         var barButtonItem = UIBarButtonItem()
@@ -189,11 +130,22 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.navigationItem.rightBarButtonItem = categoryButton
     }
     
-    @objc private func locationButtonTapped() {
-        
-    }
+    @objc private func locationButtonTapped() { }
     
     @objc private func categoryButtonTapped() {
+    }
+    
+    // MARK: Table View
+    
+    private var itemListTableView: UITableView = UITableView()
+    private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
+    
+    private func setUpTableView() {
+        self.view.addSubview(self.itemListTableView)
+        self.itemListTableView.delegate = self
+        self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
+        self.configureDataSource()
+        self.loadItemList(isFirst: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -217,8 +169,10 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
 
     private func configureDataSource() {
         self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else { return UITableViewCell()}
-            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else {
+                return UITableViewCell()
+            }
+
             cell.update(itemViewModel: itemViewModel)
             return cell
         })
@@ -226,27 +180,58 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.itemListTableView.dataSource = self.datasource
     }
     
-    private func configureSnapshot(with items: [ItemViewModel]) {
+    private func configureSnapshot(with items: [ItemViewModel], isFirst: Bool = false) {
         guard items.isEmpty == false else {
             return
         }
         
-        var snapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
-        snapShot.appendSections([.item])
+        var snapShot = datasource.snapshot()
+        if isFirst { snapShot.appendSections([.item]) }
         snapShot.appendItems(items, toSection: .item)
         self.datasource.apply(snapShot)
-        
-//        self.currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
-//        self.currentSnapShot.appendSections([.item])
-//        self.currentSnapShot.appendItems(items, toSection: .item)
-//        self.datasource.apply(self.currentSnapShot)
     }
     
+    private func loadItemList(isFirst: Bool = false) {
+        Task {
+            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex)
+            let itemViewModels = self.itemListPresenter.convert(from: itemModels)
+            self.configureSnapshot(with: itemViewModels, isFirst: isFirst)
+        }
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if position > self.itemListTableView.contentSize.height - 100 - scrollView.frame.size.height {
+        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
             self.loadItemList()
         }
+    }
+    
+    // MARK: Auto Layout
+    
+    override func viewWillLayoutSubviews() {
+        self.layoutItemListUITableView()
+        self.addConstraintToCreateButton()
+    }
+    
+    private func layoutItemListUITableView() {
+        self.itemListTableView.frame = view.bounds
+    }
+    
+    private func addConstraintToCreateButton() {
+        self.createButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            self.createButton.topAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.createButton.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.createButton.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -24
+            ),
+            self.createButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -24
+            )
+        ])
     }
 }
 

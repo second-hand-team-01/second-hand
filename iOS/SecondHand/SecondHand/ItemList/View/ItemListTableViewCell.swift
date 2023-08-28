@@ -27,26 +27,8 @@ class ItemListTableViewCell: UITableViewCell {
     }()
     private var statusLabel = StatusLabel()
     private var priceLabel = PriceLabel()
-    private var commentSymbolLabel: UIImageView = {
-        var image = UIImageView(image: UIImage(systemName: "message"))
-        return image
-    }()
-    private var commentCountLabel: UILabel = {
-        var label = UILabel()
-        label.text = "\(1)"
-        label.font = .systemFont(ofSize: 13, weight: .regular)
-        return label
-    }()
-    private var likeSymbolLabel: UIImageView = {
-        var image = UIImageView(image: UIImage(systemName: "heart"))
-        return image
-    }()
-    private var likeCountLabel: UILabel = {
-        var label = UILabel()
-        label.text = "\(5)"
-        label.font = .systemFont(ofSize: 13, weight: .regular)
-        return label
-    }()
+    private var chatCountLabel = ChatCountLabel()
+    private var interestCountLabel = InterestCountLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -89,8 +71,8 @@ class ItemListTableViewCell: UITableViewCell {
             self.writeTimeLabel.updateText(to: passedTime)
             self.statusLabel.change(to: status)
             self.priceLabel.updateText(to: price)
-            self.commentCountLabel.text = chatCount
-            self.likeCountLabel.text = interestCount
+            self.chatCountLabel.updateText(chatCount: chatCount)
+            self.interestCountLabel.updateText(interestCount: interestCount)
         }
     }
 
@@ -102,10 +84,8 @@ class ItemListTableViewCell: UITableViewCell {
             self.locationLabel,
             self.writeTimeLabel,
             self.statusAndPriceStackView,
-            self.commentSymbolLabel,
-            self.commentCountLabel,
-            self.likeSymbolLabel,
-            self.likeCountLabel
+            self.chatCountLabel,
+            self.interestCountLabel
         ].forEach {
             self.contentView.addSubview($0)
         }
@@ -116,8 +96,9 @@ class ItemListTableViewCell: UITableViewCell {
         self.layoutLocationLabel()
         self.layoutWriteTimeLabel()
         self.addConstraintToStatusAndPriceStackView()
+        self.addConstraintToInterestLabel()
+        self.addConstraintToCommentLabel()
         self.layoutThumbnailImage()
-        self.layoutTrailingLabel()
     }
     
     private func layoutTitleLabel() {
@@ -177,30 +158,24 @@ class ItemListTableViewCell: UITableViewCell {
         ])
     }
     
-    private func layoutTrailingLabel() {
-        commentSymbolLabel.translatesAutoresizingMaskIntoConstraints = false
-        commentCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        likeSymbolLabel.translatesAutoresizingMaskIntoConstraints = false
-        likeCountLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func addConstraintToInterestLabel() {
+        self.interestCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            likeCountLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -21),
-            likeCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
+            self.interestCountLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -21),
+            self.interestCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
         ])
+    }
 
-        NSLayoutConstraint.activate([
-            likeSymbolLabel.topAnchor.constraint(equalTo: likeCountLabel.topAnchor),
-            likeSymbolLabel.trailingAnchor.constraint(equalTo: self.likeCountLabel.leadingAnchor)
-        ])
+    private func addConstraintToCommentLabel() {
+        self.chatCountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            commentCountLabel.topAnchor.constraint(equalTo: self.likeCountLabel.topAnchor),
-            commentCountLabel.trailingAnchor.constraint(equalTo: self.likeSymbolLabel.leadingAnchor, constant: -4)
-        ])
-        
-        NSLayoutConstraint.activate([
-            commentSymbolLabel.topAnchor.constraint(equalTo: self.likeCountLabel.topAnchor),
-            commentSymbolLabel.trailingAnchor.constraint(equalTo: self.commentCountLabel.leadingAnchor)
+            self.chatCountLabel.centerYAnchor.constraint(equalTo: self.interestCountLabel.centerYAnchor),
+            self.chatCountLabel.trailingAnchor.constraint(
+                equalTo: self.interestCountLabel.leadingAnchor,
+                constant: -4
+            )
         ])
     }
 }

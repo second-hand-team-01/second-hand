@@ -53,12 +53,12 @@ final class ItemListRepositoryService: ItemListRepository {
             let imageKey = ImageKey(value: item.imageKey)
             return ImageCacheManager.sharedForItemList.object(forKey: imageKey) == nil
         }
-        
+
         // 이미 모든 이미지가 메모리 캐시에 있으면 mapping한 모델 리스트 반환
-        guard !nonMemoryCachedImages.isEmpty else {
+        guard nonMemoryCachedImages.isEmpty == false else {
             return itemModels
         }
-        
+
         // 디스크 캐시에 존재하는 파일들 불러와 메모리 캐시에 저장
         var nonDiskCachedImages: [ItemModel] = []
         nonMemoryCachedImages.forEach { (item: ItemModel) in
@@ -69,12 +69,12 @@ final class ItemListRepositoryService: ItemListRepository {
                 nonDiskCachedImages.append(item)
             }
         }
-        
+
         // 이미지 파일들이 모두 디스크 캐시에 존재하면 mapping한 모델 리스트 반환
         guard !nonDiskCachedImages.isEmpty else {
             return itemModels
         }
-        
+
         // 디스크에 존재하지 않는 파일들 다운로드 후 파일 경로 받아와 디스크 / 메모리 캐시에 저장 후 모델 반환
         for nonDiskCachedImage in nonDiskCachedImages {
             let itemIndex = nonDiskCachedImage.itemIndex
@@ -84,7 +84,7 @@ final class ItemListRepositoryService: ItemListRepository {
             let imageKey = ImageKey(value: nonDiskCachedImage.imageKey)
             ImageCacheManager.sharedForItemList.setObject(imageFilePath, forKey: imageKey)
         }
-        
+
         return itemModels
     }
 }
