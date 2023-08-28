@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import Toaster
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController {
     private var menuBarButtonItem: UIBarButtonItem = {
         let barbuttonItem = UIBarButtonItem(
             image: UIImage(systemName: "ellipsis"),
@@ -150,6 +151,7 @@ class DetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.present(self.signInFailAlert, animated: true)
                 }
+            } else {
             }
         }
     }
@@ -159,7 +161,14 @@ class DetailViewController: UIViewController {
         self.addObserverItemDeletedFromFavorites()
     }
 
-    @objc private func addItemToFavorites(_ : Notification) {
+    @objc private func addItemToFavorites(_: Notification) {
+        DispatchQueue.main.async {
+            let successMessage = Toast(
+                text: "상품을 관심목록에 저장하였습니다.",
+                duration: Delay.short
+            )
+            successMessage.show()
+        }
         self.toolbar.configureFavoriteButton(isAdding: true)
     }
 
