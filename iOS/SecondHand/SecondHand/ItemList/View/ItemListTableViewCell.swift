@@ -40,18 +40,36 @@ class ItemListTableViewCell: UITableViewCell {
         super.init(coder: coder)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.clearUIForReuse()
+    }
+    
+    private func clearUIForReuse() {
+        self.thumbnailImage.image = nil
+        self.titleLabel.updateText(to: "")
+        self.locationLabel.updateText(to: "")
+        self.writeTimeLabel.updateText(to: "")
+        self.statusLabel.change(to: .forSale)
+        self.priceLabel.updateText(to: 0)
+        self.chatCountLabel.updateText(chatCount: "")
+        self.interestCountLabel.updateText(interestCount: "")
+    }
+    
     private func updateThumbnail(imageKey: ImageKey) {
         guard let thumbnailImageURLString = ImageCacheManager.sharedForItemList.object(forKey: imageKey)?.path else {
             print("키에 해당하는 이미지를 찾지 못했습니다.")
             return
         }
         
-        guard let image = UIImage(contentsOfFile: thumbnailImageURLString) else {
+        if let image = UIImage(contentsOfFile: thumbnailImageURLString) {
+
+            self.thumbnailImage.image = image
+        } else {
             print("이미지를 불러오는데 실패했습니다.")
-            return
+            self.thumbnailImage.image = UIImage(systemName: "carrot")
         }
         
-        self.thumbnailImage.image = image
     }
     
     func update(itemViewModel: ItemViewModel) {

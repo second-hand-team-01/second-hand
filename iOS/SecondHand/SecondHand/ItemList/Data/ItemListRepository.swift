@@ -71,7 +71,7 @@ final class ItemListRepositoryService: ItemListRepository {
         }
 
         // 이미지 파일들이 모두 디스크 캐시에 존재하면 mapping한 모델 리스트 반환
-        guard !nonDiskCachedImages.isEmpty else {
+        guard nonDiskCachedImages.isEmpty == false else {
             return itemModels
         }
 
