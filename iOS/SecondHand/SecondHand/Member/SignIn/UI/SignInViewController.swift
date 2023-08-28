@@ -90,6 +90,10 @@ class SignInViewController: UIViewController {
 
             // 데이터 수신 성공시 토큰 저장 및 로그인 화면 띄움.
             SecretKeys.accessToken = response.data.token
+            NotificationCenter.default.post(
+                name: Notification.userHasBeenSigned,
+                object: nil
+            )
             accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
                 accountInfoViewController,
@@ -158,6 +162,10 @@ class SignInViewController: UIViewController {
             }
             self.storeLastSignInInfo(id: id, password: password)
             SecretKeys.accessToken = response.data.token
+            NotificationCenter.default.post(
+                name: Notification.userHasBeenSigned,
+                object: nil
+            )
             self.accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(
                 self.accountInfoViewController,
@@ -211,6 +219,10 @@ class SignInViewController: UIViewController {
                 return
             }
             SecretKeys.accessToken = response.data.token
+            NotificationCenter.default.post(
+                name: Notification.userHasBeenSigned,
+                object: nil
+            )
             print(SecretKeys.accessToken)
             self.accountInfoViewController.sendData(response.data.memberInfo)
             self.navigationController?.pushViewController(

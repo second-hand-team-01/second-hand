@@ -9,10 +9,12 @@ import Foundation
 
 struct ImageCacheManager {
     static let shared = NSCache<NSString, NSURL>()
+    static let sharedForItemList = NSCache<ImageKey, NSURL>()
+    
     private init() {}
     
     static func cacheExists(key: NSString) -> Bool {
-        if let isExist = self.shared.object(forKey: key) {
+        if self.shared.object(forKey: key) != nil {
             return true
         }
         return false

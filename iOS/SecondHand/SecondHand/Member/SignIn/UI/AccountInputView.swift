@@ -95,7 +95,6 @@ class AccountInputView: UIView {
         }
     }
     
-    // TODO: - 델리게이트를 이용해서 가져올 수 있을까? 생각해보자.
     func getEnteredId() -> String? {
         return self.idInputTextField.text
     }
@@ -197,6 +196,6 @@ extension AccountInputView {
         static let password = "비밀번호"
         static let passwordInput = "비밀번호를 입력하세요"
         static let idWarningMessage = "아이디는 3~12 글자 혹은 영어 대/소문자나 숫자만 가능합니다."
-        static let passwordWarningMessage = "비밀번호는 6~12 글자이어야 합니다."
+        static let passwordWarningMessage = "비밀번호는 5~12 글자이어야 합니다."
     }
 }
