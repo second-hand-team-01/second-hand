@@ -51,7 +51,7 @@ class ItemListTableViewCell: UITableViewCell {
         self.locationLabel.updateText(to: "")
         self.writeTimeLabel.updateText(to: "")
         self.statusLabel.change(to: .forSale)
-        self.priceLabel.updateText(to: 0)
+        self.priceLabel.updateText(to: "")
         self.chatCountLabel.updateText(chatCount: "")
         self.interestCountLabel.updateText(interestCount: "")
     }

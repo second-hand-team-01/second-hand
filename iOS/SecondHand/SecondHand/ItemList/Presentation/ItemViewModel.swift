@@ -34,7 +34,7 @@ struct ItemViewModel: Hashable, Sendable {
     let title: String
     let location: String
     let passedTime: String
-    let price: Int
+    let price: String
     let status: StatusLabel.Status
     let interestCount: String
     let chatCount: String
