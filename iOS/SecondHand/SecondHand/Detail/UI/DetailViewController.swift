@@ -67,13 +67,46 @@ final class DetailViewController: UIViewController {
         )
     }
     
+    private var deleteAlertController: UIAlertController = {
+        let deleteAlertController = UIAlertController(
+            title: "정말로 게시물을 삭제하시겠습니까?",
+            message: "해당 게시물은 삭제됩니다.",
+            preferredStyle: .alert
+        )
+        
+        return deleteAlertController
+    }()
+    
+    private func addActionToDeleteAlertController() {
+        let deleteConfirmHandler: (UIAlertAction) -> () = { _ in
+            self.detailUseCase.deleteItem()
+        }
+        
+        let deleteConfirmAction = UIAlertAction(
+            title: "네",
+            style: .destructive,
+            handler: deleteConfirmHandler
+        )
+        self.deleteAlertController.addAction(deleteConfirmAction)
+        
+        let deleteCancelAction = UIAlertAction(
+            title: "아니요",
+            style: .cancel
+        )
+        self.deleteAlertController.addAction(deleteCancelAction)
+    }
+    
     private func makeDeleteAction() -> UIAlertAction {
+        self.addActionToDeleteAlertController()
+        
+        let handler: (UIAlertAction) -> () = { _ in
+            self.present(self.deleteAlertController, animated: true)
+        }
+        
         return UIAlertAction(
             title: "삭제",
             style: .destructive,
-            handler: { _ in
-                return
-            }
+            handler: handler
         )
     }
     

@@ -47,4 +47,8 @@ final class DetailUseCase {
             NotificationCenter.default.post(name: notificationName, object: nil)
         }
     }
+    
+    func deleteItem() {
+        
+    }
 }
