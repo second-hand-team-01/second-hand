@@ -9,13 +9,6 @@ import UIKit
 import Toaster
 
 final class DetailViewController: UIViewController {
-    private var menuBarButtonItem: UIBarButtonItem = {
-        let barbuttonItem = UIBarButtonItem(
-            image: UIImage(systemName: "ellipsis"),
-            primaryAction: nil
-        )
-        return barbuttonItem
-    }()
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentInsetAdjustmentBehavior = .never
@@ -23,20 +16,6 @@ final class DetailViewController: UIViewController {
     }()
     private var detailContentView = DetailContentView()
     private var toolbar = DetailToolbar()
-    private var signInFailAlert: UIAlertController = {
-        let alertController = UIAlertController(
-            title: Components.AlertMessage.failToAddFavorite,
-            message: nil,
-            preferredStyle: .alert
-        )
-        let alertAction = UIAlertAction(
-            title: "확인",
-            style: .default
-        )
-        alertController.addAction(alertAction)
-        return alertController
-    }()
-    
     private var detailUseCase: DetailUseCase
 
     required init?(coder: NSCoder) {
@@ -50,71 +29,76 @@ final class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-        setTabBar(isHiding: true)
-        self.addMenuBarButtonItemToNavigationBar()
-        self.addSubViews()
+        self.setUpUI()
         self.setDataSender()
         self.setFavoriteEventHandler()
         self.addObservers()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.detailUseCase.loadData()
+    private func setUpUI() {
+        self.view.backgroundColor = .white
+        setTabBar(isHiding: true)
+        self.addMenuBarButtonItemToNavigationBar()
+        self.addSubViews()
     }
+    
+    // MARK: Navigation Bar
+    
+    private func makeEditAction() -> UIAlertAction {
+        let handler: (UIAlertAction) -> () = { _ in
+            if let detail = self.detailUseCase.detail {
+                let detailToEdit = EditModelMapper.convertFrom(detail, itemIndex: self.detailUseCase.itemIndex)
+                let editUseCase = EditUseCase(
+                    detailToEdit: detailToEdit,
+                    editRemoteDataSource: EditRemoteDataSource(itemIndex: detailToEdit.itemIndex)
+                )
+                let editViewController = EditViewController(editUseCase: editUseCase)
+                self.present(
+                    UINavigationController(rootViewController: editViewController),
+                    animated: true
+                )
+            }
+        }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        self.layoutConstraint()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setTabBar(isHiding: false)
-    }
-
-    private func makeMenuAlert() -> UIAlertController {
-        let alertController = UIAlertController(
-            title: nil,
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let editAction = UIAlertAction(
+        return UIAlertAction(
             title: "게시글 수정",
             style: .default,
-            handler: { _ in
-                if let detail = self.detailUseCase.detail {
-                    let detailToEdit = EditModelMapper.convertFrom(detail, itemIndex: self.detailUseCase.itemIndex)
-                    let editUseCase = EditUseCase(
-                        detailToEdit: detailToEdit,
-                        editRemoteDataSource: EditRemoteDataSource(itemIndex: detailToEdit.itemIndex)
-                    )
-                    let editViewController = EditViewController(editUseCase: editUseCase)
-                    self.present(
-                        UINavigationController(rootViewController: editViewController),
-                        animated: true
-                    )
-                }
-            }
+            handler: handler
         )
-        alertController.addAction(editAction)
-
-        let deleteAction = UIAlertAction(
+    }
+    
+    private func makeDeleteAction() -> UIAlertAction {
+        return UIAlertAction(
             title: "삭제",
             style: .destructive,
             handler: { _ in
                 return
             }
         )
-        alertController.addAction(deleteAction)
-
-        let cancleAction = UIAlertAction(
+    }
+    
+    private func makeCancelAction() -> UIAlertAction {
+        return UIAlertAction(
             title: "취소",
             style: .cancel
         )
-        alertController.addAction(cancleAction)
+    }
+    
+    private func makeMenuAlert() -> UIAlertController {
+        let alertController = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let editAction = self.makeEditAction()
+        alertController.addAction(editAction)
+
+        let deleteAction = self.makeDeleteAction()
+        alertController.addAction(deleteAction)
+
+        let cancelAction = self.makeCancelAction()
+        alertController.addAction(cancelAction)
         
         return alertController
     }
@@ -123,39 +107,17 @@ final class DetailViewController: UIViewController {
         var button = UIButton(type: .custom)
         button.frame.size = CGSize(width: 24, height: 24)
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        button.addAction(
-            UIAction(handler: { _ in
-                self.present(self.makeMenuAlert(), animated: true)
-            }),
-            for: .touchUpInside
-        )
+        
+        let alertAction = UIAction { _ in
+            self.present(self.makeMenuAlert(), animated: true)
+        }
+        button.addAction(alertAction, for: .touchUpInside)
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
-
-    private func setDataSender() {
-        self.detailUseCase.dataSender = { (data) in
-            self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
-            self.detailContentView.update(by: data)
-        }
-    }
-
-    private func setFavoriteEventHandler() {
-        self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
-            let isAdding = !isItemInFavorites
-            self.detailUseCase.configureFavorites(isAdding: isAdding)
-        }
-
-        self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
-            if isFail {
-                DispatchQueue.main.async {
-                    self.present(self.signInFailAlert, animated: true)
-                }
-            } else {
-            }
-        }
-    }
-
+    
+    // MARK: Oberver
+    
     private func addObservers() {
         self.addObserverItemAddedToFavorites()
         self.addObserverItemDeletedFromFavorites()
@@ -193,9 +155,64 @@ final class DetailViewController: UIViewController {
             object: nil
         )
     }
+    
+    // MARK: DataSender
+    
+    private func setDataSender() {
+        self.detailUseCase.dataSender = { (data) in
+            self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
+            self.detailContentView.update(by: data)
+        }
+    }
+
+    private var signInFailAlert: UIAlertController = {
+        let alertController = UIAlertController(
+            title: Components.AlertMessage.failToAddFavorite,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        )
+        alertController.addAction(alertAction)
+        return alertController
+    }()
+    
+    private func setFavoriteEventHandler() {
+        self.toolbar.favoriteButtonTapSender = { (isItemInFavorites: Bool) in
+            let isAdding = !isItemInFavorites
+            self.detailUseCase.configureFavorites(isAdding: isAdding)
+        }
+
+        self.detailUseCase.favoriteEventFailSender = { (isFail: Bool) in
+            if isFail {
+                DispatchQueue.main.async {
+                    self.present(self.signInFailAlert, animated: true)
+                }
+            } else {
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.detailUseCase.loadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.layoutConstraint()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setTabBar(isHiding: false)
+    }
 }
 
-// MARK: - Constraint 설정
+// MARK: Auto Layout
+
 extension DetailViewController {
     private func addSubViews() {
         let subViews = [
