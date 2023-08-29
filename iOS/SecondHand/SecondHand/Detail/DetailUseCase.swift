@@ -49,6 +49,9 @@ final class DetailUseCase {
     }
     
     func deleteItem() {
-        
+        Task {
+            if await self.detailRepository.fetchDeleteResult() == true {
+            }
+        }
     }
 }
