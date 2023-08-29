@@ -16,7 +16,7 @@ class DetailContentView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.updateStatusButton()
+        self.makeStatusButtonUI()
         self.addSubviews()
         self.addConstraints()
     }
@@ -29,12 +29,22 @@ class DetailContentView: UIView {
         DispatchQueue.main.async {
             self.productImageViewer.update(by: data.imageKeys)
             self.sellerInfoView.update(by: data.sellerName)
+            self.updateStatusButon(by: data.status, with: data.sellerIndex)
             self.productInfoView.update(by: data.productInfo)
             self.communicationInfoView.update(by: data.userInteractionCount)
         }
     }
     
-    private func updateStatusButton() {
+    private func updateStatusButon(by status: String, with sellerIndex: Int) {
+        self.statusButton.setTitle(status, for: .normal)
+        if sellerIndex != SecretKeys.userIndex {
+            self.statusButton.isEnabled = false
+        } else {
+            self.statusButton.isEnabled = true
+        }
+    }
+    
+    private func makeStatusButtonUI() {
         self.statusButton = self.makeStatusButton()
     }
     
@@ -99,6 +109,7 @@ class DetailContentView: UIView {
                     )
             }),
             for: .touchUpInside)
+        
         return button
     }
     

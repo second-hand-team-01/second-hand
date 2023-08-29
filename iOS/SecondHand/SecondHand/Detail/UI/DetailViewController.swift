@@ -149,6 +149,17 @@ final class DetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
     
+    private func updateMenuBarButton(sellerIndex: Int) {
+        var isUserNotSeller: Bool = true
+        if sellerIndex == SecretKeys.userIndex {
+            isUserNotSeller = false
+        }
+        
+        DispatchQueue.main.async {
+            self.navigationItem.rightBarButtonItem?.isHidden = isUserNotSeller
+        }
+    }
+    
     // MARK: Oberver
     
     private func addObservers() {
@@ -226,6 +237,7 @@ final class DetailViewController: UIViewController {
         self.detailUseCase.dataSender = { (data) in
             self.toolbar.update(price: data.price, isItemInFavorites: data.isUserInterested)
             self.detailContentView.update(by: data)
+            self.updateMenuBarButton(sellerIndex: data.sellerIndex)
         }
     }
 

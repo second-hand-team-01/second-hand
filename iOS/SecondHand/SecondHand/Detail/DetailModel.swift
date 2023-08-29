@@ -23,6 +23,7 @@ class DetailModel {
     
     let imageKeys: [NSString?]
     let sellerName: String
+    let sellerIndex: Int
     let productInfo: ProductInfo
     let userInteractionCount: UserInteractionCount
     let price: Int
@@ -32,6 +33,7 @@ class DetailModel {
     init(
         imageKeys: [NSString?],
         sellerName: String,
+        sellerIndex: Int,
         productInfo: ProductInfo,
         userInteractionCount: UserInteractionCount,
         price: Int,
@@ -40,6 +42,7 @@ class DetailModel {
     ) {
         self.imageKeys = imageKeys
         self.sellerName = sellerName
+        self.sellerIndex = sellerIndex
         self.productInfo = productInfo
         self.userInteractionCount = userInteractionCount
         self.price = price
