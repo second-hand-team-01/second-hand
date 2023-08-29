@@ -154,6 +154,7 @@ final class DetailViewController: UIViewController {
     private func addObservers() {
         self.addObserverItemAddedToFavorites()
         self.addObserverItemDeletedFromFavorites()
+        self.addObserverItemDeleted()
     }
 
     @objc private func addItemToFavorites(_: Notification) {
@@ -189,6 +190,36 @@ final class DetailViewController: UIViewController {
         )
     }
     
+    private var deleteFailAlertController: UIAlertController = {
+        var alertController = UIAlertController(
+            title: "상품 삭제가 실패했습니다",
+            message: "서버 오류입니다.",
+            preferredStyle: .alert
+        )
+        return alertController
+    }()
+    
+    private func addObserverItemDeleted() {
+        let using: (Notification) -> () = { notification in
+            if let result = notification.object as? Bool {
+                self.navigationController?.popViewController(animated: true)
+                Toast(
+                    text: "상품이 삭제되었습니다.",
+                    duration: Delay.short
+                ).show()
+            } else {
+                self.present(self.deleteFailAlertController, animated: true)
+            }
+        }
+        
+        NotificationCenter.default.addObserver(
+            forName: Notification.itemHasBeenDeleted,
+            object: nil,
+            queue: .main,
+            using: using
+        )
+    }
+
     // MARK: DataSender
     
     private func setDataSender() {

@@ -50,8 +50,11 @@ final class DetailUseCase {
     
     func deleteItem() {
         Task {
-            if await self.detailRepository.fetchDeleteResult() == true {
-            }
+            let result = await self.detailRepository.fetchDeleteResult()
+            NotificationCenter.default.post(
+                name: Notification.itemHasBeenDeleted,
+                object: result
+            )
         }
     }
 }
