@@ -161,6 +161,7 @@ class SignInViewController: UIViewController {
                 return
             }
             self.storeLastSignInInfo(id: id, password: password)
+            SecretKeys.userIndex = response.data.memberInfo.memberIdx
             SecretKeys.accessToken = response.data.token
             NotificationCenter.default.post(
                 name: Notification.userHasBeenSigned,
@@ -219,6 +220,7 @@ class SignInViewController: UIViewController {
                 return
             }
             SecretKeys.accessToken = response.data.token
+            SecretKeys.userIndex = response.data.memberInfo.memberIdx
             NotificationCenter.default.post(
                 name: Notification.userHasBeenSigned,
                 object: nil
