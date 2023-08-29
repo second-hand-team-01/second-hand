@@ -36,6 +36,10 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     private var itemListTableView: UITableView = UITableView()
     private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
     
+    enum Section: Int, CaseIterable {
+        case item
+    }
+    
     private func setUpTableView() {
         self.view.addSubview(self.itemListTableView)
         self.itemListTableView.delegate = self
@@ -114,7 +118,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     private func configureNavigationItem() {
         self.locationButton.target = self
         self.navigationItem.leftBarButtonItem = self.locationButton
-        
+
         let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
         self.navigationItem.rightBarButtonItem = categoryButton
     }
