@@ -101,6 +101,10 @@ struct DetailRepository {
         return result
     }
     
+    func fetchDeleteResult() async -> Int? {
+        return await self.detailRemoteDataSource.requestDelete()
+    }
+    
     enum LogMessage {
         static let failToLoadData = "데이터를 네트워크로부터 가져오는데 실패했습니다."
         static let imageDidNotExisted = "이미지가 로드되지 않았습니다."

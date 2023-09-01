@@ -26,10 +26,11 @@ struct DetailModelMapper {
         )
         
         let status = "판매중"
-        
+
         return DetailModel(
             imageKeys: keys,
             sellerName: data.seller.sellerId,
+            sellerIndex: data.seller.sellerIdx,
             productInfo: productInfo,
             userInteractionCount: userInteractionCount,
             price: data.price,

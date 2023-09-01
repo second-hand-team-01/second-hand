@@ -12,7 +12,10 @@ protocol ItemListRepository {
     var localDataSource: ItemListLocalDataSource { get }
     
     func fetchUserLocation() async -> UserLocationDTO.UserLocation
-    func fetchItemList(locationIndex: Int) async -> [ItemModel]
+    func fetchItemList(
+        locationIndex: Int,
+        isRefresh: Bool
+    ) async -> [ItemModel]
 }
 
 final class ItemListRepositoryService: ItemListRepository {
@@ -31,8 +34,8 @@ final class ItemListRepositoryService: ItemListRepository {
         return await self.remoteDataSource.requestUserLocation()
     }
     
-    func fetchItemList(locationIndex: Int) async -> [ItemModel] {
-        let requestedData = await self.remoteDataSource.requestData(locationIndex: locationIndex)
+    func fetchItemList(locationIndex: Int, isRefresh: Bool = false) async -> [ItemModel] {
+        let requestedData = await self.remoteDataSource.requestData(locationIndex: locationIndex, isRefresh: isRefresh)
         
         guard requestedData.isEmpty == false else {
             return []

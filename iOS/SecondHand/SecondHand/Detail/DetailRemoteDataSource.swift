@@ -17,21 +17,9 @@ struct DetailRemoteDataSource {
         self.itemIndex = itemIndex
         self.baseURLString = "\(ServerURL.base)items/\(itemIndex)"
     }
+
+    // MARK: Data Load Request
     
-    private func validate(urlResponse: URLResponse) -> Bool {
-        guard let response = urlResponse as? HTTPURLResponse else {
-            LogManager.generate(level: .network, NetworkError.badResponse.message)
-            return false
-        }
-
-        guard (200..<300).contains(response.statusCode) else {
-            LogManager.generate(level: .network, NetworkError.badStatusCode(response.statusCode).message)
-            return false
-        }
-
-        return true
-    }
-
     func requestData() async -> ItemDetailDTO? {
         guard let url = URL(string: baseURLString) else {
             LogManager.generate(level: .network, NetworkError.badURL.message)
@@ -45,7 +33,7 @@ struct DetailRemoteDataSource {
         do {
             let (data, urlResponse) = try await session.data(for: request)
 
-            guard validate(urlResponse: urlResponse) else {
+            guard URLResponse.validate(urlResponse) else {
                 return nil
             }
 
@@ -69,7 +57,7 @@ struct DetailRemoteDataSource {
         do {
             let (dataURL, urlResponse) = try await session.download(from: downloadURL)
 
-            guard validate(urlResponse: urlResponse) else {
+            guard URLResponse.validate(urlResponse) else {
                 return nil
             }
 
@@ -80,6 +68,8 @@ struct DetailRemoteDataSource {
             return nil
         }
     }
+    
+    // MARK: Favorite Request
 
     struct FavoriteRequestBody: Encodable {
         let itemIdx: Int
@@ -109,7 +99,7 @@ struct DetailRemoteDataSource {
         do {
             let (data, urlResponse) = try await session.data(for: request)
 
-            guard validate(urlResponse: urlResponse) else {
+            guard URLResponse.validate(urlResponse) else {
                 return nil
             }
 
@@ -120,6 +110,58 @@ struct DetailRemoteDataSource {
             }
 
             return isAdding
+        } catch let error {
+            if let decodingError = error as? DecodingError {
+                LogManager.generate(level: .network, "\(decodingError)")
+            }
+
+            LogManager.generate(level: .network, "\(error)")
+            return nil
+        }
+    }
+    
+    struct DeleteRequestBody: Encodable {
+        let itemIdx: Int
+    }
+    
+    private func makeDeleteURLRequest() -> URLRequest? {
+        guard let url = URL(string: self.baseURLString) else {
+            LogManager.generate(level: .network, NetworkError.badURL.message)
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.allHTTPHeaderFields = [
+            "Authorization": "Bearer \(SecretKeys.accessToken)",
+            "Content-Type": "application/json"
+        ]
+        
+        let body = DeleteRequestBody(itemIdx: self.itemIndex)
+        guard let httpBody = try? JSONEncoder().encode(body) else {
+            LogManager.generate(level: .network, NetworkError.badEncode.message)
+            return nil
+        }
+        request.httpBody = httpBody
+        
+        return request
+    }
+    
+    // MARK: Delete Request
+    func requestDelete() async -> Int? {
+        guard let detleteRequest = self.makeDeleteURLRequest() else {
+            return nil
+        }
+        
+        do {
+            let (_, response) = try await session.data(for: detleteRequest)
+            
+            guard URLResponse.validate(response) else {
+                return nil
+            }
+            
+            return self.itemIndex
+            
         } catch let error {
             if let decodingError = error as? DecodingError {
                 LogManager.generate(level: .network, "\(decodingError)")

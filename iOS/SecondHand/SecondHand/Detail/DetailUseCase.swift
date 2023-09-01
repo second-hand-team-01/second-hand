@@ -47,4 +47,14 @@ final class DetailUseCase {
             NotificationCenter.default.post(name: notificationName, object: nil)
         }
     }
+    
+    func deleteItem() {
+        Task {
+            let result = await self.detailRepository.fetchDeleteResult()
+            NotificationCenter.default.post(
+                name: Notification.itemHasBeenDeleted,
+                object: result
+            )
+        }
+    }
 }

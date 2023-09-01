@@ -46,7 +46,7 @@ class ItemListTableViewCell: UITableViewCell {
     }
     
     private func clearUIForReuse() {
-        self.thumbnailImage.image = nil
+        self.thumbnailImage.image = UIImage(systemName: "carrot")
         self.titleLabel.updateText(to: "")
         self.locationLabel.updateText(to: "")
         self.writeTimeLabel.updateText(to: "")
@@ -57,19 +57,18 @@ class ItemListTableViewCell: UITableViewCell {
     }
     
     private func updateThumbnail(imageKey: ImageKey) {
-        guard let thumbnailImageURLString = ImageCacheManager.sharedForItemList.object(forKey: imageKey)?.path else {
-            print("키에 해당하는 이미지를 찾지 못했습니다.")
+        let imageKey = ImageCacheManager.sharedForItemList.object(forKey: imageKey)
+        guard let imagePath = imageKey?.path else {
+            LogManager.generate(level: .ui, LogMessage.thereIsNoCacheKey)
             return
         }
         
-        if let image = UIImage(contentsOfFile: thumbnailImageURLString) {
-
-            self.thumbnailImage.image = image
-        } else {
-            print("이미지를 불러오는데 실패했습니다.")
-            self.thumbnailImage.image = UIImage(systemName: "carrot")
+        guard let image = UIImage(contentsOfFile: imagePath) else {
+            LogManager.generate(level: .ui, LogMessage.thereIsNoImage)
+            return
         }
-        
+
+        self.thumbnailImage.image = image
     }
     
     func update(itemViewModel: ItemViewModel) {
@@ -93,6 +92,8 @@ class ItemListTableViewCell: UITableViewCell {
             self.interestCountLabel.updateText(interestCount: interestCount)
         }
     }
+    
+    // MARK: Auto Layout
 
     private func configureItemListTableViewCell() {
         self.contentView.backgroundColor = .white
@@ -195,5 +196,10 @@ class ItemListTableViewCell: UITableViewCell {
                 constant: -4
             )
         ])
+    }
+    
+    enum LogMessage {
+        static let thereIsNoCacheKey = "키에 해당하는 이미지를 찾지 못했습니다."
+        static let thereIsNoImage = "경로에 이미지가 존재하지 않습니다."
     }
 }

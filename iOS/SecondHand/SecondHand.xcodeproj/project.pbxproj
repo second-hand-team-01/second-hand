@@ -99,7 +99,6 @@
 		FF61AD292A36F294006AE167 /* ItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD282A36F294006AE167 /* ItemListViewController.swift */; };
 		FF61AD2B2A36F2E1006AE167 /* TabBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */; };
 		FF61AD2E2A36FB68006AE167 /* ItemListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */; };
-		FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */; };
 		FF61AD602A3BE4D9006AE167 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61AD5F2A3BE4D9006AE167 /* ColorPalette.swift */; };
 		FFD62C212A3C1BBF0014D2D4 /* CapsuleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD62C1B2A3C1BBF0014D2D4 /* CapsuleLabel.swift */; };
 		FFD62C222A3C1BBF0014D2D4 /* TimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD62C1C2A3C1BBF0014D2D4 /* TimeLabel.swift */; };
@@ -262,7 +261,6 @@
 		FF61AD282A36F294006AE167 /* ItemListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListViewController.swift; sourceTree = "<group>"; };
 		FF61AD2A2A36F2E1006AE167 /* TabBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarType.swift; sourceTree = "<group>"; };
 		FF61AD2D2A36FB68006AE167 /* ItemListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListTableViewCell.swift; sourceTree = "<group>"; };
-		FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListItem.swift; sourceTree = "<group>"; };
 		FF61AD5F2A3BE4D9006AE167 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		FFD62C1B2A3C1BBF0014D2D4 /* CapsuleLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapsuleLabel.swift; sourceTree = "<group>"; };
 		FFD62C1C2A3C1BBF0014D2D4 /* TimeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLabel.swift; sourceTree = "<group>"; };
@@ -389,7 +387,6 @@
 				FFD62C2D2A3C1DFC0014D2D4 /* ShareComponent */,
 				FF61AD2C2A36F956006AE167 /* Tabbar */,
 				FF61AD312A36FC72006AE167 /* ItemList */,
-				FF61AD4E2A3A9008006AE167 /* IssueListItem.swift */,
 				63F3EEB92A35D90500D81961 /* Detail */,
 				63B91A062A8A52470098483D /* Category */,
 				637F70472A7CDE7800622FB2 /* Edit */,
@@ -1056,7 +1053,6 @@
 				63F101182A907DC70094B580 /* URLResponse+validate.swift in Sources */,
 				63F100F32A8E333B0094B580 /* DetailViewModel.swift in Sources */,
 				FFD62C2F2A3C1E260014D2D4 /* Typography.swift in Sources */,
-				FF61AD4F2A3A9008006AE167 /* IssueListItem.swift in Sources */,
 				633AC5B32A480C6C00A34501 /* LogManager.swift in Sources */,
 				63A3FCDE2A3740C800361FAD /* SellerInfoView.swift in Sources */,
 				63732BD82A95BC570012D4A6 /* ItemListDTO.swift in Sources */,

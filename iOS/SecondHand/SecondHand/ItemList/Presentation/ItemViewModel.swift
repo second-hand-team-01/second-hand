@@ -39,11 +39,11 @@ struct ItemViewModel: Hashable, Sendable {
     let interestCount: String
     let chatCount: String
     
-    static func == (lhs: ItemViewModel, rhs: ItemViewModel) -> Bool {
-        return lhs.itemIndex == rhs.itemIndex
-    }
-    
     func hash(into hasher: inout Hasher) {
         hasher.combine(itemIndex)
+    }
+    
+    static func == (lhs: ItemViewModel, rhs: ItemViewModel) -> Bool {
+        return lhs.itemIndex == rhs.itemIndex
     }
 }
