@@ -121,6 +121,25 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
     
+    
+    private func didTapDoneButton() {
+        let enteredDetail = self.makeDetailFromEnteredInfo()
+        if self.editUseCase.detailToEdit != nil {
+            self.editUseCase.editDetail(detailViewModel: enteredDetail)
+        } else {
+            self.editUseCase.createProduct(detailViewModel: enteredDetail)
+        }
+    }
+    
+    private func configureDoneButton() {
+        let action = UIAction { _ in
+            self.didTapDoneButton()
+        }
+        
+        self.doneButton.primaryAction = action
+        self.navigationItem.rightBarButtonItem = self.doneButton
+    }
+    
     private func getImageCacheKeys() -> [NSString] {
         let images = self.albumImageViewer.images
         var imageCacheKeys: [NSString] = []
@@ -159,6 +178,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     }
     
     // MARK: - Create Product
+
     private var failToCreateAlert: UIAlertController = {
         let alertController = UIAlertController(
             title: Components.AlertMessage.failToCreate,
@@ -172,7 +192,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         alertController.addAction(alertAction)
         return alertController
     }()
-    
+
     private func setCreateResultSender() {
         self.editUseCase.createResultSender = { (result: Bool) in
             DispatchQueue.main.async {
@@ -186,24 +206,6 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     }
     
     // MARK: - Edit Product
-    
-    private func didTapDoneButton() {
-        let enteredDetail = self.makeDetailFromEnteredInfo()
-        if self.editUseCase.detailToEdit != nil {
-            self.editUseCase.editDetail(detailViewModel: enteredDetail)
-        } else {
-            self.editUseCase.createProduct(detailViewModel: enteredDetail)
-        }
-    }
-    
-    private func configureDoneButton() {
-        let action = UIAction { _ in
-            self.didTapDoneButton()
-        }
-        
-        self.doneButton.primaryAction = action
-        self.navigationItem.rightBarButtonItem = self.doneButton
-    }
     
     private var failToEditAlert: UIAlertController = {
         let alertController = UIAlertController(

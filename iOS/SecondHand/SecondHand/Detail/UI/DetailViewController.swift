@@ -21,8 +21,8 @@ final class DetailViewController: UIViewController {
         scrollView.contentInsetAdjustmentBehavior = .never
         return scrollView
     }()
-    private var detailContentView = DetailContentView(frame: .zero)
-    private var toolbar = DetailToolbar(frame: .zero)
+    private var detailContentView = DetailContentView()
+    private var toolbar = DetailToolbar()
     private var signInFailAlert: UIAlertController = {
         let alertController = UIAlertController(
             title: Components.AlertMessage.failToAddFavorite,

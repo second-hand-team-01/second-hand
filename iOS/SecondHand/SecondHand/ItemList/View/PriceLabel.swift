@@ -23,15 +23,7 @@ class PriceLabel: UILabel {
         self.font = .systemFont(ofSize: 17, weight: .semibold)
     }
     
-    func updateText(to price: Int) {
-        let decimalFormatter = NumberFormatter()
-        decimalFormatter.numberStyle = .decimal
-        
-        if let decimalPrice = decimalFormatter.string(from: NSNumber(value: price)) {
-            self.text = "\(decimalPrice)원"
-        } else {
-            self.text = "\(price)원"
-        }
-
+    func updateText(to price: String) {
+        self.text = price
     }
 }

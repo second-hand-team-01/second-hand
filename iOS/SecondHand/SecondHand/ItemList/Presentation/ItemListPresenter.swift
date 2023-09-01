@@ -12,6 +12,20 @@ protocol ItemListPresenter {
 }
 
 struct ItemListPresentService: ItemListPresenter {
+    private var decimalFormatter: NumberFormatter = {
+        var formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
+    private func convertToDecimalPrice(from price: Int) -> String {
+        if let decimalPrice = decimalFormatter.string(from: NSNumber(value: price)) {
+            return "\(decimalPrice)원"
+        } else {
+            return "\(price)원"
+        }
+    }
+    
     func convert(from models: [ItemModel]) -> [ItemViewModel] {
         let viewModels = models.map { (model: ItemModel) in
             let itemIndex = model.itemIndex
@@ -19,7 +33,7 @@ struct ItemListPresentService: ItemListPresenter {
             let title = model.name
             let location = model.location
             let passedTime = PassedTimeGenerator.generate(from: model.postedAt)
-            let price = model.price
+            let price = self.convertToDecimalPrice(from: model.price)
             let status = StatusLabel.Status(rawValue: model.status) ?? StatusLabel.Status.forSale
             let interestCount = "\(model.interestCount)"
             let chatCount = "\(model.chatCount)"
