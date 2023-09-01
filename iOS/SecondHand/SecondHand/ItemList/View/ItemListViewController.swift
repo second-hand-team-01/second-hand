@@ -224,14 +224,13 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         let confirmAlertAction = self.makeConfirmAlertAction()
         self.alertController.addAction(confirmAlertAction)
     }
-    
+
     // MARK: Observer
-    
+
     private func addObservers() {
 //        self.addObserverUserSignIn()
-        self.addObserverItemDeleted()
     }
-    
+
     @objc private func loadUserLocation(_ notification: Notification) {
         Task {
             let userLocation = await self.itemListRepository.fetchUserLocation()
@@ -244,26 +243,13 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             }
         }
     }
-    
+
     private func addObserverUserSignIn() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.loadUserLocation),
             name: Notification.userHasBeenSigned,
             object: nil
-        )
-    }
-    
-    private func addObserverItemDeleted() {
-        let using: (Notification) -> () = { [weak self] notification in
-            self?.loadItemList()
-            }
-        
-        NotificationCenter.default.addObserver(
-            forName: Notification.itemHasBeenDeleted,
-            object: nil,
-            queue: .main,
-            using: using
         )
     }
 
