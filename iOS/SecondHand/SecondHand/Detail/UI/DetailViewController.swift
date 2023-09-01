@@ -15,7 +15,7 @@ final class DetailViewController: UIViewController {
         return scrollView
     }()
     private var detailContentView = DetailContentView()
-    private var toolbar = DetailToolbar()
+    private var toolbar = DetailToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     private var detailUseCase: DetailUseCase
 
     required init?(coder: NSCoder) {

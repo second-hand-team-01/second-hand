@@ -10,10 +10,16 @@ import UIKit
 class DetailToolbar: UIToolbar {
     private let favoriteButton: UIBarButtonItem = {
         let favoriteButton = UIBarButtonItem()
-        favoriteButton.image = UIImage(systemName: "heart")
+        favoriteButton.image = UIImage(systemName: "heart")?.resizableImage(
+            withCapInsets: UIEdgeInsets(
+                top: 8,
+                left: 8,
+                bottom: 8,
+                right: 8
+            )
+        )
         favoriteButton.style = .plain
         favoriteButton.tintColor = .red
-        favoriteButton.customView?.frame.size = CGSize(width: 28, height: 28)
         return favoriteButton
     }()
     private let priceIndicator: UIBarButtonItem = {
@@ -52,13 +58,17 @@ class DetailToolbar: UIToolbar {
     }
     
     private func addBarButtonItems() {
+        let fixedSpace = UIBarButtonItem.fixedSpace(0)
+        
         let flexibleSpace = UIBarButtonItem(
             barButtonSystemItem: .flexibleSpace,
             target: self,
-            action: nil)
+            action: nil
+        )
         
         let toolbarItems: [UIBarButtonItem] = [
             self.favoriteButton,
+            fixedSpace,
             self.priceIndicator,
             flexibleSpace,
             self.chatButton

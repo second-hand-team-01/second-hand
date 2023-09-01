@@ -18,9 +18,9 @@ struct FormatPriceGenerator {
     
     static func generate(from price: Int) -> String {
         guard let result = self.numberFormatter.string(from: NSNumber(value: price)) else {
-            return "\(price)원"
+            return "\(price) 원"
         }
 
-        return "\(result)원"
+        return "\(result) 원"
     }
 }

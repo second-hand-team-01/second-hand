@@ -20,9 +20,9 @@ struct ItemListPresentService: ItemListPresenter {
     
     private func convertToDecimalPrice(from price: Int) -> String {
         if let decimalPrice = decimalFormatter.string(from: NSNumber(value: price)) {
-            return "\(decimalPrice)원"
+            return "\(decimalPrice) 원"
         } else {
-            return "\(price)원"
+            return "\(price) 원"
         }
     }
     
