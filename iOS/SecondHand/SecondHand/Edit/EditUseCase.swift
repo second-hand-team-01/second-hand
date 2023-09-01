@@ -21,7 +21,7 @@ class EditUseCase {
         self.detailToEdit = detailToEdit
         self.editRemoteDataSource = EditRemoteDataSource(itemIndex: detailToEdit?.itemIndex ?? 0)
     }
-    
+
     private func createEditModel(
         from detailViewModel: DetailViewModel,
         isEdit: Bool
@@ -32,8 +32,7 @@ class EditUseCase {
         let price = detailViewModel.price
         let description = detailViewModel.description
         let locationIndex = 1
-        let categoryIndex = 1
-        let status = "판매중"
+        let categoryIndex = detailViewModel.categoryIndex
         
         let editModel = EditModel(
             imageKeys: imageKeys,
@@ -42,13 +41,12 @@ class EditUseCase {
             price: price,
             description: description,
             locationIndex: locationIndex,
-            categoryIndex: categoryIndex,
-            status: status
+            categoryIndex: categoryIndex
         )
         
         return editModel
     }
-    
+
     var createResultSender: ((Bool) -> ())?
     
     func createProduct(detailViewModel: DetailViewModel) {

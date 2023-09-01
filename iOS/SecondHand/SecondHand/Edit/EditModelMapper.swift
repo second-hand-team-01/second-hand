@@ -24,7 +24,6 @@ struct EditModelMapper {
         let description = detailModel.productInfo.description
         let locationIndex = 0
         let categoryIndex = 0
-        let status = detailModel.status
         
         return EditModel(
             imageKeys: imageKeys,
@@ -33,8 +32,7 @@ struct EditModelMapper {
             price: price,
             description: description,
             locationIndex: locationIndex,
-            categoryIndex: categoryIndex,
-            status: status
+            categoryIndex: categoryIndex
         )
     }
 }

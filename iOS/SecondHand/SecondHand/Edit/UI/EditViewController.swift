@@ -15,16 +15,16 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         configuration.image = UIImage(systemName: "camera")
         configuration.imagePlacement = .top
         configuration.buttonSize = .medium
-
+        
         var title = AttributedString("0/10")
         title.font = .systemFont(ofSize: 13)
         configuration.attributedTitle = title
-
+        
         button.tintColor = .black
         button.configuration = configuration
         button.layer.cornerRadius = 15
         button.layer.borderWidth = 0.5
-
+        
         return button
     }()
     private let bottomLine: UIView = {
@@ -39,7 +39,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         configuration.filter = .images
         return PHPickerViewController(configuration: configuration)
     }()
-
+    
     // MARK: - UseCase
     
     private var editUseCase: EditUseCase
@@ -66,10 +66,10 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         let presentPickerViewController = UIAction { _ in
             self.present(self.pickerViewController, animated: true)
         }
-
+        
         self.imageUploadButton.addAction(presentPickerViewController, for: .touchUpInside)
     }
-
+    
     private func addCancelButtonToPickerViewController() {
         self.pickerViewController.navigationItem.leftBarButtonItem?.primaryAction = UIAction(handler: { _ in
             self.pickerViewController.dismiss(animated: true)
@@ -96,7 +96,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
                     LogManager.generate(level: .presentation, LogMessage.failToCastingUIImage)
                     return
                 }
-
+                
                 self.albumImageViewer.add(image: image)
                 
                 let imageCount = self.albumImageViewer.getCountOfImages()
@@ -116,14 +116,27 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         let action = UIAction { _ in
             self.dismiss(animated: true)
         }
-
+        
         self.cancelButton.primaryAction = action
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
-    
-    
+
     private func didTapDoneButton() {
-        let enteredDetail = self.makeDetailFromEnteredInfo()
+        guard let enteredDetail = self.makeDetailFromEnteredInfo() else {
+            var inputNotCompletedAlertController = UIAlertController(
+                title: "요청 실패",
+                message: "입력된 정보중 누락된 부분이 있습니다",
+                preferredStyle: .alert
+            )
+            let confirmAction = UIAlertAction(title: "확인", style: .default)
+            inputNotCompletedAlertController.addAction(confirmAction)
+            
+            DispatchQueue.main.async {
+                self.present(inputNotCompletedAlertController, animated: true)
+            }
+            return
+        }
+
         if self.editUseCase.detailToEdit != nil {
             self.editUseCase.editDetail(detailViewModel: enteredDetail)
         } else {
@@ -160,25 +173,29 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         return imageCacheKeys
     }
     
-    private func makeDetailFromEnteredInfo() -> DetailViewModel {
+    private func makeDetailFromEnteredInfo() -> DetailViewModel? {
         let imageKeys = getImageCacheKeys()
         let productInfo = self.productInputView.getEnteredProductInfo()
-        let title = productInfo[0]
-        let price = Int(productInfo[1]) ?? 0
-        let description = productInfo[2]
-        let categoryIndex = self.categoryIndex ?? 0
+        if let title = productInfo[0],
+           let priceString = productInfo[1],
+           let price = Int(priceString),
+           let description = productInfo[2],
+           let categoryIndex = self.categoryIndex
+        {
+            return DetailViewModel(
+                imageKeys: imageKeys,
+                title: title,
+                price: price,
+                description: description,
+                categoryIndex: categoryIndex
+            )
+        }
         
-        return DetailViewModel(
-            imageKeys: imageKeys,
-            title: title,
-            price: price,
-            description: description,
-            categoryIndex: categoryIndex
-        )
+        return nil
     }
     
     // MARK: - Create Product
-
+    
     private var failToCreateAlert: UIAlertController = {
         let alertController = UIAlertController(
             title: Components.AlertMessage.failToCreate,
@@ -192,7 +209,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         alertController.addAction(alertAction)
         return alertController
     }()
-
+    
     private func setCreateResultSender() {
         self.editUseCase.createResultSender = { (result: Bool) in
             DispatchQueue.main.async {
@@ -240,7 +257,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
     
     private func showCategoryDidCateogryListButtonTapped() {
         self.productInputView.categoryListButtonTapSender = { _ in
-            self.navigationController?.pushViewController(CategoryTableViewController(), animated: true)
+            self.navigationController?.pushViewController(self.categoryTableViewController, animated: true)
         }
     }
     
@@ -294,7 +311,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
         super.viewWillLayoutSubviews()
         self.addConstraints()
     }
-
+    
     private func addConstraints() {
         self.addConstraintToImageUploadButton()
         self.addConstraintToAlbumImageViewer()
@@ -358,7 +375,7 @@ final class EditViewController: UIViewController, PHPickerViewControllerDelegate
             self.productInputView.heightAnchor.constraint(equalToConstant: 700)
         ])
     }
-
+    
     enum LogMessage {
         static let failToLoadImage = "선택한 이미지를 로드 할 수 없습니다."
         static let failToCastingUIImage = "선택한 이미지를 캐스팅 할 수 없습니다."

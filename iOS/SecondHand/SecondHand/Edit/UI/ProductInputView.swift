@@ -53,11 +53,11 @@ final class ProductInputView: UIView, UITextViewDelegate {
         self.descriptionTextView.textColor = .black
         DispatchQueue.main.async {
             self.titleTextField.text = "\(detailToEdit.name)"
-            self.priceTextField.text = "₩ \(detailToEdit.price)"
+            self.priceTextField.text = "\(detailToEdit.price)"
             self.descriptionTextView.text = "\(detailToEdit.description)"
         }
     }
-    
+
     // MARK: - Description TextView
     
     private func setDelegateToDescriptionTextView() {
@@ -80,14 +80,13 @@ final class ProductInputView: UIView, UITextViewDelegate {
         let action = UIAction { _ in
             self.categoryListButtonTapSender?(true)
         }
-
         self.categoryListButton.addAction(action, for: .touchUpInside)
     }
 
-    func getEnteredProductInfo() -> [String] {
-        let title = self.titleTextField.text ?? ""
-        let price = self.priceTextField.text ?? "0"
-        let description = self.descriptionTextView.text ?? ""
+    func getEnteredProductInfo() -> [String?] {
+        let title = self.titleTextField.text == ""            ? nil : self.titleTextField.text
+        let price = self.priceTextField.text == ""            ? nil : self.priceTextField.text
+        let description = self.descriptionTextView.text == "" ? nil : self.descriptionTextView.text
         return [title, price, description]
     }
 

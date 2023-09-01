@@ -15,5 +15,4 @@ struct EditModel {
     var description: String
     var locationIndex: Int
     var categoryIndex: Int
-    var status: String
 }
