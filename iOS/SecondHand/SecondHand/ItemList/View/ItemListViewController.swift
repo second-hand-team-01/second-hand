@@ -13,8 +13,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         remoteDataSource: ItemListRemoteDataService(),
         localDataSource: ItemListLocalDataService()
     )
-    private let defaultLocationIndex = 1041
-    private lazy var locationIndex = self.defaultLocationIndex
+    private var locationIndex = Default.locationIndex
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
@@ -29,12 +28,19 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.setUpTableView()
         self.configureNavigationItem()
         self.setUpUI()
+        self.addObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.loadItemList(isRefresh: true)
     }
     
     // MARK: Table View
-    
+
     private var itemListTableView: UITableView = UITableView()
     private var datasource: UITableViewDiffableDataSource<Section, ItemViewModel>!
+    private var currentSnapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
     
     enum Section: Int, CaseIterable {
         case item
@@ -45,7 +51,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.itemListTableView.delegate = self
         self.itemListTableView.register(ItemListTableViewCell.self, forCellReuseIdentifier: ItemListTableViewCell.identifier)
         self.configureDataSource()
-        self.loadItemList(isFirst: true)
+        self.currentSnapShot.appendSections([.item])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -64,7 +70,9 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             return
         }
         let viewController = DetailViewController(itemIndex: itemIndex)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        DispatchQueue.main.async {
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     private func configureDataSource() {
@@ -80,31 +88,53 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.itemListTableView.dataSource = self.datasource
     }
     
-    private func configureSnapshot(with items: [ItemViewModel], isFirst: Bool = false) {
+    private func configureSnapshot(with items: [ItemViewModel]) {
         guard items.isEmpty == false else {
             return
         }
         
-        var snapShot = datasource.snapshot()
-        if isFirst { snapShot.appendSections([.item]) }
-        snapShot.appendItems(items, toSection: .item)
-        self.datasource.apply(snapShot)
+        var snapShot = NSDiffableDataSourceSnapshot<Section, ItemViewModel>()
+        snapShot.appendSections([.item])
+        let itemsWithCurrentSnapshot = self.currentSnapShot.itemIdentifiers + items
+        snapShot.appendItems(itemsWithCurrentSnapshot, toSection: .item)
+        self.currentSnapShot.appendItems(items)
+        self.datasource.applySnapshotUsingReloadData(snapShot)
     }
     
-    private func loadItemList(isFirst: Bool = false) {
+    private func loadItemList(isRefresh: Bool = false) {
         Task {
-            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex)
+            if isRefresh {
+                self.currentSnapShot.deleteAllItems()
+                self.currentSnapShot.appendSections([.item])
+                DispatchQueue.main.async {
+                    self.datasource.applySnapshotUsingReloadData(self.currentSnapShot)
+                }
+            }
+            
+            let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex, isRefresh: isRefresh)
             let itemViewModels = self.itemListPresenter.convert(from: itemModels)
-            self.configureSnapshot(with: itemViewModels, isFirst: isFirst)
+            self.configureSnapshot(with: itemViewModels)
         }
     }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
+    
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = self.datasource.itemIdentifier(for: indexPath) else { return }
+        guard let lastItem = self.datasource.snapshot().itemIdentifiers.last else { return }
+        if itemIdentifier == lastItem {
             self.loadItemList()
         }
     }
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let position = scrollView.contentOffset.y
+//        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
+//            self.loadItemList()
+//        }
+//    }
     
     // MARK: Navigation Bar
 
@@ -129,12 +159,12 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     
     // MARK: Create Product
     
-    private func setUpUI() {
-        self.view.addSubview(self.createButton)
-        self.addActionToCreateButton()
-        self.addActionToAlertController()
-    }
-    
+    private var editNavigationViewController: UINavigationController = {
+        var editViewController = EditViewController(editUseCase: EditUseCase())
+        var navigationController = UINavigationController(rootViewController: editViewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        return navigationController
+    }()
     private var createButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = .orange
@@ -144,11 +174,17 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         return UIButton(configuration: configuration)
     }()
     
+    private func setUpUI() {
+        self.view.addSubview(self.createButton)
+        self.editNavigationViewController.modalPresentationStyle = .fullScreen
+        self.addActionToCreateButton()
+        self.addActionToAlertController()
+    }
+
     private func addActionToCreateButton() {
         let action = UIAction { _ in
             if !SecretKeys.accessToken.isEmpty {
-                let editViewController = EditViewController(editUseCase: EditUseCase())
-                self.present(UINavigationController(rootViewController: editViewController), animated: true)
+                self.present(self.editNavigationViewController, animated: true)
             } else {
                 self.present(self.alertController, animated: true)
             }
@@ -191,6 +227,11 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     
     // MARK: Observer
     
+    private func addObservers() {
+//        self.addObserverUserSignIn()
+        self.addObserverItemDeleted()
+    }
+    
     @objc private func loadUserLocation(_ notification: Notification) {
         Task {
             let userLocation = await self.itemListRepository.fetchUserLocation()
@@ -204,7 +245,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         }
     }
     
-    private func addObservers() {
+    private func addObserverUserSignIn() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.loadUserLocation),
@@ -213,6 +254,19 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         )
     }
     
+    private func addObserverItemDeleted() {
+        let using: (Notification) -> () = { [weak self] notification in
+            self?.loadItemList()
+            }
+        
+        NotificationCenter.default.addObserver(
+            forName: Notification.itemHasBeenDeleted,
+            object: nil,
+            queue: .main,
+            using: using
+        )
+    }
+
     // MARK: Auto Layout
     
     override func viewWillLayoutSubviews() {
@@ -250,5 +304,8 @@ extension ItemListViewController: UIScrollViewDelegate {
                 weight: .medium
             )
         )
+    }
+    enum Default {
+        static let locationIndex = 1041
     }
 }

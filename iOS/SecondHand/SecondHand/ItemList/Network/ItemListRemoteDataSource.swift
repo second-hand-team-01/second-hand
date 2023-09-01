@@ -9,7 +9,10 @@ import Foundation
 
 protocol ItemListRemoteDataSource {
     func requestUserLocation() async -> UserLocationDTO.UserLocation
-    func requestData(locationIndex: Int) async -> [ItemListDTO.Item]
+    func requestData(
+        locationIndex: Int,
+        isRefresh: Bool
+    ) async -> [ItemListDTO.Item]
     func download(imageUrl: String) async -> URL?
 }
 
@@ -18,12 +21,9 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
     private var decoder = JSONDecoder()
 
     private var hasNextPage = true
-    private lazy var locationIndex: Int = 0
     private var page = 0
-    private var baseURLString: String {
-        return "\(ServerURL.base)items?locationIdx=\(self.locationIndex)&page=\(self.page)"
-    }
-    
+    private var baseURLString = "\(ServerURL.base)items?"
+
     //TODO: 사용자 지역 정보 조회 구현
     func requestUserLocation() async -> UserLocationDTO.UserLocation {
         let main = UserLocationDTO.Location(locationIdx: 5, locationName: "창성동")
@@ -32,17 +32,19 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
         return UserLocationDTO.UserLocation(main: main, sub: sub)
     }
 
-    func requestData(locationIndex: Int) async -> [ItemListDTO.Item] {
+    func requestData(locationIndex: Int, isRefresh: Bool = false) async -> [ItemListDTO.Item] {
+        if isRefresh {
+            self.page = 0
+            self.hasNextPage = true
+        }
+
         guard self.hasNextPage else {
             return []
         }
-        
-        if self.locationIndex != locationIndex {
-            self.locationIndex = locationIndex
-            self.page = 0
-        }
-        
-        guard let url = URL(string: self.baseURLString) else {
+
+        let parameterString = "locationIdx=\(locationIndex)&page=\(self.page)"
+        let urlString = self.baseURLString + parameterString
+        guard let url = URL(string: urlString) else {
             LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
             return []
         }
@@ -55,16 +57,16 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             }
             
             let decodedData = try self.decoder.decode(ItemListDTO.self, from: data)
-            let itemsDTO = decodedData.data.items
-            if decodedData.data.hasNext {
+
+            let dtoData = decodedData.data
+            let itemsDTO = dtoData.items
+            self.hasNextPage = dtoData.hasNext
+            if self.hasNextPage {
                 self.page += 1
-                self.hasNextPage = true
-            } else {
-                self.hasNextPage = false
             }
-            
+
             return itemsDTO
-            
+
         } catch let error {
             guard let decodingError = error as? DecodingError else {
                 LogManager.generate(level: .network, "\(self.debugDescription): \(error)")

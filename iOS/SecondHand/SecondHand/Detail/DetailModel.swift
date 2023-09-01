@@ -8,6 +8,7 @@
 import Foundation
 
 class DetailModel {
+    
     struct ProductInfo {
         let title: String
         let category: String

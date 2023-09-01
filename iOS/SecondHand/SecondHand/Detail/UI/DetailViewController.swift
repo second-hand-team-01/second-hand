@@ -212,7 +212,7 @@ final class DetailViewController: UIViewController {
     
     private func addObserverItemDeleted() {
         let using: (Notification) -> () = { notification in
-            if let result = notification.object as? Bool {
+            if notification.object != nil {
                 self.navigationController?.popViewController(animated: true)
                 Toast(
                     text: "상품이 삭제되었습니다.",

@@ -101,7 +101,7 @@ struct DetailRepository {
         return result
     }
     
-    func fetchDeleteResult() async -> Bool {
+    func fetchDeleteResult() async -> Int? {
         return await self.detailRemoteDataSource.requestDelete()
     }
     

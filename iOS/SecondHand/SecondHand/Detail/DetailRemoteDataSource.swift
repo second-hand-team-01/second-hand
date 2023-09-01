@@ -148,19 +148,19 @@ struct DetailRemoteDataSource {
     }
     
     // MARK: Delete Request
-    func requestDelete() async -> Bool {
+    func requestDelete() async -> Int? {
         guard let detleteRequest = self.makeDeleteURLRequest() else {
-            return false
+            return nil
         }
         
         do {
             let (_, response) = try await session.data(for: detleteRequest)
             
             guard URLResponse.validate(response) else {
-                return false
+                return nil
             }
             
-            return true
+            return self.itemIndex
             
         } catch let error {
             if let decodingError = error as? DecodingError {
@@ -168,7 +168,7 @@ struct DetailRemoteDataSource {
             }
 
             LogManager.generate(level: .network, "\(error)")
-            return false
+            return nil
         }
     }
 }
