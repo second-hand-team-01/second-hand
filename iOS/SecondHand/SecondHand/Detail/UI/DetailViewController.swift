@@ -44,19 +44,20 @@ final class DetailViewController: UIViewController {
     
     // MARK: Navigation Bar
     
+    private var editNavigationViewController: UINavigationController = {
+        var editViewController = EditViewController(editUseCase: EditUseCase())
+        var navigationController = UINavigationController(rootViewController: editViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        return navigationController
+    }()
+    
     private func makeEditAction() -> UIAlertAction {
         let handler: (UIAlertAction) -> () = { _ in
             if let detail = self.detailUseCase.detail {
                 let detailToEdit = EditModelMapper.convertFrom(detail, itemIndex: self.detailUseCase.itemIndex)
-                let editUseCase = EditUseCase(
-                    detailToEdit: detailToEdit,
-                    editRemoteDataSource: EditRemoteDataSource(itemIndex: detailToEdit.itemIndex)
-                )
-                let editViewController = EditViewController(editUseCase: editUseCase)
-                self.present(
-                    UINavigationController(rootViewController: editViewController),
-                    animated: true
-                )
+                let editViewController = EditViewController(editUseCase: EditUseCase(detailToEdit: detailToEdit))
+                self.editNavigationViewController.setViewControllers([editViewController], animated: true)
+                self.present(self.editNavigationViewController, animated: true)
             }
         }
 

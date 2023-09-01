@@ -25,6 +25,8 @@ final class EditRemoteDataSource {
         self.itemIndex = itemIndex
         self.baseURLString = ServerURL.base + "items"
     }
+    
+    // MARK: Create Request
 
     private func createRequest(url: URL, isEdit: Bool) -> URLRequest {
         var request = URLRequest(url: url)
@@ -38,7 +40,9 @@ final class EditRemoteDataSource {
         return request
     }
 
-    private func createParameters(from editModel: EditModel) -> [String: Any] {
+    // MARK: Create Body
+
+    private func createBodyParameters(from editModel: EditModel) -> [String: Any] {
         var parameters: [String: Any] = [:]
         parameters["name"]          = editModel.name
         parameters["price"]         = editModel.price
@@ -61,6 +65,18 @@ final class EditRemoteDataSource {
         return body
     }
     
+    private func createBody(with editModel: EditModel) -> Data {
+        let bodyParameters = self.createBodyParameters(from: editModel)
+        var body = self.createBody(with: bodyParameters)
+        
+        let imagesData = self.createImageToString(from: editModel.imageKeys)
+        body = self.add(imagesData: imagesData, to: body)
+
+        return body
+    }
+
+    // MARK: Create Image Data
+    
     private func createImageToString(from imageKeys: [NSString]) -> [Data] {
         var imagesData: [Data] = []
         imageKeys.forEach { (key: NSString) in
@@ -72,7 +88,7 @@ final class EditRemoteDataSource {
         DataCacheManager.shared.removeAllObjects()
         return imagesData
     }
-    
+
     private func add(imagesData: [Data], to body: Data) -> Data {
         var body = body
         imagesData.enumerated().forEach { (index: Int, imageData: Data) in
@@ -85,22 +101,10 @@ final class EditRemoteDataSource {
             body.append("\r\n".data(using: .utf8) ?? Data())
         }
         body.append("--\(self.boundary)--".data(using: .utf8) ?? Data())
-        
-        return body
-    }
-
-    private func createBody(with editModel: EditModel, isEdit: Bool) -> Data {
-        let parameters = self.createParameters(from: editModel)
-        var body = self.createBody(with: parameters)
-
-        if isEdit == false {
-            let imagesData = self.createImageToString(from: editModel.imageKeys)
-            body = self.add(imagesData: imagesData, to: body)
-        }
 
         return body
     }
-    
+
     // MARK: - Create
     
     struct CreateResponseDTO: DTO {
@@ -114,6 +118,8 @@ final class EditRemoteDataSource {
         var data: Data
     }
     
+    // MARK: - Create
+    
     func createProduct(editModel: EditModel) async -> Bool {
         guard let url = URL(string: self.baseURLString) else {
             LogManager.generate(level: .network, NetworkError.badURL.message)
@@ -121,7 +127,7 @@ final class EditRemoteDataSource {
         }
 
         var request = self.createRequest(url: url, isEdit: false)
-        let body = self.createBody(with: editModel, isEdit: false)
+        let body = self.createBody(with: editModel)
         request.httpBody = body
         
         do {
@@ -151,8 +157,8 @@ final class EditRemoteDataSource {
             return false
         }
 
-        var request = self.createRequest(url: url, isEdit: false)
-        let body = self.createBody(with: editModel, isEdit: true)
+        var request = self.createRequest(url: url, isEdit: true)
+        let body = self.createBody(with: editModel)
         request.httpBody = body
 
         do {
