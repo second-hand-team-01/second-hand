@@ -39,12 +39,12 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             LogManager.generate(level: .network, NetworkError.badURL.message)
             return nil
         }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let accessToken = "Bearer " + SecretKeys.accessToken
         request.addValue(accessToken, forHTTPHeaderField: "Authorization")
-        
+
         return request
     }
 

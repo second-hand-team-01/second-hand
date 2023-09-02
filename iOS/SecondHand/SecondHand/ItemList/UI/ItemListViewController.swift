@@ -118,10 +118,14 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         guard let userLocation = await self.itemListRepository.fetchUserLocation() else {
             self.present(failToloadUserLocationAlert, animated: true)
             self.locationIndex = 0
+            DispatchQueue.main.async {
+                self.locationButton.title = ""
+            }
             return
         }
 
         self.locationIndex = userLocation.main.locationIdx
+        self.locationButton.update(location: userLocation)
     }
     
     private func loadItemList(isRefresh: Bool = false) {
@@ -158,16 +162,10 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     }
     
     // MARK: Navigation Bar
-
-    private var locationButton: UIBarButtonItem = {
-        var barButtonItem = UIBarButtonItem()
-        barButtonItem.title = "역삼1동"
-        barButtonItem.style = .plain
-        return barButtonItem
-    }()
+    
+    private var locationButton = LocationMenuButton()
     
     private func configureNavigationItem() {
-        self.locationButton.target = self
         self.navigationItem.leftBarButtonItem = self.locationButton
 
         let categoryButton = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(categoryButtonTapped))
