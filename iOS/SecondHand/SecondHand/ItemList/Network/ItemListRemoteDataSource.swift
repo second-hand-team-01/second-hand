@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ItemListRemoteDataSource {
-    func requestUserLocation() async -> UserLocationDTO.UserLocation
+    func requestUserLocation() async -> UserLocationDTO.UserLocation?
     func requestData(
         locationIndex: Int,
         isRefresh: Bool
@@ -22,15 +22,59 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
 
     private var hasNextPage = true
     private var page = 0
-    private var baseURLString = "\(ServerURL.base)items?"
+    
+    private var defaultLocation = UserLocationDTO.UserLocation(
+        main: UserLocationDTO.Location(locationIdx: 1041, locationName: "역삼1동")
+    )
 
-    //TODO: 사용자 지역 정보 조회 구현
-    func requestUserLocation() async -> UserLocationDTO.UserLocation {
-        let main = UserLocationDTO.Location(locationIdx: 5, locationName: "창성동")
-        let sub = UserLocationDTO.Location(locationIdx: 6, locationName: "통의동")
+    // MARK: 지역 정보 조회
+    
+    private func makeLocationRequest() -> URLRequest? {
+        let urlString = ServerURL.base + "location"
+        guard let url = URL(string: urlString) else {
+            LogManager.generate(level: .network, NetworkError.badURL.message)
+            return nil
+        }
         
-        return UserLocationDTO.UserLocation(main: main, sub: sub)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let accessToken = "Bearer " + SecretKeys.accessToken
+        request.addValue(accessToken, forHTTPHeaderField: "Authorization")
+        
+        return request
     }
+
+    func requestUserLocation() async -> UserLocationDTO.UserLocation? {
+        guard SecretKeys.accessToken.isEmpty == false else {
+            return self.defaultLocation
+        }
+
+        guard let locationRequest = self.makeLocationRequest() else {
+            return nil
+        }
+
+        do {
+            let (data, response) = try await self.session.data(for: locationRequest)
+            
+            guard URLResponse.validate(response) else {
+                return nil
+            }
+            
+            let decodedData = try self.decoder.decode(UserLocationDTO.self, from: data)
+            return decodedData.data
+            
+        } catch let error {
+            if let decodingError = error as? DecodingError {
+                LogManager.generate(level: .network, "\(decodingError)")
+            } else {
+                LogManager.generate(level: .network, "\(error)")
+            }
+
+            return nil
+        }
+    }
+    
+    // MARK: 아이템 목록 조회
 
     func requestData(locationIndex: Int, isRefresh: Bool = false) async -> [ItemListDTO.Item] {
         if isRefresh {
@@ -42,8 +86,8 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             return []
         }
 
-        let parameterString = "locationIdx=\(locationIndex)&page=\(self.page)"
-        let urlString = self.baseURLString + parameterString
+        let parameterString = "items?locationIdx=\(locationIndex)&page=\(self.page)"
+        let urlString = ServerURL.base + parameterString
         guard let url = URL(string: urlString) else {
             LogManager.generate(level: .network, "\(self.debugDescription): \(NetworkError.badURL.message)")
             return []
@@ -51,7 +95,7 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
 
         do {
             let (data, response) = try await self.session.data(from: url)
-            
+
             guard URLResponse.validate(response) else {
                 return []
             }
@@ -80,6 +124,8 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
             return []
         }
     }
+    
+    // MARK: 상품 이미지 다운로드
     
     func download(imageUrl: String) async -> URL? {
         guard let url = URL(string: imageUrl) else {

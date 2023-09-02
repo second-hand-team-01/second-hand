@@ -15,7 +15,7 @@ struct UserLocationDTO: DTO {
 
     struct UserLocation: Codable {
         var main: Location
-        var sub: Location
+        var sub: Location?
     }
 
     var success: Bool
