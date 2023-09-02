@@ -11,7 +11,7 @@ protocol ItemListRepository {
     var remoteDataSource: ItemListRemoteDataSource { get }
     var localDataSource: ItemListLocalDataSource { get }
     
-    func fetchUserLocation() async -> UserLocationDTO.UserLocation
+    func fetchUserLocation() async -> UserLocationDTO.UserLocation?
     func fetchItemList(
         locationIndex: Int,
         isRefresh: Bool
@@ -30,7 +30,7 @@ final class ItemListRepositoryService: ItemListRepository {
         self.localDataSource = localDataSource
     }
     
-    func fetchUserLocation() async -> UserLocationDTO.UserLocation {
+    func fetchUserLocation() async -> UserLocationDTO.UserLocation? {
         return await self.remoteDataSource.requestUserLocation()
     }
     

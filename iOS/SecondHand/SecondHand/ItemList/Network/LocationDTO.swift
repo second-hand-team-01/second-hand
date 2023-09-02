@@ -8,15 +8,21 @@
 import Foundation
 
 struct UserLocationDTO: DTO {
-    struct Location: Codable {
-        var locationIdx: Int
-        var locationName: String
+    struct UserLocation: Codable {
+        struct Main: Codable {
+            var locationIdx: Int
+            var locationName: String
+        }
+        
+        struct Sub: Codable {
+            var locationIdx: Int?
+            var locationName: String?
+        }
+        
+        var main: Main
+        var sub: Sub
     }
 
-    struct UserLocation: Codable {
-        var main: Location
-        var sub: Location?
-    }
 
     var success: Bool
     var status: Int

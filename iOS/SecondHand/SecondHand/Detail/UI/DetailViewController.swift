@@ -138,7 +138,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func addMenuBarButtonItemToNavigationBar() {
-        var button = UIButton(type: .custom)
+        let button = UIButton(type: .custom)
         button.frame.size = CGSize(width: 24, height: 24)
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         

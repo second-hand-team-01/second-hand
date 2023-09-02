@@ -13,7 +13,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         remoteDataSource: ItemListRemoteDataService(),
         localDataSource: ItemListLocalDataService()
     )
-    private var locationIndex = Default.locationIndex
+    private var locationIndex = 0
     private var alertController: UIAlertController = {
         let alertController = UIAlertController(
             title: "로그인을 먼저 해주세요",
@@ -28,7 +28,6 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.setUpTableView()
         self.configureNavigationItem()
         self.setUpUI()
-        self.addObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +73,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-
+    
     private func configureDataSource() {
         self.datasource = UITableViewDiffableDataSource<Section, ItemViewModel>(tableView: self.itemListTableView, cellProvider: {tableView, indexPath, itemViewModel in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemListTableViewCell.identifier, for: indexPath) as? ItemListTableViewCell else {
@@ -101,6 +100,30 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.datasource.applySnapshotUsingReloadData(snapShot)
     }
     
+    private func loadUserLocation() async {
+        let failToloadUserLocationAlert = UIAlertController(
+            title: "지역 정보 조회 실패",
+            message: nil,
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(
+            title: "확인",
+            style: .default
+        ) { _ in
+            self.dismiss(animated: true)
+        }
+        failToloadUserLocationAlert.addAction(confirmAction)
+        
+        guard let userLocation = await self.itemListRepository.fetchUserLocation() else {
+            self.present(failToloadUserLocationAlert, animated: true)
+            self.locationIndex = 0
+            return
+        }
+
+        self.locationIndex = userLocation.main.locationIdx
+    }
+    
     private func loadItemList(isRefresh: Bool = false) {
         Task {
             if isRefresh {
@@ -109,6 +132,11 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
                 DispatchQueue.main.async {
                     self.datasource.applySnapshotUsingReloadData(self.currentSnapShot)
                 }
+                await self.loadUserLocation()
+            }
+
+            guard self.locationIndex != 0 else {
+                return
             }
             
             let itemModels = await self.itemListRepository.fetchItemList(locationIndex: self.locationIndex, isRefresh: isRefresh)
@@ -128,13 +156,6 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
             self.loadItemList()
         }
     }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let position = scrollView.contentOffset.y
-//        if position > self.itemListTableView.contentSize.height - scrollView.frame.height {
-//            self.loadItemList()
-//        }
-//    }
     
     // MARK: Navigation Bar
 
@@ -162,7 +183,7 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     private var editNavigationViewController: UINavigationController = {
         var editViewController = EditViewController(editUseCase: EditUseCase())
         var navigationController = UINavigationController(rootViewController: editViewController)
-        navigationController.modalPresentationStyle = .overFullScreen
+        navigationController.modalPresentationStyle = .fullScreen
         return navigationController
     }()
     private var createButton: UIButton = {
@@ -176,7 +197,6 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     
     private func setUpUI() {
         self.view.addSubview(self.createButton)
-        self.editNavigationViewController.modalPresentationStyle = .fullScreen
         self.addActionToCreateButton()
         self.addActionToAlertController()
     }
@@ -220,37 +240,9 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
     private func addActionToAlertController() {
         let cancelAlertAction = self.makeCancelAlertAction()
         self.alertController.addAction(cancelAlertAction)
-        
+
         let confirmAlertAction = self.makeConfirmAlertAction()
         self.alertController.addAction(confirmAlertAction)
-    }
-
-    // MARK: Observer
-
-    private func addObservers() {
-//        self.addObserverUserSignIn()
-    }
-
-    @objc private func loadUserLocation(_ notification: Notification) {
-        Task {
-            let userLocation = await self.itemListRepository.fetchUserLocation()
-            self.locationIndex = userLocation.main.locationIdx
-
-            if self.datasource.snapshot().numberOfItems > 0 {
-                var emptySnapshot = self.datasource.snapshot()
-                emptySnapshot.deleteAllItems()
-                await self.datasource.applySnapshotUsingReloadData(emptySnapshot)
-            }
-        }
-    }
-
-    private func addObserverUserSignIn() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.loadUserLocation),
-            name: Notification.userHasBeenSigned,
-            object: nil
-        )
     }
 
     // MARK: Auto Layout
@@ -259,11 +251,11 @@ final class ItemListViewController: UIViewController, UITableViewDelegate {
         self.layoutItemListUITableView()
         self.addConstraintToCreateButton()
     }
-    
+
     private func layoutItemListUITableView() {
         self.itemListTableView.frame = view.bounds
     }
-    
+
     private func addConstraintToCreateButton() {
         self.createButton.translatesAutoresizingMaskIntoConstraints = false
 

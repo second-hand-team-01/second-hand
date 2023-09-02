@@ -23,9 +23,13 @@ final class ItemListRemoteDataService: ItemListRemoteDataSource {
     private var hasNextPage = true
     private var page = 0
     
-    private var defaultLocation = UserLocationDTO.UserLocation(
-        main: UserLocationDTO.Location(locationIdx: 1041, locationName: "역삼1동")
-    )
+    private var defaultLocation: UserLocationDTO.UserLocation = {
+        let defaultMain = UserLocationDTO.UserLocation.Main(locationIdx: 1041, locationName: "역삼1동")
+        return UserLocationDTO.UserLocation(
+            main: defaultMain,
+            sub: UserLocationDTO.UserLocation.Sub()
+        )
+    }()
 
     // MARK: 지역 정보 조회
     
