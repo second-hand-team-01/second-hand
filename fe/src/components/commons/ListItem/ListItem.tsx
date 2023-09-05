@@ -28,7 +28,7 @@ export interface ListItemProps {
   timeStamp: Date;
   price: number | null;
   state: '예약중' | '판매중' | string | null;
-  like: number | null;
+  like: number | null | undefined;
   chat: number | null;
   moreBtn: boolean;
   interestChecked: boolean;
@@ -94,24 +94,24 @@ export const ListItem = ({
     const icon = targetElement.closest('svg');
     const itemIdx = parseInt(currentTargetElement.id);
     if (!itemIdx) return;
-    if (icon?.id === 'heart') {
-      const { error } = await postFavoriteItemAPI({
-        itemIdx,
-        interestChecked: true,
-      });
-      if (error) return;
-      setInterestChecked(true);
-      return;
-    }
-    if (icon?.id === 'heartFill') {
-      const { error } = await postFavoriteItemAPI({
-        itemIdx,
-        interestChecked: false,
-      });
-      if (error) return;
-      setInterestChecked(false);
-      return;
-    }
+    // if (icon?.id === 'heart') {
+    //   const { error } = await postFavoriteItemAPI({
+    //     itemIdx,
+    //     interestChecked: true,
+    //   });
+    //   if (error) return;
+    //   setInterestChecked(true);
+    //   return;
+    // }
+    // if (icon?.id === 'heartFill') {
+    //   const { error } = await postFavoriteItemAPI({
+    //     itemIdx,
+    //     interestChecked: false,
+    //   });
+    //   if (error) return;
+    //   setInterestChecked(false);
+    //   return;
+    // }
     if (icon?.id === 'more') {
       moreBtnClickHandler(e);
       return;

@@ -121,7 +121,8 @@ export interface APISalesItem {
   status: string;
   price: number;
   chat: number;
-  like: number;
+  like?: number;
+  interest: number;
   interestChecked: boolean;
 }
 

@@ -350,7 +350,7 @@ export const convertAPISalesItemsToListItems = (
       status,
       price,
       chat,
-      like,
+      interest,
       interestChecked,
     } = item;
 
@@ -362,7 +362,7 @@ export const convertAPISalesItemsToListItems = (
       timeStamp: new Date(postedAt),
       price: price,
       state: status,
-      like,
+      like: interest,
       chat: chat,
       moreBtn: false,
       interestChecked,
