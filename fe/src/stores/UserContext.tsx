@@ -162,6 +162,13 @@ export const UserContextProvider = ({ children }) => {
     });
   };
 
+  if (
+    userInfo.memberIdx === null &&
+    localStorage.getItem('loginToken') !== null
+  ) {
+    localStorage.removeItem('loginToken');
+  }
+
   return (
     <UserContext.Provider
       value={{

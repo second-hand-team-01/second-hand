@@ -9,7 +9,8 @@ export interface APIFavoriteItem {
   status: string;
   price: number;
   chat: number;
-  like: number;
+  like?: number;
+  interest?: number;
 }
 
 export type FavoriteItem = ListItemProps;

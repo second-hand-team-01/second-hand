@@ -129,7 +129,6 @@ const convertAPIItemDetailsToItemDetails = (
     imageUrl,
   } = details;
 
-  console.log(lastModifiedAt);
   const newDetails = {
     itemIdx,
     title: name,
@@ -149,6 +148,7 @@ const convertAPIItemDetailsToItemDetails = (
     postedAt: new Date(lastModifiedAt),
     images: imageUrl,
   };
+
   return newDetails;
 };
 
@@ -160,6 +160,7 @@ export const getItemDetailAPI = async (
     const res = (await customFetch<null, APIItemDetail>({
       path: `/items/${itemIdx}`,
       method: 'GET',
+      auth: true,
     })) as Response<APIItemDetail>;
 
     if (!res || !res.data || res.error) {
@@ -349,7 +350,7 @@ export const convertAPISalesItemsToListItems = (
       status,
       price,
       chat,
-      like,
+      interest,
       interestChecked,
     } = item;
 
@@ -361,7 +362,7 @@ export const convertAPISalesItemsToListItems = (
       timeStamp: new Date(postedAt),
       price: price,
       state: status,
-      like,
+      like: interest,
       chat: chat,
       moreBtn: false,
       interestChecked,
