@@ -5,6 +5,7 @@ import '@styles/index.css';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './constants/routes';
 import { UserContextProvider } from '@stores/UserContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
   // if (process.env.NODE_ENV === 'development') {
@@ -12,13 +13,27 @@ function App() {
   //   worker.start();
   // }
 
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retry: 0,
+        suspense: true,
+      },
+    },
+  });
+
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <UserContextProvider>
-        <RouterProvider router={router} />
-      </UserContextProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <UserContextProvider>
+          <RouterProvider router={router} />
+        </UserContextProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
