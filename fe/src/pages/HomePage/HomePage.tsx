@@ -14,7 +14,7 @@ import { UserContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
 import { ReactQuerySuspense } from '@components/commons/ReactQuerySuspense/ReactQuerySuspense';
-import { HomeList } from './HomeContainer/HomeList/HomeList';
+import { HomeList } from './HomeList/HomeList';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -156,12 +156,10 @@ export const HomePage = () => {
         footerOption={{ type: 'tab' }}
       >
         <S.Home>
-          <ReactQuerySuspense>
-            <HomeList
-              categoryIdx={categoryIdx}
-              userMainLocationIdx={userMainLocationIdx}
-            />
-          </ReactQuerySuspense>
+          <HomeList
+            categoryIdx={categoryIdx}
+            userMainLocationIdx={userMainLocationIdx}
+          />
           <S.FloatingBtn>
             <Button
               shape={'floating'}

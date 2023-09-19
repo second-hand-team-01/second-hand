@@ -1,10 +1,6 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import {
-  QueryErrorResetBoundary,
-  QueryKey,
-  useQuery,
-} from '@tanstack/react-query';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Loading } from '../Loading/Loading';
 
 export const ReactQuerySuspense = ({ children }) => {
@@ -20,7 +16,7 @@ export const ReactQuerySuspense = ({ children }) => {
             </div>
           )}
         >
-          <Suspense fallback={<Loading></Loading>}>{children}</Suspense>
+          <Suspense fallback={<Loading />}>{children}</Suspense>
         </ErrorBoundary>
       )}
     </QueryErrorResetBoundary>
