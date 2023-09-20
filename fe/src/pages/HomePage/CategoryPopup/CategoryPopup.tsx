@@ -2,6 +2,8 @@ import { Button, Layout, Portal, Error } from '@commons/index';
 import * as S from './CategoryPopupStyle';
 import { CategoryElement } from './CategoryElement/CategoryElement';
 import { Category } from '@type-store/services/category';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 
 interface CategoryPopupProps {
   categoryState: { data: Category[] | null; error: Error | null };
@@ -19,6 +21,7 @@ export const CategoryPopup = ({
   selectCategoryIdx,
 }: CategoryPopupProps) => {
   const [isOpen, setOpen] = categoryPopupOpenState;
+  const [beforeUnmountFlag, setBeforeUnmountFlag] = useState(false);
   const { data, error } = categoryState;
 
   if (!isOpen) {
@@ -26,7 +29,13 @@ export const CategoryPopup = ({
   }
 
   return (
-    <Portal id="test-root" slide="left" isOpen={isOpen}>
+    <Portal
+      id="test-root"
+      slide="right"
+      setOpen={setOpen}
+      beforeUnmountFlag={beforeUnmountFlag}
+      setBeforeUnmountFlag={setBeforeUnmountFlag}
+    >
       <Layout
         headerOption={{
           type: 'nav',
@@ -39,7 +48,9 @@ export const CategoryPopup = ({
                 shape="ghost"
                 color="neutralText"
                 icon="arrowLeft"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setBeforeUnmountFlag(true);
+                }}
               ></Button>
             ),
           },

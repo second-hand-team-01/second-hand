@@ -20,7 +20,7 @@ export const HomePage = () => {
   const { pathname } = useLocation();
 
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
-  const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
+
   const [categoryState, categoryFetch] = useFetch(getCategoryAPI, []);
   const [categoryIdx, setCategoryIdx] = useState<number | undefined>(undefined);
   const { isLoggedIn, userInfo } = useContext(UserContext);
@@ -116,9 +116,6 @@ export const HomePage = () => {
       ? removeLocationHandler(foundLocationIdx)
       : addLocationHandler(foundLocationIdx, foundLocationTown);
   };
-  useEffect(() => {
-    setCategoryPopupRendered(true);
-  }, []);
 
   const locationPopupHandler = () => {
     setLocationPopupOpen(true);
@@ -169,16 +166,16 @@ export const HomePage = () => {
           </S.FloatingBtn>
         </S.Home>
       </Layout>
-      {isCategoryPopupRendered && (
-        <CategoryPopup
-          categoryState={categoryState}
-          categoryFetch={categoryFetch}
-          categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
-          selectCategoryIdx={(selectedCategoryIdx) =>
-            setCategoryIdx(selectedCategoryIdx)
-          }
-        />
-      )}
+
+      <CategoryPopup
+        categoryState={categoryState}
+        categoryFetch={categoryFetch}
+        categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
+        selectCategoryIdx={(selectedCategoryIdx) =>
+          setCategoryIdx(selectedCategoryIdx)
+        }
+      />
+
       {isLocationPopupOpen && (
         <LocationPopup
           userInfo={userInfo}
