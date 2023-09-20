@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import * as S from './PortalStyle';
 
@@ -13,13 +13,13 @@ export const Portal = ({
   id,
   children,
   slide,
-  isOpen = true,
 }: PortalProps): React.ReactPortal => {
   const modalDiv = useRef(
     document.getElementById(id) || document.createElement('div')
   );
 
   const dynamicDiv = !modalDiv.current.parentElement;
+  slide && modalDiv.current.classList.add('slide-' + slide);
 
   useEffect(() => {
     if (dynamicDiv) {
@@ -27,22 +27,22 @@ export const Portal = ({
       document.body.appendChild(modalDiv.current);
       modalDiv.current.classList.add('modal-root');
     }
-
     return () => {
       modalDiv.current.remove();
     };
   }, [id]);
 
   useEffect(() => {
-    if (!slide) return;
-    const slideClassName = 'slide-' + slide;
-    modalDiv.current.classList.add(slideClassName);
-    if (isOpen) {
+    setTimeout(() => {
       modalDiv.current.classList.add('open');
-    } else {
+    }, 0);
+
+    return () => {
       modalDiv.current.classList.remove('open');
-    }
-  }, [isOpen]);
+    };
+  }, []);
+
+  useEffect(() => {}, []);
 
   return createPortal(
     <S.PortalWrap>

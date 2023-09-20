@@ -21,8 +21,12 @@ export const CategoryPopup = ({
   const [isOpen, setOpen] = categoryPopupOpenState;
   const { data, error } = categoryState;
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Portal id="modal-root" slide="left" isOpen={isOpen}>
+    <Portal id="test-root" slide="left" isOpen={isOpen}>
       <Layout
         headerOption={{
           type: 'nav',
