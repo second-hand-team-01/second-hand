@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   FC,
   Component,
+  Suspense,
 } from 'react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Loading, Error } from '@commons/index';
@@ -66,12 +67,13 @@ export const ReactQuerySuspense: FC<ReactQuerySuspenseProps> = ({
                 resetErrorBoundary();
                 reset();
               }}
+              button="새로고침"
             >
               {error.message || '에러가 발생했습니다. 다시 시도해주세요'}
             </Error>
           )}
         >
-          <React.Suspense fallback={<Loading />}>{children}</React.Suspense>
+          <Suspense fallback={<Loading />}>{children}</Suspense>
         </ErrorBoundary>
       )}
     </QueryErrorResetBoundary>

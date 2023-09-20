@@ -1,6 +1,9 @@
 import { ListItem, Loading } from '@components/commons';
 import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
-import { getItemListAPI, convertItemsToListItems } from '@services/items/items';
+import {
+  getItemListAPI,
+  convertItemListToListItems,
+} from '@services/items/items';
 import * as S from '../HomePageStyle';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -21,28 +24,33 @@ const Contents = ({ categoryIdx, userMainLocationIdx }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const queryKey = ['home-items', { categoryIdx, userMainLocationIdx }];
-  const queryQuery = async ({ pageParam = 0 }) => {
-    const items = await getItemListAPI(pageParam, categoryIdx);
-    return items;
-  };
-
-  const getNextPageParam = (lastPage, allPages) => {
-    if (lastPage.hasNext) {
-      return allPages.length;
-    }
-    return undefined;
-  };
-
-  const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery(
-    queryKey,
-    queryQuery,
-    { getNextPageParam }
-  );
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery(
+      ['home-items', { categoryIdx, userMainLocationIdx }],
+      ({ pageParam = 0 }) => {
+        return getItemListAPI(pageParam, categoryIdx);
+      },
+      {
+        getNextPageParam: (lastPage, allPages) => {
+          if (lastPage.hasNext) {
+            return allPages.length;
+          }
+          return undefined;
+        },
+        select: (data) => {
+          const newPages = data.pages.map((page) =>
+            convertItemListToListItems(page)
+          );
+          return { ...data, pages: newPages };
+        },
+        staleTime: 10000,
+        cacheTime: 12000,
+      }
+    );
 
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && !isFetchingNextPage) {
+      if (entry.isIntersecting && !isFetchingNextPage && hasNextPage) {
         fetchNextPage();
       }
     });
@@ -53,7 +61,7 @@ const Contents = ({ categoryIdx, userMainLocationIdx }) => {
   return (
     <>
       {data?.pages
-        .flatMap((pageData) => convertItemsToListItems(pageData.items))
+        .flatMap((pageData) => pageData.items)
         .map((item) => (
           <ListItem
             key={item.itemIdx}

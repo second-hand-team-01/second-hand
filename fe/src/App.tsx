@@ -6,8 +6,9 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './constants/routes';
 import { UserContextProvider } from '@stores/UserContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-function App() {
+export const App = () => {
   // if (process.env.NODE_ENV === 'development') {
   //   const { worker } = require('@mocks/browser');
   //   worker.start();
@@ -16,10 +17,6 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: 0,
         suspense: true,
       },
     },
@@ -33,8 +30,7 @@ function App() {
           <RouterProvider router={router} />
         </UserContextProvider>
       </ThemeProvider>
+      <ReactQueryDevtools position="bottom-right" panelPosition="right" />
     </QueryClientProvider>
   );
-}
-
-export default App;
+};
