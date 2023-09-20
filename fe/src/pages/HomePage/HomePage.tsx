@@ -1,17 +1,11 @@
 import {
   Layout,
-  ListItem,
-  Error,
   Button,
-  Loading,
   LocationSelector,
   LocationPopup,
 } from '@commons/index';
 import * as S from './HomePageStyle';
-import { useIntersectionObserver } from '@hooks/useIntersectionObserver/useIntersectionObserver';
 import { useEffect, useState, useContext } from 'react';
-import { ListItemProps } from '@commons/ListItem/ListItem';
-import { getItemsAPI } from '@services/items/items';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
 import { useFetch } from '@hooks/useFetch/useFetch';
@@ -19,26 +13,16 @@ import { getCategoryAPI } from '@services/categories/categories';
 import { UserContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
-
-interface CategoryAndPage {
-  page: number;
-  categoryIdx: number | undefined;
-}
+import { HomeList } from './HomeList/HomeList';
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [hasNext, setHasNext] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
   const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
   const [categoryState, categoryFetch] = useFetch(getCategoryAPI, []);
-  const [categoryAndPage, setCategoryAndPage] = useState<CategoryAndPage>({
-    page: 0,
-    categoryIdx: undefined,
-  });
-  const { page, categoryIdx } = categoryAndPage;
+  const [categoryIdx, setCategoryIdx] = useState<number | undefined>(undefined);
   const { isLoggedIn, userInfo } = useContext(UserContext);
 
   const { userMainLocationIdx, userMainTown } = userInfo.main;
@@ -60,32 +44,6 @@ export const HomePage = () => {
     | null
   >(null);
 
-  const runAPI = async ({ page, categoryIdx }: CategoryAndPage) => {
-    !loading && setLoading(true);
-    errorMsg && setErrorMsg(null);
-
-    const { data, error } = await getItemsAPI(
-      page,
-      categoryIdx,
-      userMainLocationIdx
-      // userInfo.main.locationIdx
-    );
-    if (error) return setErrorMsg(error.message);
-    if (data) {
-      setHasNext(data.hasNext);
-
-      if (page === 0) {
-        setItems(data.items);
-        if (scrollY !== 0) scrollTo({ top: 0 });
-      } else setItems((prevItems) => [...prevItems, ...data.items]);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    runAPI(categoryAndPage);
-  }, [categoryAndPage]);
-
   useEffect(() => {
     const fetchLocationData = async () => {
       const locationData = await getAllLocationData();
@@ -94,8 +52,6 @@ export const HomePage = () => {
 
     fetchLocationData();
   }, []);
-
-  // 데이터 put 요청 보내기~
 
   const getLocationDataByTown = (town: string | null) => {
     const foundLocationData = locationData?.find(
@@ -164,33 +120,13 @@ export const HomePage = () => {
     setCategoryPopupRendered(true);
   }, []);
 
-  const [items, setItems] = useState<ListItemProps[]>([]);
-
-  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach(async (entry) => {
-      if (entry.isIntersecting) {
-        if (!loading && hasNext) {
-          setCategoryAndPage((prevCategoryAndPage) => ({
-            ...prevCategoryAndPage,
-            page: prevCategoryAndPage.page + 1,
-          }));
-        }
-      }
-    });
-  };
-
   const locationPopupHandler = () => {
     setLocationPopupOpen(true);
   };
 
   const handleDeleteBtn = () => {
-    setCategoryAndPage({
-      page: 0,
-      categoryIdx: undefined,
-    });
+    setCategoryIdx(undefined);
   };
-
-  const setTarget = useIntersectionObserver(handleIntersection);
 
   return (
     <>
@@ -218,25 +154,10 @@ export const HomePage = () => {
         footerOption={{ type: 'tab' }}
       >
         <S.Home>
-          {errorMsg ? (
-            <Error>{errorMsg}</Error>
-          ) : loading && page === 0 ? (
-            <Loading />
-          ) : (
-            <>
-              {items?.map((item: ListItemProps) => (
-                <ListItem
-                  key={item.itemIdx}
-                  {...item}
-                  onClick={() =>
-                    navigate(`/item/${item.itemIdx}`, { state: pathname })
-                  }
-                ></ListItem>
-              ))}
-              <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
-              {loading && page !== 0 && <Loading height="40px" />}
-            </>
-          )}
+          <HomeList
+            categoryIdx={categoryIdx}
+            userMainLocationIdx={userMainLocationIdx}
+          />
           <S.FloatingBtn>
             <Button
               shape={'floating'}
@@ -254,10 +175,7 @@ export const HomePage = () => {
           categoryFetch={categoryFetch}
           categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
           selectCategoryIdx={(selectedCategoryIdx) =>
-            setCategoryAndPage({
-              categoryIdx: selectedCategoryIdx,
-              page: 0,
-            })
+            setCategoryIdx(selectedCategoryIdx)
           }
         />
       )}
