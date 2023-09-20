@@ -12,7 +12,7 @@ export const HomeList = ({ categoryIdx, userMainLocationIdx }) => {
       <Contents
         categoryIdx={categoryIdx}
         userMainLocationIdx={userMainLocationIdx}
-      ></Contents>
+      />
     </ReactQuerySuspense>
   );
 };

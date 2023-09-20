@@ -13,7 +13,6 @@ import { getCategoryAPI } from '@services/categories/categories';
 import { UserContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
-import { ReactQuerySuspense } from '@components/commons/ReactQuerySuspense/ReactQuerySuspense';
 import { HomeList } from './HomeList/HomeList';
 
 export const HomePage = () => {
@@ -24,7 +23,6 @@ export const HomePage = () => {
   const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
   const [categoryState, categoryFetch] = useFetch(getCategoryAPI, []);
   const [categoryIdx, setCategoryIdx] = useState<number | undefined>(undefined);
-
   const { isLoggedIn, userInfo } = useContext(UserContext);
 
   const { userMainLocationIdx, userMainTown } = userInfo.main;
