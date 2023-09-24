@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import * as S from './PortalStyle';
 
@@ -7,13 +7,18 @@ interface PortalProps {
   children: React.ReactNode;
   slide?: 'left' | 'right' | 'up';
   isOpen?: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  beforeUnmountFlag?: boolean;
+  setBeforeUnmountFlag?: any;
 }
 
 export const Portal = ({
   id,
   children,
   slide,
-  isOpen = true,
+  setOpen,
+  beforeUnmountFlag,
+  setBeforeUnmountFlag,
 }: PortalProps): React.ReactPortal => {
   const modalDiv = useRef(
     document.getElementById(id) || document.createElement('div')
@@ -27,22 +32,26 @@ export const Portal = ({
       document.body.appendChild(modalDiv.current);
       modalDiv.current.classList.add('modal-root');
     }
-
     return () => {
       modalDiv.current.remove();
     };
   }, [id]);
 
   useEffect(() => {
-    if (!slide) return;
-    const slideClassName = 'slide-' + slide;
-    modalDiv.current.classList.add(slideClassName);
-    if (isOpen) {
+    slide && modalDiv.current.classList.add('slide-' + slide);
+    setTimeout(() => {
       modalDiv.current.classList.add('open');
-    } else {
-      modalDiv.current.classList.remove('open');
-    }
-  }, [isOpen]);
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    if (!beforeUnmountFlag) return;
+    modalDiv.current.classList.remove('open');
+    modalDiv.current.addEventListener('transitionend', () => {
+      setOpen && setOpen(false);
+      setBeforeUnmountFlag && setBeforeUnmountFlag(false);
+    });
+  }, [beforeUnmountFlag]);
 
   return createPortal(
     <S.PortalWrap>

@@ -8,21 +8,20 @@ import * as S from './HomePageStyle';
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
-import { useFetch } from '@hooks/useFetch/useFetch';
-import { getCategoryAPI } from '@services/categories/categories';
 import { UserContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
 import { HomeList } from './HomeList/HomeList';
+import { Category } from '@type-store/services/category';
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
-  const [isCategoryPopupRendered, setCategoryPopupRendered] = useState(false);
-  const [categoryState, categoryFetch] = useFetch(getCategoryAPI, []);
-  const [categoryIdx, setCategoryIdx] = useState<number | undefined>(undefined);
+  const [selectedCategory, setSelectedCategory] = useState<
+    Category | undefined
+  >(undefined);
   const { isLoggedIn, userInfo } = useContext(UserContext);
 
   const { userMainLocationIdx, userMainTown } = userInfo.main;
@@ -116,16 +115,13 @@ export const HomePage = () => {
       ? removeLocationHandler(foundLocationIdx)
       : addLocationHandler(foundLocationIdx, foundLocationTown);
   };
-  useEffect(() => {
-    setCategoryPopupRendered(true);
-  }, []);
 
   const locationPopupHandler = () => {
     setLocationPopupOpen(true);
   };
 
   const handleDeleteBtn = () => {
-    setCategoryIdx(undefined);
+    setSelectedCategory(undefined);
   };
 
   return (
@@ -143,19 +139,16 @@ export const HomePage = () => {
             region: isLoggedIn ? userMainTown : LOCATION_FALLBACK.locationName,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
-              !categoryState.data && categoryFetch();
             },
             handleDeleteBtn,
-            selectedCategory: categoryState.data?.find(
-              (category) => category.idx === categoryIdx
-            ),
+            selectedCategory,
           },
         }}
         footerOption={{ type: 'tab' }}
       >
         <S.Home>
           <HomeList
-            categoryIdx={categoryIdx}
+            selectedCategory={selectedCategory}
             userMainLocationIdx={userMainLocationIdx}
           />
           <S.FloatingBtn>
@@ -169,16 +162,12 @@ export const HomePage = () => {
           </S.FloatingBtn>
         </S.Home>
       </Layout>
-      {isCategoryPopupRendered && (
-        <CategoryPopup
-          categoryState={categoryState}
-          categoryFetch={categoryFetch}
-          categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
-          selectCategoryIdx={(selectedCategoryIdx) =>
-            setCategoryIdx(selectedCategoryIdx)
-          }
-        />
-      )}
+
+      <CategoryPopup
+        categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
+        setSelectedCategory={setSelectedCategory}
+      />
+
       {isLocationPopupOpen && (
         <LocationPopup
           userInfo={userInfo}

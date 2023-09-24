@@ -8,27 +8,43 @@ import * as S from '../HomePageStyle';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ReactQuerySuspense } from '@components/commons/ReactQuerySuspense/ReactQuerySuspense';
+import { Category } from '@type-store/services/category';
 
-export const HomeList = ({ categoryIdx, userMainLocationIdx }) => {
+export const HomeList = ({
+  selectedCategory,
+  userMainLocationIdx,
+}: {
+  selectedCategory: Category | undefined;
+  userMainLocationIdx: number;
+}) => {
   return (
     <ReactQuerySuspense>
       <Contents
-        categoryIdx={categoryIdx}
+        selectedCategory={selectedCategory}
         userMainLocationIdx={userMainLocationIdx}
       />
     </ReactQuerySuspense>
   );
 };
 
-const Contents = ({ categoryIdx, userMainLocationIdx }) => {
+const Contents = ({
+  selectedCategory,
+  userMainLocationIdx,
+}: {
+  selectedCategory: Category | undefined;
+  userMainLocationIdx: number;
+}) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery(
-      ['home-items', { categoryIdx, userMainLocationIdx }],
+      [
+        'home-items',
+        { selectedCategory: selectedCategory?.idx, userMainLocationIdx },
+      ],
       ({ pageParam = 0 }) => {
-        return getItemListAPI(pageParam, categoryIdx);
+        return getItemListAPI(pageParam, selectedCategory?.idx);
       },
       {
         getNextPageParam: (lastPage, allPages) => {
