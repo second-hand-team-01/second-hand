@@ -2,16 +2,33 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.12'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // 1
 }
 
 group = 'codesquad'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+    snippetsDir = file('build/generated-snippets') // 2
+}
+
+test {
+    outputs.dir snippetsDir // 3
+    useJUnitPlatform()
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
+}
+
+asciidoctor { // 4
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 repositories {
@@ -19,8 +36,12 @@ repositories {
 }
 
 dependencies {
-    // jwt
+    // JWT
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // Spring Rest Docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // 5
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // 6
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.6'
@@ -39,6 +60,36 @@ dependencies {
     implementation 'org.yaml:snakeyaml:1.29'
 }
 
+task copyDocument(type: Copy) { // 7
+    dependsOn asciidoctor
+
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn copyDocument // 8
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+/**
+ * 1 - Gradle7부터 사용하는 플러그인 -> Asciidoc 파일 변환, build 디렉토리에 복사하는 플러그인
+ *
+ * 2 - 생성된 스니펫을 저장할 위치 지정 -> Gradle은 `build/generated-snippets`에 스니펫이 생성됨
+ *
+ * 3 - 테스트 Task의 결과 아웃풋 디렉토리를 `build/generated-snippets`로 지정
+ *
+ * 4 - Asciidoctor Task가 사용할 인풋 디렉토리를 `build/generated-snippets`로 지정
+ *     dependsOn test로 문서가 작성되기 전 테스트가 실행되도록 설정
+ *
+ * 5 - MockMvc를 테스트에 사용하기 위한 의존성 추가
+ *
+ * 6 - 일반 텍스트를 처리하고 HTML 파일을 생성하는 의존성 추가
+ *
+ * 7 - Asciidoctor Task로 생성한 `build/docs/asciidoc` 파일을 `src/main/resources/static/docs`로 복사
+ *
+ * 8 - bootJar 실행 시 -> copyDocument를 먼저 실행하도록 설정
+ */
