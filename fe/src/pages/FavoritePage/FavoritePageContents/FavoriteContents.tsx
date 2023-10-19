@@ -5,7 +5,7 @@ import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
 import { useContext, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ERROR_MESSAGE } from '@constants/error';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 
 interface FavoriteContentsProps {
   categoryIdx?: number;
@@ -22,10 +22,10 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
     contentsFetch();
   }, [categoryIdx]);
 
-  const { isLoggedIn } = useContext(UserContext);
+  const userInfo = useContext(UserInfoContext);
 
   const renderComps = () => {
-    if (isLoggedIn === false) {
+    if (userInfo?.isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
     if (loading) {

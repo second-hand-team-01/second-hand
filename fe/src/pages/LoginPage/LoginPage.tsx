@@ -8,7 +8,7 @@ import {
   Layout,
   Dialog,
 } from '@components/commons';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext, UserInfoDispatchContext } from '@stores/UserContext';
 import { OAUTH_CLIENT_ID, USER_INFO_KEY } from '@constants/login';
 import { URL, API_URL } from '@constants/apis';
 
@@ -68,13 +68,8 @@ const passwordReducer = (state: State, action: Action): State => {
 };
 
 export const LoginPage = () => {
-  const {
-    isLoggedIn,
-    userInfo,
-    loginHandler,
-    logoutHandler,
-    setLocationHandler,
-  } = useContext(UserContext);
+  const userInfo = useContext(UserInfoContext);
+  const userInfoDispatch = useContext(UserInfoDispatchContext);
   const navigate = useNavigate();
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -158,18 +153,41 @@ export const LoginPage = () => {
 
   const loginBtnHandler = async () => {
     try {
-      const data = await authenticateUser(enteredId, enteredPassword);
-      loginHandler(data.token, data.memberInfo);
+      const userInfoData = await authenticateUser(enteredId, enteredPassword);
+      localStorage.setItem('loginToken', userInfoData.token);
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'LOGIN',
+          payload: {
+            isLoggedIn: true,
+            memberIdx: userInfoData.memberInfo.memberIdx,
+            loginId: userInfoData.memberInfo.loginId,
+            imgUrl: userInfoData.memberInfo.imgUrl,
+          },
+        });
 
       const userLocationInfo = await getUserLocationInfo();
-      const mainLocation = userLocationInfo.data.main;
-      const subLocation = userLocationInfo.data.sub;
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_LOCATION',
+          payload: {
+            main: {
+              locationIdx: userLocationInfo.data.main.locationIdx,
+              town: userLocationInfo.data.main.town,
+            },
+            sub: {
+              locationIdx: userLocationInfo.data.sub.locationIdx,
+              town: userLocationInfo.data.sub.town,
+            },
+          },
+        });
 
-      setLocationHandler(mainLocation, subLocation);
+      localStorage.setItem(
+        USER_INFO_KEY,
+        JSON.stringify(userInfoData.memberInfo)
+      );
 
-      localStorage.setItem(USER_INFO_KEY, JSON.stringify(data.memberInfo));
-
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       setErrorMessage((error as Error).message);
       setDialogOpen(true);
@@ -177,7 +195,13 @@ export const LoginPage = () => {
   };
 
   const logoutBtnHandler = () => {
-    logoutHandler();
+    localStorage.removeItem('loginToken');
+    localStorage.removeItem(USER_INFO_KEY);
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'LOGOUT',
+        payload: null,
+      });
     navigate('/profile');
   };
 
@@ -205,7 +229,7 @@ export const LoginPage = () => {
         footerOption={{ type: 'tab' }}
       >
         <S.LoginPage>
-          {!isLoggedIn && (
+          {!userInfo?.isLoggedIn && (
             <S.InputSection>
               <TextInput
                 shape="large"
@@ -226,7 +250,7 @@ export const LoginPage = () => {
               />
             </S.InputSection>
           )}
-          {isLoggedIn && (
+          {userInfo?.isLoggedIn && (
             <S.ProfileSection>
               <Profile
                 imgUrl={userInfo.imgUrl ? userInfo.imgUrl : ''}
@@ -236,7 +260,7 @@ export const LoginPage = () => {
               <S.UserId>{userInfo.loginId}</S.UserId>
             </S.ProfileSection>
           )}
-          {!isLoggedIn && (
+          {!userInfo?.isLoggedIn && (
             <S.LoginButtonSection>
               <Button
                 title="로그인"
@@ -257,7 +281,7 @@ export const LoginPage = () => {
               />
             </S.LoginButtonSection>
           )}
-          {isLoggedIn && (
+          {userInfo?.isLoggedIn && (
             <S.LoginButtonSection>
               <Button
                 title="로그아웃"

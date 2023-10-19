@@ -8,7 +8,7 @@ import * as S from './HomePageStyle';
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
 import { HomeList } from './HomeList/HomeList';
@@ -22,10 +22,8 @@ export const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     Category | undefined
   >(undefined);
-  const { isLoggedIn, userInfo } = useContext(UserContext);
 
-  const { userMainLocationIdx, userMainTown } = userInfo.main;
-  const { userSubTown } = userInfo.sub;
+  const userInfo = useContext(UserInfoContext);
 
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
@@ -61,12 +59,13 @@ export const HomePage = () => {
 
   const selectedLocation = {
     main: {
-      locationIdx: userInfo.main.locationIdx,
-      town: userInfo.main.town,
+      locationIdx: userInfo?.main?.locationIdx,
+      town: userInfo?.main?.town,
     },
+
     sub: {
-      locationIdx: userInfo.sub.locationIdx,
-      town: userInfo.sub.town,
+      locationIdx: userInfo?.sub?.locationIdx,
+      town: userInfo?.sub?.town,
     },
   };
 
@@ -132,11 +131,16 @@ export const HomePage = () => {
           filterBarOptions: {
             locationPopupHandler: () => locationPopupHandler(),
             openState: [isLocationDropdownOpen, setLocationDropdownOpen],
-            mainLocation: isLoggedIn
-              ? userMainTown
+            mainLocation: userInfo?.isLoggedIn
+              ? userInfo?.main?.town
               : LOCATION_FALLBACK.locationName,
-            subLocation: userSubTown ? userSubTown : null,
-            region: isLoggedIn ? userMainTown : LOCATION_FALLBACK.locationName,
+            subLocation:
+              userInfo?.isLoggedIn && userInfo?.sub?.town
+                ? userInfo?.sub?.town
+                : null,
+            region: userInfo?.isLoggedIn
+              ? userInfo?.main?.town ?? LOCATION_FALLBACK.locationName
+              : LOCATION_FALLBACK.locationName,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
             },
@@ -149,7 +153,7 @@ export const HomePage = () => {
         <S.Home>
           <HomeList
             selectedCategory={selectedCategory}
-            userMainLocationIdx={userMainLocationIdx}
+            userMainLocationIdx={userInfo?.main?.locationIdx}
           />
           <S.FloatingBtn>
             <Button

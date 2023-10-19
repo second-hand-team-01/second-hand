@@ -15,7 +15,7 @@ export const HomeList = ({
   userMainLocationIdx,
 }: {
   selectedCategory: Category | undefined;
-  userMainLocationIdx: number;
+  userMainLocationIdx: number | null | undefined;
 }) => {
   return (
     <ReactQuerySuspense>
@@ -32,7 +32,7 @@ const Contents = ({
   userMainLocationIdx,
 }: {
   selectedCategory: Category | undefined;
-  userMainLocationIdx: number;
+  userMainLocationIdx: number | null | undefined;
 }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();

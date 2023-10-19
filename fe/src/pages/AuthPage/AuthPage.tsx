@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoDispatchContext } from '@stores/UserContext';
 import { useContext } from 'react';
 import { API_URL } from '@constants/apis';
 import { USER_INFO_KEY } from '@constants/login';
 
 export const AuthPage = () => {
-  const { loginHandler, setLocationHandler } = useContext(UserContext);
+  const userInfoDispatch = useContext(UserInfoDispatchContext);
   const location = useLocation();
   const navigate = useNavigate();
   const queryCode = new URLSearchParams(location.search).get('code');
@@ -37,22 +37,47 @@ export const AuthPage = () => {
   }, []);
 
   const runGetLoginUserInfoAPI = async () => {
-    const userInfo = await getGithubLoginToken(queryCode);
-    if (!userInfo) {
+    const userInfoData = await getGithubLoginToken(queryCode);
+    if (!userInfoData) {
       return;
     } // TODO: 에러처리
-    localStorage.setItem(
-      USER_INFO_KEY,
-      JSON.stringify(userInfo.data.memberInfo)
-    );
-    const token = userInfo.data.token;
-    const memberInfo = userInfo.data.memberInfo;
-    loginHandler(token, memberInfo);
+
+    const token = userInfoData.data.token;
+    const memberInfo = userInfoData.data.memberInfo;
+    localStorage.setItem('loginToken', token);
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'LOGIN',
+        payload: {
+          isLoggedIn: true,
+          memberIdx: memberInfo.memberIdx,
+          loginId: memberInfo.loginId,
+          imgUrl: memberInfo.imgUrl,
+        },
+      });
 
     const userLocationInfo = await getUserLocationInfo();
-    const mainLocation = userLocationInfo.data.main;
-    const subLocation = userLocationInfo.data.sub;
-    setLocationHandler(mainLocation, subLocation);
+
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'SET_LOCATION',
+        payload: {
+          main: {
+            locationIdx: userLocationInfo.data.main.locationIdx,
+            town: userLocationInfo.data.main.town,
+          },
+          sub: {
+            locationIdx: userLocationInfo.data.sub.locationIdx,
+            town: userLocationInfo.data.sub.town,
+          },
+        },
+      });
+
+    localStorage.setItem(
+      USER_INFO_KEY,
+      JSON.stringify(userInfoData.memberInfo)
+    );
+
     navigate('/');
   };
 

@@ -7,7 +7,7 @@ import { getSalesItemsAPI } from '@services/items/items';
 import { ItemStatus } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 import { Error } from '@commons/index';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
@@ -17,14 +17,14 @@ export const SalesHistoryPage = () => {
     []
   );
 
-  const { isLoggedIn } = useContext(UserContext);
+  const userInfo = useContext(UserInfoContext);
 
   useEffect(() => {
     fetch();
-  }, [status, isLoggedIn]);
+  }, [status, userInfo?.isLoggedIn]);
 
   const renderComps = () => {
-    if (isLoggedIn === false) {
+    if (userInfo?.isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
     if (loading) {

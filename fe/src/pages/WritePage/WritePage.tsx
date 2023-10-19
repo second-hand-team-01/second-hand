@@ -29,7 +29,7 @@ import {
   uploadPostItems,
   uploadEditItems,
 } from '@services/items/write';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
@@ -47,11 +47,11 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const [images, setImages] = useState<Image[]>([]);
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isAllFilled, setAllFilled] = useState(false);
-  const { isLoggedIn, userInfo } = useContext(UserContext);
-  const { locationIdx } = userInfo.main;
+  const userInfo = useContext(UserInfoContext);
+  const locationIdx = userInfo?.main?.locationIdx;
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  if (!isLoggedIn) return <Navigate to="/profile"></Navigate>;
+  if (!userInfo?.isLoggedIn) return <Navigate to="/profile"></Navigate>;
 
   useEffect(() => {
     checkAllFilled([title, description, images, categoryIdx])
