@@ -12,6 +12,40 @@ import { UserInfoContext, UserInfoDispatchContext } from '@stores/UserContext';
 import { OAUTH_CLIENT_ID, USER_INFO_KEY } from '@constants/login';
 import { URL, API_URL } from '@constants/apis';
 
+const authenticateUser = async (
+  id: string | number,
+  password: string | number
+) => {
+  const response = await fetch(`${API_URL}/login`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({ loginId: id, password: password }),
+  });
+
+  const userInfo = await response.json();
+  if (!response.ok) {
+    throw new Error(userInfo.message);
+  }
+
+  return userInfo.data;
+};
+
+// TODO : 에러 핸들링 필요
+export const getUserLocationInfo = async () => {
+  const token = localStorage.getItem('loginToken');
+  const response = await fetch(`${API_URL}/location`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+
+  return data;
+};
+
 const checkIdValidity = (id: string): boolean => {
   const regex = /^[a-zA-Z0-9]+$/;
   return regex.test(id);
@@ -117,40 +151,6 @@ export const LoginPage = () => {
     dispatchPassword({ type: 'INPUT_BLUR', val: passwordState.value });
   };
 
-  const authenticateUser = async (
-    id: string | number,
-    password: string | number
-  ) => {
-    const response = await fetch(`${API_URL}/login`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({ loginId: id, password: password }),
-    });
-
-    const userInfo = await response.json();
-    if (!response.ok) {
-      throw new Error(userInfo.message);
-    }
-
-    return userInfo.data;
-  };
-
-  // TODO : 에러 핸들링 필요
-  const getUserLocationInfo = async () => {
-    const token = localStorage.getItem('loginToken');
-    const response = await fetch(`${API_URL}/location`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-
-    return data;
-  };
-
   const loginBtnHandler = async () => {
     try {
       const userInfoData = await authenticateUser(enteredId, enteredPassword);
@@ -187,7 +187,8 @@ export const LoginPage = () => {
         JSON.stringify(userInfoData.memberInfo)
       );
 
-      // navigate('/');
+      navigate('/');
+      // 만약 이전 페이지가 home이 아니라면 해당하는 이전 페이지로 이동
     } catch (error) {
       setErrorMessage((error as Error).message);
       setDialogOpen(true);
