@@ -1,5 +1,6 @@
 import { USER_INFO_KEY } from '@constants/login';
 import { useReducer, createContext, useEffect, Dispatch } from 'react';
+import { getUserLocationInfo } from '@pages/LoginPage/LoginPage';
 
 interface UserInfo {
   isLoggedIn: boolean | null;
@@ -97,30 +98,40 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [userInfo, dispatch] = useReducer(reducer, initialUserInfo);
-  console.log(userInfo);
+  const initial = userInfo.isLoggedIn === initialUserInfo.isLoggedIn;
+
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('loginToken');
     if (!userInfo.isLoggedIn && storedUserLoggedInInformation !== null) {
-      // 로그인 토큰이 존재하면 다시 로그인 API 호출하는 로직 만들기
-    }
-  }, []);
-
-  useEffect(() => {
-    const isInitial =
-      JSON.stringify(userInfo) === JSON.stringify(initialUserInfo);
-    if (isInitial) {
       const userInfo = localStorage.getItem(USER_INFO_KEY);
       if (!userInfo) return;
-      if (userInfo === 'undefined') {
-        return localStorage.removeItem(USER_INFO_KEY);
-      }
-      if (!JSON.parse(userInfo)) {
-        return;
-      }
-
-      dispatch({ type: 'LOGIN', payload: JSON.parse(userInfo) });
+      const { memberIdx, loginId, imgUrl } = JSON.parse(userInfo);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          isLoggedIn: true,
+          memberIdx: memberIdx,
+          loginId: loginId,
+          imgUrl: imgUrl,
+        },
+      });
+      getUserLocationInfo().then((data) => {
+        dispatch({
+          type: 'SET_LOCATION',
+          payload: {
+            main: {
+              locationIdx: data.data.main.locationIdx,
+              town: data.data.main.town,
+            },
+            sub: {
+              locationIdx: data.data.sub.locationIdx,
+              town: data.data.sub.town,
+            },
+          },
+        });
+      });
     }
-  }, [userInfo]);
+  }, [initial]);
 
   return (
     <UserInfoContext.Provider value={userInfo}>
