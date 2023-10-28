@@ -12,16 +12,16 @@ import { Category } from '@type-store/services/category';
 
 export const HomeList = ({
   selectedCategory,
-  userMainLocationIdx,
+  selectedLocationIdx,
 }: {
   selectedCategory: Category | undefined;
-  userMainLocationIdx: number | null | undefined;
+  selectedLocationIdx: number | null | undefined;
 }) => {
   return (
     <ReactQuerySuspense>
       <Contents
         selectedCategory={selectedCategory}
-        userMainLocationIdx={userMainLocationIdx}
+        selectedLocationIdx={selectedLocationIdx}
       />
     </ReactQuerySuspense>
   );
@@ -29,10 +29,10 @@ export const HomeList = ({
 
 const Contents = ({
   selectedCategory,
-  userMainLocationIdx,
+  selectedLocationIdx,
 }: {
   selectedCategory: Category | undefined;
-  userMainLocationIdx: number | null | undefined;
+  selectedLocationIdx: number | null | undefined;
 }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -41,10 +41,14 @@ const Contents = ({
     useInfiniteQuery(
       [
         'home-items',
-        { selectedCategory: selectedCategory?.idx, userMainLocationIdx },
+        { selectedCategory: selectedCategory?.idx, selectedLocationIdx },
       ],
       ({ pageParam = 0 }) => {
-        return getItemListAPI(pageParam, selectedCategory?.idx);
+        return getItemListAPI(
+          pageParam,
+          selectedCategory?.idx,
+          selectedLocationIdx
+        );
       },
       {
         getNextPageParam: (lastPage, allPages) => {

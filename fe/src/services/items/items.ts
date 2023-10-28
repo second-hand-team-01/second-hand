@@ -91,7 +91,7 @@ export const convertItemListToListItems = (data: {
 export const getItemListAPI = async (
   page: number,
   categoryIdx?: number,
-  locationIdx?: number
+  locationIdx?: number | null
 ) => {
   let path = '/items';
   const queries = removeEmptyKeyValues({
