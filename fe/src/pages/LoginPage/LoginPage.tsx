@@ -32,7 +32,6 @@ const authenticateUser = async (
   return userInfo.data;
 };
 
-// TODO : 에러 핸들링 필요
 export const getUserLocationInfo = async () => {
   const token = localStorage.getItem('loginToken');
   const response = await fetch(`${API_URL}/location`, {

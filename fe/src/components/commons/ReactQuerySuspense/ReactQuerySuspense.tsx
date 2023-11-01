@@ -41,7 +41,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render() {
     if (this.state.errorInfo) {
       return this.props.fallbackRender({
-        error: this.state.error!,
+        error: this.state.error as Error,
         resetErrorBoundary: () =>
           this.setState({ error: null, errorInfo: null }),
       });

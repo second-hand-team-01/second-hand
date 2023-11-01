@@ -38,7 +38,7 @@ export const setHeader = <B>(
   if (auth) {
     const accessToken = getAccessToken();
     if (!accessToken) {
-      return {}; // TODO: 로그아웃
+      return {};
     }
     headers['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
   }
