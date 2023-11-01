@@ -7,6 +7,7 @@ import {
   Dialog,
   Layout,
   NavbarBtn,
+  LocationSelector,
 } from '@components/commons';
 import {
   useNavigate,
@@ -30,6 +31,9 @@ import {
   uploadEditItems,
 } from '@services/items/write';
 import { UserInfoContext } from '@stores/UserContext';
+import { LocationData } from '@type-store/services/location';
+import { LOCATION_FALLBACK } from '@constants/login';
+import { getAllLocationData } from '@services/locations/locations';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
@@ -48,8 +52,12 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isAllFilled, setAllFilled] = useState(false);
   const userInfo = useContext(UserInfoContext);
-  const locationIdx = userInfo?.main?.locationIdx;
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(
+    userInfo?.isLoggedIn ? userInfo?.main : LOCATION_FALLBACK
+  );
+  const [locationData, setLocationData] = useState<LocationData[] | null>(null);
+  const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
 
   if (!userInfo?.isLoggedIn) return <Navigate to="/profile"></Navigate>;
 
@@ -66,7 +74,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       images,
       price,
       categoryIdx,
-      locationIdx,
+      locationIdx: selectedLocation?.locationIdx,
     }),
     []
   );
@@ -107,7 +115,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       images,
       price,
       categoryIdx,
-      locationIdx,
+      locationIdx: selectedLocation?.locationIdx,
     }),
     []
   );
@@ -176,6 +184,31 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
     getDisplayedCategories();
   }, [categoryState]);
 
+  useEffect(() => {
+    const fetchAllLocationData = async () => {
+      const locationData = await getAllLocationData();
+      setLocationData(locationData);
+    };
+
+    fetchAllLocationData();
+  }, []);
+
+  const setSelectedLocationHandler = (locationData) => {
+    if (selectedLocation?.locationIdx === locationData.locationIdx) {
+      return;
+    }
+
+    setSelectedLocation({
+      locationIdx: locationData.locationIdx,
+      town: locationData.town,
+    });
+    setIsLocationSelectorOpen(false);
+  };
+
+  const locationSelectorHandler = () => {
+    setIsLocationSelectorOpen((prev) => !prev);
+  };
+
   return (
     <Layout
       headerOption={{
@@ -198,7 +231,13 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
           ),
         },
       }}
-      footerOption={{ type: 'tool' }}
+      footerOption={{
+        type: 'tool',
+        toolBarOptions: {
+          title: selectedLocation?.town,
+          onClick: locationSelectorHandler,
+        },
+      }}
     >
       <S.WritePage>
         <ImgPreview imageState={[images, setImages]}></ImgPreview>
@@ -253,7 +292,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
           <TextArea
             value={description}
             shape="small"
-            placeholder="역삼1동에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)" //TODO: 내 동네로 수정
+            placeholder={`${selectedLocation?.town}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)`} //TODO: 내 동네로 수정
             onChange={({ target }) => setDescription(target.value)}
             hasPadding={false}
             maxLength={1000}
@@ -278,6 +317,16 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
             </S.CategoryList>
           ))}
         </BottomSheet>
+        {isLocationSelectorOpen && (
+          <LocationSelector
+            userInfo={userInfo}
+            locationData={locationData}
+            isLocationSelectorOpen={isLocationSelectorOpen}
+            selectedLocation={selectedLocation}
+            setSelectedLocationHandler={setSelectedLocationHandler}
+            locationSelectorHandler={locationSelectorHandler}
+          />
+        )}
         <Dialog
           isOpen={isDialogOpen}
           btnInfos={{
