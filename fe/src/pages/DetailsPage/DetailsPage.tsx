@@ -21,12 +21,12 @@ import {
 import { convertDateToTimeStamp } from '@utils/common/common';
 import { ItemDetail } from '@type-store/services/items';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
 
 export const DetailsPage = () => {
-  const { userInfo } = useContext(UserContext);
+  const userInfo = useContext(UserInfoContext);
 
   const param = useParams();
   const itemIdxStr = param.itemIdx;
@@ -52,13 +52,13 @@ export const DetailsPage = () => {
       if (error) return setErrorMsg(error.message);
       if (data) {
         setDetails(data);
-        details && setInterestChecked(details.interestChecked);
+        setInterestChecked(data.interestChecked);
       }
       setLoading(false);
     })();
   }, []);
 
-  const isWriter = userInfo.memberIdx === details?.seller.memberIdx;
+  const isWriter = userInfo?.memberIdx === details?.seller.memberIdx;
 
   const handleChatClicked = () => {
     if (isWriter) {
@@ -92,6 +92,13 @@ export const DetailsPage = () => {
       });
       if (error) return;
       setInterestChecked(true);
+      setDetails((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          interest: prev.interest + 1,
+        };
+      });
       return;
     }
     if (icon?.id === 'heartFill') {
@@ -101,6 +108,13 @@ export const DetailsPage = () => {
       });
       if (error) return;
       setInterestChecked(false);
+      setDetails((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          interest: prev.interest - 1,
+        };
+      });
       return;
     }
   };

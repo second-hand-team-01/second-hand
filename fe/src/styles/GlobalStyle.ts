@@ -162,9 +162,9 @@ export const GlobalStyle = createGlobalStyle`
       width: 100%;
       max-width: ${MAX_WIDTH}px;
       z-index: 1;
+      height: 100%;
       left: 50%;
       transform: translateX(-50%);
-      height: 100%;
     }
 
     .modal-root.slide-left {
@@ -177,4 +177,27 @@ export const GlobalStyle = createGlobalStyle`
       transform: translateX(-50%);
       opacity: 1;
     }
+    
+    .modal-root.slide-right {
+      transition: transform .5s ease-in-out, opacity .2s;
+      opacity: 0;
+      transform: translateX(-${MAX_WIDTH * 2}px);
+    }
+
+    .modal-root.slide-right.open {
+      transform: translateX(-50%);
+      opacity: 1;
+    }
+    
+    .modal-root.slide-up {
+      transition: transform .5s ease-in-out, opacity .2s;
+      opacity: 0;
+      transform: translate(-50%, 100dvh);
+    }
+
+    .modal-root.slide-up.open {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+    
 `;

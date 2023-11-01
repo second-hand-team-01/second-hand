@@ -5,6 +5,9 @@ import { ButtonStyleProps } from './ButtonStyle';
 interface ButtonProps extends ButtonStyleProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onTouchEnd?: (e: React.TouchEvent<HTMLButtonElement>) => void;
+  iconClickHandler?:
+    | ((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+    | undefined;
   id?: string;
 }
 
@@ -19,6 +22,7 @@ export const Button = ({
   iconSize,
   onClick,
   onTouchEnd,
+  iconClickHandler,
   hasBorderRadius = true,
   hasBorder = false,
   backgroundColor,
@@ -41,7 +45,14 @@ export const Button = ({
       isIconBtn={!!icon}
     >
       {title && textAlign === 'left' && <span>{title}</span>}
-      {icon && <Icon name={icon} size={iconSize} color={color} />}
+      {icon && (
+        <Icon
+          name={icon}
+          size={iconSize}
+          color={color}
+          iconClickHandler={iconClickHandler}
+        />
+      )}
       {title && textAlign === 'center' && <span>{title}</span>}
       {iconRight && <Icon name={iconRight} size={iconSize} color={color} />}
     </S.Button>

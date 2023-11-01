@@ -38,7 +38,7 @@ export const setHeader = <B>(
   if (auth) {
     const accessToken = getAccessToken();
     if (!accessToken) {
-      return {}; // TODO: 로그아웃
+      return {};
     }
     headers['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
   }
@@ -46,7 +46,7 @@ export const setHeader = <B>(
   return headers;
 };
 
-export type Response<D> = {
+export type CustomResponse<D> = {
   data?: D;
   error?: Error;
 };
@@ -58,7 +58,7 @@ export const customFetch = async <B, D>({
   body,
   auth = false,
   options,
-}: FetchProps<B>): Promise<Response<D>> => {
+}: FetchProps<B>): Promise<CustomResponse<D>> => {
   let url = HOST + path;
 
   if (queries) {
@@ -97,4 +97,37 @@ export const customFetch = async <B, D>({
     }
     return { error: new Error(ERROR_MESSAGE['UNDEFINED']) };
   }
+};
+
+export const runFetch = async <B, D>({
+  path,
+  queries,
+  method,
+  body,
+  auth = false,
+  options,
+}: FetchProps<B>): Promise<D> => {
+  let url = HOST + path;
+
+  if (queries) {
+    url = addQueriesToURL(url, queries);
+  }
+
+  const init: RequestInit = {
+    method,
+    body:
+      getType(body) === Type.LiteralObject
+        ? JSON.stringify(body)
+        : (body as BodyInit),
+  };
+
+  const headers = setHeader<B>(body, options, auth);
+
+  if (headers) {
+    Object.assign(init, { headers });
+  }
+
+  const res = await fetch(url, init);
+  const { data } = await res.json();
+  return data;
 };

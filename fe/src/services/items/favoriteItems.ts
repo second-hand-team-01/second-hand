@@ -22,7 +22,7 @@ export const convertResToFavoriteItems = (
       status,
       price,
       chat,
-      like,
+      interest,
     } = item;
 
     const newItem: ListItemProps = {
@@ -33,7 +33,7 @@ export const convertResToFavoriteItems = (
       timeStamp: new Date(postedAt),
       price: price,
       state: status,
-      like,
+      like: interest,
       chat: chat,
       moreBtn: false,
       interestChecked: true,

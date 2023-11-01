@@ -16,7 +16,6 @@ export const checkPasswordValidity = (password: string): boolean => {
   return regex.test(password);
 };
 
-// TODO : any 해결하기
 export const userInfoReducer = (state: State, action: Action): any => {
   const { type, val } = action;
   switch (type) {

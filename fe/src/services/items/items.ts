@@ -12,7 +12,7 @@ import {
 } from '@type-store/services/items';
 import { ListItemProps } from '@commons/ListItem/ListItem';
 
-import { customFetch } from '@services/apis/apis';
+import { customFetch, runFetch } from '@services/apis/apis';
 import { Response } from '@hooks/useFetch/useFetch';
 import { ERROR_MESSAGE } from '@constants/error';
 import { Image, GetSalesItemsRes } from '@type-store/services/items';
@@ -50,6 +50,68 @@ export const convertItemsToListItems = (items: Item[]): ListItemProps[] => {
     };
     return newItem;
   });
+};
+
+export const convertItemListToListItems = (data: {
+  items: Item[];
+  hasNext: boolean;
+}): { items: ListItemProps[]; hasNext: boolean } => {
+  const convertedItems = data?.items?.map((item) => {
+    const {
+      itemIdx,
+      imageUrl,
+      name,
+      location,
+      postedAt,
+      status,
+      price,
+      chat,
+      interest,
+      interestChecked,
+    } = item;
+
+    const newItem: ListItemProps = {
+      itemIdx,
+      title: name,
+      imgUrl: imageUrl,
+      location,
+      timeStamp: new Date(postedAt),
+      price,
+      state: status,
+      like: interest,
+      chat,
+      moreBtn: false,
+      interestChecked,
+    };
+    return newItem;
+  });
+  return { hasNext: data.hasNext, items: convertedItems };
+};
+
+export const getItemListAPI = async (
+  page: number,
+  categoryIdx?: number,
+  locationIdx?: number | null
+) => {
+  let path = '/items';
+  const queries = removeEmptyKeyValues({
+    page,
+    locationIdx,
+  });
+
+  if (categoryIdx) {
+    path = path + `/category/${categoryIdx}`;
+  }
+
+  queries['locationIdx'] = locationIdx ?? LOCATION_FALLBACK.locationIdx;
+
+  const data = await runFetch<null, GetItemsRes>({
+    path,
+    method: 'GET',
+    queries,
+    auth: true,
+  });
+  return data;
 };
 
 export const getItemsAPI = async (
@@ -129,7 +191,6 @@ const convertAPIItemDetailsToItemDetails = (
     imageUrl,
   } = details;
 
-  console.log(lastModifiedAt);
   const newDetails = {
     itemIdx,
     title: name,
@@ -149,6 +210,7 @@ const convertAPIItemDetailsToItemDetails = (
     postedAt: new Date(lastModifiedAt),
     images: imageUrl,
   };
+
   return newDetails;
 };
 
@@ -160,6 +222,7 @@ export const getItemDetailAPI = async (
     const res = (await customFetch<null, APIItemDetail>({
       path: `/items/${itemIdx}`,
       method: 'GET',
+      auth: true,
     })) as Response<APIItemDetail>;
 
     if (!res || !res.data || res.error) {
@@ -349,7 +412,7 @@ export const convertAPISalesItemsToListItems = (
       status,
       price,
       chat,
-      like,
+      interest,
       interestChecked,
     } = item;
 
@@ -361,7 +424,7 @@ export const convertAPISalesItemsToListItems = (
       timeStamp: new Date(postedAt),
       price: price,
       state: status,
-      like,
+      like: interest,
       chat: chat,
       moreBtn: false,
       interestChecked,
