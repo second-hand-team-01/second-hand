@@ -6,12 +6,20 @@ interface IconProps {
   size?: number;
   name: keyof typeof IconComponents;
   color?: keyof typeof palette | keyof typeof colors;
+  iconClickHandler?:
+    | ((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+    | undefined;
 }
 
-export const Icon = ({ name, size = 20, color = 'neutralText' }: IconProps) => {
+export const Icon = ({
+  name,
+  size = 20,
+  color = 'neutralText',
+  iconClickHandler,
+}: IconProps) => {
   const IconComponent = IconComponents[name];
   return (
-    <S.Icon size={size} fill={color}>
+    <S.Icon size={size} fill={color} onClick={iconClickHandler}>
       <IconComponent
         id={name}
         fill={colors[color]}
