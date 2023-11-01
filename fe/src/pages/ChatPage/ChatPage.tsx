@@ -1,7 +1,7 @@
 import * as S from './ChatPageStyle';
 import { Layout, Error } from '@components/commons';
 import { ChatList } from './ChatList/ChatList';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { ChatRoom } from '@type-store/services/chat';
@@ -12,8 +12,8 @@ import { getAllChatRooms, getItemChatRooms } from '@services/chats/chat';
 export const ChatPage = () => {
   const [chatRooms, setChatRoom] = useState<ChatRoom[]>([]);
   const { itemIdx: itemIdxStr } = useParams();
-  const { isLoggedIn, userInfo } = useContext(UserContext);
-  const { memberIdx } = userInfo;
+  const userInfo = useContext(UserInfoContext);
+  const memberIdx = userInfo ? userInfo?.memberIdx : null;
 
   useEffect(() => {
     if (itemIdxStr && memberIdx) {
@@ -32,7 +32,7 @@ export const ChatPage = () => {
   }, [itemIdxStr, userInfo]);
 
   const renderComps = () => {
-    if (isLoggedIn === false) {
+    if (userInfo?.isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
 

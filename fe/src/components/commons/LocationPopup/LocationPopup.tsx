@@ -1,29 +1,38 @@
 import * as S from './LocationPopupStyle';
 import { BottomSheet, Button } from '@components/commons';
+import { Location } from '@stores/UserContext';
 
 interface LocationPopupProps {
   userInfo;
   isLocationPopupOpen: boolean;
-  setIsLocationPopupOpen: (isOpen: boolean) => void;
-  removeLocationHandler: (town: string) => void;
-  setIsLocationSelectorOpen: (isOpen: boolean) => void;
+  selectedLocation: Location | null | undefined;
+  locationPopupHandler: () => void;
+  locationPopupClickHandler: (locationIdx, town) => void;
+  removeUserLocationHandler: (
+    selectedLocationIdx,
+    userMainLocationIdx,
+    userSubLocationIdx
+  ) => void;
+  locationSelectorHandler: () => void;
 }
 
 export const LocationPopup = ({
   userInfo,
   isLocationPopupOpen,
-  setIsLocationPopupOpen,
-  removeLocationHandler,
-  setIsLocationSelectorOpen,
+  selectedLocation,
+  locationPopupHandler,
+  locationPopupClickHandler,
+  removeUserLocationHandler,
+  locationSelectorHandler,
 }: LocationPopupProps) => {
   return (
     <BottomSheet
       title="동네 설정"
       isOpen={isLocationPopupOpen}
-      handleBackdropClick={() => setIsLocationPopupOpen(false)}
+      handleBackdropClick={locationPopupHandler}
       leftBtn={{
         text: '닫기',
-        onClick: () => setIsLocationPopupOpen(false),
+        onClick: locationPopupHandler,
       }}
     >
       <S.LocationPopup>
@@ -33,37 +42,69 @@ export const LocationPopup = ({
         </S.AlertTextSection>
         <S.LocationButtonSection>
           <Button
-            title={userInfo.mainLocation.locationName}
+            title={userInfo.main.town}
             shape="large"
-            state="default"
-            textAlign="center"
-            color="neutralTextStrong"
-            icon="plus"
-            hasBorder={true}
-            onClick={() =>
-              removeLocationHandler(userInfo.mainLocation.locationName)
+            state={
+              userInfo.main.town === selectedLocation?.town
+                ? 'active'
+                : 'default'
             }
-          />
-          <Button
-            title={
-              userInfo.subLocation.locationName
-                ? userInfo.subLocation.locationName
-                : '위치 추가'
-            }
-            shape="large"
-            state={userInfo.subLocation.locationIdx ? 'active' : 'default'}
+            textAlign="left"
             color={
-              userInfo.subLocation.locationIdx
+              userInfo.main.town === selectedLocation?.town
                 ? 'systemBackground'
                 : 'neutralTextStrong'
             }
-            textAlign={userInfo.subLocation.locationIdx ? 'left' : 'center'}
-            icon={userInfo.subLocation.locationIdx ? 'close' : 'plus'}
+            icon="close"
+            hasBorder={true}
+            onClick={() =>
+              locationPopupClickHandler(
+                userInfo.main.locationIdx,
+                userInfo.main.town
+              )
+            }
+            iconClickHandler={() =>
+              removeUserLocationHandler(
+                userInfo.main.locationIdx,
+                userInfo.main.locationIdx,
+                userInfo.sub.locationIdx
+              )
+            }
+          />
+          <Button
+            title={userInfo.sub.town ? userInfo.sub.town : '위치 추가'}
+            shape="large"
+            state={
+              userInfo.sub.town === selectedLocation?.town
+                ? 'active'
+                : 'default'
+            }
+            color={
+              userInfo.sub.town === selectedLocation?.town
+                ? 'systemBackground'
+                : 'neutralTextStrong'
+            }
+            textAlign={userInfo.sub.town ? 'left' : 'center'}
+            icon={userInfo.sub.town ? 'close' : 'plus'}
             hasBorder={true}
             onClick={
-              userInfo.subLocation.locationIdx
-                ? () => removeLocationHandler(userInfo.subLocation.town)
-                : () => setIsLocationSelectorOpen(true)
+              userInfo.sub.town
+                ? () =>
+                    locationPopupClickHandler(
+                      userInfo.sub.locationIdx,
+                      userInfo.sub.town
+                    )
+                : () => locationSelectorHandler()
+            }
+            iconClickHandler={
+              userInfo.sub.town
+                ? () =>
+                    removeUserLocationHandler(
+                      userInfo.sub.locationIdx,
+                      userInfo.main.locationIdx,
+                      userInfo.sub.locationIdx
+                    )
+                : () => locationSelectorHandler()
             }
           />
         </S.LocationButtonSection>

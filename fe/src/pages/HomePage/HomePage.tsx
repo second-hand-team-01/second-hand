@@ -3,45 +3,40 @@ import {
   Button,
   LocationSelector,
   LocationPopup,
+  Dialog,
 } from '@commons/index';
 import * as S from './HomePageStyle';
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext, UserInfoDispatchContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
-import { getAllLocationData } from '@services/locations/locations';
+import {
+  getAllLocationData,
+  putUserLocation,
+} from '@services/locations/locations';
+import { LocationData } from '@type-store/services/location';
 import { HomeList } from './HomeList/HomeList';
 import { Category } from '@type-store/services/category';
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   const [isCategoryPopupOpen, setCategoryPopupOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<
     Category | undefined
   >(undefined);
-  const { isLoggedIn, userInfo } = useContext(UserContext);
-
-  const { userMainLocationIdx, userMainTown } = userInfo.main;
-  const { userSubTown } = userInfo.sub;
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const userInfo = useContext(UserInfoContext);
+  const userInfoDispatch = useContext(UserInfoDispatchContext);
+  const [selectedLocation, setSelectedLocation] = useState(
+    userInfo?.isLoggedIn ? userInfo?.main : LOCATION_FALLBACK
+  );
 
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
-  const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
   const [isLocationPopupOpen, setLocationPopupOpen] = useState(false);
-  const [locationData, setLocationData] = useState<
-    | [
-        {
-          locationIdx: number | null;
-          locationName: string | null;
-          city: string | null;
-          district: string | null;
-          town: string | null;
-        }
-      ]
-    | null
-  >(null);
+  const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
+  const [locationData, setLocationData] = useState<LocationData[] | null>(null);
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -52,72 +47,133 @@ export const HomePage = () => {
     fetchLocationData();
   }, []);
 
-  const getLocationDataByTown = (town: string | null) => {
-    const foundLocationData = locationData?.find(
-      (location) => location.town === town
-    );
-    return foundLocationData;
-  };
-
-  const selectedLocation = {
-    main: {
-      locationIdx: userInfo.main.locationIdx,
-      town: userInfo.main.town,
-    },
-    sub: {
-      locationIdx: userInfo.sub.locationIdx,
-      town: userInfo.sub.town,
-    },
-  };
-
-  const addLocationHandler = (locationIdx, locationTown) => {
-    selectedLocation.sub.locationIdx = locationIdx;
-    selectedLocation.sub.town = locationTown;
-  };
-
-  const removeLocationHandler = (locationTown) => {
+  useEffect(() => {
     if (
-      selectedLocation.main.town === locationTown &&
-      selectedLocation.sub.town === null
-    )
-      return; // TODO : 최소 지역 1개 입력에 대한 dialog 띄우기
-
-    if (
-      selectedLocation.main.town === locationTown &&
-      selectedLocation.sub.town !== null
+      userInfo?.isLoggedIn &&
+      (selectedLocation?.locationIdx !== userInfo?.main?.locationIdx ||
+        selectedLocation?.locationIdx !== userInfo?.sub?.locationIdx)
     ) {
-      selectedLocation.main = selectedLocation.sub;
-      selectedLocation.sub.locationIdx = null;
-      selectedLocation.sub.town = null;
-      return; // fetch 실행
+      setSelectedLocation(userInfo?.main);
+    }
+  }, [userInfo?.main?.locationIdx]);
+
+  const addUserLocationHandler = async (newLocation, userMainLocation) => {
+    if (newLocation.locationIdx === userMainLocation.locationIdx) {
+      setIsLocationSelectorOpen(false);
+      setLocationPopupOpen(true);
+      return;
     }
 
-    if (selectedLocation.sub.town === locationTown) {
-      selectedLocation.sub.locationIdx = null;
-      selectedLocation.sub.town = null;
-      // fetch 실행
+    try {
+      const putUserLocationRes = await putUserLocation(
+        userMainLocation.locationIdx,
+        newLocation.locationIdx
+      );
+
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_LOCATION',
+          payload: {
+            main: {
+              locationIdx: putUserLocationRes.main.locationIdx,
+              town: putUserLocationRes.main.town,
+            },
+            sub: {
+              locationIdx: putUserLocationRes.sub.locationIdx,
+              town: putUserLocationRes.sub.town,
+            },
+          },
+        });
+      setSelectedLocation({
+        locationIdx: putUserLocationRes.sub.locationIdx,
+        town: putUserLocationRes.sub.town,
+      });
+    } catch (error) {
+      return error;
     }
   };
 
-  const isSelectedLocation = (locationIdx) => {
-    const mainLocationIdx = selectedLocation.main.locationIdx;
-    const subLocationIdx = selectedLocation.sub.locationIdx;
+  const removeUserLocationHandler = async (
+    selectedLocationIdx,
+    userMainLocationIdx,
+    userSubLocationIdx
+  ) => {
+    if (
+      userMainLocationIdx === selectedLocationIdx &&
+      userSubLocationIdx === null
+    ) {
+      setDialogOpen(true);
+      return;
+    }
 
-    return mainLocationIdx === locationIdx || subLocationIdx === locationIdx;
+    try {
+      const putUserLocationRes = await putUserLocation(
+        userSubLocationIdx,
+        null
+      );
+
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_LOCATION',
+          payload: {
+            main: {
+              locationIdx: putUserLocationRes.main.locationIdx,
+              town: putUserLocationRes.main.town,
+            },
+            sub: { locationIdx: null, town: null },
+          },
+        });
+      setSelectedLocation({
+        locationIdx: putUserLocationRes.main.locationIdx,
+        town: putUserLocationRes.main.town,
+      });
+    } catch (error) {
+      return (error as Error).message;
+    }
   };
 
-  const locationClickHandler = (town: string | null) => {
-    const foundLocationData = getLocationDataByTown(town);
-    const foundLocationIdx = foundLocationData?.locationIdx;
-    const foundLocationTown = foundLocationData?.town;
+  // locationPopup에서 지역 선택했을 때
+  const locationPopupClickHandler = (locationIdx, town) => {
+    if (selectedLocation?.locationIdx === locationIdx) {
+      setLocationPopupOpen(false);
+      return;
+    }
 
-    isSelectedLocation(foundLocationIdx)
-      ? removeLocationHandler(foundLocationIdx)
-      : addLocationHandler(foundLocationIdx, foundLocationTown);
+    setSelectedLocation({ locationIdx: locationIdx, town: town });
+    setLocationPopupOpen(false);
   };
 
+  // locationDropdown에서 지역을 클릭했을 때, 새로운 지역에 대한 item 받아오기
+  const locationDropdownClickHandler = (locationIdx, town) => {
+    if (selectedLocation?.locationIdx === locationIdx) {
+      setLocationDropdownOpen(false);
+      return;
+    }
+
+    setSelectedLocation({ locationIdx: locationIdx, town: town });
+    setLocationDropdownOpen(false);
+  };
+
+  // locationPopup 열고 닫기
   const locationPopupHandler = () => {
-    setLocationPopupOpen(true);
+    if (!userInfo?.isLoggedIn) {
+      navigate('/profile');
+    }
+    if (isLocationDropdownOpen) {
+      setLocationDropdownOpen(false);
+    }
+    setLocationPopupOpen((prev) => !prev);
+  };
+
+  // locationSelector 열고 닫기
+  const locationSelectorHandler = () => {
+    if (!isLocationPopupOpen && isLocationSelectorOpen) {
+      setIsLocationSelectorOpen(false);
+      setLocationPopupOpen(true);
+    } else {
+      setLocationPopupOpen(false);
+      setIsLocationSelectorOpen(true);
+    }
   };
 
   const handleDeleteBtn = () => {
@@ -130,13 +186,15 @@ export const HomePage = () => {
         headerOption={{
           type: 'filter',
           filterBarOptions: {
-            locationPopupHandler: () => locationPopupHandler(),
+            locationDropdownClickHandler,
+            locationPopupHandler,
             openState: [isLocationDropdownOpen, setLocationDropdownOpen],
-            mainLocation: isLoggedIn
-              ? userMainTown
-              : LOCATION_FALLBACK.locationName,
-            subLocation: userSubTown ? userSubTown : null,
-            region: isLoggedIn ? userMainTown : LOCATION_FALLBACK.locationName,
+            mainLocation: userInfo?.isLoggedIn
+              ? userInfo?.main
+              : LOCATION_FALLBACK,
+            subLocation:
+              userInfo?.isLoggedIn && userInfo?.sub ? userInfo?.sub : null,
+            region: selectedLocation?.town,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
             },
@@ -149,7 +207,7 @@ export const HomePage = () => {
         <S.Home>
           <HomeList
             selectedCategory={selectedCategory}
-            userMainLocationIdx={userMainLocationIdx}
+            selectedLocationIdx={selectedLocation?.locationIdx}
           />
           <S.FloatingBtn>
             <Button
@@ -167,14 +225,15 @@ export const HomePage = () => {
         categoryPopupOpenState={[isCategoryPopupOpen, setCategoryPopupOpen]}
         setSelectedCategory={setSelectedCategory}
       />
-
       {isLocationPopupOpen && (
         <LocationPopup
           userInfo={userInfo}
+          selectedLocation={selectedLocation}
           isLocationPopupOpen={isLocationPopupOpen}
-          setIsLocationPopupOpen={setLocationPopupOpen}
-          removeLocationHandler={removeLocationHandler}
-          setIsLocationSelectorOpen={setIsLocationSelectorOpen}
+          locationPopupClickHandler={locationPopupClickHandler}
+          locationPopupHandler={locationPopupHandler}
+          removeUserLocationHandler={removeUserLocationHandler}
+          locationSelectorHandler={locationSelectorHandler}
         />
       )}
       {isLocationSelectorOpen && (
@@ -182,23 +241,22 @@ export const HomePage = () => {
           userInfo={userInfo}
           locationData={locationData}
           isLocationSelectorOpen={isLocationSelectorOpen}
-          setIsLocationSelectorOpen={setIsLocationSelectorOpen}
-          locationClickHandler={locationClickHandler}
+          addUserLocationHandler={addUserLocationHandler}
+          locationSelectorHandler={locationSelectorHandler}
         />
       )}
+      <Dialog
+        isOpen={isDialogOpen}
+        btnInfos={{
+          right: {
+            text: '확인',
+            onClick: () => setDialogOpen(false),
+          },
+        }}
+        handleBackDropClick={() => setDialogOpen(false)}
+      >
+        "동네는 최소 1개 이상 선택해야해요"
+      </Dialog>
     </>
   );
 };
-
-// token이 있는지 없는지 확인하고 있으면, useContext에서 location 가져오기
-// token이 없으면 하드코딩
-
-// put 보낼 데이터는 상태로 관리하지말고 객체로 만들고
-// 데이터 만들어서 보내고 데이터가 정상적으로 오면
-// dispatch를 실행하고
-// popup에는 userInfo를 내려주면 된다
-// popup에는 removehandler 내려주고
-
-// post를 보내고 selecotor를 닫자
-
-// 이미 로그인을 해서 지역정보를 가지고 있음

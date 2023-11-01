@@ -34,10 +34,12 @@ const renderHeader = ({
 const renderFooter = ({
   type,
   infoBarProps,
+  toolBarProps,
   comps,
 }: {
   type: FooterProps['type'];
   infoBarProps: FooterProps['infoBarOptions'];
+  toolBarProps: FooterProps['toolBarOptions'];
   comps: FooterProps['comp'];
 }): ReactNode => {
   if (comps) {
@@ -49,7 +51,7 @@ const renderFooter = ({
     case 'tab':
       return <TabBar></TabBar>;
     case 'tool':
-      return <ToolBar></ToolBar>;
+      return <ToolBar {...toolBarProps}></ToolBar>;
     default:
       return <></>;
   }
@@ -82,6 +84,7 @@ export const Layout = ({
             {renderFooter({
               type: footerOption.type,
               infoBarProps: footerOption.infoBarOptions,
+              toolBarProps: footerOption.toolBarOptions,
               comps: footerOption.comp,
             })}
           </S.Footer>

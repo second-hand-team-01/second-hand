@@ -3,6 +3,7 @@ import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 import { InfoBarProps } from '@commons/InfoBar/InfoBar';
 import { FilterBarProps } from '@commons/FilterBar/FilterBar';
+import { ToolBarProps } from '@commons/ToolBar/ToolBar';
 import { ReactNode } from 'react';
 
 export interface HeaderProps {
@@ -16,6 +17,7 @@ export interface FooterProps {
   type?: 'info' | 'chat' | 'tab' | 'tool' | undefined;
   comp?: ReactNode;
   infoBarOptions?: InfoBarProps;
+  toolBarOptions?: ToolBarProps;
 }
 
 export interface LayoutStyleProps {

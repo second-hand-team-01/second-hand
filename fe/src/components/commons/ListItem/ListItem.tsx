@@ -7,7 +7,6 @@ import {
   convertDateToTimeStamp,
   convertNumToPrice,
 } from '@utils/common/common';
-import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 import { useNavigate } from 'react-router-dom';
 import { changeStatusItemsAPI } from '@services/items/items';
 import { MenuButtonProps } from '../Menu/MenuStyle';
@@ -68,7 +67,7 @@ export const ListItem = ({
   like,
   chat,
   moreBtn,
-  interestChecked: initialInterestChecked,
+  interestChecked,
   onClick,
 }: ListItemProps) => {
   const navigate = useNavigate();
@@ -76,9 +75,9 @@ export const ListItem = ({
 
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
-  const [interestChecked, setInterestChecked] = useState(
-    initialInterestChecked
-  );
+  // const [interestChecked, setInterestChecked] = useState(
+  //   initialInterestChecked
+  // );
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
@@ -94,24 +93,6 @@ export const ListItem = ({
     const icon = targetElement.closest('svg');
     const itemIdx = parseInt(currentTargetElement.id);
     if (!itemIdx) return;
-    // if (icon?.id === 'heart') {
-    //   const { error } = await postFavoriteItemAPI({
-    //     itemIdx,
-    //     interestChecked: true,
-    //   });
-    //   if (error) return;
-    //   setInterestChecked(true);
-    //   return;
-    // }
-    // if (icon?.id === 'heartFill') {
-    //   const { error } = await postFavoriteItemAPI({
-    //     itemIdx,
-    //     interestChecked: false,
-    //   });
-    //   if (error) return;
-    //   setInterestChecked(false);
-    //   return;
-    // }
     if (icon?.id === 'more') {
       moreBtnClickHandler(e);
       return;

@@ -5,7 +5,7 @@ import { Icon, Menu } from '@commons/index';
 import { ParentCoordinate, MenuButtonProps } from '@commons/Menu/MenuStyle';
 
 interface DropdownProps extends DropdownStyleProps {
-  children: ReactElement | string;
+  children: ReactElement | string | null;
   openState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   menuButtonPropsList: MenuButtonProps[];

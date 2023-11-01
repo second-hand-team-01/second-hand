@@ -19,7 +19,7 @@ import {
 } from 'react-router-dom';
 import { useChat } from '@hooks/useChat/useChat';
 import { getOneChatRoom, removeChatRoom } from '@services/chats/chat';
-import { UserContext } from '@stores/UserContext';
+import { UserInfoContext } from '@stores/UserContext';
 
 const convertMessageToBubble = (messages: MessageObj[]): BubbleType[] => {
   return messages.map((message) => {
@@ -64,10 +64,10 @@ export const ChatDetailsPage = () => {
     }
   }, [itemIdxStr, memberIdxStr]);
 
-  const { isLoggedIn } = useContext(UserContext);
+  const userInfo = useContext(UserInfoContext);
 
   const renderComps = () => {
-    if (isLoggedIn === false) {
+    if (userInfo?.isLoggedIn === false) {
       return <Navigate to="/profile" replace />;
     }
 

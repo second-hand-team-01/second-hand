@@ -1,48 +1,54 @@
 import * as S from './LocationSelectorStyle';
 import { BottomSheet } from '@components/commons';
 import { isSelectedLocation } from '@services/locations/locations';
-
-interface LocationData {
-  locationIdx: number | null;
-  locationName: string | null;
-  city: string | null;
-  district: string | null;
-  town: string | null;
-}
+import { LocationData } from '@type-store/services/location';
+import { Location } from '@stores/UserContext';
 
 interface LocationSelectorProps {
   userInfo;
   locationData: LocationData[] | null;
   isLocationSelectorOpen: boolean;
-  setIsLocationSelectorOpen: (isOpen: boolean) => void;
-  locationClickHandler: (town: string | null) => void;
+  addUserLocationHandler?: (newLocation, userMainLocation) => void;
+  setSelectedLocationHandler?: (locationData) => void;
+  locationSelectorHandler: () => void;
+  selectedLocation?: Location | null;
 }
 
 export const LocationSelector = ({
   userInfo,
   locationData,
   isLocationSelectorOpen,
-  setIsLocationSelectorOpen,
-  locationClickHandler,
+  addUserLocationHandler,
+  setSelectedLocationHandler,
+  locationSelectorHandler,
+  selectedLocation,
 }: LocationSelectorProps) => {
   return (
     <>
       <BottomSheet
         isOpen={isLocationSelectorOpen}
-        handleBackdropClick={() => setIsLocationSelectorOpen(false)}
+        handleBackdropClick={locationSelectorHandler}
         leftBtn={{
           text: '닫기',
-          onClick: () => setIsLocationSelectorOpen(false),
+          onClick: locationSelectorHandler,
         }}
       >
         {locationData?.map((locationData) => (
           <S.LocationList
             key={locationData.locationIdx}
-            onClick={() => locationClickHandler(locationData.town)}
+            onClick={() =>
+              addUserLocationHandler
+                ? addUserLocationHandler(locationData, userInfo.main)
+                : setSelectedLocationHandler &&
+                  setSelectedLocationHandler(locationData)
+            }
           >
             <S.LocationListInner
               color={
-                isSelectedLocation(userInfo, locationData.locationIdx)
+                isSelectedLocation(
+                  selectedLocation ? selectedLocation : userInfo?.main,
+                  locationData
+                )
                   ? 'accentBackgroundPrimary'
                   : 'neutralText'
               }
