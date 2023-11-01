@@ -3,6 +3,7 @@ import { NavBarProps } from '@commons/NavBar/NavBar';
 import { NAVBAR_HEIGHT, FOOTER_HEIGHT } from '@constants/style';
 import { InfoBarProps } from '@commons/InfoBar/InfoBar';
 import { FilterBarProps } from '@commons/FilterBar/FilterBar';
+import { ToolBarProps } from '@commons/ToolBar/ToolBar';
 import { ReactNode } from 'react';
 
 export interface HeaderProps {
@@ -16,6 +17,7 @@ export interface FooterProps {
   type?: 'info' | 'chat' | 'tab' | 'tool' | undefined;
   comp?: ReactNode;
   infoBarOptions?: InfoBarProps;
+  toolBarOptions?: ToolBarProps;
 }
 
 export interface LayoutStyleProps {
@@ -40,7 +42,6 @@ export const Layout = styled.div<LayoutStyleProps>`
   background-color: ${({ theme }) => theme.colors.neutralBackground};
   display: grid;
   grid-template-rows: ${({ footerOption }) => getTemplateRows(footerOption)};
-  height: 100dvh;
   height: 100dvh;
   outline: 1px solid ${({ theme }) => theme.colors.neutralBorder};
   overflow: hidden;

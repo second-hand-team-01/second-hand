@@ -43,9 +43,6 @@ const tabList: TabList[] = [
   },
 ];
 
-// TODO(POCO) : useParams, useState 사용해서 Tab에 active 색상 변경하기, onClick 이벤트 추가하기
-// TODO(POCO) : tabList 배열 요소의 객체에 id 값 추가해서 params와 일치 시키기
-
 export const TabBar = () => {
   return (
     <S.TabBar>

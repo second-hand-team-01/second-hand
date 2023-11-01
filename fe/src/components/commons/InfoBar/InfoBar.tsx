@@ -26,7 +26,7 @@ export const InfoBar = ({
         onClick={handleInterestClicked}
         shape="ghost"
       ></Button>
-      {price ? convertNumToPrice(price) : '0'}
+      {price ? `${convertNumToPrice(price)}원` : '가격 미정'}
       <Button
         title={
           isWriter

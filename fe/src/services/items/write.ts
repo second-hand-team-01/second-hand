@@ -95,8 +95,6 @@ const fetchImageAsData = async (imageUrl) => {
 
   if (!imageData.ok) {
     throw new Error('이미지를 불러오는데 실패했습니다.');
-
-    // TODO: dialog에 에러 전달
   }
 
   const blob = await imageData.blob();
@@ -146,7 +144,6 @@ export const uploadEditItems = async (
     const result = await editItemsAPI(itemIdx, body);
     return result as Response<null>;
   } catch (error) {
-    // TODO: error 메시지 처리
     console.error(error);
     throw error;
   }
