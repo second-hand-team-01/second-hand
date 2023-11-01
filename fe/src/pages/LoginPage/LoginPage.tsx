@@ -1,4 +1,4 @@
-import { useState, useReducer, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './LoginPageStyle';
 import {
@@ -45,112 +45,38 @@ export const getUserLocationInfo = async () => {
   return data;
 };
 
-const checkIdValidity = (id: string): boolean => {
-  const regex = /^[a-zA-Z0-9]+$/;
-  return regex.test(id);
-};
-
-const checkPasswordValidity = (password: string): boolean => {
-  const regex = /^[a-zA-Z0-9]+$/;
-  return regex.test(password);
-};
-
-interface State {
-  value: string;
-  isValid: boolean | null;
-}
-interface Action {
-  type: string;
-  val: string;
-}
-
-const idReducer = (state: State, action: Action) => {
-  const { type, val } = action;
-  switch (type) {
-    case 'USER_INPUT':
-      return {
-        value: val,
-        isValid: checkIdValidity(val),
-      };
-    case `INPUT_BLUR`:
-      return {
-        value: state.value,
-        isValid: checkIdValidity(val),
-      };
-    default:
-      return state;
-  }
-};
-
-const passwordReducer = (state: State, action: Action): State => {
-  const { type, val } = action;
-  switch (type) {
-    case 'USER_INPUT':
-      return {
-        value: val,
-        isValid: checkPasswordValidity(val),
-      };
-    case `INPUT_BLUR`:
-      return {
-        value: state.value,
-        isValid: checkPasswordValidity(val),
-      };
-    default:
-      return state;
-  }
-};
-
 export const LoginPage = () => {
   const userInfo = useContext(UserInfoContext);
   const userInfoDispatch = useContext(UserInfoDispatchContext);
   const navigate = useNavigate();
 
-  const [formIsValid, setFormIsValid] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [enteredId, setEnteredId] = useState('');
+  const [enteredPassword, setEnteredPassword] = useState('');
 
-  const initialIdState = { value: '', isValid: null };
-  const initialPasswordState = { value: '', isValid: null };
-
-  const [idState, dispatchId] = useReducer(idReducer, initialIdState);
-  const [passwordState, dispatchPassword] = useReducer(
-    passwordReducer,
-    initialPasswordState
-  );
-  const { value: enteredId, isValid: idIsValid } = idState;
-  const { value: enteredPassword, isValid: passwordIsValid } = passwordState;
-
-  useEffect(() => {
-    const identifier = setTimeout(() => {
-      setFormIsValid(!!idIsValid && !!passwordIsValid);
-    }, 500);
-
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, [idIsValid, passwordIsValid]);
-
-  const idChangeHandler = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchId({ type: 'USER_INPUT', val: value });
+  const idChangeHandler = ({ target: { value } }) => {
+    setEnteredId(value);
   };
 
-  const validateId = () => {
-    dispatchId({ type: 'INPUT_BLUR', val: idState.value });
-  };
-
-  const passwordChangeHandler = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchPassword({ type: 'USER_INPUT', val: value });
-  };
-
-  const validatePassword = () => {
-    dispatchPassword({ type: 'INPUT_BLUR', val: passwordState.value });
+  const passwordChangeHandler = ({ target: { value } }) => {
+    setEnteredPassword(value);
   };
 
   const loginBtnHandler = async () => {
+    if (enteredId === '' && enteredPassword === '') {
+      setErrorMessage('아이디와 비밀번호를 입력해주세요.');
+      setDialogOpen(true);
+      return;
+    } else if (enteredId === '') {
+      setErrorMessage('아이디를 입력해주세요.');
+      setDialogOpen(true);
+      return;
+    } else if (enteredPassword === '') {
+      setErrorMessage('비밀번호를 입력해주세요.');
+      setDialogOpen(true);
+      return;
+    }
     try {
       const userInfoData = await authenticateUser(enteredId, enteredPassword);
       localStorage.setItem('loginToken', userInfoData.token);
@@ -187,7 +113,6 @@ export const LoginPage = () => {
       );
 
       navigate('/');
-      // 만약 이전 페이지가 home이 아니라면 해당하는 이전 페이지로 이동
     } catch (error) {
       setErrorMessage((error as Error).message);
       setDialogOpen(true);
@@ -237,7 +162,6 @@ export const LoginPage = () => {
                 placeholder="아이디를 입력하세요"
                 label="아이디"
                 onChange={idChangeHandler}
-                onBlur={validateId}
               />
               <TextInput
                 type="password"
@@ -246,7 +170,6 @@ export const LoginPage = () => {
                 placeholder="비밀번호를 입력하세요"
                 label="비밀번호"
                 onChange={passwordChangeHandler}
-                onBlur={validatePassword}
               />
             </S.InputSection>
           )}
@@ -262,11 +185,7 @@ export const LoginPage = () => {
           )}
           {!userInfo?.isLoggedIn && (
             <S.LoginButtonSection>
-              <Button
-                title="로그인"
-                state={formIsValid ? 'active' : 'disabled'}
-                onClick={loginBtnHandler}
-              />
+              <Button title="로그인" state="active" onClick={loginBtnHandler} />
               <Button
                 title="Github 계정으로 로그인"
                 state="active"
