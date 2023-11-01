@@ -2,19 +2,19 @@ import * as S from './FilterBarStyle';
 import { Button, Dropdown } from '@commons/index';
 import { Category } from '@type-store/services/category';
 import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
-import { useState, useEffect } from 'react';
-
+import { Location } from '@stores/UserContext';
 
 export interface FilterBarProps {
-  mainLocation?: string;
-  subLocation?: string;
-  region?: string;
+  mainLocation?: Location | null;
+  subLocation?: Location | null;
+  region?: string | null;
   handleRegionBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleFilterBtnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   selectedCategory?: Category;
   handleDeleteBtn?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   openState?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  locationPopupHandler?: any;
+  locationPopupHandler?: () => void;
+  locationDropdownClickHandler?: (locationIdx, town) => void;
 }
 
 export const FilterBar = ({
@@ -26,47 +26,53 @@ export const FilterBar = ({
   mainLocation,
   subLocation,
   locationPopupHandler,
+  locationDropdownClickHandler,
 }: FilterBarProps) => {
   if (!openState) return <></>;
 
-  const [isOpen, setOpen] = openState;
+  const [isDropdownOpen, setDropdownOpen] = openState;
 
-  const [menuButtonPropsList, setMenuButtonPropsList] = useState<
-    MenuButtonProps[]
-  >([
+  const menuButtonPropsList: MenuButtonProps[] = [
     {
       shape: 'small',
       state: 'default',
-      name: mainLocation,
-      onClick: () => setOpen(false),
+      name: mainLocation?.town,
+      onClick: () =>
+        locationDropdownClickHandler &&
+        locationDropdownClickHandler(
+          mainLocation?.locationIdx,
+          mainLocation?.town
+        ),
     },
-
+    ...(subLocation
+      ? [
+          {
+            shape: 'small',
+            state: 'default',
+            name: subLocation?.town,
+            onClick: () =>
+              locationDropdownClickHandler &&
+              locationDropdownClickHandler(
+                subLocation?.locationIdx,
+                subLocation?.town
+              ),
+          } as MenuButtonProps,
+        ]
+      : []),
     {
       shape: 'small',
       state: 'default',
       name: '내동네 설정하기',
-      onClick: () => locationPopupHandler(),
+      onClick: locationPopupHandler,
     },
-  ]);
-
-  useEffect(() => {
-    const newMenu: MenuButtonProps = {
-      shape: 'small',
-      state: 'default',
-      name: subLocation,
-      onClick: () => () => setOpen(false),
-    };
-    if (subLocation) {
-      setMenuButtonPropsList((prev) => [prev[0], newMenu, prev[1]]);
-    }
-  }, [subLocation]);
+  ];
 
   return (
     <S.FilterBar selectedCategory={selectedCategory}>
       <Dropdown
         menuButtonPropsList={menuButtonPropsList}
-        openState={[isOpen, setOpen]}
-        onClick={() => setOpen(true)}
+        openState={[isDropdownOpen, setDropdownOpen]}
+        onClick={() => setDropdownOpen(true)}
       >
         {region}
       </Dropdown>

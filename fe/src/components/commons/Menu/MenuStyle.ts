@@ -23,11 +23,10 @@ export interface MenuButtonProps {
   state: 'default' | 'active';
   color?: keyof typeof colors;
   fontWeight?: keyof typeof fontWeights;
-  name?: string;
+  name?: string | null;
   onClick?: () => void;
 }
 
-// TODO : 동네 설정 메뉴 absolute 값 지정 필요
 const locations = {
   top: css<MenuStyleProps>`
     position: absolute;

@@ -8,8 +8,6 @@ interface MenuProps extends MenuStyleProps {
   openState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
-// TODO: props로 받은 onClick을 MenuButton에 전달해야 함
-
 export const Menu = ({
   location,
   menuButtonPropsList,
@@ -41,7 +39,12 @@ export const Menu = ({
       <S.Menu location={location} parentCoordinate={parentCoordinate}>
         <S.ButtonContainer>
           {menuButtonPropsList.map((props) => (
-            <S.MenuButton className="menu-button" key={props.name} {...props}>
+            <S.MenuButton
+              className="menu-button"
+              key={props.name}
+              {...props}
+              name={props.name as string}
+            >
               {props.name}
             </S.MenuButton>
           ))}
