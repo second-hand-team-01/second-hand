@@ -11,7 +11,7 @@ interface UserInfo {
   sub?: Location | null;
 }
 
-interface Location {
+export interface Location {
   locationIdx: number | null;
   town: string | null;
 }
@@ -98,7 +98,6 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [userInfo, dispatch] = useReducer(reducer, initialUserInfo);
-  const initial = userInfo.isLoggedIn === initialUserInfo.isLoggedIn;
 
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('loginToken');
@@ -131,7 +130,7 @@ export const UserContextProvider = ({
         });
       });
     }
-  }, [initial]);
+  }, []);
 
   return (
     <UserInfoContext.Provider value={userInfo}>
