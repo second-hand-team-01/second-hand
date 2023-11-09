@@ -1,4 +1,4 @@
-USE `second-hand`
+USE `second-hand`;
 
 SET
     foreign_key_checks = 0;

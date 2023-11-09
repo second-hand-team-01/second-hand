@@ -97,11 +97,12 @@ public class MemberService {
 			.orElseThrow(() -> new RestApiException(NO_EXISTING_MEMBER));
 
 		Location newSubLocation = null;
+		log.info("mainSubDto : " + mainSubDto.toString());
 
-		Location newMainLocation = locationRepository.findById(mainSubDto.getMain().getLocationIdx())
+		Location newMainLocation = locationRepository.findById(mainSubDto.getMain())
 			.orElseThrow(IllegalArgumentException::new);
 		if (mainSubDto.getSub() != null) {
-			newSubLocation = locationRepository.findById(mainSubDto.getSub().getLocationIdx())
+			newSubLocation = locationRepository.findById(mainSubDto.getSub())
 				.orElseThrow(IllegalArgumentException::new);
 		}
 		member.updateLocations(newMainLocation, newSubLocation);
