@@ -7,7 +7,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MainSubDto {
 
-	private LocationDto main;
-	private LocationDto sub;
+	private Long main;
+	private Long sub;
 
+	@Override
+	public String toString() {
+		return "MainSubDto{" +
+			"main=" + main +
+			", sub=" + sub +
+			'}';
+	}
 }

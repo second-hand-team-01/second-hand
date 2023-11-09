@@ -33,4 +33,15 @@ public class LocationDto {
 			.append(location.getTown());
 		return stringBuilder.toString();
 	}
+
+	@Override
+	public String toString() {
+		return "LocationDto{" +
+			"locationIdx=" + locationIdx +
+			", locationName='" + locationName + '\'' +
+			", city='" + city + '\'' +
+			", district='" + district + '\'' +
+			", town='" + town + '\'' +
+			'}';
+	}
 }
