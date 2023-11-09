@@ -1,5 +1,7 @@
 package codesquad.secondhand.interceptor;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,9 +30,25 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 		HttpServletResponse response,
-		Object handler) {
+		Object handler) throws IOException {
 		log.info("[BearerAuthInterceptor.preHandle 호출]");
+
 		String token = authExtractor.extract(request, "Bearer");
+		log.info("토큰 : " + token);
+
+		String requestURI = request.getRequestURI();
+		if (requestURI.startsWith("/api/dummy")) {
+			if(token.isEmpty()) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access is allowed for powerUser only");
+				return false;
+			}
+			String loginId = jwtTokenProvider.getLoginId(token);
+			if (!"powerUser".equals(loginId)) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access is allowed for powerUser only");
+				return false;
+			}
+		}
+
 		if (StringUtils.isEmpty(token)) {
 			return true;
 		}
@@ -38,6 +56,7 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
 		if (!jwtTokenProvider.validateToken(token)) {
 			throw new RestApiException(TokenErrorCode.TOKEN_INVALID);
 		}
+
 
 		Long memberIdx = jwtTokenProvider.getMemberIdx(token);
 		request.setAttribute("memberIdx", memberIdx);
