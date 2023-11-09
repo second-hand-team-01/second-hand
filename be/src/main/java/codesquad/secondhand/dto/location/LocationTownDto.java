@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class LocationTownDto {
 
 	private final Long locationIdx;
-	private final String locationName;
+	private final String town;
 
 	public static LocationTownDto of(Location location) {
 		if (location == null) {
