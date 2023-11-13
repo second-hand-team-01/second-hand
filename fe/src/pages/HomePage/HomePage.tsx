@@ -88,6 +88,9 @@ export const HomePage = () => {
         locationIdx: putUserLocationRes.sub.locationIdx,
         town: putUserLocationRes.sub.town,
       });
+
+      setIsLocationSelectorOpen(false);
+      setLocationPopupOpen(true);
     } catch (error) {
       return error;
     }
@@ -96,8 +99,10 @@ export const HomePage = () => {
   const removeUserLocationHandler = async (
     selectedLocationIdx,
     userMainLocationIdx,
-    userSubLocationIdx
+    userSubLocationIdx,
+    event
   ) => {
+    event.stopPropagation();
     if (
       userMainLocationIdx === selectedLocationIdx &&
       userSubLocationIdx === null
@@ -106,9 +111,14 @@ export const HomePage = () => {
       return;
     }
 
+    const newUserLocationIdx =
+      selectedLocationIdx === userMainLocationIdx
+        ? userSubLocationIdx
+        : userMainLocationIdx;
+
     try {
       const putUserLocationRes = await putUserLocation(
-        userSubLocationIdx,
+        newUserLocationIdx,
         null
       );
 
@@ -255,7 +265,7 @@ export const HomePage = () => {
         }}
         handleBackDropClick={() => setDialogOpen(false)}
       >
-        "동네는 최소 1개 이상 선택해야해요"
+        동네는 최소 1개 이상 선택해야해요
       </Dialog>
     </>
   );
