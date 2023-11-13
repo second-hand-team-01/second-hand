@@ -21,8 +21,8 @@ public class DummyController {
 
 	@GetMapping
 	public ResponseDto<?> creatDummy() {
-		log.info("더미호출");
-		dummyService.creatDummy();
+		log.info("더미 호출");
+		dummyService.createDummy();
 		return ResponseDto.of(RESPONSE_SUCCESS, null);
 	}
 }
