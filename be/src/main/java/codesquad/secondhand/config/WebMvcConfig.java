@@ -18,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		this.bearerAuthInterceptor = bearerAuthInterceptor;
 	}
 
+	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(bearerAuthInterceptor)
 			.addPathPatterns(
@@ -27,7 +28,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				"/api/items",
 				"/api/members/items",
 				"/api/members/interest",
-				"/api/members/interest/category"
+				"/api/members/interest/category",
+				"/api/dummy/**"
 			);
 	}
 

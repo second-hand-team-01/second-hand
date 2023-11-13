@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class ItemDetailDto {
 
 	private final String name;
