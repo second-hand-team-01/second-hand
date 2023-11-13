@@ -17,37 +17,41 @@ import com.github.javafaker.Faker;
 
 import codesquad.secondhand.dto.item.ItemDetailDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DummyService {
 
 	private final ItemService itemService;
 
-	public void creatDummy() {
+	public void createDummy() {
 		Random random = new Random();
-		for (int i = 1; i <= 10; i++) {
-			Long randomMemberIdx = (long) random.nextInt(5) + 1;
-			int randomImageNumber = random.nextInt(10);
-			String randomImageURL = "https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/dummy-image/"
-				+ randomImageNumber + ".jpg";
+		Faker faker = new Faker(new Locale("ko"));
+		for (int i = 1; i <= 6; i++) {
+			for (int j = 0; j < 20; j++) {
+				Long randomMemberIdx = (long)random.nextInt(5) + 1;
+				int randomImageNumber = random.nextInt(10);
+				String randomImageURL = "https://codesquadsecondhandteam01.s3.ap-northeast-2.amazonaws.com/dummy-image/"
+					+ randomImageNumber + ".jpg";
 
-			Faker faker = new Faker(new Locale("ko"));
+				List<MultipartFile> list = new ArrayList<>();
+				list.add(downloadImageAsMultipartFile(randomImageURL, "tempImageName"));
 
-			List<MultipartFile> list = new ArrayList<>();
-			list.add(downloadImageAsMultipartFile(randomImageURL, "tempImageName"));
+				ItemDetailDto itemDetailDto = new ItemDetailDto(
+					faker.lorem().sentence(),
+					faker.number().randomDigitNotZero() * 1000,
+					faker.lorem().sentence(),
+					(long)i,
+					(long)faker.number().numberBetween(1, 18),
+					list,
+					"판매중",
+					randomMemberIdx);
 
-			ItemDetailDto itemDetailDto = new ItemDetailDto(
-				faker.commerce().productName(),
-				faker.number().randomDigitNotZero() * 1000,
-				faker.lorem().sentence(),
-				(long)faker.number().numberBetween(1, 6),
-				(long)faker.number().numberBetween(1, 18),
-				list,
-				"판매중",
-				randomMemberIdx);
-
-			itemService.creatItem(itemDetailDto);
+				itemService.creatItem(itemDetailDto);
+				log.info("더미 작업 완료");
+			}
 		}
 	}
 
