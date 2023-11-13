@@ -11,7 +11,8 @@ interface LocationPopupProps {
   removeUserLocationHandler: (
     selectedLocationIdx,
     userMainLocationIdx,
-    userSubLocationIdx
+    userSubLocationIdx,
+    event: React.MouseEvent<HTMLElement>
   ) => void;
   locationSelectorHandler: () => void;
 }
@@ -64,11 +65,12 @@ export const LocationPopup = ({
                 userInfo.main.town
               )
             }
-            iconClickHandler={() =>
+            iconClickHandler={(event) =>
               removeUserLocationHandler(
                 userInfo.main.locationIdx,
                 userInfo.main.locationIdx,
-                userInfo.sub.locationIdx
+                userInfo.sub.locationIdx,
+                event
               )
             }
           />
@@ -99,11 +101,12 @@ export const LocationPopup = ({
             }
             iconClickHandler={
               userInfo.sub.town
-                ? () =>
+                ? (event) =>
                     removeUserLocationHandler(
                       userInfo.sub.locationIdx,
                       userInfo.main.locationIdx,
-                      userInfo.sub.locationIdx
+                      userInfo.sub.locationIdx,
+                      event
                     )
                 : () => locationSelectorHandler()
             }
