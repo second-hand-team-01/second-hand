@@ -30,6 +30,7 @@ export const LocationPopup = ({
       title="동네 설정"
       isOpen={isLocationPopupOpen}
       handleBackdropClick={locationPopupHandler}
+      modalRootId="popup-root"
       leftBtn={{
         text: '닫기',
         onClick: locationPopupHandler,
