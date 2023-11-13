@@ -40,7 +40,7 @@ public class DummyService {
 				list.add(downloadImageAsMultipartFile(randomImageURL, "tempImageName"));
 
 				ItemDetailDto itemDetailDto = new ItemDetailDto(
-					faker.lorem().sentence(),
+					faker.food().dish(),
 					faker.number().randomDigitNotZero() * 1000,
 					faker.lorem().sentence(),
 					(long)i,
