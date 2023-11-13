@@ -44,7 +44,7 @@ export const FilterBar = ({
           mainLocation?.town
         ),
     },
-    ...(subLocation
+    ...(subLocation?.town
       ? [
           {
             shape: 'small',
