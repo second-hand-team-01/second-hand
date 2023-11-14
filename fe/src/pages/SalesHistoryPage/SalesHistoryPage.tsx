@@ -33,13 +33,18 @@ export const SalesHistoryPage = () => {
     if (error || !data || !data.items) {
       return <Error>{error?.message}</Error>;
     }
-    if (data.items.length === 0) {
+    if (data.items.length === 0 && status === '판매중') {
       return (
         <Error button="상품 등록하기" onClick={() => navigate('/write')}>
           아직 등록된 판매 상품이 없어요.
         </Error>
       );
     }
+
+    if (data.items.length === 0 && status === '판매완료') {
+      return <Error>아직 판매 완료된 상품이 없어요.</Error>;
+    }
+
     return data?.items.map((item: ListItemProps) => (
       <ListItem
         key={item.itemIdx}
