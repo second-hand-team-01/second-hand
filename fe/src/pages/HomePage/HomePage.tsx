@@ -29,9 +29,6 @@ export const HomePage = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const userInfo = useContext(UserInfoContext);
   const userInfoDispatch = useContext(UserInfoDispatchContext);
-  const [selectedLocation, setSelectedLocation] = useState(
-    userInfo?.isLoggedIn ? userInfo?.main : LOCATION_FALLBACK
-  );
 
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [isLocationPopupOpen, setLocationPopupOpen] = useState(false);
@@ -46,16 +43,6 @@ export const HomePage = () => {
 
     fetchLocationData();
   }, []);
-
-  useEffect(() => {
-    if (
-      userInfo?.isLoggedIn &&
-      (selectedLocation?.locationIdx !== userInfo?.main?.locationIdx ||
-        selectedLocation?.locationIdx !== userInfo?.sub?.locationIdx)
-    ) {
-      setSelectedLocation(userInfo?.main);
-    }
-  }, [userInfo?.main?.locationIdx]);
 
   const addUserLocationHandler = async (newLocation, userMainLocation) => {
     if (newLocation.locationIdx === userMainLocation.locationIdx) {
@@ -84,10 +71,14 @@ export const HomePage = () => {
             },
           },
         });
-      setSelectedLocation({
-        locationIdx: putUserLocationRes.sub.locationIdx,
-        town: putUserLocationRes.sub.town,
-      });
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_USER_SELECTED_LOCATION',
+          payload: {
+            locationIdx: putUserLocationRes.sub.locationIdx,
+            town: putUserLocationRes.sub.town,
+          },
+        });
 
       setIsLocationSelectorOpen(false);
       setLocationPopupOpen(true);
@@ -133,10 +124,14 @@ export const HomePage = () => {
             sub: { locationIdx: null, town: null },
           },
         });
-      setSelectedLocation({
-        locationIdx: putUserLocationRes.main.locationIdx,
-        town: putUserLocationRes.main.town,
-      });
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_USER_SELECTED_LOCATION',
+          payload: {
+            locationIdx: putUserLocationRes.main.locationIdx,
+            town: putUserLocationRes.main.town,
+          },
+        });
     } catch (error) {
       return (error as Error).message;
     }
@@ -144,23 +139,31 @@ export const HomePage = () => {
 
   // locationPopup에서 지역 선택했을 때
   const locationPopupClickHandler = (locationIdx, town) => {
-    if (selectedLocation?.locationIdx === locationIdx) {
+    if (userInfo?.selectedLocation?.locationIdx === locationIdx) {
       setLocationPopupOpen(false);
       return;
     }
 
-    setSelectedLocation({ locationIdx: locationIdx, town: town });
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'SET_USER_SELECTED_LOCATION',
+        payload: { locationIdx: locationIdx, town: town },
+      });
     setLocationPopupOpen(false);
   };
 
   // locationDropdown에서 지역을 클릭했을 때, 새로운 지역에 대한 item 받아오기
   const locationDropdownClickHandler = (locationIdx, town) => {
-    if (selectedLocation?.locationIdx === locationIdx) {
+    if (userInfo?.selectedLocation?.locationIdx === locationIdx) {
       setLocationDropdownOpen(false);
       return;
     }
 
-    setSelectedLocation({ locationIdx: locationIdx, town: town });
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'SET_USER_SELECTED_LOCATION',
+        payload: { locationIdx: locationIdx, town: town },
+      });
     setLocationDropdownOpen(false);
   };
 
@@ -204,7 +207,7 @@ export const HomePage = () => {
               : LOCATION_FALLBACK,
             subLocation:
               userInfo?.isLoggedIn && userInfo?.sub ? userInfo?.sub : null,
-            region: selectedLocation?.town,
+            region: userInfo?.selectedLocation?.town,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
             },
@@ -217,7 +220,7 @@ export const HomePage = () => {
         <S.Home>
           <HomeList
             selectedCategory={selectedCategory}
-            selectedLocationIdx={selectedLocation?.locationIdx}
+            selectedLocationIdx={userInfo?.selectedLocation?.locationIdx}
           />
           <S.FloatingBtn>
             <Button
@@ -238,7 +241,7 @@ export const HomePage = () => {
       {isLocationPopupOpen && (
         <LocationPopup
           userInfo={userInfo}
-          selectedLocation={selectedLocation}
+          selectedLocation={userInfo?.selectedLocation}
           isLocationPopupOpen={isLocationPopupOpen}
           locationPopupClickHandler={locationPopupClickHandler}
           locationPopupHandler={locationPopupHandler}

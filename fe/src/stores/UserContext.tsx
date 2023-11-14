@@ -9,6 +9,7 @@ interface UserInfo {
   imgUrl: string | null;
   main?: Location | null;
   sub?: Location | null;
+  selectedLocation?: Location | null;
 }
 
 export interface Location {
@@ -21,7 +22,7 @@ type UserContextDispatch = Dispatch<UserAction>;
 type UserAction =
   | { type: 'LOGIN'; payload: UserInfo }
   | { type: 'SET_LOCATION'; payload: { main: Location; sub: Location } }
-  | { type: 'SET_USER_LOCATION'; payload: Location }
+  | { type: 'SET_USER_SELECTED_LOCATION'; payload: Location }
   | { type: 'LOGOUT'; payload: null };
 
 export const reducer = (state: UserInfo, { type, payload }) => {
@@ -48,9 +49,13 @@ export const reducer = (state: UserInfo, { type, payload }) => {
         },
       };
 
-    case 'SET_USER_LOCATION':
+    case 'SET_USER_SELECTED_LOCATION':
       return {
-        ...payload,
+        ...state,
+        selectedLocation: {
+          locationIdx: payload?.locationIdx,
+          town: payload?.town,
+        },
       };
 
     case 'LOGOUT':
@@ -86,6 +91,10 @@ const initialUserInfo: UserInfo = {
     locationIdx: null,
     town: null,
   },
+  selectedLocation: {
+    locationIdx: null,
+    town: null,
+  },
 };
 
 export const UserInfoContext = createContext<UserInfo | null>(null);
@@ -97,7 +106,10 @@ export const UserContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [userInfo, dispatch] = useReducer(reducer, initialUserInfo);
+  const [userInfo, dispatch] = useReducer<React.Reducer<UserInfo, UserAction>>(
+    reducer,
+    initialUserInfo
+  );
 
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('loginToken');
@@ -126,6 +138,13 @@ export const UserContextProvider = ({
               locationIdx: data.data.sub.locationIdx,
               town: data.data.sub.town,
             },
+          },
+        });
+        dispatch({
+          type: 'SET_USER_SELECTED_LOCATION',
+          payload: {
+            locationIdx: data.data.main.locationIdx,
+            town: data.data.main.town,
           },
         });
       });
