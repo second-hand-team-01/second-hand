@@ -27,6 +27,7 @@ export const LocationSelector = ({
     <>
       <BottomSheet
         isOpen={isLocationSelectorOpen}
+        modalRootId="selector-root"
         handleBackdropClick={locationSelectorHandler}
         leftBtn={{
           text: '닫기',

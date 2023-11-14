@@ -17,11 +17,11 @@ interface BottomSheetProps {
   title?: string;
   hasSearchInput?: boolean;
   inputValue?: string;
+  modalRootId?: string;
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBackdropClick?: () => void;
 }
 
-// input이 없는 경우가 있습니다(회원가입)
 export const BottomSheet = ({
   isOpen = false,
   leftBtn,
@@ -32,9 +32,10 @@ export const BottomSheet = ({
   inputValue,
   handleInputChange,
   handleBackdropClick,
+  modalRootId = 'modal-root',
 }: BottomSheetProps) => {
   return isOpen ? (
-    <Portal id="modal-root">
+    <Portal id={modalRootId}>
       <S.BottomSheet hasSearchInput={hasSearchInput}>
         <S.Header>
           <S.HeaderTop>
