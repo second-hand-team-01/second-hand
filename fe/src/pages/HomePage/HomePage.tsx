@@ -207,7 +207,9 @@ export const HomePage = () => {
               : LOCATION_FALLBACK,
             subLocation:
               userInfo?.isLoggedIn && userInfo?.sub ? userInfo?.sub : null,
-            region: userInfo?.selectedLocation?.town,
+            region: userInfo?.isLoggedIn
+              ? userInfo?.selectedLocation?.town
+              : LOCATION_FALLBACK.town,
             handleFilterBtnClick: () => {
               setCategoryPopupOpen(true);
             },
