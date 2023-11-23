@@ -31,7 +31,7 @@ export const DetailsPage = () => {
   const param = useParams();
   const itemIdxStr = param.itemIdx;
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const prevPathname = useLocation().state;
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -140,7 +140,7 @@ export const DetailsPage = () => {
         onClick: () => {
           changeStatusItemsAPI(Number(itemIdxStr), '판매완료');
           setStatusDropdownOpen(false);
-          navigate(pathname, { replace: true });
+          // navigate(pathname, { replace: true });
           window.location.reload();
         },
       },
@@ -176,7 +176,7 @@ export const DetailsPage = () => {
           leftBtn: (
             <NavbarBtn
               icon="arrowLeft"
-              path="back"
+              path={prevPathname}
               color="accentText"
             ></NavbarBtn>
           ),
@@ -260,7 +260,8 @@ export const DetailsPage = () => {
             state: 'default',
             color: 'systemDefault',
             name: '게시글 수정',
-            onClick: () => navigate(`/edit/${itemIdxStr}`),
+            onClick: () =>
+              navigate(`/edit/${itemIdxStr}`, { state: prevPathname }),
           },
           {
             shape: 'large',

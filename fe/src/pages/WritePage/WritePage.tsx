@@ -37,8 +37,8 @@ import { getAllLocationData } from '@services/locations/locations';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { itemIdx } = useParams();
+  const prevPathName = useLocation().state;
 
   const [title, setTitle] = useState<string>('');
   const [categoryState] = useFetch(getCategoryAPI, [], true);
@@ -133,12 +133,12 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       ? !uploadState.data && uploadState.error
         ? setDialogOpen(false)
         : navigate(`/item/${uploadState.data?.itemIdx}`, {
-            state: pathname,
+            state: prevPathName,
           })
       : editState.error
       ? setDialogOpen(false)
       : navigate(`/item/${itemIdx}`, {
-          state: pathname,
+          state: prevPathName,
         });
   };
 
@@ -216,7 +216,6 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
         navbarOptions: {
           title: '내 물건 팔기',
           leftBtn: <NavbarBtn text="닫기" path="back" />,
-          /* path 수정하기 기존 유입 경로 넣기 */
           rightBtn: (
             <Button
               title="완료"
