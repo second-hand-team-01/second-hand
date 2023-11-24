@@ -107,6 +107,15 @@ export const LoginPage = () => {
           },
         });
 
+      userInfoDispatch &&
+        userInfoDispatch({
+          type: 'SET_USER_SELECTED_LOCATION',
+          payload: {
+            locationIdx: userLocationInfo.data.main.locationIdx,
+            town: userLocationInfo.data.main.town,
+          },
+        });
+
       localStorage.setItem(
         USER_INFO_KEY,
         JSON.stringify(userInfoData.memberInfo)
