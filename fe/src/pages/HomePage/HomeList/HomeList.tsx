@@ -63,7 +63,6 @@ const Contents = ({
           );
           return { ...data, pages: newPages };
         },
-        staleTime: 10000,
         cacheTime: 12000,
       }
     );
