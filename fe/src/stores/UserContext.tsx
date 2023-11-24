@@ -72,6 +72,10 @@ export const reducer = (state: UserInfo, { type, payload }) => {
           locationIdx: null,
           town: null,
         },
+        selectedLocation: {
+          locationIdx: null,
+          town: null,
+        },
       };
     default:
       throw new Error('user state: 타입이 지정되지 않았어요.');
