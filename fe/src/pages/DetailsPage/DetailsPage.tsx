@@ -140,7 +140,6 @@ export const DetailsPage = () => {
         onClick: () => {
           changeStatusItemsAPI(Number(itemIdxStr), '판매완료');
           setStatusDropdownOpen(false);
-          // navigate(pathname, { replace: true });
           window.location.reload();
         },
       },
