@@ -39,10 +39,11 @@ export const AuthPage = () => {
     const userInfoData = await getGithubLoginToken(queryCode);
     if (!userInfoData) {
       return;
-    } // TODO: 에러처리
+    }
 
     const token = userInfoData.data.token;
     const memberInfo = userInfoData.data.memberInfo;
+    console.log(memberInfo);
     localStorage.setItem('loginToken', token);
     userInfoDispatch &&
       userInfoDispatch({
@@ -72,10 +73,16 @@ export const AuthPage = () => {
         },
       });
 
-    localStorage.setItem(
-      USER_INFO_KEY,
-      JSON.stringify(userInfoData.memberInfo)
-    );
+    userInfoDispatch &&
+      userInfoDispatch({
+        type: 'SET_USER_SELECTED_LOCATION',
+        payload: {
+          locationIdx: userLocationInfo.data.main.locationIdx,
+          town: userLocationInfo.data.main.town,
+        },
+      });
+
+    localStorage.setItem(USER_INFO_KEY, JSON.stringify(memberInfo));
 
     navigate('/');
   };

@@ -1,6 +1,6 @@
 import * as S from './SalesHistoryPageStyle';
 import { useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Layout, ListItem, Loading } from '@components/commons';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getSalesItemsAPI } from '@services/items/items';
@@ -11,6 +11,7 @@ import { UserInfoContext } from '@stores/UserContext';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [status, setStatus] = useState<ItemStatus>('판매중');
   const [{ data, error, loading }, fetch] = useFetch(
     getSalesItemsAPI.bind(null, status),
@@ -51,7 +52,7 @@ export const SalesHistoryPage = () => {
         {...item}
         moreBtn={true}
         onClick={() => {
-          navigate(`/item/${item.itemIdx}`);
+          navigate(`/item/${item.itemIdx}`, { state: pathname });
         }}
       ></ListItem>
     ));
