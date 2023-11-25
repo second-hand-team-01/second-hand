@@ -12,6 +12,7 @@ import {
   Button,
   Menu,
   Dialog,
+  Carousel,
 } from '@commons/index';
 import {
   getItemDetailAPI,
@@ -44,6 +45,11 @@ export const DetailsPage = () => {
   const [menuButtonPropsList, setMenuButtonPropsList] = useState<
     MenuButtonProps[]
   >([]);
+
+  const isMobileDevice =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      window.navigator.userAgent
+    );
 
   useEffect(() => {
     (async () => {
@@ -216,7 +222,8 @@ export const DetailsPage = () => {
       ) : (
         <S.DetailsPages className="detail">
           <S.ImageContainer>
-            <Slide urls={details?.images ?? []}></Slide>
+            {isMobileDevice && <Slide urls={details?.images ?? []} />}
+            {!isMobileDevice && <Carousel urls={details?.images ?? []} />}
           </S.ImageContainer>
           <S.Contents>
             <S.WriterSection>
