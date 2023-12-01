@@ -295,7 +295,7 @@ export const DetailsPage = () => {
               const { error } = await deleteItemsAPI(Number(itemIdxStr));
               if (error) return setErrorDialogOpen(true);
               setMenuOpen(false);
-              navigate('/');
+              navigate(prevPathname);
             },
             color: 'systemWarning',
           },
