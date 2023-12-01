@@ -8,10 +8,8 @@ import {
   convertNumToPrice,
 } from '@utils/common/common';
 import { useNavigate } from 'react-router-dom';
-import { changeStatusItemsAPI } from '@services/items/items';
 import { MenuButtonProps } from '../Menu/MenuStyle';
 import { deleteItemsAPI } from '@services/items/items';
-import { URL } from '@constants/apis';
 
 export interface IconProps {
   name: keyof typeof icons;
@@ -32,6 +30,7 @@ export interface ListItemProps {
   moreBtn: boolean;
   interestChecked: boolean;
   onClick?: () => void;
+  listItemDataRefetch?: () => void;
 }
 
 const moreBtnIcon: IconProps = {
@@ -69,15 +68,13 @@ export const ListItem = ({
   moreBtn,
   interestChecked,
   onClick,
+  listItemDataRefetch,
 }: ListItemProps) => {
   const navigate = useNavigate();
   const listItemRef = useRef<HTMLLIElement>(null);
 
   const moreBtnRef = useRef<HTMLButtonElement>(null);
 
-  // const [interestChecked, setInterestChecked] = useState(
-  //   initialInterestChecked
-  // );
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
@@ -108,47 +105,6 @@ export const ListItem = ({
     onClick && onClick();
   };
 
-  const menuOptions: { [key: string]: MenuButtonProps } = {
-    ['판매중']: {
-      shape: 'large',
-      state: 'default',
-      color: 'systemDefault',
-      name: '판매중 상태로 전환',
-      onClick: () => {
-        changeStatusItemsAPI(itemIdx, '판매중');
-        setMenuOpen(false);
-        window.location.assign(URL + '/sales-history');
-      },
-    },
-    ['판매완료']: {
-      shape: 'large',
-      state: 'default',
-      color: 'systemDefault',
-      name: '판매 완료 상태로 전환',
-      onClick: () => {
-        changeStatusItemsAPI(itemIdx, '판매완료');
-        setMenuOpen(false);
-        window.location.assign(URL + '/sales-history');
-      },
-    },
-    ['예약중']: {
-      shape: 'large',
-      state: 'default',
-      color: 'systemDefault',
-      name: '예약중 상태로 전환',
-      onClick: () => {
-        changeStatusItemsAPI(itemIdx, '예약중');
-        setMenuOpen(false);
-        window.location.assign(URL + '/sales-history');
-      },
-    },
-  };
-
-  const duplicatedMenuOptions = { ...menuOptions };
-  if (state) {
-    delete duplicatedMenuOptions[state];
-  }
-
   const menuButtonPropsList: MenuButtonProps[] = [
     {
       shape: 'large',
@@ -157,7 +113,6 @@ export const ListItem = ({
       name: '게시글 수정',
       onClick: () => navigate(`/edit/${itemIdx}`),
     },
-    ...Object.values(duplicatedMenuOptions),
     {
       shape: 'large',
       state: 'default',
@@ -167,6 +122,7 @@ export const ListItem = ({
         const { error } = await deleteItemsAPI(Number(itemIdx));
         if (error) return setErrorDialogOpen(true);
         setMenuOpen(false);
+        listItemDataRefetch && listItemDataRefetch();
       },
     },
   ];
