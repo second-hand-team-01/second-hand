@@ -26,6 +26,7 @@ import { Error } from './Error/Error';
 import { Loading } from './Loading/Loading';
 import { LocationSelector } from './LocationSelector/LocationSelector';
 import { LocationPopup } from './LocationPopup/LocationPopup';
+import { Carousel } from './Carousel/Carousel';
 
 export {
   Icon,
@@ -56,4 +57,5 @@ export {
   Loading,
   LocationSelector,
   LocationPopup,
+  Carousel,
 };
