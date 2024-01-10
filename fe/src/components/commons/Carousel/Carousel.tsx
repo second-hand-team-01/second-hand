@@ -19,6 +19,7 @@ export const Carousel = ({
   const [currentCarousel, setCurrentCarousel] = useState(0);
 
   const moveCarousel = (direction: 'next' | 'previous') => {
+    console.log(1);
     const totalCarousel = urls.length;
     setCurrentCarousel((prevSlide) => {
       if (direction === 'previous') {
@@ -53,15 +54,19 @@ export const Carousel = ({
         imageCounts={urls.length}
         currentIndex={currentCarousel}
       />
-      <S.CarouselButton
-        direction="previous"
-        onClick={() => moveCarousel('previous')}
-      >
-        <Icon size={48} name="chevronLeft" color="systemBackgroundWeak" />
-      </S.CarouselButton>
-      <S.CarouselButton direction="next" onClick={() => moveCarousel('next')}>
-        <Icon size={48} name="chevronRight" color="systemBackgroundWeak" />
-      </S.CarouselButton>
+      {urls.length >= 2 && (
+        <S.CarouselButton
+          direction="previous"
+          onClick={() => moveCarousel('previous')}
+        >
+          <Icon size={48} name="chevronLeft" color="systemBackgroundWeak" />
+        </S.CarouselButton>
+      )}
+      {urls.length >= 2 && (
+        <S.CarouselButton direction="next" onClick={() => moveCarousel('next')}>
+          <Icon size={48} name="chevronRight" color="systemBackgroundWeak" />
+        </S.CarouselButton>
+      )}
     </S.Carousel>
   );
 };
