@@ -18,6 +18,8 @@ import { ReactComponent as list } from './newspaper.svg';
 import { ReactComponent as person } from './person.svg';
 import { ReactComponent as plus } from './plus.svg';
 import { ReactComponent as search } from './search.svg';
+import { ReactComponent as chevronLeft } from './chevronLeft.svg';
+import { ReactComponent as chevronRight } from './chevronRight.svg';
 
 export default {
   upload,
@@ -40,4 +42,6 @@ export default {
   more,
   circleFill,
   list,
+  chevronRight,
+  chevronLeft,
 };

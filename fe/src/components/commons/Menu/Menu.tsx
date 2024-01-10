@@ -52,6 +52,7 @@ export const Menu = ({
         {location === 'bottom' && (
           <S.ButtonContainer>
             <S.MenuButton
+              className="menu-button"
               shape="large"
               state="default"
               fontWeight="semibold"
