@@ -54,6 +54,7 @@ export const SalesHistoryPage = () => {
         onClick={() => {
           navigate(`/item/${item.itemIdx}`, { state: pathname });
         }}
+        listItemDataRefetch={fetch}
       ></ListItem>
     ));
   };
