@@ -45,7 +45,6 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         reader.readAsDataURL(file);
       }
 
-      // Reset the file input value
       FileInputRef.current.value = '';
     }
   };
