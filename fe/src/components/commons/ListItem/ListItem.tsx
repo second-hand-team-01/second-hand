@@ -111,7 +111,10 @@ export const ListItem = ({
       state: 'default',
       color: 'systemDefault',
       name: '게시글 수정',
-      onClick: () => navigate(`/edit/${itemIdx}`, { state: '/sales-history' }),
+      onClick: () =>
+        navigate(`/edit/${itemIdx}`, {
+          state: { prevPathname: '/sales-history', itemLocation: location },
+        }),
     },
     {
       shape: 'large',
