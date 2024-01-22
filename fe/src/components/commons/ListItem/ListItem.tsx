@@ -154,6 +154,7 @@ export const ListItem = ({
               <span>{convertDateToTimeStamp(timeStamp)}</span>
             </S.SubInfo>
             <S.States>
+              {state === '판매완료' && <S.StateBadge>{state}</S.StateBadge>}
               {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
               {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
             </S.States>
