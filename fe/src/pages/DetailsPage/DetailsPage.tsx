@@ -32,7 +32,7 @@ export const DetailsPage = () => {
   const param = useParams();
   const itemIdxStr = param.itemIdx;
   const navigate = useNavigate();
-  const prevPathname = useLocation().state;
+  const { prevPathname, itemLocation } = useLocation().state;
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -267,7 +267,12 @@ export const DetailsPage = () => {
             color: 'systemDefault',
             name: '게시글 수정',
             onClick: () =>
-              navigate(`/edit/${itemIdxStr}`, { state: prevPathname }),
+              navigate(`/edit/${itemIdxStr}`, {
+                state: {
+                  prevPathname: prevPathname,
+                  itemLocation: itemLocation,
+                },
+              }),
           },
           {
             shape: 'large',
