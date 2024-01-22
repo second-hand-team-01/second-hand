@@ -85,20 +85,24 @@ const Contents = ({
     <>
       {data?.pages
         .flatMap((pageData) => pageData.items)
-        .map((item) => (
-          <ListItem
-            key={item.itemIdx}
-            {...item}
-            onClick={() =>
-              navigate(`/item/${item.itemIdx}`, {
-                state: {
-                  prevPathname: pathname,
-                  itemLocation: selectedLocation,
-                },
-              })
-            }
-          ></ListItem>
-        ))}
+        .map((item) => {
+          if (item.state !== '판매완료') {
+            return (
+              <ListItem
+                key={item.itemIdx}
+                {...item}
+                onClick={() =>
+                  navigate(`/item/${item.itemIdx}`, {
+                    state: {
+                      prevPathname: pathname,
+                      itemLocation: selectedLocation,
+                    },
+                  })
+                }
+              ></ListItem>
+            );
+          }
+        })}
       <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
       {isFetchingNextPage && <Loading height="40px" />}
     </>
