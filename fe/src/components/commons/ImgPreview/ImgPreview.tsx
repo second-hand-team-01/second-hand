@@ -4,6 +4,7 @@ import { Icon, Dialog } from '@commons/index';
 import { ImgElement } from './ImgElement/ImgElement';
 import { Image } from '@type-store/services/items';
 import { ERROR_MESSAGE } from '@constants/error';
+import { v4 } from 'uuid';
 
 interface ImgPreviewProps {
   imageState: [Image[], Dispatch<SetStateAction<Image[]>>];
@@ -65,7 +66,7 @@ export const ImgPreview = ({ imageState }: ImgPreviewProps) => {
         ></S.FileInput>
         {images.map((image, i) => (
           <ImgElement
-            key={image.name}
+            key={v4()}
             file={image.fileString}
             isFirst={i === 0 ? true : false}
             handleDelete={({ currentTarget }) => {
