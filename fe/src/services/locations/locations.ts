@@ -1,5 +1,8 @@
 import { API_URL } from '@constants/apis';
 import { ERROR_MESSAGE } from '@constants/error';
+import { Response } from '@hooks/useFetch/useFetch';
+import { LocationData } from '@type-store/services/location';
+import { customFetch } from '@services/apis/apis';
 
 export const getAllLocationData = async () => {
   try {
@@ -11,6 +14,28 @@ export const getAllLocationData = async () => {
     return locationData.data;
   } catch (error) {
     return error;
+  }
+};
+
+export const getAllLocationDataAPI = async (): Promise<
+  Response<LocationData[]>
+> => {
+  try {
+    const res = (await customFetch<null, LocationData[]>({
+      path: '/locations',
+      method: 'GET',
+    })) as Response<LocationData[]>;
+
+    if (!res || !res.data || res.error) {
+      return { error: res.error, data: undefined };
+    }
+
+    const allLocationData = { ...res, data: res.data };
+
+    return allLocationData;
+  } catch (error) {
+    if (error instanceof Error) return { error };
+    return {};
   }
 };
 

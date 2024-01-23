@@ -11,18 +11,16 @@ import {
   Dialog,
 } from '@components/commons';
 import * as S from './SignUpPageStyle';
-import { getAllLocationData } from '@services/locations/locations';
-import { LocationDataType } from '@type-store/services/signUp';
+import { getAllLocationDataAPI } from '@services/locations/locations';
 import { API_URL } from '@constants/apis';
+import { LocationData } from '@type-store/services/location';
+import { useFetch } from '@hooks/useFetch/useFetch';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
   const [idFocus, setIdFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
-  const [locationDataState, setLocationDataState] = useState<
-    LocationDataType[] | null
-  >();
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -87,10 +85,10 @@ export const SignUpPage = () => {
   };
 
   const findLocationData = (locationName: string) => {
-    const locationData = locationDataState?.find(
+    const matchingLocationData = locationData?.find(
       (location) => location.locationName === locationName
     );
-    return locationData;
+    return matchingLocationData;
   };
 
   const isSelectedLocation = (locationName: string) => {
@@ -143,8 +141,6 @@ export const SignUpPage = () => {
       subLocation.locationIdx ? subLocation.locationIdx.toString() : ''
     );
 
-    // 이미 등록된 이미지 중복 체크 및 dialog 띄우기
-
     try {
       await signUpUser(formData);
       navigate('/profile');
@@ -192,14 +188,11 @@ export const SignUpPage = () => {
     userInfo.imgFile,
   ]);
 
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      const locationData = await getAllLocationData();
-      setLocationDataState(locationData);
-    };
-
-    fetchLocationData();
-  }, []);
+  const [{ data: locationData }] = useFetch<LocationData[], null>(
+    getAllLocationDataAPI,
+    [],
+    true
+  );
 
   return (
     <>
@@ -331,7 +324,7 @@ export const SignUpPage = () => {
           onClick: () => setIsLocationSelectorOpen(false),
         }}
       >
-        {locationDataState?.map((locationData) => (
+        {locationData?.map((locationData) => (
           <S.LocationList
             key={locationData.locationIdx}
             onClick={() => locationClickHandler(locationData.locationName)}

@@ -24,7 +24,7 @@ export interface ListItemProps {
   location: string;
   timeStamp: Date;
   price: number | null;
-  state: '예약중' | '판매중' | string | null;
+  state: '예약중' | '판매중' | '판매완료' | string | null;
   like: number | null | undefined;
   chat: number | null;
   moreBtn: boolean;
@@ -111,7 +111,14 @@ export const ListItem = ({
       state: 'default',
       color: 'systemDefault',
       name: '게시글 수정',
-      onClick: () => navigate(`/edit/${itemIdx}`, { state: '/sales-history' }),
+      onClick: () =>
+        navigate(`/edit/${itemIdx}`, {
+          state: {
+            prevPathname: '/sales-history',
+            itemLocation: location,
+            itemStatus: state,
+          },
+        }),
     },
     {
       shape: 'large',
@@ -151,6 +158,7 @@ export const ListItem = ({
               <span>{convertDateToTimeStamp(timeStamp)}</span>
             </S.SubInfo>
             <S.States>
+              {state === '판매완료' && <S.StateBadge>{state}</S.StateBadge>}
               {state === '예약중' && <S.StateBadge>{state}</S.StateBadge>}
               {price ? `${convertNumToPrice(price)}원` : '가격 없음'}
             </S.States>

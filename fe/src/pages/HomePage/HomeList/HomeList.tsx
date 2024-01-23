@@ -12,15 +12,18 @@ import { Category } from '@type-store/services/category';
 
 export const HomeList = ({
   selectedCategory,
+  selectedLocation,
   selectedLocationIdx,
 }: {
   selectedCategory: Category | undefined;
+  selectedLocation: string | null | undefined;
   selectedLocationIdx: number | null | undefined;
 }) => {
   return (
     <ReactQuerySuspense>
       <Contents
         selectedCategory={selectedCategory}
+        selectedLocation={selectedLocation}
         selectedLocationIdx={selectedLocationIdx}
       />
     </ReactQuerySuspense>
@@ -29,14 +32,15 @@ export const HomeList = ({
 
 const Contents = ({
   selectedCategory,
+  selectedLocation,
   selectedLocationIdx,
 }: {
   selectedCategory: Category | undefined;
+  selectedLocation: string | null | undefined;
   selectedLocationIdx: number | null | undefined;
 }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery(
       [
@@ -81,15 +85,22 @@ const Contents = ({
     <>
       {data?.pages
         .flatMap((pageData) => pageData.items)
-        .map((item) => (
-          <ListItem
-            key={item.itemIdx}
-            {...item}
-            onClick={() =>
-              navigate(`/item/${item.itemIdx}`, { state: pathname })
-            }
-          ></ListItem>
-        ))}
+        .map((item) => {
+          return (
+            <ListItem
+              key={item.itemIdx}
+              {...item}
+              onClick={() =>
+                navigate(`/item/${item.itemIdx}`, {
+                  state: {
+                    prevPathname: pathname,
+                    itemLocation: selectedLocation,
+                  },
+                })
+              }
+            ></ListItem>
+          );
+        })}
       <S.ObserverTarget ref={setTarget}></S.ObserverTarget>
       {isFetchingNextPage && <Loading height="40px" />}
     </>

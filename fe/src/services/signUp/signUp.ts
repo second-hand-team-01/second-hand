@@ -57,13 +57,13 @@ export const userInfoReducer = (state: State, action: Action): any => {
       }
       break;
     case `USER_IMG_INPUT`:
-      if (typeof val !== 'string') {
+      if (typeof val !== 'string' && 'imgUrl' in val) {
         return { ...state, imgUrl: val.imgUrl, imgFile: val.imgFile };
       }
       break;
     case 'SET_LOCATION':
       if (typeof val === 'string') break;
-      if (state.mainLocation.locationIdx === null) {
+      if ('locationIdx' in val && state.mainLocation.locationIdx === null) {
         return {
           ...state,
           mainLocation: {
@@ -72,7 +72,7 @@ export const userInfoReducer = (state: State, action: Action): any => {
             town: val.town,
           },
         };
-      } else {
+      } else if ('locationIdx' in val) {
         return {
           ...state,
           subLocation: {
@@ -82,6 +82,7 @@ export const userInfoReducer = (state: State, action: Action): any => {
           },
         };
       }
+      break;
     case 'REMOVE_LOCATION':
       if (typeof val !== 'string') break;
       if (val === state.mainLocation.town) {

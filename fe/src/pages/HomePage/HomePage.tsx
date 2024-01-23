@@ -6,18 +6,19 @@ import {
   Dialog,
 } from '@commons/index';
 import * as S from './HomePageStyle';
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
 import { UserInfoContext, UserInfoDispatchContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import {
-  getAllLocationData,
+  getAllLocationDataAPI,
   putUserLocation,
 } from '@services/locations/locations';
 import { LocationData } from '@type-store/services/location';
 import { HomeList } from './HomeList/HomeList';
 import { Category } from '@type-store/services/category';
+import { useFetch } from '@hooks/useFetch/useFetch';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -33,16 +34,12 @@ export const HomePage = () => {
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [isLocationPopupOpen, setLocationPopupOpen] = useState(false);
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
-  const [locationData, setLocationData] = useState<LocationData[] | null>(null);
 
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      const locationData = await getAllLocationData();
-      setLocationData(locationData);
-    };
-
-    fetchLocationData();
-  }, []);
+  const [{ data: locationData }] = useFetch<LocationData[], null>(
+    getAllLocationDataAPI,
+    [],
+    true
+  );
 
   const addUserLocationHandler = async (newLocation, userMainLocation) => {
     if (newLocation.locationIdx === userMainLocation.locationIdx) {
@@ -137,7 +134,6 @@ export const HomePage = () => {
     }
   };
 
-  // locationPopup에서 지역 선택했을 때
   const locationPopupClickHandler = (locationIdx, town) => {
     if (userInfo?.selectedLocation?.locationIdx === locationIdx) {
       setLocationPopupOpen(false);
@@ -152,7 +148,6 @@ export const HomePage = () => {
     setLocationPopupOpen(false);
   };
 
-  // locationDropdown에서 지역을 클릭했을 때, 새로운 지역에 대한 item 받아오기
   const locationDropdownClickHandler = (locationIdx, town) => {
     if (userInfo?.selectedLocation?.locationIdx === locationIdx) {
       setLocationDropdownOpen(false);
@@ -167,7 +162,6 @@ export const HomePage = () => {
     setLocationDropdownOpen(false);
   };
 
-  // locationPopup 열고 닫기
   const locationPopupHandler = () => {
     if (!userInfo?.isLoggedIn) {
       navigate('/profile');
@@ -178,7 +172,6 @@ export const HomePage = () => {
     setLocationPopupOpen((prev) => !prev);
   };
 
-  // locationSelector 열고 닫기
   const locationSelectorHandler = () => {
     if (!isLocationPopupOpen && isLocationSelectorOpen) {
       setIsLocationSelectorOpen(false);
@@ -222,6 +215,7 @@ export const HomePage = () => {
         <S.Home>
           <HomeList
             selectedCategory={selectedCategory}
+            selectedLocation={userInfo?.selectedLocation?.town}
             selectedLocationIdx={userInfo?.selectedLocation?.locationIdx}
           />
           <S.FloatingBtn>
@@ -230,7 +224,9 @@ export const HomePage = () => {
               icon="plus"
               color={'accentText'}
               backgroundColor="accentBackgroundPrimary"
-              onClick={() => navigate('/write', { state: pathname })}
+              onClick={() =>
+                navigate('/write', { state: { prevPathname: pathname } })
+              }
             ></Button>
           </S.FloatingBtn>
         </S.Home>

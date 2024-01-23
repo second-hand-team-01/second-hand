@@ -19,10 +19,13 @@ export interface LocationInfo {
   town?: string;
 }
 
-// TODO: any 타입 삭제
+interface FileInfo {
+  imgUrl: string;
+  imgFile: File;
+}
 export interface Action {
   type: string;
-  val: string | LocationInfo | any;
+  val: string | LocationInfo | FileInfo;
 }
 
 export type LocationDataType = {

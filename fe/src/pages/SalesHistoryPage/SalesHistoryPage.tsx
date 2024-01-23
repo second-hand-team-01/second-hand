@@ -52,7 +52,9 @@ export const SalesHistoryPage = () => {
         {...item}
         moreBtn={true}
         onClick={() => {
-          navigate(`/item/${item.itemIdx}`, { state: pathname });
+          navigate(`/item/${item.itemIdx}`, {
+            state: { prevPathname: pathname, itemLocation: item.location },
+          });
         }}
         listItemDataRefetch={fetch}
       ></ListItem>
