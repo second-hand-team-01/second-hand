@@ -6,18 +6,19 @@ import {
   Dialog,
 } from '@commons/index';
 import * as S from './HomePageStyle';
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryPopup } from './CategoryPopup/CategoryPopup';
 import { UserInfoContext, UserInfoDispatchContext } from '@stores/UserContext';
 import { LOCATION_FALLBACK } from '@constants/login';
 import {
-  getAllLocationData,
+  getAllLocationDataAPI,
   putUserLocation,
 } from '@services/locations/locations';
 import { LocationData } from '@type-store/services/location';
 import { HomeList } from './HomeList/HomeList';
 import { Category } from '@type-store/services/category';
+import { useFetch } from '@hooks/useFetch/useFetch';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -33,16 +34,12 @@ export const HomePage = () => {
   const [isLocationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [isLocationPopupOpen, setLocationPopupOpen] = useState(false);
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
-  const [locationData, setLocationData] = useState<LocationData[] | null>(null);
 
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      const locationData = await getAllLocationData();
-      setLocationData(locationData);
-    };
-
-    fetchLocationData();
-  }, []);
+  const [{ data: locationData }] = useFetch<LocationData[], null>(
+    getAllLocationDataAPI,
+    [],
+    true
+  );
 
   const addUserLocationHandler = async (newLocation, userMainLocation) => {
     if (newLocation.locationIdx === userMainLocation.locationIdx) {

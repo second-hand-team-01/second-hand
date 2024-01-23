@@ -37,7 +37,7 @@ import { getAllLocationData } from '@services/locations/locations';
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
   const { itemIdx } = useParams();
-  const { prevPathname, itemLocation } = useLocation().state;
+  const { prevPathname, itemLocation, itemStatus } = useLocation().state;
 
   const [title, setTitle] = useState<string>('');
   const [categoryState] = useFetch(getCategoryAPI, [], true);
@@ -115,6 +115,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       price,
       categoryIdx,
       locationIdx: selectedLocation?.locationIdx,
+      status: itemStatus,
     }),
     []
   );
@@ -222,7 +223,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const locationSelectorHandler = () => {
     setIsLocationSelectorOpen((prev) => !prev);
   };
-  console.log(categoryState.data);
+
   return (
     <Layout
       headerOption={{
@@ -305,7 +306,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
           <TextArea
             value={description}
             shape="small"
-            placeholder={`${selectedLocation?.town}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)`} //TODO: 내 동네로 수정
+            placeholder={`${selectedLocation?.town}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)`}
             onChange={({ target }) => setDescription(target.value)}
             hasPadding={false}
             maxLength={1000}

@@ -24,7 +24,7 @@ export interface ListItemProps {
   location: string;
   timeStamp: Date;
   price: number | null;
-  state: '예약중' | '판매중' | string | null;
+  state: '예약중' | '판매중' | '판매완료' | string | null;
   like: number | null | undefined;
   chat: number | null;
   moreBtn: boolean;
@@ -113,7 +113,11 @@ export const ListItem = ({
       name: '게시글 수정',
       onClick: () =>
         navigate(`/edit/${itemIdx}`, {
-          state: { prevPathname: '/sales-history', itemLocation: location },
+          state: {
+            prevPathname: '/sales-history',
+            itemLocation: location,
+            itemStatus: state,
+          },
         }),
     },
     {
