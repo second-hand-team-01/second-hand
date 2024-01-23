@@ -28,6 +28,7 @@ export interface ItemReqBody {
   locationIdx: number;
   categoryIdx: number;
   images: Image[];
+  status?: string;
 }
 
 export interface StatusReqBody {
@@ -45,6 +46,7 @@ export interface APIItemReqBody {
   locationIdx: string;
   categoryIdx: string;
   images: File[] | null;
+  status?: string;
 }
 
 export interface PostItemRes {
@@ -100,6 +102,10 @@ export interface ItemDetail {
   interestChecked: boolean;
   postedAt: Date;
   images: string[];
+  location?: {
+    locationIdx: number | null | undefined;
+    locationName: string | null | undefined;
+  };
 }
 
 export interface WriteItemDetails {

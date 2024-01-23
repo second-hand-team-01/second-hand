@@ -90,7 +90,7 @@ export const requiresImageConversion = (images) => {
   images.some((image) => (image?.file === null ? true : false));
 };
 
-const fetchImageAsData = async (imageUrl) => {
+export const fetchImageAsData = async (imageUrl) => {
   const imageData = await fetch(imageUrl);
 
   if (!imageData.ok) {
@@ -103,7 +103,7 @@ const fetchImageAsData = async (imageUrl) => {
 
 export const uploadEditItems = async (
   itemIdx: number,
-  { title, description, images, price, categoryIdx, locationIdx }
+  { title, description, images, price, categoryIdx, locationIdx, status }
 ) => {
   try {
     const convertedImages = await Promise.all(
@@ -111,7 +111,7 @@ export const uploadEditItems = async (
         if (!image.file) {
           const blob = await fetchImageAsData(image.fileString);
           const urlParts = image.fileString.split('/');
-          const fileName = urlParts[urlParts.length - 1].split('?')[0];
+          const fileName = urlParts[urlParts.length - 1];
           const fileReader = new FileReader();
           fileReader.readAsDataURL(blob);
           const fileString = await new Promise((resolve) => {
@@ -138,7 +138,8 @@ export const uploadEditItems = async (
       convertedImages,
       price,
       categoryIdx as number,
-      locationIdx
+      locationIdx,
+      status
     );
 
     const result = await editItemsAPI(itemIdx, body);

@@ -19,6 +19,7 @@ import { Image, GetSalesItemsRes } from '@type-store/services/items';
 import { Category } from '@type-store/services/category';
 import { getRandomElements, removeEmptyKeyValues } from '@utils/common/common';
 import { LOCATION_FALLBACK } from '@constants/login';
+import { fetchImageAsData } from './write';
 
 export const convertItemsToListItems = (items: Item[]): ListItemProps[] => {
   return items.map((item) => {
@@ -241,7 +242,8 @@ export const getItemDetailAPI = async (
 };
 
 const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
-  const { title, price, contents, locationIdx, categoryIdx, images } = body;
+  const { title, price, contents, locationIdx, categoryIdx, images, status } =
+    body;
 
   const imageFiles = images.map((image) => image.file) as File[] | null;
 
@@ -254,6 +256,7 @@ const convertItemReqBodyToAPIReqBody = (body: ItemReqBody): APIItemReqBody => {
       : LOCATION_FALLBACK.locationIdx.toString(),
     categoryIdx: categoryIdx.toString(),
     images: imageFiles,
+    status: status,
   };
   return newItem;
 };
@@ -305,6 +308,7 @@ export const editItemsAPI = async (itemIdx: number, body: ItemReqBody) => {
   formData.append('price', convertedBody.price);
   formData.append('locationIdx', convertedBody.locationIdx);
   formData.append('categoryIdx', convertedBody.categoryIdx);
+  convertedBody.status ? formData.append('status', convertedBody.status) : null;
   convertedBody.images?.forEach((image) => {
     formData.append(`image`, image);
   });
@@ -334,7 +338,8 @@ export const convertDataToBody = (
   images: Image[],
   price: number,
   categoryIdx: number,
-  locationIdx: number
+  locationIdx: number,
+  status?: string
 ) => {
   const body = {
     title,
@@ -343,7 +348,9 @@ export const convertDataToBody = (
     price,
     categoryIdx,
     locationIdx: locationIdx ?? LOCATION_FALLBACK.locationIdx,
+    status: status,
   };
+
   return body;
 };
 
@@ -435,25 +442,46 @@ export const convertAPISalesItemsToListItems = (
 
 export const changeStatusItemsAPI = async (
   itemIdx: number,
-  status: ItemStatus
+  { title, description, images, price, categoryIdx, locationIdx, status }
 ) => {
   if (!status) return { error: { message: ERROR_MESSAGE.FILE_UPLOAD_ERROR } };
-  const formData = new FormData();
-  formData.append('status', status);
-
   try {
-    const res = await customFetch<FormData, null>({
-      path: `/items/${itemIdx}`,
-      method: 'PUT',
-      auth: true,
-      body: formData,
-    });
-    if (!res || !res.data || res.error) {
-      return { error: res.error, data: undefined };
-    }
-    return {
-      data: null,
-    };
+    const convertedImages = await Promise.all(
+      images.map(async (image) => {
+        const blob = await fetchImageAsData(image);
+        const urlParts = image.split('/');
+        const fileName = urlParts[urlParts.length - 1];
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(blob);
+        const fileString = await new Promise((resolve) => {
+          fileReader.onload = ({ target }) => {
+            resolve(target?.result);
+          };
+        });
+        const file = {
+          file: new File([blob], fileName, { type: blob.type }),
+          fileString: fileString,
+          name: fileName,
+          size: blob.size,
+        };
+
+        return file;
+      })
+    );
+
+    const body = convertDataToBody(
+      title,
+      description,
+      convertedImages,
+      price,
+      categoryIdx,
+      locationIdx,
+      status
+    );
+
+    const result = await editItemsAPI(itemIdx, body);
+
+    return result as Response<null>;
   } catch (error) {
     if (error instanceof Error) return { error };
     return {};

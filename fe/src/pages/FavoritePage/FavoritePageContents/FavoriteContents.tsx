@@ -3,7 +3,7 @@ import * as S from './FavoriteContentsStyle';
 import { useFetch } from '@hooks/useFetch/useFetch';
 import { getFavoriteItemsAPI } from '@services/items/favoriteItems';
 import { useContext, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ERROR_MESSAGE } from '@constants/error';
 import { UserInfoContext } from '@stores/UserContext';
 
@@ -13,11 +13,11 @@ interface FavoriteContentsProps {
 
 export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [{ data, error, loading }, contentsFetch] = useFetch(
     getFavoriteItemsAPI.bind(null, categoryIdx),
     []
   );
-
   useEffect(() => {
     contentsFetch();
   }, [categoryIdx]);
@@ -44,7 +44,9 @@ export const FavoriteContents = ({ categoryIdx }: FavoriteContentsProps) => {
         key={item.itemIdx}
         {...item}
         onClick={() => {
-          navigate(`/item/${item.itemIdx}`);
+          navigate(`/item/${item.itemIdx}`, {
+            state: { prevPathname: pathname, itemLocation: item.location },
+          });
         }}
       ></ListItem>
     ));

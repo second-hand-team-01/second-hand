@@ -43,7 +43,7 @@ export const AuthPage = () => {
 
     const token = userInfoData.data.token;
     const memberInfo = userInfoData.data.memberInfo;
-    console.log(memberInfo);
+
     localStorage.setItem('loginToken', token);
     userInfoDispatch &&
       userInfoDispatch({
