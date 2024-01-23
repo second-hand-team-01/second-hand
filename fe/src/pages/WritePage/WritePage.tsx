@@ -32,13 +32,12 @@ import {
 } from '@services/items/write';
 import { UserInfoContext } from '@stores/UserContext';
 import { LocationData } from '@type-store/services/location';
-import { LOCATION_FALLBACK } from '@constants/login';
 import { getAllLocationData } from '@services/locations/locations';
 
 export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const navigate = useNavigate();
   const { itemIdx } = useParams();
-  const prevPathName = useLocation().state;
+  const { prevPathname, itemLocation, itemStatus } = useLocation().state;
 
   const [title, setTitle] = useState<string>('');
   const [categoryState] = useFetch(getCategoryAPI, [], true);
@@ -54,7 +53,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
   const userInfo = useContext(UserInfoContext);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(
-    userInfo?.isLoggedIn ? userInfo?.main : LOCATION_FALLBACK
+    type === 'write' ? userInfo?.selectedLocation : itemLocation
   );
   const [locationData, setLocationData] = useState<LocationData[] | null>(null);
   const [isLocationSelectorOpen, setIsLocationSelectorOpen] = useState(false);
@@ -116,6 +115,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       price,
       categoryIdx,
       locationIdx: selectedLocation?.locationIdx,
+      status: itemStatus,
     }),
     []
   );
@@ -133,12 +133,18 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
       ? !uploadState.data && uploadState.error
         ? setDialogOpen(false)
         : navigate(`/item/${uploadState.data?.itemIdx}`, {
-            state: prevPathName,
+            state: {
+              prevPathname: prevPathname,
+              itemLocation: selectedLocation?.town,
+            },
           })
       : editState.error
       ? setDialogOpen(false)
       : navigate(`/item/${itemIdx}`, {
-          state: prevPathName,
+          state: {
+            prevPathname: prevPathname,
+            itemLocation: selectedLocation?.town,
+          },
         });
   };
 
@@ -188,6 +194,15 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
     const fetchAllLocationData = async () => {
       const locationData = await getAllLocationData();
       setLocationData(locationData);
+      if (type === 'edit') {
+        const location = locationData.find(
+          (location) => location.town === itemLocation
+        );
+        setSelectedLocation({
+          locationIdx: location?.locationIdx,
+          town: location?.town,
+        });
+      }
     };
 
     fetchAllLocationData();
@@ -291,7 +306,7 @@ export const WritePage = ({ type }: { type: 'write' | 'edit' }) => {
           <TextArea
             value={description}
             shape="small"
-            placeholder={`${selectedLocation?.town}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)`} //TODO: 내 동네로 수정
+            placeholder={`${selectedLocation?.town}에 올릴 게시물 내용을 작성해주세요.(판매금지 물품은 게시가 제한될 수 있어요.)`}
             onChange={({ target }) => setDescription(target.value)}
             hasPadding={false}
             maxLength={1000}

@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserInfoContext } from '@stores/UserContext';
 import { postFavoriteItemAPI } from '@services/items/favoriteItems';
 import { MenuButtonProps } from '@components/commons/Menu/MenuStyle';
+import { getAllLocationDataAPI } from '@services/locations/locations';
 
 export const DetailsPage = () => {
   const userInfo = useContext(UserInfoContext);
@@ -32,7 +33,7 @@ export const DetailsPage = () => {
   const param = useParams();
   const itemIdxStr = param.itemIdx;
   const navigate = useNavigate();
-  const prevPathname = useLocation().state;
+  const { prevPathname, itemLocation } = useLocation().state;
 
   const [details, setDetails] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -54,11 +55,38 @@ export const DetailsPage = () => {
   useEffect(() => {
     (async () => {
       !loading && setLoading(true);
-      const { data, error } = await getItemDetailAPI(Number(itemIdxStr));
-      if (error) return setErrorMsg(error.message);
-      if (data) {
-        setDetails(data);
-        setInterestChecked(data.interestChecked);
+      const { data: itemData, error: itemError } = await getItemDetailAPI(
+        Number(itemIdxStr)
+      );
+      if (itemError) return setErrorMsg(itemError.message);
+      if (itemData) {
+        setDetails((prevDetails) => ({
+          ...prevDetails,
+          ...itemData,
+        }));
+        setInterestChecked(itemData.interestChecked);
+      }
+
+      const { data: locationData, error: locationError } =
+        await getAllLocationDataAPI();
+      if (locationError) return setErrorMsg(locationError.message);
+      if (locationData && Array.isArray(locationData)) {
+        const location = locationData.find(
+          (location) => location.town === itemLocation
+        );
+
+        setDetails((prevDetails) => {
+          if (prevDetails === null) {
+            return null;
+          }
+          return {
+            ...prevDetails,
+            location: {
+              locationIdx: location?.locationIdx,
+              locationName: location?.town,
+            },
+          };
+        });
       }
       setLoading(false);
     })();
@@ -132,10 +160,24 @@ export const DetailsPage = () => {
         state: 'default',
         color: 'neutralText',
         name: '판매중 상태로 전환',
-        onClick: () => {
-          changeStatusItemsAPI(Number(itemIdxStr), '판매중');
+        onClick: async () => {
+          changeStatusItemsAPI(Number(itemIdxStr), {
+            title: details?.title,
+            description: details?.description,
+            images: details?.images,
+            price: details?.price,
+            categoryIdx: details?.category.idx,
+            locationIdx: details?.location?.locationIdx,
+            status: '판매중',
+          });
+          setDetails((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              status: '판매중',
+            };
+          });
           setStatusDropdownOpen(false);
-          window.location.reload();
         },
       },
       ['판매완료']: {
@@ -144,9 +186,23 @@ export const DetailsPage = () => {
         color: 'neutralText',
         name: '판매 완료 상태로 전환',
         onClick: () => {
-          changeStatusItemsAPI(Number(itemIdxStr), '판매완료');
+          changeStatusItemsAPI(Number(itemIdxStr), {
+            title: details?.title,
+            description: details?.description,
+            images: details?.images,
+            price: details?.price,
+            categoryIdx: details?.category.idx,
+            locationIdx: details?.location?.locationIdx,
+            status: '판매완료',
+          });
+          setDetails((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              status: '판매완료',
+            };
+          });
           setStatusDropdownOpen(false);
-          window.location.reload();
         },
       },
       ['예약중']: {
@@ -155,9 +211,23 @@ export const DetailsPage = () => {
         color: 'neutralText',
         name: '예약중 상태로 전환',
         onClick: () => {
-          changeStatusItemsAPI(Number(itemIdxStr), '예약중');
+          changeStatusItemsAPI(Number(itemIdxStr), {
+            title: details?.title,
+            description: details?.description,
+            images: details?.images,
+            price: details?.price,
+            categoryIdx: details?.category.idx,
+            locationIdx: details?.location?.locationIdx,
+            status: '예약중',
+          });
+          setDetails((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              status: '예약중',
+            };
+          });
           setStatusDropdownOpen(false);
-          window.location.reload();
         },
       },
     };
@@ -267,7 +337,13 @@ export const DetailsPage = () => {
             color: 'systemDefault',
             name: '게시글 수정',
             onClick: () =>
-              navigate(`/edit/${itemIdxStr}`, { state: prevPathname }),
+              navigate(`/edit/${itemIdxStr}`, {
+                state: {
+                  prevPathname: prevPathname,
+                  itemLocation: itemLocation,
+                  itemStatus: details?.status,
+                },
+              }),
           },
           {
             shape: 'large',

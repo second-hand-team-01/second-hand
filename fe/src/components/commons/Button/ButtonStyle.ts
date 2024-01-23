@@ -159,4 +159,3 @@ display: flex;
   ${({ isWidthFitContent }) =>
     isWidthFitContent ? `width: max-content;` : ''};
 `;
-// padding 값 수정 필요 (icon이 있어도 shape:large인 경우에는 padding 16,20 적용)

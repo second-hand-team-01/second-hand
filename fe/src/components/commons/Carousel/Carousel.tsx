@@ -19,7 +19,6 @@ export const Carousel = ({
   const [currentCarousel, setCurrentCarousel] = useState(0);
 
   const moveCarousel = (direction: 'next' | 'previous') => {
-    console.log(1);
     const totalCarousel = urls.length;
     setCurrentCarousel((prevSlide) => {
       if (direction === 'previous') {

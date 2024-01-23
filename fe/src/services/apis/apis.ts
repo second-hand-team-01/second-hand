@@ -93,7 +93,7 @@ export const customFetch = async <B, D>({
     };
   } catch (error) {
     if (error instanceof Error) {
-      return { error: new Error(`${error.message}`) }; // 이 부분은 어떤 에러가 발생하는걸까?
+      return { error: new Error(`${error.message}`) };
     }
     return { error: new Error(ERROR_MESSAGE['UNDEFINED']) };
   }
